@@ -39,8 +39,8 @@ export function Navigation() {
             >
               Bookings
             </Link>
-            <a 
-              href="https://nazaaralive.myportfolio.com" 
+            <a
+              href="https://tamasha.myportfolio.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm uppercase tracking-[0.2em] text-foreground/80 hover:text-primary font-light transition-colors flex items-center gap-1 group"
