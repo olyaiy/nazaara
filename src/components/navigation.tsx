@@ -1,38 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export function Navigation() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-maroon-red/95 backdrop-blur-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/30">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center h-24">
+          {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
               src="/Logos/Nazaara Logo - White.svg"
               alt="Nazaara Live"
-              width={200}
-              height={80}
+              width={180}
+              height={72}
               priority
-              className="h-16 w-auto"
+              className="h-14 w-auto"
             />
           </Link>
           
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Center Navigation */}
+          <div className="hidden lg:flex items-center gap-12 absolute left-1/2 -translate-x-1/2">
             <Link 
               href="/events" 
-              className="text-white font-prettywise font-medium hover:text-gold transition-colors"
+              className="text-sm uppercase tracking-[0.2em] text-foreground/80 hover:text-primary font-light transition-colors"
             >
               Events
             </Link>
             <Link 
               href="/about" 
-              className="text-white font-prettywise font-medium hover:text-gold transition-colors"
+              className="text-sm uppercase tracking-[0.2em] text-foreground/80 hover:text-primary font-light transition-colors"
             >
               About
             </Link>
             <Link 
               href="/bookings" 
-              className="text-white font-prettywise font-medium hover:text-gold transition-colors"
+              className="text-sm uppercase tracking-[0.2em] text-foreground/80 hover:text-primary font-light transition-colors"
             >
               Bookings
             </Link>
@@ -40,21 +43,30 @@ export function Navigation() {
               href="https://nazaaralive.myportfolio.com" 
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white font-prettywise font-medium hover:text-gold transition-colors"
+              className="text-sm uppercase tracking-[0.2em] text-foreground/80 hover:text-primary font-light transition-colors flex items-center gap-1 group"
             >
               Gallery
+              <ArrowUpRight className="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" />
             </a>
+          </div>
+
+          {/* Right Side CTA */}
+          <div className="hidden md:flex items-center gap-6">
             <Link 
               href="/contact" 
-              className="bg-gold text-maroon-red px-6 py-2 rounded-full font-prettywise font-semibold hover:bg-gold/90 transition-colors"
+              className="relative group"
             >
-              Contact Us
+              <span className="text-sm uppercase tracking-[0.2em] text-primary font-light">
+                Book Consultation
+              </span>
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
             </Link>
           </div>
 
-          <button className="md:hidden text-white">
-            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          {/* Mobile Menu Button */}
+          <button className="lg:hidden text-foreground/80 hover:text-primary transition-colors">
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>
