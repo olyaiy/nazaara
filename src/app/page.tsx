@@ -1,250 +1,267 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { CalendarDays, MapPin, Star, ArrowRight, Sparkles, Clock, Trophy, Building2, ChevronRight, Mic2, PartyPopper, Briefcase, TrendingUp, Ticket } from "lucide-react";
+import { CalendarDays, MapPin, ArrowRight, Sparkles, Circle, Star, ArrowUpRight } from "lucide-react";
 
 export default function Home() {
   const featuredEvent = {
     id: 1,
-    title: "Arijit Singh Live",
-    subtitle: "North America Tour 2025",
-    description: "Experience the magic of Bollywood's most celebrated voice",
-    date: "March 15 - April 30, 2025",
-    nextShow: "New York - Madison Square Garden",
-    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1200&q=80",
-    price: "From $89",
-    status: "selling-fast",
-    soldPercentage: 75
+    artist: "Arijit Singh",
+    title: "Live in Concert",
+    tagline: "The Voice That Defines a Generation",
+    tour: "North America Tour 2025",
+    description: "An evening of soul-stirring melodies and unforgettable moments with Bollywood's most celebrated voice.",
+    dates: "15 March — 30 April 2025",
+    venue: "Madison Square Garden, New York",
+    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1600&q=80",
+    price: "89",
+    availability: 25
   };
 
   const upcomingEvents = [
     {
       id: 2,
-      title: "Holi Festival NYC",
-      subtitle: "Festival of Colors",
-      date: "March 8, 2025",
-      location: "Madison Square Garden",
+      number: "02",
+      artist: "Holi NYC",
+      title: "Festival of Colors",
+      date: "08 Mar",
+      year: "2025",
+      venue: "Madison Square Garden",
+      price: "45",
       image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80",
-      price: "$45+",
-      category: "Festival",
-      trending: true
+      status: "On Sale"
     },
     {
       id: 3,
-      title: "Shreya Ghoshal",
-      subtitle: "An Intimate Evening",
-      date: "April 5, 2025",
-      location: "Dubai Opera",
+      number: "03",
+      artist: "Shreya Ghoshal",
+      title: "An Intimate Evening",
+      date: "05 Apr",
+      year: "2025",
+      venue: "Dubai Opera",
+      price: "120",
       image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80",
-      price: "$120+",
-      category: "Concert"
+      status: "Premium"
     },
     {
       id: 4,
-      title: "Punjabi Music Fest",
-      subtitle: "Diljit, AP Dhillon & More",
-      date: "May 20, 2025",
-      location: "Los Angeles Arena",
+      number: "04",
+      artist: "Punjabi Fest",
+      title: "Diljit × AP Dhillon",
+      date: "20 May",
+      year: "2025",
+      venue: "Los Angeles Arena",
+      price: "65",
       image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=800&q=80",
-      price: "$65+",
-      category: "Festival"
+      status: "On Sale"
     },
     {
       id: 5,
-      title: "Rahman Symphony",
-      subtitle: "Oscar Winner Live",
-      date: "June 15, 2025",
-      location: "Sydney Opera House",
+      number: "05",
+      artist: "AR Rahman",
+      title: "Symphony Orchestra",
+      date: "15 Jun",
+      year: "2025",
+      venue: "Sydney Opera House",
+      price: "250",
       image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&q=80",
-      price: "$150+",
-      category: "Concert",
-      premium: true
+      status: "Exclusive"
     },
     {
       id: 6,
-      title: "Bollywood Nights",
-      subtitle: "DJ Chetas & Friends",
-      date: "July 4, 2025",
-      location: "Miami Beach",
+      number: "06",
+      artist: "Bollywood Night",
+      title: "Summer Beach Party",
+      date: "04 Jul",
+      year: "2025",
+      venue: "Miami Beach",
+      price: "35",
       image: "https://images.unsplash.com/photo-1504680177321-2e6a879aac86?w=800&q=80",
-      price: "$35+",
-      category: "Party"
-    }
-  ];
-
-  const privateServices = [
-    {
-      icon: Mic2,
-      title: "Celebrity Performances",
-      description: "Book A-list Bollywood stars and musicians for your exclusive events"
-    },
-    {
-      icon: PartyPopper,
-      title: "Wedding Entertainment",
-      description: "Transform your special day with world-class South Asian entertainment"
-    },
-    {
-      icon: Briefcase,
-      title: "Corporate Events",
-      description: "Elevate your corporate gatherings with cultural performances"
+      status: "On Sale"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section - More compact */}
-      <section className="relative py-20 lg:py-32 overflow-hidden">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute w-96 h-96 -top-48 -left-48 bg-primary rounded-full" />
-          <div className="absolute w-96 h-96 -bottom-48 -right-48 bg-secondary rounded-full" />
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-center">
-            {/* Left: Event Info - Taking 3 columns */}
-            <div className="lg:col-span-3">
-              <div className="inline-flex items-center gap-2 text-primary mb-6">
-                <Sparkles className="w-4 h-4" />
-                <span className="text-sm font-medium uppercase tracking-wider">Featured Event</span>
-                <div className="h-px bg-primary/30 w-12" />
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Premium Hero Section */}
+      <section className="relative min-h-[85vh] flex items-center py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            {/* Left Content */}
+            <div className="lg:col-span-5 lg:pr-12">
+              {/* Premium Badge */}
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-8 h-px bg-primary" />
+                <span className="text-xs uppercase tracking-[0.3em] text-primary font-light">Featured Event</span>
               </div>
               
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-foreground mb-4 leading-[0.9]">
-                {featuredEvent.title}
-              </h1>
-              
-              <p className="text-xl md:text-2xl text-primary mb-6">
-                {featuredEvent.subtitle}
-              </p>
-              
-              <p className="text-lg text-muted-foreground mb-8 max-w-xl">
-                {featuredEvent.description}
-              </p>
-              
-              {/* Event details in a cleaner layout */}
-              <div className="flex flex-wrap gap-6 mb-8 text-foreground">
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="h-4 w-4 text-primary" />
-                  <span className="text-sm">{featuredEvent.date}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-primary" />
-                  <span className="text-sm">{featuredEvent.nextShow}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium text-primary">75% Sold</span>
+              {/* Artist Name - Large */}
+              <div className="mb-6">
+                <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-light leading-[0.85] text-foreground">
+                  {featuredEvent.artist}
+                </h1>
+                <div className="text-2xl md:text-3xl font-serif italic text-primary mt-2">
+                  {featuredEvent.title}
                 </div>
               </div>
               
-              {/* Minimal progress indicator */}
-              <div className="w-full max-w-md mb-8">
-                <div className="h-1 bg-muted/30 rounded-full overflow-hidden">
+              {/* Tagline */}
+              <p className="text-muted-foreground text-sm uppercase tracking-wider mb-8 font-light">
+                {featuredEvent.tagline}
+              </p>
+              
+              {/* Event Details - Minimal */}
+              <div className="space-y-4 mb-10 text-sm">
+                <div className="flex items-start gap-4">
+                  <span className="text-muted-foreground uppercase text-xs tracking-wider w-20">Date</span>
+                  <span className="text-foreground font-light">{featuredEvent.dates}</span>
+                </div>
+                <div className="flex items-start gap-4">
+                  <span className="text-muted-foreground uppercase text-xs tracking-wider w-20">Venue</span>
+                  <span className="text-foreground font-light">{featuredEvent.venue}</span>
+                </div>
+                <div className="flex items-start gap-4">
+                  <span className="text-muted-foreground uppercase text-xs tracking-wider w-20">Tour</span>
+                  <span className="text-foreground font-light">{featuredEvent.tour}</span>
+                </div>
+              </div>
+              
+              {/* Premium CTA */}
+              <div className="flex items-center gap-8">
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">From</div>
+                  <div className="text-3xl font-light text-primary">${featuredEvent.price}</div>
+                </div>
+                <Button 
+                  size="lg" 
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm uppercase tracking-wider font-light"
+                >
+                  Reserve Tickets
+                </Button>
+              </div>
+              
+              {/* Availability Indicator */}
+              <div className="mt-8">
+                <div className="flex items-center gap-2 mb-2">
+                  <Circle className="w-2 h-2 fill-primary text-primary" />
+                  <span className="text-xs uppercase tracking-wider text-muted-foreground">
+                    {featuredEvent.availability}% Remaining
+                  </span>
+                </div>
+                <div className="w-full max-w-xs h-[1px] bg-border">
                   <div 
-                    className="h-full bg-primary rounded-full transition-all duration-500"
-                    style={{ width: `${featuredEvent.soldPercentage}%` }}
+                    className="h-full bg-primary transition-all duration-1000"
+                    style={{ width: `${featuredEvent.availability}%` }}
                   />
                 </div>
               </div>
-              
-              <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                  Get Tickets • {featuredEvent.price}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button size="lg" variant="ghost" className="text-primary hover:text-primary/80 hover:bg-transparent">
-                  View All Tour Dates
-                </Button>
-              </div>
             </div>
             
-            {/* Right: Event Image - Taking 2 columns */}
-            <div className="lg:col-span-2 relative h-[400px] lg:h-[500px]">
-              <div className="absolute inset-0 rounded-2xl overflow-hidden">
+            {/* Right Image */}
+            <div className="lg:col-span-7 relative h-[500px] lg:h-[650px]">
+              <div className="absolute inset-0">
                 <Image 
                   src={featuredEvent.image}
-                  alt={featuredEvent.title}
+                  alt={featuredEvent.artist}
                   fill
                   className="object-cover"
+                  priority
                 />
-                <div className="absolute inset-0 bg-background/10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
               </div>
               
-              {/* Floating badge */}
-              <div className="absolute -bottom-4 -left-4 bg-primary text-primary-foreground px-6 py-3 rounded-full font-medium">
-                <Clock className="inline-block w-4 h-4 mr-2" />
-                Limited Availability
+              {/* Elegant overlay text */}
+              <div className="absolute bottom-8 left-8 right-8">
+                <p className="text-foreground/80 font-light text-sm leading-relaxed max-w-md">
+                  {featuredEvent.description}
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Upcoming Events - Clean grid layout */}
-      <section className="py-20">
+      {/* Elegant Divider */}
+      <div className="container mx-auto px-4">
+        <div className="h-px bg-border/50" />
+      </div>
+
+      {/* Premium Events List */}
+      <section className="py-24">
         <div className="container mx-auto px-4">
           {/* Section Header */}
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <div className="inline-flex items-center gap-2 text-primary mb-4">
-                <Ticket className="w-4 h-4" />
-                <span className="text-sm font-medium uppercase tracking-wider">All Events</span>
-              </div>
-              <h2 className="text-3xl md:text-5xl font-serif font-bold text-foreground">
-                Upcoming Spectacles
+          <div className="grid lg:grid-cols-12 mb-16">
+            <div className="lg:col-span-4">
+              <h2 className="text-4xl md:text-5xl font-serif font-light text-foreground">
+                Upcoming
+                <span className="block font-serif italic text-primary">Performances</span>
               </h2>
             </div>
-            <Button variant="ghost" className="text-primary hover:text-primary/80 hover:bg-transparent group">
-              View All
-              <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            <div className="lg:col-span-8 flex items-end justify-end">
+              <button className="text-sm uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-2 group">
+                View Full Calendar
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </button>
+            </div>
           </div>
 
-          {/* Events Grid - No cards, cleaner design */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-            {upcomingEvents.map((event) => (
-              <div key={event.id} className="group cursor-pointer">
-                <div className="relative aspect-[4/3] mb-4 overflow-hidden rounded-lg">
-                  <Image 
-                    src={event.image}
-                    alt={event.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-background/20" />
-                  
-                  {/* Event badges */}
-                  <div className="absolute top-4 left-4 flex gap-2">
-                    <span className="bg-background/80 backdrop-blur-sm text-primary px-3 py-1 rounded-full text-xs font-medium">
-                      {event.category}
+          {/* Events List - Editorial Style */}
+          <div className="space-y-px">
+            {upcomingEvents.map((event, index) => (
+              <div key={event.id} className="group">
+                <div className="grid lg:grid-cols-12 gap-4 py-8 border-b border-border/30 hover:border-primary/30 transition-colors cursor-pointer">
+                  {/* Number */}
+                  <div className="lg:col-span-1">
+                    <span className="text-5xl font-serif font-light text-muted-foreground/30">
+                      {event.number}
                     </span>
-                    {event.trending && (
-                      <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">
-                        Trending
-                      </span>
-                    )}
-                    {event.premium && (
-                      <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-xs font-medium">
-                        Premium
-                      </span>
-                    )}
                   </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <h3 className="text-xl font-serif font-bold text-foreground group-hover:text-primary transition-colors">
-                    {event.title}
-                  </h3>
-                  <p className="text-muted-foreground">{event.subtitle}</p>
                   
-                  <div className="flex items-center justify-between pt-3 border-t border-border/30">
-                    <div className="space-y-1 text-sm">
-                      <div className="text-muted-foreground">{event.date}</div>
-                      <div className="text-foreground font-medium">{event.location}</div>
+                  {/* Image */}
+                  <div className="lg:col-span-2">
+                    <div className="relative h-24 w-full overflow-hidden">
+                      <Image 
+                        src={event.image}
+                        alt={event.artist}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-background/20" />
                     </div>
+                  </div>
+                  
+                  {/* Event Details */}
+                  <div className="lg:col-span-6 flex items-center">
+                    <div>
+                      <h3 className="text-2xl font-serif font-light text-foreground group-hover:text-primary transition-colors">
+                        {event.artist}
+                      </h3>
+                      <p className="text-sm text-muted-foreground font-light mt-1">
+                        {event.title}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Date & Venue */}
+                  <div className="lg:col-span-2 flex items-center">
+                    <div className="text-right lg:text-left">
+                      <div className="text-lg font-light text-foreground">
+                        {event.date}
+                      </div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground">
+                        {event.venue}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Price & Status */}
+                  <div className="lg:col-span-1 flex items-center justify-end">
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-primary">{event.price}</div>
+                      <div className="text-xl font-light text-primary">
+                        ${event.price}
+                      </div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">
+                        {event.status}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -254,186 +271,174 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Banner - Minimalist */}
-      <section className="py-16 border-y border-border/30">
+      {/* Premium Stats */}
+      <section className="py-24 bg-muted/5">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl md:text-4xl font-serif font-bold text-primary mb-1">500K+</div>
-              <div className="text-sm text-muted-foreground">Tickets Sold</div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-5xl font-serif font-light text-primary mb-2">500K</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Tickets Sold</div>
             </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-serif font-bold text-primary mb-1">150+</div>
-              <div className="text-sm text-muted-foreground">Cities</div>
+            <div className="text-center">
+              <div className="text-5xl font-serif font-light text-primary mb-2">150</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Global Cities</div>
             </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-serif font-bold text-primary mb-1">200+</div>
-              <div className="text-sm text-muted-foreground">Artists</div>
+            <div className="text-center">
+              <div className="text-5xl font-serif font-light text-primary mb-2">200</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Artists</div>
             </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-serif font-bold text-primary mb-1">10+</div>
-              <div className="text-sm text-muted-foreground">Years</div>
+            <div className="text-center">
+              <div className="text-5xl font-serif font-light text-primary mb-2">10</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Years</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Private Bookings - Modern layout */}
-      <section className="py-20 bg-muted/10">
+      {/* Private Events - Luxury Focus */}
+      <section className="py-24">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left: Content */}
-            <div>
-              <div className="inline-flex items-center gap-2 text-secondary mb-6">
-                <Star className="w-4 h-4" />
-                <span className="text-sm font-medium uppercase tracking-wider">Exclusive Services</span>
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left Image Collage */}
+            <div className="relative h-[600px]">
+              <div className="absolute top-0 left-0 w-2/3 h-2/3 overflow-hidden">
+                <Image 
+                  src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80"
+                  alt="Luxury event"
+                  fill
+                  className="object-cover"
+                />
               </div>
-              
-              <h2 className="text-3xl md:text-5xl font-serif font-bold text-foreground mb-6">
-                Private Entertainment
-                <span className="block text-primary mt-2">Tailored for You</span>
-              </h2>
-              
-              <p className="text-lg text-muted-foreground mb-8">
-                From intimate gatherings to grand celebrations, we bring the biggest names in 
-                South Asian entertainment directly to your exclusive events.
-              </p>
-              
-              {/* Services list */}
-              <div className="space-y-6 mb-8">
-                {privateServices.map((service, index) => {
-                  const Icon = service.icon;
-                  return (
-                    <div key={index} className="flex gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Icon className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground mb-1">{service.title}</h3>
-                        <p className="text-sm text-muted-foreground">{service.description}</p>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="absolute bottom-0 right-0 w-2/3 h-2/3 overflow-hidden border-8 border-background">
+                <Image 
+                  src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80"
+                  alt="Private performance"
+                  fill
+                  className="object-cover"
+                />
               </div>
-              
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Book a Consultation
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
             </div>
             
-            {/* Right: Visual element */}
-            <div className="relative">
-              <div className="aspect-square relative">
-                <div className="absolute inset-0 bg-primary/5 rounded-full" />
-                <div className="absolute inset-8 bg-primary/10 rounded-full" />
-                <div className="absolute inset-16 bg-primary/20 rounded-full flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-6xl font-serif font-bold text-primary mb-2">98%</div>
-                    <div className="text-sm text-muted-foreground">Client Satisfaction</div>
+            {/* Right Content */}
+            <div className="lg:pl-12">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-8 h-px bg-primary" />
+                <span className="text-xs uppercase tracking-[0.3em] text-primary font-light">Private Events</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-serif font-light text-foreground mb-6">
+                Bespoke
+                <span className="block font-serif italic text-primary">Entertainment</span>
+              </h2>
+              
+              <p className="text-muted-foreground font-light leading-relaxed mb-8">
+                Curate unforgettable moments with exclusive access to the world's most celebrated 
+                South Asian artists. From intimate soirées to grand celebrations, we orchestrate 
+                extraordinary experiences tailored to your vision.
+              </p>
+              
+              {/* Service List - Minimal */}
+              <div className="space-y-6 mb-12">
+                <div className="flex items-start gap-4">
+                  <div className="w-1 h-1 bg-primary rounded-full mt-2" />
+                  <div>
+                    <h3 className="font-light text-foreground mb-1">Celebrity Performances</h3>
+                    <p className="text-sm text-muted-foreground font-light">Exclusive bookings of A-list artists</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-1 h-1 bg-primary rounded-full mt-2" />
+                  <div>
+                    <h3 className="font-light text-foreground mb-1">Luxury Weddings</h3>
+                    <p className="text-sm text-muted-foreground font-light">Bespoke entertainment curation</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-1 h-1 bg-primary rounded-full mt-2" />
+                  <div>
+                    <h3 className="font-light text-foreground mb-1">Corporate Excellence</h3>
+                    <p className="text-sm text-muted-foreground font-light">High-profile keynotes and performances</p>
                   </div>
                 </div>
               </div>
+              
+              <Button 
+                variant="outline" 
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-sm uppercase tracking-wider font-light"
+              >
+                Begin Consultation
+              </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* About / B2B - Clean split section */}
-      <section className="py-20">
+      {/* About & Partners - Minimal Luxury */}
+      <section className="py-24 bg-muted/5">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* About Us */}
-            <div className="group cursor-pointer border-r border-border/30 pr-8">
-              <div className="inline-flex items-center gap-2 text-primary mb-6">
-                <Trophy className="w-4 h-4" />
-                <span className="text-sm font-medium uppercase tracking-wider">About Nazaara</span>
-              </div>
-              
-              <h3 className="text-3xl font-serif font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
-                A Decade of Excellence
-              </h3>
-              
-              <p className="text-muted-foreground mb-6">
-                Since 2014, we've been the bridge between legendary South Asian artists and their 
-                global audience, creating unforgettable experiences across continents.
-              </p>
-              
-              <div className="flex items-center gap-8 mb-6">
-                <div>
-                  <div className="text-2xl font-bold text-primary">500+</div>
-                  <div className="text-xs text-muted-foreground">Productions</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-primary">5M+</div>
-                  <div className="text-xs text-muted-foreground">Happy Fans</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-primary">50+</div>
-                  <div className="text-xs text-muted-foreground">A-List Artists</div>
-                </div>
-              </div>
-              
-              <Button variant="ghost" className="text-primary hover:text-primary/80 hover:bg-transparent p-0 group">
-                Learn Our Story
-                <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <div className="w-8 h-px bg-primary" />
+              <span className="text-xs uppercase tracking-[0.3em] text-primary font-light">Since 2014</span>
+              <div className="w-8 h-px bg-primary" />
             </div>
             
-            {/* B2B */}
-            <div className="group cursor-pointer pl-8">
-              <div className="inline-flex items-center gap-2 text-secondary mb-6">
-                <Building2 className="w-4 h-4" />
-                <span className="text-sm font-medium uppercase tracking-wider">B2B Partnership</span>
+            <h2 className="text-4xl md:text-5xl font-serif font-light text-foreground mb-8">
+              The Premier Name in
+              <span className="block font-serif italic text-primary">South Asian Entertainment</span>
+            </h2>
+            
+            <p className="text-muted-foreground font-light leading-relaxed mb-12 max-w-2xl mx-auto">
+              For over a decade, Nazaara Live has set the standard for excellence in South Asian 
+              entertainment production. We are the trusted partner for the world's most prestigious 
+              venues and discerning clients.
+            </p>
+            
+            {/* Minimal Stats */}
+            <div className="grid grid-cols-3 gap-8 max-w-lg mx-auto mb-12">
+              <div>
+                <div className="text-3xl font-serif font-light text-primary">500+</div>
+                <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Productions</div>
               </div>
-              
-              <h3 className="text-3xl font-serif font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
-                Partner With Us
-              </h3>
-              
-              <p className="text-muted-foreground mb-6">
-                Join leading venues, corporations, and organizations who trust us to deliver 
-                world-class South Asian entertainment for their audiences.
-              </p>
-              
-              <div className="flex items-center gap-8 mb-6">
-                <div>
-                  <div className="text-2xl font-bold text-primary">150+</div>
-                  <div className="text-xs text-muted-foreground">Venue Partners</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-primary">50+</div>
-                  <div className="text-xs text-muted-foreground">Corporate Clients</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-primary">4.9★</div>
-                  <div className="text-xs text-muted-foreground">Partner Rating</div>
-                </div>
+              <div>
+                <div className="text-3xl font-serif font-light text-primary">150+</div>
+                <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Partners</div>
               </div>
-              
-              <Button variant="ghost" className="text-primary hover:text-primary/80 hover:bg-transparent p-0 group">
-                Explore Partnership
-                <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <div>
+                <div className="text-3xl font-serif font-light text-primary">98%</div>
+                <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Excellence</div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-center gap-6">
+              <button className="text-sm uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-2 group">
+                Our Story
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <span className="text-muted-foreground/30">·</span>
+              <button className="text-sm uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-2 group">
+                Partnerships
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Newsletter - Simple and clean */}
-      <section className="py-16 border-t border-border/30">
+      {/* Premium Footer CTA */}
+      <section className="py-20 border-t border-border/30">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <h3 className="text-2xl font-serif font-bold text-foreground mb-3">
-              Never Miss a Beat
+          <div className="max-w-xl mx-auto text-center">
+            <h3 className="text-2xl font-serif font-light text-foreground mb-4">
+              Stay <span className="italic text-primary">Informed</span>
             </h3>
-            <p className="text-muted-foreground mb-6">
-              Get exclusive presale access and event announcements
+            <p className="text-sm text-muted-foreground font-light mb-8">
+              Receive exclusive presale access and curated event announcements
             </p>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Subscribe for Updates
-              <ArrowRight className="ml-2 h-4 w-4" />
+            <Button 
+              className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm uppercase tracking-wider font-light"
+            >
+              Subscribe
             </Button>
           </div>
         </div>
