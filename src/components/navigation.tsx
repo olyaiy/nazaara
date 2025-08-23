@@ -15,7 +15,7 @@ export function Navigation() {
               width={180}
               height={72}
               priority
-              className="h-14 w-auto"
+              className="h-24 w-auto"
             />
           </Link>
           
@@ -57,7 +57,7 @@ export function Navigation() {
               className="relative group"
             >
               <span className="text-sm uppercase tracking-[0.2em] text-primary font-light">
-                Book Consultation
+                Contact
               </span>
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
             </Link>

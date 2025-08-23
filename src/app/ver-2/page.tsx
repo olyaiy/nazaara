@@ -96,128 +96,92 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Premium Hero Section - Bold Typography Magazine Layout */}
-      <section className="relative min-h-screen overflow-hidden bg-background">
-        {/* Background Texture */}
-        <div className="absolute inset-0 opacity-[0.02]" 
-          style={{
-            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)`
-          }}
-        />
-        
-        <div className="relative container mx-auto px-4 md:px-6 lg:px-8">
-          <div className="min-h-screen flex flex-col justify-center py-12 lg:py-0">
-            {/* Main Composition */}
-            <div className="relative">
-              {/* Massive Background Typography */}
-              <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
-                <h1 className="text-[15rem] md:text-[25rem] lg:text-[35rem] font-serif font-light text-muted/5 leading-none select-none">
-                  NZ
-                </h1>
+      {/* Premium Hero Section - Redesigned for 4:5 Poster */}
+      <section className="relative overflow-hidden">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
+          {/* Centered Layout with Poster */}
+          <div className="max-w-7xl mx-auto">
+            {/* Top Section - Event Badge & Title */}
+            <div className="text-center mb-8 md:mb-12">
+              {/* Premium Badge */}
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <div className="w-12 md:w-16 h-px bg-primary" />
+                <span className="text-xs md:text-sm uppercase tracking-[0.3em] text-primary font-light">Featured Event</span>
+                <div className="w-12 md:w-16 h-px bg-primary" />
               </div>
               
-              {/* Content Grid */}
-              <div className="relative grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                {/* Left Content */}
-                <div className="lg:col-span-5 space-y-8 lg:space-y-12 z-20">
-                  {/* Event Badge */}
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 backdrop-blur-sm">
-                    <span className="text-[10px] uppercase tracking-[0.4em] text-primary font-light">
-                      Featured Event · August 31
-                    </span>
+              {/* Artist Name - Centered */}
+              <div className="mb-4">
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif font-light leading-[0.85] text-foreground">
+                  {featuredEvent.artist}
+                </h1>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-serif italic text-primary mt-2">
+                  {featuredEvent.title}
+                </div>
+              </div>
+              
+              {/* Tagline */}
+              <p className="text-muted-foreground text-sm md:text-base uppercase tracking-wider max-w-2xl mx-auto font-light">
+                {featuredEvent.tagline}
+              </p>
+            </div>
+            
+            {/* Main Content Grid */}
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+              {/* Left Side - Poster */}
+              <div className="lg:col-span-5 order-2 lg:order-1">
+                <div className="relative w-full max-w-[400px] mx-auto lg:mx-0">
+                  <div className="relative aspect-[4/5] overflow-hidden shadow-2xl">
+                    <Image 
+                      src={featuredEvent.image}
+                      alt={featuredEvent.artist}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent" />
                   </div>
-                  
-                  {/* Main Title */}
+                </div>
+              </div>
+              
+              {/* Right Side - Event Details */}
+              <div className="lg:col-span-7 order-1 lg:order-2 flex flex-col justify-center">
+                {/* Event Details - Elegant Grid */}
+                <div className="grid md:grid-cols-2 gap-8 mb-12">
                   <div>
-                    <h1 className="text-[12vw] sm:text-7xl md:text-8xl lg:text-9xl font-serif font-light leading-none whitespace-nowrap text-foreground">
-                      NAZAARA
-                    </h1>
-                    <div className="mt-4">
-                      <p className="text-3xl md:text-4xl font-serif italic text-primary">
-                        {featuredEvent.title}
-                      </p>
-                      {/* Tagline placed under subtitle */}
-                      <p className="mt-4 max-w-xl text-base md:text-lg text-muted-foreground leading-relaxed">
-                        {featuredEvent.tagline}
-                      </p>
-                    </div>
+                    <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground block mb-2">Date & Time</span>
+                    <p className="text-lg font-light text-foreground">{featuredEvent.dates}</p>
                   </div>
-                  
-                  {/* Event Details - Minimal */}
-                  <div className="space-y-8 mt-10 lg:mt-12">
-                    <div className="flex gap-8">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-1">Venue</p>
-                        <p className="text-base font-light">Fortune Sound Club</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-1">Time</p>
-                        <p className="text-base font-light">10PM - 2AM</p>
-                      </div>
-                    </div>
-                    
-                    {/* Artists */}
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Featuring</p>
-                      <p className="text-lg font-light text-foreground">{featuredEvent.tour}</p>
-                    </div>
+                  <div>
+                    <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground block mb-2">Venue</span>
+                    <p className="text-lg font-light text-foreground">{featuredEvent.venue}</p>
                   </div>
-
-                  {/* CTA Group */}
-                  <div className="flex items-center gap-8 pt-6 lg:pt-10">
-                    <Button 
-                      size="lg"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-xs uppercase tracking-[0.3em] font-light"
-                    >
-                      Reserve · ${featuredEvent.price}
-                    </Button>
-                    <button className="text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors">
-                      Learn More
-                    </button>
+                  <div className="md:col-span-2">
+                    <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground block mb-2">Featuring</span>
+                    <p className="text-lg font-light text-foreground">{featuredEvent.tour}</p>
                   </div>
                 </div>
                 
-                {/* Right - Poster Integration */}
-                <div className="lg:col-span-7 relative flex justify-center lg:justify-end">
-                  {/* Poster Container with Overlap Effect */}
-                  <div className="relative w-full max-w-[520px] lg:max-w-[640px]">
-                    {/* Accent Frame */}
-                    <div className="absolute -top-4 -left-4 w-full h-full border border-primary/20 lg:block hidden" />
-
-                    {/* Main Poster */}
-                    <div className="relative aspect-[4/5] shadow-2xl overflow-hidden">
-                      <Image
-                        src={featuredEvent.image}
-                        alt={featuredEvent.artist}
-                        fill
-                        className="object-cover"
-                        priority
-                      />
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent" />
-                    </div>
-
-                    {/* Info Overlay Card (compact) */}
-                    <div className="absolute -bottom-6 -left-6 lg:-left-12 bg-background/95 backdrop-blur-md p-4 shadow-xl max-w-xs">
-                      <div className="flex items-center justify-between gap-6">
-                        <span className="text-xs uppercase tracking-[0.2em] text-primary">Vancouver</span>
-                        <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">19+</span>
-                      </div>
-                    </div>
-
-                    {/* Floating Number */}
-                    <div className="absolute -top-8 -right-8 text-9xl font-serif font-light text-primary/10 select-none">
-                      01
-                    </div>
-                  </div>
+                {/* Description */}
+                <div className="mb-12">
+                  <p className="text-muted-foreground leading-relaxed font-light">
+                    {featuredEvent.description}
+                  </p>
                 </div>
-              </div>
-              
-              {/* Bottom Navigation Dots */}
-              <div className="flex justify-center gap-2 mt-16 lg:mt-20">
-                <div className="w-8 h-1 bg-primary" />
-                <div className="w-8 h-1 bg-border" />
-                <div className="w-8 h-1 bg-border" />
+                
+                {/* CTA Section */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xs uppercase tracking-wider text-muted-foreground">From</span>
+                    <span className="text-4xl font-light text-primary">${featuredEvent.price}</span>
+                  </div>
+                  <Button 
+                    size="lg" 
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm uppercase tracking-wider font-light w-full sm:w-auto"
+                  >
+                    Reserve Tickets
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

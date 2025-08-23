@@ -153,7 +153,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${prettywise.variable} ${neueHaas.variable}`}>
         <Navigation />
-        <main className="pt-24">
+        <main className="pt-28">
           {children}
         </main>
       </body>

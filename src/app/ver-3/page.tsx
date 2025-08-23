@@ -96,128 +96,109 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Premium Hero Section - Bold Typography Magazine Layout */}
-      <section className="relative min-h-screen overflow-hidden bg-background">
-        {/* Background Texture */}
-        <div className="absolute inset-0 opacity-[0.02]" 
-          style={{
-            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)`
-          }}
-        />
+      {/* Premium Hero Section - Editorial Gallery Style */}
+      <section className="relative min-h-screen flex items-center justify-center py-12 overflow-hidden">
+        {/* Subtle Background Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
         
-        <div className="relative container mx-auto px-4 md:px-6 lg:px-8">
-          <div className="min-h-screen flex flex-col justify-center py-12 lg:py-0">
-            {/* Main Composition */}
+        <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto">
+            {/* Gallery-style Presentation */}
             <div className="relative">
-              {/* Massive Background Typography */}
-              <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
-                <h1 className="text-[15rem] md:text-[25rem] lg:text-[35rem] font-serif font-light text-muted/5 leading-none select-none">
-                  NZ
-                </h1>
+              {/* Floating Badge - Top */}
+              <div className="absolute -top-16 left-0 right-0 flex justify-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-20 md:w-32 h-px bg-primary/30" />
+                  <span className="text-xs uppercase tracking-[0.4em] text-primary font-light">Featured</span>
+                  <div className="w-20 md:w-32 h-px bg-primary/30" />
+                </div>
               </div>
               
-              {/* Content Grid */}
-              <div className="relative grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                {/* Left Content */}
-                <div className="lg:col-span-5 space-y-8 lg:space-y-12 z-20">
-                  {/* Event Badge */}
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 backdrop-blur-sm">
-                    <span className="text-[10px] uppercase tracking-[0.4em] text-primary font-light">
-                      Featured Event · August 31
-                    </span>
-                  </div>
-                  
-                  {/* Main Title */}
-                  <div>
-                    <h1 className="text-[12vw] sm:text-7xl md:text-8xl lg:text-9xl font-serif font-light leading-none whitespace-nowrap text-foreground">
-                      NAZAARA
-                    </h1>
-                    <div className="mt-4">
-                      <p className="text-3xl md:text-4xl font-serif italic text-primary">
-                        {featuredEvent.title}
-                      </p>
-                      {/* Tagline placed under subtitle */}
-                      <p className="mt-4 max-w-xl text-base md:text-lg text-muted-foreground leading-relaxed">
-                        {featuredEvent.tagline}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* Event Details - Minimal */}
-                  <div className="space-y-8 mt-10 lg:mt-12">
-                    <div className="flex gap-8">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-1">Venue</p>
-                        <p className="text-base font-light">Fortune Sound Club</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-1">Time</p>
-                        <p className="text-base font-light">10PM - 2AM</p>
-                      </div>
-                    </div>
-                    
-                    {/* Artists */}
+              {/* Main Gallery Grid */}
+              <div className="grid lg:grid-cols-12 gap-8 lg:gap-0 items-center">
+                {/* Left Side - Event Info (Minimal) */}
+                <div className="lg:col-span-3 text-center lg:text-right lg:pr-12">
+                  <div className="space-y-6">
                     <div>
-                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Featuring</p>
-                      <p className="text-lg font-light text-foreground">{featuredEvent.tour}</p>
+                      <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-2">Sunday</p>
+                      <p className="text-5xl font-serif font-light text-foreground">31</p>
+                      <p className="text-sm uppercase tracking-wider text-muted-foreground mt-1">August</p>
                     </div>
-                  </div>
-
-                  {/* CTA Group */}
-                  <div className="flex items-center gap-8 pt-6 lg:pt-10">
-                    <Button 
-                      size="lg"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-xs uppercase tracking-[0.3em] font-light"
-                    >
-                      Reserve · ${featuredEvent.price}
-                    </Button>
-                    <button className="text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors">
-                      Learn More
-                    </button>
+                    <div className="hidden lg:block">
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">10PM - 2AM</p>
+                    </div>
                   </div>
                 </div>
                 
-                {/* Right - Poster Integration */}
-                <div className="lg:col-span-7 relative flex justify-center lg:justify-end">
-                  {/* Poster Container with Overlap Effect */}
-                  <div className="relative w-full max-w-[520px] lg:max-w-[640px]">
-                    {/* Accent Frame */}
-                    <div className="absolute -top-4 -left-4 w-full h-full border border-primary/20 lg:block hidden" />
-
-                    {/* Main Poster */}
-                    <div className="relative aspect-[4/5] shadow-2xl overflow-hidden">
-                      <Image
+                {/* Center - Hero Poster */}
+                <div className="lg:col-span-6">
+                  <div className="relative max-w-[500px] mx-auto">
+                    {/* Poster Frame Effect */}
+                    <div className="relative aspect-[4/5] shadow-2xl">
+                      <Image 
                         src={featuredEvent.image}
                         alt={featuredEvent.artist}
                         fill
                         className="object-cover"
                         priority
                       />
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent" />
                     </div>
-
-                    {/* Info Overlay Card (compact) */}
-                    <div className="absolute -bottom-6 -left-6 lg:-left-12 bg-background/95 backdrop-blur-md p-4 shadow-xl max-w-xs">
-                      <div className="flex items-center justify-between gap-6">
-                        <span className="text-xs uppercase tracking-[0.2em] text-primary">Vancouver</span>
-                        <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">19+</span>
-                      </div>
+                    
+                    {/* Elegant Title Overlay - Bottom */}
+                    <div className="absolute -bottom-6 left-0 right-0 text-center">
+                      <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-light text-foreground bg-background/90 backdrop-blur-sm inline-block px-6">
+                        {featuredEvent.artist}
+                      </h1>
                     </div>
-
-                    {/* Floating Number */}
-                    <div className="absolute -top-8 -right-8 text-9xl font-serif font-light text-primary/10 select-none">
-                      01
+                  </div>
+                </div>
+                
+                {/* Right Side - Venue & CTA */}
+                <div className="lg:col-span-3 text-center lg:text-left lg:pl-12">
+                  <div className="space-y-6">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-2">Venue</p>
+                      <p className="text-lg font-light text-foreground leading-tight">Fortune<br/>Sound Club</p>
+                      <p className="text-xs text-muted-foreground mt-1">Vancouver</p>
+                    </div>
+                    <div className="hidden lg:block">
+                      <p className="text-2xl font-light text-primary">${featuredEvent.price}</p>
                     </div>
                   </div>
                 </div>
               </div>
               
-              {/* Bottom Navigation Dots */}
-              <div className="flex justify-center gap-2 mt-16 lg:mt-20">
-                <div className="w-8 h-1 bg-primary" />
-                <div className="w-8 h-1 bg-border" />
-                <div className="w-8 h-1 bg-border" />
+              {/* Bottom Info Bar - Mobile & Desktop */}
+              <div className="mt-16 lg:mt-20">
+                <div className="border-t border-primary/20 pt-8">
+                  <div className="grid md:grid-cols-3 gap-6 md:gap-4 items-end">
+                    {/* Tagline */}
+                    <div className="md:col-span-2">
+                      <p className="text-sm md:text-base text-muted-foreground font-light italic">
+                        &ldquo;{featuredEvent.tagline}&rdquo;
+                      </p>
+                    </div>
+                    
+                    {/* CTA */}
+                    <div className="flex flex-col sm:flex-row items-center gap-4 md:justify-end">
+                      <div className="lg:hidden">
+                        <span className="text-3xl font-light text-primary">${featuredEvent.price}</span>
+                      </div>
+                      <Button 
+                        className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-5 text-xs uppercase tracking-[0.2em] font-light w-full sm:w-auto"
+                      >
+                        Reserve
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Artists Line */}
+                <div className="mt-6 text-center">
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                    {featuredEvent.tour}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
