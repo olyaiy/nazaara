@@ -1,57 +1,65 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, MapPin, ArrowRight, Sparkles, Circle, Star, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 export default function Home() {
   const featuredEvent = {
     id: 1,
-    artist: "Arijit Singh",
-    title: "Live in Concert",
-    tagline: "The Voice That Defines a Generation",
-    tour: "North America Tour 2025",
-    description: "An evening of soul-stirring melodies and unforgettable moments with Bollywood's most celebrated voice.",
-    dates: "15 March — 30 April 2025",
-    venue: "Madison Square Garden, New York",
-    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1600&q=80",
-    price: "89",
-    availability: 25
+    artist: "NAZAARA",
+    title: "Vancouver Launch",
+    tagline: "Vancouver, we begin here. Step into a soundscape built to move you.",
+    tour: "Featuring Yasmina, Sabzi & Wian",
+    description: "An evening shaped by music, culture, and movement at Vancouver's most iconic dance floor. Three continents of sound converge for one unforgettable night.",
+    dates: "Sunday, August 31 · 10:00 pm - 2:00 am",
+    venue: "Fortune Sound Club, Vancouver",
+    city: "Vancouver",
+    country: "Canada",
+    image: "/events/nazaaea live poster.webp",
+    price: "25",
+    availability: 75
   };
 
   const upcomingEvents = [
     {
       id: 2,
       number: "02",
-      artist: "Holi NYC",
-      title: "Festival of Colors",
-      date: "08 Mar",
-      year: "2025",
-      venue: "Madison Square Garden",
-      price: "45",
-      image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80",
-      status: "On Sale"
+      artist: "AJ WAVY",
+      title: "Back 2 School",
+      date: "04 Sep",
+      year: "2024",
+      venue: "Icon Boston",
+      city: "Boston",
+      country: "USA",
+      price: "35",
+      image: "/events/back 2 school poster.webp",
+      status: "Waitlist"
     },
     {
       id: 3,
       number: "03",
-      artist: "Shreya Ghoshal",
-      title: "An Intimate Evening",
-      date: "05 Apr",
-      year: "2025",
-      venue: "Dubai Opera",
-      price: "120",
-      image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80",
-      status: "Premium"
+      artist: "TAMASHA",
+      title: "Strictly Bollywood",
+      date: "23 Aug",
+      year: "2024",
+      venue: "LVL Three Calgary",
+      city: "Calgary",
+      country: "Canada",
+      price: "28",
+      image: "/events/TAMASHA Strictly Bollywood Poster.webp",
+      status: "On Sale"
     },
     {
       id: 4,
       number: "04",
-      artist: "Punjabi Fest",
-      title: "Diljit × AP Dhillon",
-      date: "20 May",
-      year: "2025",
-      venue: "Los Angeles Arena",
-      price: "65",
-      image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=800&q=80",
+      artist: "AJ WAVY",
+      title: "Back 2 School NYC",
+      date: "05 Sep",
+      year: "2024",
+      venue: "EVOL New York",
+      city: "New York",
+      country: "USA",
+      price: "40",
+      image: "/events/back 2 school NYC Poster.webp",
       status: "On Sale"
     },
     {
@@ -62,6 +70,8 @@ export default function Home() {
       date: "15 Jun",
       year: "2025",
       venue: "Sydney Opera House",
+      city: "Sydney",
+      country: "Australia",
       price: "250",
       image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&q=80",
       status: "Exclusive"
@@ -74,6 +84,8 @@ export default function Home() {
       date: "04 Jul",
       year: "2025",
       venue: "Miami Beach",
+      city: "Miami",
+      country: "USA",
       price: "35",
       image: "https://images.unsplash.com/photo-1504680177321-2e6a879aac86?w=800&q=80",
       status: "On Sale"
@@ -85,97 +97,77 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Premium Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-12 gap-8 items-center">
+      <section className="relative min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] flex items-center py-8 md:py-12">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-6 md:gap-8 items-center">
             {/* Left Content */}
-            <div className="lg:col-span-5 lg:pr-12">
+            <div className="lg:col-span-5 lg:pr-8 xl:pr-12">
               {/* Premium Badge */}
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-8 h-px bg-primary" />
-                <span className="text-xs uppercase tracking-[0.3em] text-primary font-light">Featured Event</span>
+              <div className="flex items-center gap-3 mb-4 md:mb-6 lg:mb-8">
+                <div className="w-6 md:w-8 h-px bg-primary" />
+                <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.3em] text-primary font-light">Featured Event</span>
               </div>
               
               {/* Artist Name - Large */}
-              <div className="mb-6">
-                <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-light leading-[0.85] text-foreground">
+              <div className="mb-4 md:mb-6">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-serif font-light leading-[0.85] text-foreground">
                   {featuredEvent.artist}
                 </h1>
-                <div className="text-2xl md:text-3xl font-serif italic text-primary mt-2">
+                <div className="text-xl sm:text-2xl md:text-3xl font-serif italic text-primary mt-1 md:mt-2">
                   {featuredEvent.title}
                 </div>
               </div>
               
               {/* Tagline */}
-              <p className="text-muted-foreground text-sm uppercase tracking-wider mb-8 font-light">
+              <p className="text-muted-foreground text-xs md:text-sm uppercase tracking-wide md:tracking-wider mb-4 md:mb-6 lg:mb-8 font-light">
                 {featuredEvent.tagline}
               </p>
               
               {/* Event Details - Minimal */}
-              <div className="space-y-4 mb-10 text-sm">
-                <div className="flex items-start gap-4">
-                  <span className="text-muted-foreground uppercase text-xs tracking-wider w-20">Date</span>
+              <div className="space-y-2 md:space-y-3 lg:space-y-4 mb-6 md:mb-8 lg:mb-10 text-xs md:text-sm">
+                <div className="flex items-start gap-3 md:gap-4">
+                  <span className="text-muted-foreground uppercase text-[10px] md:text-xs tracking-wider w-16 md:w-20">Date</span>
                   <span className="text-foreground font-light">{featuredEvent.dates}</span>
                 </div>
-                <div className="flex items-start gap-4">
-                  <span className="text-muted-foreground uppercase text-xs tracking-wider w-20">Venue</span>
+                <div className="flex items-start gap-3 md:gap-4">
+                  <span className="text-muted-foreground uppercase text-[10px] md:text-xs tracking-wider w-16 md:w-20">Venue</span>
                   <span className="text-foreground font-light">{featuredEvent.venue}</span>
                 </div>
-                <div className="flex items-start gap-4">
-                  <span className="text-muted-foreground uppercase text-xs tracking-wider w-20">Tour</span>
+                <div className="flex items-start gap-3 md:gap-4">
+                  <span className="text-muted-foreground uppercase text-[10px] md:text-xs tracking-wider w-16 md:w-20">Tour</span>
                   <span className="text-foreground font-light">{featuredEvent.tour}</span>
                 </div>
               </div>
               
               {/* Premium CTA */}
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-4 md:gap-6 lg:gap-8">
                 <div>
-                  <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">From</div>
-                  <div className="text-3xl font-light text-primary">${featuredEvent.price}</div>
+                  <div className="text-[10px] md:text-xs uppercase tracking-wider text-muted-foreground mb-1">From</div>
+                  <div className="text-2xl md:text-3xl font-light text-primary">${featuredEvent.price}</div>
                 </div>
                 <Button 
                   size="lg" 
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm uppercase tracking-wider font-light"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 md:px-6 lg:px-8 py-4 md:py-5 lg:py-6 text-xs md:text-sm uppercase tracking-wide md:tracking-wider font-light"
                 >
                   Reserve Tickets
                 </Button>
               </div>
               
-              {/* Availability Indicator */}
-              <div className="mt-8">
-                <div className="flex items-center gap-2 mb-2">
-                  <Circle className="w-2 h-2 fill-primary text-primary" />
-                  <span className="text-xs uppercase tracking-wider text-muted-foreground">
-                    {featuredEvent.availability}% Remaining
-                  </span>
-                </div>
-                <div className="w-full max-w-xs h-[1px] bg-border">
-                  <div 
-                    className="h-full bg-primary transition-all duration-1000"
-                    style={{ width: `${featuredEvent.availability}%` }}
-                  />
-                </div>
-              </div>
             </div>
             
-            {/* Right Image */}
-            <div className="lg:col-span-7 relative h-[500px] lg:h-[650px]">
-              <div className="absolute inset-0">
-                <Image 
-                  src={featuredEvent.image}
-                  alt={featuredEvent.artist}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
-              </div>
-              
-              {/* Elegant overlay text */}
-              <div className="absolute bottom-8 left-8 right-8">
-                <p className="text-foreground/80 font-light text-sm leading-relaxed max-w-md">
-                  {featuredEvent.description}
-                </p>
+            {/* Right Image - 4:5 Aspect Ratio */}
+            <div className="lg:col-span-7 flex items-center justify-center lg:justify-end mt-6 lg:mt-0">
+              <div className="relative w-full max-w-[400px] lg:max-w-[450px] xl:max-w-[500px]">
+                <div className="relative aspect-[4/5] rounded-sm overflow-hidden">
+                  <Image 
+                    src={featuredEvent.image}
+                    alt={featuredEvent.artist}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent" />
+                </div>
               </div>
             </div>
           </div>
