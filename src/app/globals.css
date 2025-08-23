@@ -137,6 +137,14 @@
     @apply bg-background text-foreground;
   }
 
+  /* Ensure all interactive buttons show pointer cursor */
+  button,
+  [role="button"],
+  button[type],
+  a[role="button"] {
+    @apply cursor-pointer;
+  }
+
   /* Hide scrollbars in WebKit-based browsers (Chrome, Safari, new Edge) */
   *::-webkit-scrollbar {
     width: 0;

@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
@@ -102,7 +101,7 @@ export default function UpcomingEvents() {
           {/* Primary Featured Event - Takes 7 columns */}
           <div className="lg:col-span-7 group cursor-pointer">
             <div className="relative h-[450px] overflow-hidden">
-              <Image 
+              <Image
                 src={upcomingEvents[0].image}
                 alt={upcomingEvents[0].artist}
                 fill
@@ -110,7 +109,7 @@ export default function UpcomingEvents() {
               />
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-              
+
               {/* Content Overlay */}
               <div className="absolute inset-0 flex flex-col justify-between p-8">
                 {/* Top Badge */}
@@ -122,7 +121,7 @@ export default function UpcomingEvents() {
                     <div className="text-3xl font-serif font-light text-foreground/90">{upcomingEvents[0].number}</div>
                   </div>
                 </div>
-                
+
                 {/* Bottom Content */}
                 <div>
                   <h3 className="text-3xl md:text-4xl font-serif font-light text-foreground mb-2">
@@ -143,20 +142,20 @@ export default function UpcomingEvents() {
               </div>
             </div>
           </div>
-          
+
           {/* Secondary Featured Events - Takes 5 columns, stacked */}
           <div className="lg:col-span-5 flex flex-col gap-6">
             {upcomingEvents.slice(1, 3).map((event) => (
               <div key={event.id} className="group cursor-pointer flex-1">
                 <div className="relative h-full min-h-[213px] overflow-hidden">
-                  <Image 
+                  <Image
                     src={event.image}
                     alt={event.artist}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
-                  
+
                   {/* Minimal Content Overlay */}
                   <div className="absolute inset-0 p-6 flex flex-col justify-between">
                     <div className="flex justify-between items-start">
@@ -165,7 +164,7 @@ export default function UpcomingEvents() {
                       </span>
                       <div className="text-2xl font-serif font-light text-foreground/80">{event.number}</div>
                     </div>
-                    
+
                     <div>
                       <h3 className="text-xl font-serif font-light text-foreground mb-1">
                         {event.artist}
@@ -196,11 +195,11 @@ export default function UpcomingEvents() {
                     {event.number}
                   </span>
                 </div>
-                
+
                 {/* Image */}
                 <div className="lg:col-span-2">
                   <div className="relative h-24 w-full overflow-hidden">
-                    <Image 
+                    <Image
                       src={event.image}
                       alt={event.artist}
                       fill
@@ -209,7 +208,7 @@ export default function UpcomingEvents() {
                     <div className="absolute inset-0 bg-background/20" />
                   </div>
                 </div>
-                
+
                 {/* Event Details */}
                 <div className="lg:col-span-6 flex items-center">
                   <div>
@@ -221,7 +220,7 @@ export default function UpcomingEvents() {
                     </p>
                   </div>
                 </div>
-                
+
                 {/* Date & Venue */}
                 <div className="lg:col-span-2 flex items-center">
                   <div className="text-right lg:text-left">
@@ -233,7 +232,7 @@ export default function UpcomingEvents() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Price & Status */}
                 <div className="lg:col-span-1 flex items-center justify-end">
                   <div className="text-right">
@@ -251,5 +250,5 @@ export default function UpcomingEvents() {
         </div>
       </div>
     </section>
-  )
+  );
 }

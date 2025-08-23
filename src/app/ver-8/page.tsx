@@ -218,125 +218,109 @@ function Hero() {
 
   return (
     <section className="relative min-h-[92vh] overflow-hidden bg-background">
-      {/* Ambient luxury glows */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 h-[28rem] w-[28rem] rounded-full bg-[var(--dark-green)]/30 blur-3xl" />
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/10 to-transparent" />
+      {/* Background art: subtle poster wash + grid */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <Image
+          src={featuredEvent.image}
+          alt="Background texture"
+          fill
+          priority
+          className="object-cover opacity-[0.12]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background/90 to-[var(--dark-green)]/40" />
+        <div className="absolute inset-0 opacity-[.18] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)] bg-[length:120px_120px] bg-[repeating-linear-gradient(to_right,rgba(255,255,255,.12)_0,rgba(255,255,255,.12)_1px,transparent_1px,transparent_120px),repeating-linear-gradient(to_bottom,rgba(255,255,255,.12)_0,rgba(255,255,255,.12)_1px,transparent_1px,transparent_120px)]" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
       </div>
 
-      <div className="relative mx-auto flex min-h-[92vh] max-w-screen-2xl flex-col items-stretch gap-8 px-6 py-10 lg:flex-row lg:gap-10 lg:px-10 lg:py-16">
-        {/* Left: Poster Showcase */}
-        <div className="relative flex flex-1 items-center justify-center">
-          <div className="relative w-full max-w-[520px] lg:max-w-[620px]">
-            {/* Double frame with soft shadow */}
-            <div className="absolute -inset-1 rounded-sm ring-1 ring-primary/40" />
-            <div className="absolute -inset-[6px] rounded-sm bg-gradient-to-br from-primary/25 via-primary/10 to-transparent" />
-
-            <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted/20 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)] ring-1 ring-border/40">
-              <Image
-                src={featuredEvent.image}
-                alt={featuredEvent.artist}
-                fill
-                className="object-cover"
-                priority
-              />
-              {/* Vignette */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.5))]" />
-            </div>
-
-            {/* Medallion date badge */}
-            <div className="absolute -right-6 -top-6 grid h-24 w-24 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]">
-              <div className="absolute inset-1 rounded-full ring-1 ring-[color:oklch(0.4_0.12_75)/40]" />
-              <div className="text-center">
-                <p className="font-prettywise text-2xl leading-none">31</p>
-                <p className="font-neue-haas text-[10px] uppercase tracking-[0.3em] opacity-90">Aug</p>
-              </div>
-            </div>
-
-            {/* Corner filigree accents */}
-            <div className="absolute -left-2 -top-2 h-12 w-12 rounded-sm border-l border-t border-primary/30" />
-            <div className="absolute -left-2 -bottom-2 h-12 w-12 rounded-sm border-b border-l border-primary/30" />
-          </div>
-        </div>
-
-        {/* Right: Event Details */}
-        <div className="relative lg:w-[560px] xl:w-[660px]">
-          {/* Divider accent */}
-          <div className="absolute -left-6 top-8 bottom-8 w-px bg-gradient-to-b from-transparent via-primary/40 to-transparent lg:-left-8" />
-
-          <div className="h-full w-full space-y-8 lg:space-y-10">
-            {/* Kicker */}
+      <div className="relative mx-auto max-w-screen-2xl px-6 py-14 lg:px-10 lg:py-24">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
+          {/* Left: Typographic lockup */}
+          <div className="lg:col-span-7 xl:col-span-7 space-y-7">
             <div className="flex items-center gap-3">
               <div className="h-px w-8 bg-primary/60" />
-              <span className="font-neue-haas text-[11px] uppercase tracking-[0.5em] text-primary/90">Featured Event</span>
-              <div className="h-px flex-1 bg-primary/60" />
+              <span className="font-neue-haas text-[11px] uppercase tracking-[0.5em] text-primary/90">Nazaara Live Presents</span>
             </div>
-
-            {/* Title treatment */}
-            <div className="space-y-3">
-              <h1 className="font-prettywise text-6xl leading-[0.9] text-foreground sm:text-7xl lg:text-8xl xl:text-9xl">
-                {featuredEvent.artist}
-              </h1>
-              <p className="font-prettywise text-2xl text-primary sm:text-3xl lg:text-4xl">
-                {featuredEvent.title}
-              </p>
+            <h1 className="font-prettywise text-6xl leading-[0.85] text-foreground sm:text-7xl lg:text-8xl xl:text-[10rem]">
+              {featuredEvent.artist}
+            </h1>
+            <div className="flex flex-wrap items-end gap-4">
+              <p className="font-prettywise text-2xl text-primary sm:text-3xl lg:text-4xl">{featuredEvent.title}</p>
+              <span className="font-neue-haas text-xs uppercase tracking-[0.35em] text-foreground/60">{featuredEvent.city}, {featuredEvent.country}</span>
             </div>
+            <p className="max-w-2xl font-neue-haas text-base leading-relaxed text-foreground/85">
+              {featuredEvent.tagline}
+            </p>
 
-            {/* Tagline */}
-            <div className="relative">
-              <div className="absolute -left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary to-transparent lg:-left-8" />
-              <p className="font-neue-haas text-base leading-relaxed text-foreground/80">
-                {featuredEvent.tagline}
-              </p>
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <Button className="px-8 py-6 text-sm uppercase tracking-[0.35em]">Reserve Experience</Button>
+              <Button variant="outline" className="px-8 py-6 text-sm uppercase tracking-[0.35em]">
+                Explore Lineup
+              </Button>
             </div>
+          </div>
 
-            {/* Meta grid */}
-            <div className="grid grid-cols-2 gap-6 border-y border-primary/20 py-8">
-              <div className="space-y-5">
-                <div>
-                  <p className="mb-2 font-neue-haas text-[10px] uppercase tracking-[0.4em] text-primary/70">Date & Time</p>
-                  <p className="font-neue-haas text-sm text-foreground">Sunday, August 31</p>
-                  <p className="font-neue-haas text-sm text-foreground/70">10:00 PM - 2:00 AM</p>
+          {/* Right: Elevated event card */}
+          <div className="lg:col-span-5 xl:col-span-5">
+            <div className="relative rounded-sm border border-primary/20 bg-background/50 p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)] backdrop-blur-md ring-1 ring-primary/30">
+              {/* Card header */}
+              <div className="mb-6 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="h-6 w-6 rounded-full bg-primary/20" />
+                  <span className="font-neue-haas text-[11px] uppercase tracking-[0.4em] text-primary">Featured Event</span>
                 </div>
-                <div>
-                  <p className="mb-2 font-neue-haas text-[10px] uppercase tracking-[0.4em] text-primary/70">Location</p>
-                  <p className="font-neue-haas text-sm text-foreground">Fortune Sound Club</p>
-                  <p className="font-neue-haas text-sm text-foreground/70">Vancouver, Canada</p>
-                </div>
-              </div>
-              <div className="space-y-5">
-                <div>
-                  <p className="mb-2 font-neue-haas text-[10px] uppercase tracking-[0.4em] text-primary/70">Artists</p>
-                  <p className="font-neue-haas text-sm text-foreground">Yasmina</p>
-                  <p className="font-neue-haas text-sm text-foreground">Sabzi</p>
-                  <p className="font-neue-haas text-sm text-foreground">Wian</p>
+                <div className="grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground">
+                  <div className="text-center leading-none">
+                    <p className="font-prettywise text-lg">31</p>
+                    <p className="font-neue-haas text-[9px] uppercase tracking-[0.25em] opacity-90">Aug</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Price and CTA */}
-            <div className="space-y-6 lg:space-y-8">
-              <div className="flex items-baseline gap-2">
-                <span className="font-prettywise text-5xl text-primary sm:text-6xl">${featuredEvent.price}</span>
-                <span className="font-neue-haas text-sm uppercase tracking-wider text-primary/70">CAD</span>
-                <span className="ml-4 rounded-full bg-primary/10 px-3 py-1 font-neue-haas text-[10px] uppercase tracking-[0.25em] text-primary/90">
-                  {featuredEvent.availability}% Available
-                </span>
+              {/* Meta */}
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-5">
+                  <div>
+                    <p className="mb-2 font-neue-haas text-[10px] uppercase tracking-[0.4em] text-primary/70">Date & Time</p>
+                    <p className="font-neue-haas text-sm">Sunday, August 31</p>
+                    <p className="font-neue-haas text-sm text-foreground/70">10:00 PM - 2:00 AM</p>
+                  </div>
+                  <div>
+                    <p className="mb-2 font-neue-haas text-[10px] uppercase tracking-[0.4em] text-primary/70">Location</p>
+                    <p className="font-neue-haas text-sm">Fortune Sound Club</p>
+                    <p className="font-neue-haas text-sm text-foreground/70">Vancouver, Canada</p>
+                  </div>
+                </div>
+                <div className="space-y-5">
+                  <div>
+                    <p className="mb-2 font-neue-haas text-[10px] uppercase tracking-[0.4em] text-primary/70">Artists</p>
+                    <p className="font-neue-haas text-sm">Yasmina</p>
+                    <p className="font-neue-haas text-sm">Sabzi</p>
+                    <p className="font-neue-haas text-sm">Wian</p>
+                  </div>
+                </div>
               </div>
 
-              <button className="group relative w-full overflow-hidden rounded-sm">
-                <div className="absolute inset-0 bg-primary transition-transform duration-500 ease-out group-hover:scale-105" />
-                <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.12),transparent)] translate-x-[-120%] transition-transform duration-700 ease-out group-hover:translate-x-[120%]" />
-                <div className="relative px-8 py-5 font-neue-haas text-sm uppercase tracking-[0.4em] text-primary-foreground">
-                  Reserve Your Experience
+              {/* Price + CTA */}
+              <div className="mt-8 space-y-5">
+                <div className="flex items-baseline gap-2">
+                  <span className="font-prettywise text-5xl text-primary">${featuredEvent.price}</span>
+                  <span className="font-neue-haas text-sm uppercase tracking-wider text-primary/70">CAD</span>
+                  <span className="ml-4 rounded-full bg-primary/10 px-3 py-1 font-neue-haas text-[10px] uppercase tracking-[0.25em] text-primary/90">
+                    {featuredEvent.availability}% Available
+                  </span>
                 </div>
-              </button>
-
-              <div className="flex items-center justify-center gap-4 font-neue-haas text-[10px] uppercase tracking-[0.3em] text-foreground/60">
-                <span>19+ Event</span>
-                <span className="h-1 w-1 rounded-full bg-primary/40" />
-                <span>Valid ID Required</span>
+                <Button className="w-full px-8 py-5 text-sm uppercase tracking-[0.35em]">Reserve Your Experience</Button>
+                {/* Availability meter */}
+                <div className="relative h-[2px] w-full overflow-hidden rounded bg-primary/15">
+                  <div
+                    className="absolute inset-y-0 left-0 bg-primary"
+                    style={{ width: `${featuredEvent.availability}%` }}
+                  />
+                </div>
+                <div className="flex items-center justify-between text-[10px] font-neue-haas uppercase tracking-[0.3em] text-foreground/60">
+                  <span>19+ Event</span>
+                  <span>Valid ID Required</span>
+                </div>
               </div>
             </div>
           </div>
