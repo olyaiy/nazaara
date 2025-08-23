@@ -1,5 +1,6 @@
 import "./globals.css";
 import localFont from "next/font/local";
+import { Navigation } from "@/components/navigation";
 
 const prettywise = localFont({
   src: [
@@ -151,7 +152,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${prettywise.variable} ${neueHaas.variable}`}>
-        {children}
+        <Navigation />
+        <main className="pt-20">
+          {children}
+        </main>
       </body>
     </html>
   );
