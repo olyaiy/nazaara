@@ -8,14 +8,17 @@ export function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-24">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center group">
             <Image
               src="/Logos/Nazaara Logo - White.svg"
               alt="Nazaara Live"
               width={180}
               height={72}
               priority
-              className="h-24 w-auto"
+              className="h-24 w-auto transition-all duration-300 group-hover:scale-105 group-hover:brightness-0 group-hover:saturate-100 group-hover:sepia group-hover:hue-rotate-15 group-hover:contrast-150"
+              style={{
+                filter: 'brightness(1) saturate(1) sepia(0) hue-rotate(0deg) contrast(1)'
+              }}
             />
           </Link>
           
