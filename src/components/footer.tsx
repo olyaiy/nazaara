@@ -29,7 +29,7 @@ export function Footer() {
               <div className="flex items-baseline gap-8 mb-4">
                 <div className="h-px w-16" style={{ backgroundColor: 'var(--gold)' }} />
                 <span className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-white/40">
-                  Est. 2014
+                  Est. 2022
                 </span>
                 <div className="flex-1 h-px bg-gradient-to-r from-[var(--gold)]/20 to-transparent" />
               </div>

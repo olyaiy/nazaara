@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import SectionHeader from "@/components/ui/section-header";
 import UpcomingEvents from "@/components/home/upcoming-events";
 import { EventMarquee } from "@/components/home/event-marquee";
 import Hero from "@/components/home/hero";
@@ -16,33 +17,13 @@ export default function Home() {
 
       <UpcomingEvents />
 
-      {/* Premium Stats */}
-      <section className="py-24 bg-muted/5">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-5xl font-serif font-light text-primary mb-2">500K</div>
-              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Tickets Sold</div>
-            </div>
-            <div className="text-center">
-              <div className="text-5xl font-serif font-light text-primary mb-2">150</div>
-              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Global Cities</div>
-            </div>
-            <div className="text-center">
-              <div className="text-5xl font-serif font-light text-primary mb-2">200</div>
-              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Artists</div>
-            </div>
-            <div className="text-center">
-              <div className="text-5xl font-serif font-light text-primary mb-2">10</div>
-              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Years</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Premium Stats removed as requested */}
 
       {/* Private Events - Luxury Focus */}
       <section className="py-24">
         <div className="container mx-auto px-4">
+          {/* Full-width header above the two columns */}
+          <SectionHeader eyebrow="Private Bookings" title="Bespoke Entertainment" size="md" className="mb-16" />
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Image Collage */}
             <div className="relative h-[600px]">
@@ -66,15 +47,6 @@ export default function Home() {
             
             {/* Right Content */}
             <div className="lg:pl-12">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-8 h-px bg-primary" />
-                <span className="text-xs uppercase tracking-[0.3em] text-primary font-light">Private Events</span>
-              </div>
-              
-              <h2 className="text-4xl md:text-5xl font-serif font-light text-foreground mb-6">
-                Bespoke
-                <span className="block font-serif italic text-primary">Entertainment</span>
-              </h2>
               
               <p className="text-muted-foreground font-light leading-relaxed mb-8">
                 Curate unforgettable moments with exclusive access to the world's most celebrated 
@@ -121,22 +93,19 @@ export default function Home() {
       {/* About & Partners - Minimal Luxury */}
       <section className="py-24 bg-muted/5">
         <div className="container mx-auto px-4">
+          {/* Section header for About/Work With Us */}
+          <SectionHeader
+            eyebrow="Since 2014"
+            title="About Nazaara"
+            size="md"
+            className="mb-12"
+          />
           <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-3 mb-8">
-              <div className="w-8 h-px bg-primary" />
-              <span className="text-xs uppercase tracking-[0.3em] text-primary font-light">Since 2014</span>
-              <div className="w-8 h-px bg-primary" />
-            </div>
-            
-            <h2 className="text-4xl md:text-5xl font-serif font-light text-foreground mb-8">
-              The Premier Name in
-              <span className="block font-serif italic text-primary">South Asian Entertainment</span>
-            </h2>
             
             <p className="text-muted-foreground font-light leading-relaxed mb-12 max-w-2xl mx-auto">
-              For over a decade, Nazaara Live has set the standard for excellence in South Asian 
-              entertainment production. We are the trusted partner for the world's most prestigious 
-              venues and discerning clients.
+              The premier name in South Asian entertainment. For over a decade, Nazaara Live has 
+              set the standard for excellence in South Asian entertainment production. We are the 
+              trusted partner for the world's most prestigious venues and discerning clients.
             </p>
             
             {/* Minimal Stats */}

@@ -1,8 +1,15 @@
+export interface Artist {
+  name: string;
+  instagram?: string;
+  image?: string;
+}
+
 export interface Event {
   id: number;
   number: string;
   slug: string;
   artist: string;
+  artists?: Artist[];
   title: string;
   tagline?: string;
   tour?: string;
@@ -25,6 +32,11 @@ export const events: Event[] = [
     number: "01",
     slug: "nazaara-live-vancouver-2024",
     artist: "NAZAARA",
+    artists: [
+      { name: "Yasmina" },
+      { name: "Sabzi" },
+      { name: "Wian" },
+    ],
     title: "Live In Vancouver",
     tagline: "Vancouver, we begin here. Step into a soundscape built to move you.",
     tour: "Featuring Yasmina, Sabzi & Wian",
@@ -45,6 +57,9 @@ export const events: Event[] = [
     number: "02",
     slug: "aj-wavy-back-2-school-boston-2024",
     artist: "AJ WAVY",
+    artists: [
+      { name: "AJ WAVY" },
+    ],
     title: "Back 2 School",
     date: "04 Sep",
     year: "2024",
@@ -61,6 +76,9 @@ export const events: Event[] = [
     number: "03",
     slug: "tamasha-strictly-bollywood-calgary-2024",
     artist: "TAMASHA",
+    artists: [
+      { name: "TAMASHA" },
+    ],
     title: "Strictly Bollywood",
     date: "23 Aug",
     year: "2024",
@@ -77,6 +95,9 @@ export const events: Event[] = [
     number: "04",
     slug: "aj-wavy-back-2-school-nyc-2024",
     artist: "AJ WAVY",
+    artists: [
+      { name: "AJ WAVY" },
+    ],
     title: "Back 2 School NYC",
     date: "05 Sep",
     year: "2024",
@@ -93,6 +114,9 @@ export const events: Event[] = [
     number: "05",
     slug: "francis-mercier-fortune-sound-club-vancouver-2024",
     artist: "FRANCIS MERCIER",
+    artists: [
+      { name: "FRANCIS MERCIER" },
+    ],
     title: "Live at Fortune Sound Club",
     tagline: "Deep, soulful, and globally inspired Afro house and melodic sound",
     tour: "Featuring Freeky.P & I Am Sotto Voce",
@@ -113,6 +137,9 @@ export const events: Event[] = [
     number: "06",
     slug: "neon-affair-wavy-edition-kolkata-2024",
     artist: "Neon Affair",
+    artists: [
+      { name: "Neon Affair" },
+    ],
     title: "The Wavy Edition",
     tagline: "The city's most exclusive night returns",
     tour: "Featuring DJ Shubham",
@@ -158,4 +185,3 @@ export const getUpcomingEvents = (): Event[] => {
 export const getEventBySlug = (slug: string): Event | undefined => {
   return events.find(event => event.slug === slug);
 };
-

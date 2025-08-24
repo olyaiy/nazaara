@@ -6,13 +6,35 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-center">
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--maroon-red)]/10 to-transparent" />
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
+        {/* Background image with brand scrims */}
+        <Image
+          src="/about-bg.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-70"
+        />
+        {/* Dark scrim for readability */}
+        <div className="absolute inset-0 bg-[var(--charcoal)]/40" />
+        {/* Maroon tint gradient to match brand */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--maroon-red)]/20 to-transparent" />
+        {/* Centered gold accent at the exact bottom edge */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[9]">
+          <div className="relative w-full max-w-7xl mx-auto px-4">
+            {/* Upward glow from the edge (fades horizontally) */}
+            <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[var(--gold)]/18 to-transparent [mask-image:linear-gradient(to_right,transparent,black_35%,black_65%,transparent)]" />
+            {/* Hairline sits exactly on the bottom edge */}
+            <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--gold)] via-60% to-transparent" />
+          </div>
+        </div>
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex items-center justify-center gap-3 mb-8">
               <div className="w-12 h-px bg-[var(--gold)]" />
-              <span className="text-xs uppercase tracking-[0.3em] text-[var(--gold)] font-light">Est. 2014</span>
+              <span className="text-xs uppercase tracking-[0.3em] text-[var(--gold)] font-light">Est. 2022</span>
               <div className="w-12 h-px bg-[var(--gold)]" />
             </div>
             

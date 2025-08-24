@@ -83,7 +83,7 @@ export default function VenueFeatures({ event }: VenueFeaturesProps) {
                 <div className="flex items-center gap-4 mb-8">
                   <div className="h-[1px] w-12 bg-[var(--gold)]/40" />
                   <span className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/50">
-                    Venue Experience
+                    Venue Feature
                   </span>
                 </div>
                 <h2 className="text-[clamp(3rem,7vw,6rem)] font-prettywise leading-[0.85] text-[var(--white)] mb-6">
