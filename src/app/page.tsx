@@ -82,28 +82,35 @@ export default function Home() {
                     </p>
                   </div>
                   
-                  {/* Artists Grid - Enhanced Typography */}
-                  <div className="grid grid-cols-3 gap-4 pt-4">
-                    {artistNames.map((artist, index) => (
-                      <div key={index} className="border-l-2 pl-4" style={{ borderColor: 'var(--gold)' }}>
-                        <p className="text-[10px] uppercase tracking-[0.3em] mb-2" style={{ color: 'var(--gold)' }}>Artist</p>
-                        <p className="text-lg font-serif text-white">{artist.trim()}</p>
-                      </div>
-                    ))}
+                  {/* Featured Artists Section */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[9px] uppercase tracking-[0.4em]" style={{ color: 'var(--gold)/60' }}>Featuring</span>
+                      <div className="h-px flex-1" style={{ backgroundColor: 'var(--gold)', opacity: 0.2 }} />
+                    </div>
+                    <div className="flex flex-wrap gap-x-6 gap-y-2">
+                      {artistNames.map((artist, index) => (
+                        <div key={index} className="flex items-baseline gap-2">
+                          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: 'var(--gold)' }} />
+                          <p className="text-xl font-serif text-white">{artist.trim()}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
-                  {/* Venue & Time Strip - More Visible */}
-                  <div className="flex items-center gap-6 py-5 border-y-2" style={{ borderColor: 'var(--gold)', opacity: 0.4 }}>
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.3em] text-white/80 font-light">Fortune Sound Club</p>
-                    </div>
-                    <div className="w-px h-5" style={{ backgroundColor: 'var(--gold)' }} />
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.3em] text-white/80 font-light">10PM - 2AM</p>
-                    </div>
-                    <div className="w-px h-5" style={{ backgroundColor: 'var(--gold)' }} />
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.3em] text-white/80 font-light">19+ Event</p>
+                  {/* Event Details - Card Style */}
+                  <div className="backdrop-blur-sm rounded-sm p-6" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(254, 236, 164, 0.15)' }}>
+                    <div className="grid grid-cols-2 gap-6">
+                      <div>
+                        <p className="text-[9px] uppercase tracking-[0.4em] mb-2" style={{ color: 'var(--gold)/60' }}>Venue</p>
+                        <p className="text-lg font-light text-white">Fortune Sound Club</p>
+                        <p className="text-xs text-white/50 mt-1">Vancouver, BC</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] uppercase tracking-[0.4em] mb-2" style={{ color: 'var(--gold)/60' }}>Session</p>
+                        <p className="text-lg font-light text-white">10PM - 2AM</p>
+                        <p className="text-xs text-white/50 mt-1">Late Night • 19+</p>
+                      </div>
                     </div>
                   </div>
 
@@ -150,21 +157,18 @@ export default function Home() {
                       {/* Subtle Gradient */}
                       <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
                       
-                      {/* Date Overlay - Diagonal Banner Style */}
-                      <div className="absolute top-12 -right-8 transform rotate-45 origin-center">
-                        <div className="px-12 py-3" style={{ backgroundColor: 'var(--gold)' }}>
-                          <p className="text-sm font-bold uppercase tracking-wider text-center" style={{ color: 'var(--maroon-red)' }}>
-                            31 AUG 2024
-                          </p>
-                        </div>
-                      </div>
-                      
                       {/* Status Badge - Bottom Left */}
                       <div className="absolute bottom-8 left-8">
                         <div className="px-4 py-2 backdrop-blur-sm border" style={{ backgroundColor: 'var(--maroon-red)/60', borderColor: 'var(--gold)' }}>
                           <p className="text-xs uppercase tracking-[0.3em] font-light" style={{ color: 'var(--gold)' }}>{featuredEvent.status}</p>
                         </div>
                       </div>
+                    </div>
+                    
+                    {/* Floating Date Box - Outside Image */}
+                    <div className="absolute -top-6 -right-6 w-24 h-24 flex flex-col items-center justify-center" style={{ backgroundColor: 'var(--gold)' }}>
+                      <p className="text-3xl font-serif font-light" style={{ color: 'var(--maroon-red)' }}>31</p>
+                      <p className="text-[10px] uppercase tracking-[0.3em]" style={{ color: 'var(--maroon-red)' }}>August</p>
                     </div>
                     
                     {/* Side Typography Element */}
