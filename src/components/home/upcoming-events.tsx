@@ -122,7 +122,7 @@ export default function UpcomingEvents() {
 
             {/* Events Table - Theater Program Style */}
             <div className="space-y-0">
-              {upcomingEvents.map((event, index) => (
+              {upcomingEvents.slice(1).map((event, index) => (
                 <div 
                   key={event.id} 
                   className="group cursor-pointer border-b border-[var(--gold)]/10 hover:bg-[var(--gold)]/5 transition-all duration-500"

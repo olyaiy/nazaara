@@ -15,7 +15,7 @@ export default function Hero() {
   const artistNames = featuredEvent.tour?.replace('Featuring ', '').split(/[,&]/).map(name => name.trim()) || [];
 
   return (
-    <section className="relative min-h-screen overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
+    <section className="relative min-h-[90dvh] overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
       {/* Shadow Overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/50" />
       <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-transparent" />
@@ -34,13 +34,13 @@ export default function Hero() {
       </div>
       
       <div className="relative container mx-auto px-4 md:px-6 lg:px-8">
-        <div className="min-h-screen flex flex-col justify-center py-12 lg:py-0">
+        <div className="min-h-[90dvh] flex flex-col justify-center py-12 lg:py-0">
           {/* Editorial Composition */}
           <div className="relative">
             {/* Asymmetric Content Layout */}
             <div className="relative grid lg:grid-cols-12 gap-8 lg:gap-0 items-center">
               {/* Left Content - Editorial Style */}
-              <div className="lg:col-span-6 space-y-6 lg:space-y-8 z-20 lg:pr-12">
+              <div className="lg:col-span-6 space-y-4 lg:space-y-6 z-20 lg:pr-12">
                 {/* Nazaara Live Presents Label */}
                 <div className="flex items-center gap-4">
                   <div className="h-px w-12" style={{ backgroundColor: 'var(--gold)' }} />
@@ -52,18 +52,18 @@ export default function Hero() {
                 {/* Dynamic Title Composition */}
                 <div className="space-y-0">
                   <div className="overflow-hidden">
-                    <h1 className="text-[15vw] sm:text-8xl md:text-9xl lg:text-[10rem] font-serif font-thin leading-[0.8] text-white">
+                    <h1 className="text-[15vw] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif font-thin leading-[0.8] text-white">
                       {featuredEvent.artist}
                     </h1>
                   </div>
-                  <div className="flex items-baseline gap-4 mt-6">
-                    <span className="text-5xl md:text-6xl lg:text-7xl font-serif italic" style={{ color: 'var(--gold)' }}>
+                  <div className="flex items-baseline gap-4 mt-4">
+                    <span className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif italic" style={{ color: 'var(--gold)' }}>
                       {featuredEvent.title}
                     </span>
                     <div className="h-px flex-1" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
                   </div>
                   {/* Tagline/Description */}
-                  <p className="text-base md:text-lg text-white/70 leading-relaxed max-w-lg font-light pt-6">
+                  <p className="text-sm md:text-base text-white/70 leading-relaxed max-w-lg font-light pt-4">
                     {featuredEvent.tagline}
                   </p>
                 </div>
@@ -78,7 +78,7 @@ export default function Hero() {
                     {artistNames.map((artist, index) => (
                       <div key={index} className="flex items-baseline gap-2">
                         <div className="w-1 h-1 rounded-full" style={{ backgroundColor: 'var(--gold)' }} />
-                        <p className="text-xl font-serif text-white">{artist.trim()}</p>
+                        <p className="text-lg font-serif text-white">{artist.trim()}</p>
                       </div>
                     ))}
                   </div>
@@ -89,15 +89,15 @@ export default function Hero() {
                   {/* Top accent line */}
                   <div className="absolute top-0 left-0 w-16 h-px" style={{ backgroundColor: 'var(--gold)' }} />
                   
-                  <div className="pt-8 space-y-6">
+                  <div className="pt-6 space-y-4">
                     {/* Venue */}
                     <div className="flex items-start gap-8">
                       <div className="flex-1">
-                        <p className="text-2xl font-serif text-white mb-1">Fortune Sound Club</p>
+                        <p className="text-xl font-serif text-white mb-1">Fortune Sound Club</p>
                         <p className="text-xs uppercase tracking-[0.2em] text-white/40">Vancouver, British Columbia</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-3xl font-thin text-white">10PM</p>
+                        <p className="text-2xl font-thin text-white">10PM</p>
                         <p className="text-xs uppercase tracking-[0.2em] text-white/40">Late Night</p>
                       </div>
                     </div>
@@ -114,10 +114,10 @@ export default function Hero() {
                 </div>
 
                 {/* CTA Section */}
-                <div className="flex items-center gap-6 pt-4">
+                <div className="flex items-center gap-6 pt-2">
                   <Button 
                     size="lg"
-                    className="px-10 py-6 text-xs uppercase tracking-[0.3em] font-light border-0"
+                    className="px-8 py-5 text-xs uppercase tracking-[0.3em] font-light border-0"
                     style={{ 
                       backgroundColor: 'var(--gold)', 
                       color: 'var(--maroon-red)'
@@ -137,8 +137,8 @@ export default function Hero() {
               </div>
               
               {/* Right - Creative Poster Layout */}
-              <div className="lg:col-span-6 relative flex justify-center lg:justify-end">
-                <div className="relative w-full max-w-[480px] lg:max-w-[560px]">
+              <div className="lg:col-span-6 relative flex justify-center lg:justify-center">
+                <div className="relative w-full max-w-[400px] lg:max-w-[480px]">
                   {/* Geometric Frame Elements */}
                   <div className="absolute -top-8 -right-8 w-32 h-32 border" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
                   <div className="absolute -bottom-8 -left-8 w-32 h-32 border" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
@@ -165,8 +165,8 @@ export default function Hero() {
                   </div>
                   
                   {/* Floating Date Box - Outside Image */}
-                  <div className="absolute -top-6 -right-6 w-24 h-24 flex flex-col items-center justify-center" style={{ backgroundColor: 'var(--gold)' }}>
-                    <p className="text-3xl font-serif font-light" style={{ color: 'var(--maroon-red)' }}>31</p>
+                  <div className="absolute -top-6 -right-6 w-20 h-20 flex flex-col items-center justify-center" style={{ backgroundColor: 'var(--gold)' }}>
+                    <p className="text-2xl font-serif font-light" style={{ color: 'var(--maroon-red)' }}>31</p>
                     <p className="text-[10px] uppercase tracking-[0.3em]" style={{ color: 'var(--maroon-red)' }}>August</p>
                   </div>
                   
