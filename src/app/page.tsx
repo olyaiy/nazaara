@@ -1,223 +1,193 @@
+'use client'
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { getFeaturedEvent, getUpcomingEvents } from "@/content/events";
 
 export default function Home() {
-  const featuredEvent = {
-    id: 1,
-    artist: "NAZAARA",
-    title: "Vancouver Launch",
-    tagline: "Vancouver, we begin here. Step into a soundscape built to move you.",
-    tour: "Featuring Yasmina, Sabzi & Wian",
-    description: "An evening shaped by music, culture, and movement at Vancouver's most iconic dance floor. Three continents of sound converge for one unforgettable night.",
-    dates: "Sunday, August 31 · 10:00 pm - 2:00 am",
-    venue: "Fortune Sound Club, Vancouver",
-    city: "Vancouver",
-    country: "Canada",
-    image: "/events/nazaaea live poster.webp",
-    price: "25",
-    availability: 75
-  };
+  const featuredEvent = getFeaturedEvent();
+  const upcomingEvents = getUpcomingEvents();
 
-  const upcomingEvents = [
-    {
-      id: 2,
-      number: "02",
-      artist: "AJ WAVY",
-      title: "Back 2 School",
-      date: "04 Sep",
-      year: "2024",
-      venue: "Icon Boston",
-      city: "Boston",
-      country: "USA",
-      price: "35",
-      image: "/events/back 2 school poster.webp",
-      status: "Waitlist"
-    },
-    {
-      id: 3,
-      number: "03",
-      artist: "TAMASHA",
-      title: "Strictly Bollywood",
-      date: "23 Aug",
-      year: "2024",
-      venue: "LVL Three Calgary",
-      city: "Calgary",
-      country: "Canada",
-      price: "28",
-      image: "/events/TAMASHA Strictly Bollywood Poster.webp",
-      status: "On Sale"
-    },
-    {
-      id: 4,
-      number: "04",
-      artist: "AJ WAVY",
-      title: "Back 2 School NYC",
-      date: "05 Sep",
-      year: "2024",
-      venue: "EVOL New York",
-      city: "New York",
-      country: "USA",
-      price: "40",
-      image: "/events/back 2 school NYC Poster.webp",
-      status: "On Sale"
-    },
-    {
-      id: 5,
-      number: "05",
-      artist: "AR Rahman",
-      title: "Symphony Orchestra",
-      date: "15 Jun",
-      year: "2025",
-      venue: "Sydney Opera House",
-      city: "Sydney",
-      country: "Australia",
-      price: "250",
-      image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&q=80",
-      status: "Exclusive"
-    },
-    {
-      id: 6,
-      number: "06",
-      artist: "Bollywood Night",
-      title: "Summer Beach Party",
-      date: "04 Jul",
-      year: "2025",
-      venue: "Miami Beach",
-      city: "Miami",
-      country: "USA",
-      price: "35",
-      image: "https://images.unsplash.com/photo-1504680177321-2e6a879aac86?w=800&q=80",
-      status: "On Sale"
-    }
-  ];
+  if (!featuredEvent) {
+    return null;
+  }
 
-  
+  // Parse artist names from the tour string - handle both & and , separators
+  const artistNames = featuredEvent.tour?.replace('Featuring ', '').split(/[,&]/).map(name => name.trim()) || [];
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Premium Hero Section - Bold Typography Magazine Layout */}
-      <section className="relative min-h-screen overflow-hidden bg-background">
-        {/* Background Texture */}
-        <div className="absolute inset-0 opacity-[0.02]" 
-          style={{
-            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)`
-          }}
-        />
+      {/* Luxury Editorial Hero - Creative Typography & Brand Colors */}
+      <section className="relative min-h-screen overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
+        {/* Geometric Pattern Overlay */}
+        <div className="absolute inset-0 opacity-10">
+          <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+            <defs>
+              <pattern id="hero-pattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                <circle cx="30" cy="30" r="1" fill="var(--gold)" />
+                <path d="M0 30 L30 0 L60 30 L30 60 Z" stroke="var(--gold)" strokeWidth="0.5" fill="none" opacity="0.3" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#hero-pattern)" />
+          </svg>
+        </div>
         
         <div className="relative container mx-auto px-4 md:px-6 lg:px-8">
           <div className="min-h-screen flex flex-col justify-center py-12 lg:py-0">
-            {/* Main Composition */}
+            {/* Editorial Composition */}
             <div className="relative">
-              {/* Massive Background Typography */}
-              <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
-                <h1 className="text-[15rem] md:text-[25rem] lg:text-[35rem] font-serif font-light text-muted/5 leading-none select-none">
-                  NZ
-                </h1>
+              {/* Massive Split Typography Background */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute -left-20 top-1/2 -translate-y-1/2">
+                  <span className="text-[20rem] md:text-[30rem] lg:text-[40rem] font-serif font-thin leading-none select-none opacity-5" style={{ color: 'var(--gold)' }}>
+                    N
+                  </span>
+                </div>
+                <div className="absolute -right-20 top-1/2 -translate-y-1/2">
+                  <span className="text-[20rem] md:text-[30rem] lg:text-[40rem] font-serif font-thin leading-none select-none opacity-5" style={{ color: 'var(--gold)' }}>
+                    Z
+                  </span>
+                </div>
               </div>
               
-              {/* Content Grid */}
-              <div className="relative grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                {/* Left Content */}
-                <div className="lg:col-span-5 space-y-8 lg:space-y-12 z-20">
-                  {/* Event Badge */}
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 backdrop-blur-sm">
-                    <span className="text-[10px] uppercase tracking-[0.4em] text-primary font-light">
-                      Featured Event · August 31
+              {/* Asymmetric Content Layout */}
+              <div className="relative grid lg:grid-cols-12 gap-8 lg:gap-0 items-center">
+                {/* Left Content - Editorial Style */}
+                <div className="lg:col-span-6 space-y-6 lg:space-y-8 z-20 lg:pr-12">
+                  {/* Nazaara Live Presents Label */}
+                  <div className="flex items-center gap-4">
+                    <div className="h-px w-12" style={{ backgroundColor: 'var(--gold)' }} />
+                    <span className="text-[10px] uppercase tracking-[0.4em] font-light" style={{ color: 'var(--gold)' }}>
+                      Nazaara Live Presents
                     </span>
                   </div>
                   
-                  {/* Main Title */}
-                  <div>
-                    <h1 className="text-[12vw] sm:text-7xl md:text-8xl lg:text-9xl font-serif font-light leading-none whitespace-nowrap text-foreground">
-                      NAZAARA
-                    </h1>
-                    <div className="mt-4">
-                      <p className="text-3xl md:text-4xl font-serif italic text-primary">
-                        {featuredEvent.title}
-                      </p>
-                      {/* Tagline placed under subtitle */}
-                      <p className="mt-4 max-w-xl text-base md:text-lg text-muted-foreground leading-relaxed">
-                        {featuredEvent.tagline}
-                      </p>
+                  {/* Dynamic Title Composition */}
+                  <div className="space-y-0">
+                    <div className="overflow-hidden">
+                      <h1 className="text-[15vw] sm:text-8xl md:text-9xl lg:text-[10rem] font-serif font-thin leading-[0.8] text-white">
+                        {featuredEvent.artist}
+                      </h1>
                     </div>
+                    <div className="flex items-baseline gap-4 mt-6">
+                      <span className="text-5xl md:text-6xl lg:text-7xl font-serif italic" style={{ color: 'var(--gold)' }}>
+                        {featuredEvent.title}
+                      </span>
+                      <div className="h-px flex-1" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
+                    </div>
+                    {/* Tagline/Description */}
+                    <p className="text-base md:text-lg text-white/70 leading-relaxed max-w-lg font-light pt-6">
+                      {featuredEvent.tagline}
+                    </p>
                   </div>
                   
-                  {/* Event Details - Minimal */}
-                  <div className="space-y-8 mt-10 lg:mt-12">
-                    <div className="flex gap-8">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-1">Venue</p>
-                        <p className="text-base font-light">Fortune Sound Club</p>
+                  {/* Artists Grid - Enhanced Typography */}
+                  <div className="grid grid-cols-3 gap-4 pt-4">
+                    {artistNames.map((artist, index) => (
+                      <div key={index} className="border-l-2 pl-4" style={{ borderColor: 'var(--gold)' }}>
+                        <p className="text-[10px] uppercase tracking-[0.3em] mb-2" style={{ color: 'var(--gold)' }}>Artist</p>
+                        <p className="text-lg font-serif text-white">{artist.trim()}</p>
                       </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-1">Time</p>
-                        <p className="text-base font-light">10PM - 2AM</p>
-                      </div>
-                    </div>
-                    
-                    {/* Artists */}
+                    ))}
+                  </div>
+
+                  {/* Venue & Time Strip - More Visible */}
+                  <div className="flex items-center gap-6 py-5 border-y-2" style={{ borderColor: 'var(--gold)', opacity: 0.4 }}>
                     <div>
-                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Featuring</p>
-                      <p className="text-lg font-light text-foreground">{featuredEvent.tour}</p>
+                      <p className="text-[11px] uppercase tracking-[0.3em] text-white/80 font-light">Fortune Sound Club</p>
+                    </div>
+                    <div className="w-px h-5" style={{ backgroundColor: 'var(--gold)' }} />
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.3em] text-white/80 font-light">10PM - 2AM</p>
+                    </div>
+                    <div className="w-px h-5" style={{ backgroundColor: 'var(--gold)' }} />
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.3em] text-white/80 font-light">19+ Event</p>
                     </div>
                   </div>
 
-                  {/* CTA Group */}
-                  <div className="flex items-center gap-8 pt-6 lg:pt-10">
+                  {/* CTA Section */}
+                  <div className="flex items-center gap-6 pt-4">
                     <Button 
                       size="lg"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-xs uppercase tracking-[0.3em] font-light"
+                      className="px-10 py-6 text-xs uppercase tracking-[0.3em] font-light border-0"
+                      style={{ 
+                        backgroundColor: 'var(--gold)', 
+                        color: 'var(--maroon-red)'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                      onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                     >
-                      Reserve · ${featuredEvent.price}
+                      Secure Tickets · ${featuredEvent.price}
                     </Button>
-                    <button className="text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors">
-                      Learn More
+                    <button 
+                      className="text-xs uppercase tracking-[0.2em] text-white/60 hover:text-white"
+                      style={{ transition: 'color 0.3s' }}
+                    >
+                      Event Details
                     </button>
                   </div>
                 </div>
                 
-                {/* Right - Poster Integration */}
-                <div className="lg:col-span-7 relative flex justify-center lg:justify-end">
-                  {/* Poster Container with Overlap Effect */}
-                  <div className="relative w-full max-w-[520px] lg:max-w-[640px]">
-                    {/* Accent Frame */}
-                    <div className="absolute -top-4 -left-4 w-full h-full border border-primary/20 lg:block hidden" />
-
-                    {/* Main Poster */}
-                    <div className="relative aspect-[4/5] shadow-2xl overflow-hidden">
+                {/* Right - Creative Poster Layout */}
+                <div className="lg:col-span-6 relative flex justify-center lg:justify-end">
+                  <div className="relative w-full max-w-[480px] lg:max-w-[560px]">
+                    {/* Geometric Frame Elements */}
+                    <div className="absolute -top-8 -right-8 w-32 h-32 border" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
+                    <div className="absolute -bottom-8 -left-8 w-32 h-32 border" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
+                    
+                    {/* Main Poster with Creative Crop */}
+                    <div className="relative aspect-[3/4] overflow-hidden">
+                      <div className="absolute inset-0 border" style={{ borderColor: 'var(--gold)', opacity: 0.3 }} />
                       <Image
                         src={featuredEvent.image}
                         alt={featuredEvent.artist}
                         fill
-                        className="object-cover"
+                        className="object-cover scale-105"
                         priority
                       />
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent" />
-                    </div>
-
-                    {/* Info Overlay Card (compact) */}
-                    <div className="absolute -bottom-6 -left-6 lg:-left-12 bg-background/95 backdrop-blur-md p-4 shadow-xl max-w-xs">
-                      <div className="flex items-center justify-between gap-6">
-                        <span className="text-xs uppercase tracking-[0.2em] text-primary">Vancouver</span>
-                        <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">19+</span>
+                      {/* Subtle Gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
+                      
+                      {/* Date Overlay - Diagonal Banner Style */}
+                      <div className="absolute top-12 -right-8 transform rotate-45 origin-center">
+                        <div className="px-12 py-3" style={{ backgroundColor: 'var(--gold)' }}>
+                          <p className="text-sm font-bold uppercase tracking-wider text-center" style={{ color: 'var(--maroon-red)' }}>
+                            31 AUG 2024
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {/* Status Badge - Bottom Left */}
+                      <div className="absolute bottom-8 left-8">
+                        <div className="px-4 py-2 backdrop-blur-sm border" style={{ backgroundColor: 'var(--maroon-red)/60', borderColor: 'var(--gold)' }}>
+                          <p className="text-xs uppercase tracking-[0.3em] font-light" style={{ color: 'var(--gold)' }}>{featuredEvent.status}</p>
+                        </div>
                       </div>
                     </div>
-
-                    {/* Floating Number */}
-                    <div className="absolute -top-8 -right-8 text-9xl font-serif font-light text-primary/10 select-none">
-                      01
+                    
+                    {/* Side Typography Element */}
+                    <div className="absolute -right-4 top-1/2 -translate-y-1/2 -rotate-90 origin-center">
+                      <span className="text-xs uppercase tracking-[0.8em] text-white/20 font-light">
+                        Vancouver Launch
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
               
-              {/* Bottom Navigation Dots */}
-              <div className="flex justify-center gap-2 mt-16 lg:mt-20">
-                <div className="w-8 h-1 bg-primary" />
-                <div className="w-8 h-1 bg-border" />
-                <div className="w-8 h-1 bg-border" />
+              {/* Bottom Editorial Elements */}
+              <div className="flex items-center justify-between mt-16 lg:mt-20">
+                <div className="flex items-center gap-4">
+                  <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">Scroll to explore</span>
+                  <div className="w-px h-12" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
+                </div>
+                <div className="flex gap-2">
+                  <div className="w-12 h-[2px]" style={{ backgroundColor: 'var(--gold)' }} />
+                  <div className="w-12 h-[2px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
+                  <div className="w-12 h-[2px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
+                </div>
               </div>
             </div>
           </div>
@@ -299,7 +269,7 @@ export default function Home() {
             
             {/* Secondary Featured Events - Takes 5 columns, stacked */}
             <div className="lg:col-span-5 flex flex-col gap-6">
-              {upcomingEvents.slice(1, 3).map((event) => (
+              {upcomingEvents.slice(0, 2).map((event) => (
                 <div key={event.id} className="group cursor-pointer flex-1">
                   <div className="relative h-full min-h-[213px] overflow-hidden">
                     <Image 
