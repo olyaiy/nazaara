@@ -16,7 +16,6 @@ export interface Event {
   price: string; // displayed as ${price}
   image: string;
   status: string; // e.g., "On Sale", "Waitlist"
-  availability?: number;
   isFeatured: boolean;
 }
 
@@ -39,7 +38,6 @@ export const events: Event[] = [
     image: "/events/nazaaea live poster.webp",
     price: "25",
     status: "Featured",
-    availability: 75,
     isFeatured: true,
   },
   {
