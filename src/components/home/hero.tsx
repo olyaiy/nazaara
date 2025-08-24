@@ -1,9 +1,13 @@
 
 import Image from "next/image";
-import { featuredEvent } from "@/content/events";
+import { getFeaturedEvent } from "@/content/events";
 
 export default function Hero() {
-  
+  const featuredEvent = getFeaturedEvent();
+
+  if (!featuredEvent) {
+    return null;
+  }
 
   return (
     <section className="relative  bg-gradient-to-br from-[var(--maroon-red)] via-[var(--maroon-red)] to-[var(--dark-green)]">

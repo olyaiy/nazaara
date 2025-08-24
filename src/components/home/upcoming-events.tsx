@@ -1,8 +1,10 @@
 "use client";
 import Image from "next/image";
-import { upcomingEvents } from "@/content/events";
+import { getUpcomingEvents } from "@/content/events";
 
 export default function UpcomingEvents() {
+  const upcomingEvents = getUpcomingEvents();
+  
   return (
     <section className="relative bg-[var(--black-grey)] overflow-hidden">
       {/* Main Content */}
@@ -120,7 +122,7 @@ export default function UpcomingEvents() {
 
             {/* Events Table - Theater Program Style */}
             <div className="space-y-0">
-              {upcomingEvents.slice(1).map((event, index) => (
+              {upcomingEvents.map((event, index) => (
                 <div 
                   key={event.id} 
                   className="group cursor-pointer border-b border-[var(--gold)]/10 hover:bg-[var(--gold)]/5 transition-all duration-500"
