@@ -5,52 +5,47 @@ import { Navigation } from "@/components/navigation";
 const prettywise = localFont({
   src: [
     {
-      path: "../../public/fonts/Prettywise/Fontspring-prettywise-thin.otf",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/Prettywise/Fontspring-prettywise-extralight.otf",
+      path: "../../public/fonts/Prettywise/Prettywise-ExtraLight.ttf",
       weight: "200",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Prettywise/Fontspring-prettywise-light.otf",
+      path: "../../public/fonts/Prettywise/Prettywise-Light.otf",
       weight: "300",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Prettywise/Fontspring-prettywise-regular.otf",
+      path: "../../public/fonts/Prettywise/Prettywise-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Prettywise/Fontspring-prettywise-medium.otf",
+      path: "../../public/fonts/Prettywise/Prettywise-Medium.ttf",
       weight: "500",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Prettywise/Fontspring-prettywise-semibold.otf",
+      path: "../../public/fonts/Prettywise/Prettywise-SemiBold.ttf",
       weight: "600",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Prettywise/Fontspring-prettywise-bold.otf",
+      path: "../../public/fonts/Prettywise/Prettywise-Bold.ttf",
       weight: "700",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Prettywise/Fontspring-prettywise-extrabold.otf",
+      path: "../../public/fonts/Prettywise/Prettywise-ExtraBold.ttf",
       weight: "800",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Prettywise/Fontspring-prettywise-black.otf",
+      path: "../../public/fonts/Prettywise/Prettywise-Black.ttf",
       weight: "900",
       style: "normal",
     },
     {
-      path: "../../public/fonts/Prettywise/Fontspring-prettywise-heavy.otf",
+      path: "../../public/fonts/Prettywise/Prettywise-Heavy.ttf",
       weight: "950",
       style: "normal",
     },
