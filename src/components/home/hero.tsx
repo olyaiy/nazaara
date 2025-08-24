@@ -2,9 +2,11 @@
 'use client'
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { getFeaturedEvent } from "@/content/events";
 
 export default function Hero() {
+  const router = useRouter();
   const featuredEvent = getFeaturedEvent();
 
   if (!featuredEvent) {
@@ -13,6 +15,10 @@ export default function Hero() {
 
   // Parse artist names from the tour string - handle both & and , separators
   const artistNames = featuredEvent.tour?.replace('Featuring ', '').split(/[,&]/).map(name => name.trim()) || [];
+
+  const handleEventDetailsClick = () => {
+    router.push(`/event/${featuredEvent.slug}`);
+  };
 
   return (
     <section className="relative min-h-[90dvh] overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
@@ -124,12 +130,14 @@ export default function Hero() {
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
                     onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                    onClick={handleEventDetailsClick}
                   >
                     Secure Tickets · ${featuredEvent.price}
                   </Button>
                   <button 
                     className="text-xs uppercase tracking-[0.2em] text-white/60 hover:text-white"
                     style={{ transition: 'color 0.3s' }}
+                    onClick={handleEventDetailsClick}
                   >
                     Event Details
                   </button>
@@ -138,7 +146,7 @@ export default function Hero() {
               
               {/* Right - Creative Poster Layout */}
               <div className="lg:col-span-6 relative flex justify-center lg:justify-center">
-                <div className="relative w-full max-w-[400px] lg:max-w-[480px]">
+                <div className="relative w-full max-w-[400px] lg:max-w-[480px] cursor-pointer group" onClick={handleEventDetailsClick}>
                   {/* Geometric Frame Elements */}
                   <div className="absolute -top-8 -right-8 w-32 h-32 border" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
                   <div className="absolute -bottom-8 -left-8 w-32 h-32 border" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />

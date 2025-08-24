@@ -1,9 +1,15 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { getUpcomingEvents } from "@/content/events";
 
 export default function UpcomingEvents() {
+  const router = useRouter();
   const upcomingEvents = getUpcomingEvents();
+
+  const handleEventClick = (slug: string) => {
+    router.push(`/event/${slug}`);
+  };
   
   return (
     <section className="relative bg-[var(--black-grey)] overflow-hidden">
@@ -44,7 +50,7 @@ export default function UpcomingEvents() {
             {/* First Row - Featured Large Event */}
             <div className="grid lg:grid-cols-12 gap-8 mb-8">
               {/* Main Featured Event - Takes up 8 columns */}
-              <div className="lg:col-span-8 group cursor-pointer">
+              <div className="lg:col-span-8 group cursor-pointer" onClick={() => handleEventClick(upcomingEvents[0].slug)}>
                 <div className="relative">
                   {/* Top accent line */}
                   <div className="absolute -top-2 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)]/30 to-transparent" />
@@ -134,7 +140,7 @@ export default function UpcomingEvents() {
               {/* Side Events - Takes up 4 columns */}
               <div className="lg:col-span-4 space-y-8">
                 {upcomingEvents.slice(1, 3).map((event, index) => (
-                  <div key={event.id} className="group cursor-pointer">
+                  <div key={event.id} className="group cursor-pointer" onClick={() => handleEventClick(event.slug)}>
                     <div className="relative">
                       {/* Accent element */}
                       {index === 0 && (
@@ -211,6 +217,7 @@ export default function UpcomingEvents() {
                 <div 
                   key={event.id} 
                   className="group cursor-pointer border-b border-[var(--gold)]/10 hover:bg-[var(--gold)]/5 transition-all duration-500"
+                  onClick={() => handleEventClick(event.slug)}
                 >
                   <div className="grid grid-cols-12 gap-4 py-8 px-4">
                     {/* Date Column */}
