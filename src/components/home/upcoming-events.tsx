@@ -3,33 +3,8 @@ import Image from "next/image";
 import { upcomingEvents } from "@/content/events";
 
 export default function UpcomingEvents() {
-  
-
   return (
     <section className="relative bg-[var(--black-grey)] overflow-hidden">
-      {/* Marquee Ticker - Continuous scroll of upcoming events */}
-      <div className="relative py-3 border-y border-[var(--gold)]/20 bg-[var(--dark-green)]/50">
-        <div className="flex overflow-hidden">
-          <div className="flex animate-marquee whitespace-nowrap">
-            {[...upcomingEvents, ...upcomingEvents].map((event, i) => (
-              <span key={`${event.id}-${i}`} className="mx-8 flex items-center gap-3">
-                <span className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                  {event.date} {event.year}
-                </span>
-                <span className="w-1 h-1 bg-[var(--gold)]/30 rounded-full" />
-                <span className="text-[11px] font-prettywise text-[var(--white)]/60">
-                  {event.artist}
-                </span>
-                <span className="w-1 h-1 bg-[var(--gold)]/30 rounded-full" />
-                <span className="text-[10px] font-neue-haas text-[var(--gold)]/40">
-                  {event.venue}
-                </span>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="relative px-6 lg:px-12 py-20">
         <div className="max-w-[1600px] mx-auto">
@@ -203,16 +178,6 @@ export default function UpcomingEvents() {
         </div>
       </div>
 
-      {/* Add marquee animation */}
-      <style jsx>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee 40s linear infinite;
-        }
-      `}</style>
     </section>
   );
 }

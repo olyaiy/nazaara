@@ -103,99 +103,119 @@ export default function AboutPage() {
       </section>
 
       {/* Our Brands */}
-      <section className="py-24 bg-[var(--maroon-red)]/5">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <div className="flex items-center justify-center gap-3 mb-8">
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--maroon-red)]/5 via-transparent to-[var(--gold)]/5" />
+        
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-7xl mx-auto">
+            {/* Section Header - Off-center */}
+            <div className="mb-24">
+              <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-[var(--gold)]" />
-                <span className="text-xs uppercase tracking-[0.3em] text-[var(--gold)] font-light">Our Portfolio</span>
-                <div className="w-8 h-px bg-[var(--gold)]" />
+                <span className="text-xs uppercase tracking-[0.3em] text-[var(--gold)] font-light">Portfolio</span>
               </div>
-              
-              <h2 className="text-4xl md:text-5xl font-serif font-light text-foreground mb-6">
-                Three Brands
-                <span className="block font-serif italic text-[var(--gold)]">One Vision</span>
+              <h2 className="text-5xl md:text-7xl font-serif font-light text-foreground">
+                Our <span className="font-serif italic text-[var(--gold)]">Brands</span>
               </h2>
-              
-              <p className="text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
-                Each brand in our portfolio represents a unique facet of South Asian entertainment, 
-                unified by our commitment to excellence and cultural authenticity.
-              </p>
             </div>
             
-            <div className="grid lg:grid-cols-3 gap-12">
-              {/* TAMASHA */}
-              <div className="group relative">
-                <div className="aspect-[4/5] bg-gradient-to-b from-[var(--gold)]/10 to-[var(--maroon-red)]/10 rounded-tl-[60px] rounded-br-[60px] overflow-hidden mb-6 border border-[var(--gold)]/10">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center p-8">
-                      <h3 className="text-4xl font-serif font-light text-[var(--gold)] mb-4">TAMASHA</h3>
-                      <div className="w-16 h-px bg-[var(--gold)]/30 mx-auto mb-4" />
-                      <p className="text-xs uppercase tracking-wider text-muted-foreground">Premium Events</p>
+            {/* Staggered Brand Layout */}
+            <div className="space-y-32">
+              {/* TAMASHA - Left Aligned */}
+              <div className="grid lg:grid-cols-12 gap-8 items-center">
+                <div className="lg:col-span-5">
+                  <div className="relative">
+                    <div className="text-8xl md:text-9xl font-serif font-light text-[var(--gold)]/10 absolute -top-12 -left-4">01</div>
+                    <h3 className="text-5xl md:text-6xl font-serif font-light text-foreground mb-2 relative">TAMASHA</h3>
+                    <div className="w-24 h-px bg-[var(--gold)] mb-6" />
+                    <p className="text-xs uppercase tracking-[0.3em] text-[var(--gold)] mb-6">Premium Events & Tours</p>
+                    <p className="text-muted-foreground font-light leading-relaxed max-w-md">
+                      The crown jewel of South Asian entertainment. TAMASHA transforms venues into 
+                      cultural epicenters, presenting A-list artists in productions that rival 
+                      international touring standards.
+                    </p>
+                    <div className="mt-8 space-y-2">
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground/60">
+                        <span className="font-light">Since 2016</span>
+                        <span>·</span>
+                        <span className="font-light">100+ Productions</span>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground/60">
+                        <span className="font-light">25 Countries</span>
+                        <span>·</span>
+                        <span className="font-light">300K+ Attendees</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="text-center">
-                  <h4 className="text-xl font-light text-foreground mb-3">Elevated Experiences</h4>
-                  <p className="text-sm text-muted-foreground font-light leading-relaxed">
-                    Our flagship brand for large-scale concerts and tours, bringing the biggest 
-                    names in South Asian music to prestigious venues worldwide.
-                  </p>
-                  <div className="mt-6 flex justify-center gap-6 text-xs uppercase tracking-wider text-muted-foreground/60">
-                    <span>Est. 2016</span>
-                    <span>·</span>
-                    <span>100+ Shows</span>
+                <div className="lg:col-span-7">
+                  <div className="relative h-[400px] lg:h-[500px]">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--gold)]/20 to-[var(--maroon-red)]/20 rounded-tl-[120px]" />
+                    <div className="absolute bottom-0 right-0 w-4/5 h-4/5 bg-gradient-to-tl from-[var(--maroon-red)]/10 to-transparent rounded-br-[120px]" />
                   </div>
                 </div>
               </div>
               
-              {/* Nazaara */}
-              <div className="group relative">
-                <div className="aspect-[4/5] bg-gradient-to-b from-[var(--turquoise)]/10 to-[var(--gold)]/10 rounded-tl-[60px] rounded-br-[60px] overflow-hidden mb-6 border border-[var(--gold)]/10">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center p-8">
-                      <h3 className="text-4xl font-serif font-light text-[var(--gold)] mb-4">Nazaara</h3>
-                      <div className="w-16 h-px bg-[var(--gold)]/30 mx-auto mb-4" />
-                      <p className="text-xs uppercase tracking-wider text-muted-foreground">Live Productions</p>
-                    </div>
+              {/* Nazaara - Right Aligned */}
+              <div className="grid lg:grid-cols-12 gap-8 items-center">
+                <div className="lg:col-span-7 order-2 lg:order-1">
+                  <div className="relative h-[400px] lg:h-[500px]">
+                    <div className="absolute inset-0 bg-gradient-to-bl from-[var(--turquoise)]/20 to-[var(--gold)]/20 rounded-tr-[120px]" />
+                    <div className="absolute bottom-0 left-0 w-4/5 h-4/5 bg-gradient-to-tr from-[var(--gold)]/10 to-transparent rounded-bl-[120px]" />
                   </div>
                 </div>
-                <div className="text-center">
-                  <h4 className="text-xl font-light text-foreground mb-3">Cultural Celebrations</h4>
-                  <p className="text-sm text-muted-foreground font-light leading-relaxed">
-                    Specializing in authentic cultural events and festivals that celebrate 
-                    the rich tapestry of South Asian heritage and contemporary artistry.
-                  </p>
-                  <div className="mt-6 flex justify-center gap-6 text-xs uppercase tracking-wider text-muted-foreground/60">
-                    <span>Est. 2014</span>
-                    <span>·</span>
-                    <span>200+ Events</span>
+                <div className="lg:col-span-5 order-1 lg:order-2">
+                  <div className="relative lg:pl-12">
+                    <div className="text-8xl md:text-9xl font-serif font-light text-[var(--gold)]/10 absolute -top-12 -right-4">02</div>
+                    <h3 className="text-5xl md:text-6xl font-serif font-light text-foreground mb-2 relative">Nazaara</h3>
+                    <div className="w-24 h-px bg-[var(--gold)] mb-6" />
+                    <p className="text-xs uppercase tracking-[0.3em] text-[var(--gold)] mb-6">Cultural Productions</p>
+                    <p className="text-muted-foreground font-light leading-relaxed max-w-md">
+                      Where tradition meets innovation. Nazaara creates immersive cultural experiences 
+                      that honor heritage while embracing contemporary expression, connecting 
+                      diaspora communities worldwide.
+                    </p>
+                    <div className="mt-8 space-y-2">
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground/60">
+                        <span className="font-light">Since 2014</span>
+                        <span>·</span>
+                        <span className="font-light">200+ Events</span>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground/60">
+                        <span className="font-light">50 Cities</span>
+                        <span>·</span>
+                        <span className="font-light">Cultural Pioneer</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               
-              {/* Third Brand Placeholder */}
-              <div className="group relative">
-                <div className="aspect-[4/5] bg-gradient-to-b from-[var(--maroon-red)]/10 to-[var(--turquoise)]/10 rounded-tl-[60px] rounded-br-[60px] overflow-hidden mb-6 border border-[var(--gold)]/10">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center p-8">
-                      <h3 className="text-4xl font-serif font-light text-[var(--gold)] mb-4">Coming Soon</h3>
-                      <div className="w-16 h-px bg-[var(--gold)]/30 mx-auto mb-4" />
-                      <p className="text-xs uppercase tracking-wider text-muted-foreground">New Ventures</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <h4 className="text-xl font-light text-foreground mb-3">Innovation Hub</h4>
-                  <p className="text-sm text-muted-foreground font-light leading-relaxed">
-                    Our newest venture pushing boundaries in entertainment technology and 
-                    immersive experiences for the next generation of audiences.
+              {/* Third Brand - Center Focus */}
+              <div className="text-center py-12">
+                <div className="relative inline-block">
+                  <div className="text-8xl md:text-9xl font-serif font-light text-[var(--gold)]/10 absolute -top-12 left-1/2 -translate-x-1/2">03</div>
+                  <h3 className="text-5xl md:text-6xl font-serif font-light text-foreground/30 mb-2 relative">Unveiling Soon</h3>
+                  <div className="w-24 h-px bg-[var(--gold)]/30 mx-auto mb-6" />
+                  <p className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]/50 mb-6">Next Chapter</p>
+                  <p className="text-muted-foreground/50 font-light leading-relaxed max-w-md mx-auto">
+                    A revolutionary concept in South Asian entertainment. 
+                    Details coming 2025.
                   </p>
-                  <div className="mt-6 flex justify-center gap-6 text-xs uppercase tracking-wider text-muted-foreground/60">
-                    <span>Launching 2025</span>
-                  </div>
                 </div>
+              </div>
+            </div>
+            
+            {/* Bottom Statement */}
+            <div className="mt-32 text-center">
+              <div className="max-w-3xl mx-auto">
+                <p className="text-2xl font-serif font-light text-foreground">
+                  Three distinct brands, <span className="italic text-[var(--gold)]">infinite possibilities</span>
+                </p>
+                <p className="text-muted-foreground font-light mt-4">
+                  Each brand operates independently while sharing our core values of excellence, 
+                  authenticity, and innovation in South Asian entertainment.
+                </p>
               </div>
             </div>
           </div>

@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Hero from "@/components/home/hero";
 import UpcomingEvents from "@/components/home/upcoming-events";
+import { EventMarquee } from "@/components/home/event-marquee";
+
+
 
 export default function Home() {
   return (
@@ -13,6 +16,9 @@ export default function Home() {
       <div className="container mx-auto px-4">
         <div className="h-px bg-border/50" />
       </div>
+
+      {/* Scrolling Marquee of Upcoming Events */}
+      <EventMarquee/>
 
       <UpcomingEvents />
 
