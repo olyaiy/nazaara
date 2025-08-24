@@ -16,13 +16,16 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
+      {/* Shadow Overlay for depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/25" />
+      
       {/* Geometric Pattern Overlay */}
       <div className="absolute inset-0 opacity-10">
         <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
           <defs>
             <pattern id="hero-pattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
               <circle cx="30" cy="30" r="1" fill="var(--gold)" />
-              <path d="M0 30 L30 0 L60 30 L30 60 Z" stroke="var(--gold)" strokeWidth="0.5" fill="none" opacity="0.3" />
+              <path d="M0 30 L30 0 L60 30 L30 60 Z" stroke="var(--gold)" strokeWidth="0.5" fill="none" opacity="0.35" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#hero-pattern)" />
