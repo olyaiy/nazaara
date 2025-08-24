@@ -1,11 +1,33 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { getUpcomingEvents } from "@/content/events";
+import { getUpcomingEvents, events as allEvents } from "@/content/events";
 
 export default function UpcomingEvents() {
   const router = useRouter();
   const upcomingEvents = getUpcomingEvents();
+  // Build a chronologically sorted list of ALL events for the Complete Schedule
+  const allEventsChrono = [...allEvents].sort((a, b) => {
+    const monthMap: { [key: string]: number } = {
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
+    };
+    const [dayA, monthA] = a.date.split(" ");
+    const [dayB, monthB] = b.date.split(" ");
+    const dateA = new Date(parseInt(a.year), monthMap[monthA], parseInt(dayA));
+    const dateB = new Date(parseInt(b.year), monthMap[monthB], parseInt(dayB));
+    return dateA.getTime() - dateB.getTime();
+  });
 
   const handleEventClick = (slug: string) => {
     router.push(`/event/${slug}`);
@@ -213,7 +235,7 @@ export default function UpcomingEvents() {
 
             {/* Events Table - Theater Program Style */}
             <div className="space-y-0">
-              {upcomingEvents.slice(3).map((event, index) => (
+              {allEventsChrono.map((event, index) => (
                 <div 
                   key={event.id} 
                   className="group cursor-pointer border-b border-[var(--gold)]/10 hover:bg-[var(--gold)]/5 transition-all duration-500"

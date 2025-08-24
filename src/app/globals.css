@@ -137,6 +137,17 @@
     @apply bg-background text-foreground;
   }
 
+  /* Brand-aligned text selection colors */
+  ::selection {
+    background: var(--gold);
+    color: var(--charcoal);
+  }
+  /* Optional: explicit Firefox selector for broader compatibility */
+  ::-moz-selection {
+    background: var(--gold);
+    color: var(--charcoal);
+  }
+
   /* Ensure all interactive buttons show pointer cursor */
   button,
   [role="button"],
