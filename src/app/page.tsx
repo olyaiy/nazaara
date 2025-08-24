@@ -98,18 +98,31 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Event Details - Card Style */}
-                  <div className="backdrop-blur-sm rounded-sm p-6" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(254, 236, 164, 0.15)' }}>
-                    <div className="grid grid-cols-2 gap-6">
-                      <div>
-                        <p className="text-[9px] uppercase tracking-[0.4em] mb-2" style={{ color: 'var(--gold)/60' }}>Venue</p>
-                        <p className="text-lg font-light text-white">Fortune Sound Club</p>
-                        <p className="text-xs text-white/50 mt-1">Vancouver, BC</p>
+                  {/* Event Details - Editorial Layout */}
+                  <div className="relative">
+                    {/* Top accent line */}
+                    <div className="absolute top-0 left-0 w-16 h-px" style={{ backgroundColor: 'var(--gold)' }} />
+                    
+                    <div className="pt-8 space-y-6">
+                      {/* Venue */}
+                      <div className="flex items-start gap-8">
+                        <div className="flex-1">
+                          <p className="text-2xl font-serif text-white mb-1">Fortune Sound Club</p>
+                          <p className="text-xs uppercase tracking-[0.2em] text-white/40">Vancouver, British Columbia</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-3xl font-thin text-white">10PM</p>
+                          <p className="text-xs uppercase tracking-[0.2em] text-white/40">Late Night</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-[9px] uppercase tracking-[0.4em] mb-2" style={{ color: 'var(--gold)/60' }}>Session</p>
-                        <p className="text-lg font-light text-white">10PM - 2AM</p>
-                        <p className="text-xs text-white/50 mt-1">Late Night • 19+</p>
+                      
+                      {/* Bottom details strip */}
+                      <div className="flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-white/60">
+                        <span style={{ color: 'var(--gold)' }}>19+</span>
+                        <div className="w-px h-3" style={{ backgroundColor: 'var(--gold)', opacity: 0.4 }} />
+                        <span>ID Required</span>
+                        <div className="w-px h-3" style={{ backgroundColor: 'var(--gold)', opacity: 0.4 }} />
+                        <span>4 Hour Session</span>
                       </div>
                     </div>
                   </div>
