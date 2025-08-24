@@ -17,7 +17,8 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
       {/* Shadow Overlay for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/25" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-transparent" />
       
       {/* Geometric Pattern Overlay */}
       <div className="absolute inset-0 opacity-10">
