@@ -180,11 +180,17 @@ export function Footer() {
                         placeholder="Enter your email"
                         className="w-full px-0 py-3 bg-transparent border-0 border-b border-white/20 text-white placeholder:text-white/40 focus:border-[var(--gold)] focus:outline-none transition-colors font-neue-haas font-light text-sm"
                       />
-                      <button
+                      <button 
                         type="submit"
-                        className="w-full py-3 text-xs uppercase tracking-[0.3em] font-neue-haas font-light border border-[var(--gold)]/40 text-[var(--gold)] hover:bg-[var(--gold)] hover:text-[var(--black-grey)] transition-all duration-300"
+                        className="w-full relative overflow-hidden group"
                       >
-                        Subscribe
+                        <div className="absolute inset-0 bg-[var(--gold)] transition-all duration-300 ease-out" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100" />
+                        <div className="relative px-8 py-4">
+                          <p className="text-[11px] font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium transition-all duration-300">
+                            Subscribe
+                          </p>
+                        </div>
                       </button>
                     </form>
                   </div>
