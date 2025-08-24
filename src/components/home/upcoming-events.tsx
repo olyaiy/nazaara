@@ -7,16 +7,18 @@ export default function UpcomingEvents() {
   
   return (
     <section className="relative bg-[var(--black-grey)] overflow-hidden">
-      {/* Subtle geometric pattern overlay */}
-      <div className="absolute inset-0 opacity-5">
+      {/* Art Deco inspired grid pattern */}
+      <div className="absolute inset-0 opacity-[0.03]">
         <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
           <defs>
-            <pattern id="upcoming-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-              <path d="M0 50 L50 0 L100 50 L50 100 Z" stroke="var(--gold)" strokeWidth="0.5" fill="none" />
-              <circle cx="50" cy="50" r="1.5" fill="var(--gold)" />
+            <pattern id="upcoming-grid" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+              <rect x="0" y="0" width="80" height="80" fill="none" stroke="var(--gold)" strokeWidth="0.5" />
+              <rect x="10" y="10" width="60" height="60" fill="none" stroke="var(--gold)" strokeWidth="0.3" />
+              <line x1="0" y1="40" x2="80" y2="40" stroke="var(--gold)" strokeWidth="0.2" />
+              <line x1="40" y1="0" x2="40" y2="80" stroke="var(--gold)" strokeWidth="0.2" />
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#upcoming-pattern)" />
+          <rect width="100%" height="100%" fill="url(#upcoming-grid)" />
         </svg>
       </div>
 
@@ -37,165 +39,161 @@ export default function UpcomingEvents() {
             </h2>
           </div>
 
-          {/* Three Event Grid - Triptych Style */}
-          <div className="grid lg:grid-cols-3 gap-8 lg:gap-6 mb-32">
-            {upcomingEvents.slice(0, 3).map((event, index) => (
-              <div 
-                key={event.id} 
-                className={`relative group cursor-pointer ${
-                  index === 1 ? 'lg:-mt-12' : ''
-                }`}
-              >
-                {/* Card Container with unique composition for each */}
+          {/* Three Event Layout - Asymmetric Magazine Style */}
+          <div className="mb-32">
+            {/* First Row - Featured Large Event */}
+            <div className="grid lg:grid-cols-12 gap-8 mb-8">
+              {/* Main Featured Event - Takes up 8 columns */}
+              <div className="lg:col-span-8 group cursor-pointer">
                 <div className="relative">
-                  {/* Geometric frame element - different for each card */}
-                  {index === 0 && (
-                    <div className="absolute -top-4 -left-4 w-24 h-24 border-l border-t border-[var(--gold)]/20" />
-                  )}
-                  {index === 1 && (
-                    <>
-                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-32 h-[1px] bg-[var(--gold)]/30" />
-                      <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-32 h-[1px] bg-[var(--gold)]/30" />
-                    </>
-                  )}
-                  {index === 2 && (
-                    <div className="absolute -bottom-4 -right-4 w-24 h-24 border-r border-b border-[var(--gold)]/20" />
-                  )}
-
-                  {/* Main Content Container */}
-                  <div className={`relative overflow-hidden ${
-                    index === 1 ? 'border border-[var(--gold)]/20' : ''
-                  }`}>
-                    {/* Image Section with different heights */}
-                    <div className={`relative overflow-hidden ${
-                      index === 0 ? 'h-[420px]' : 
-                      index === 1 ? 'h-[480px]' : 
-                      'h-[420px]'
-                    }`}>
+                  {/* Top accent line */}
+                  <div className="absolute -top-2 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)]/30 to-transparent" />
+                  
+                  <div className="grid lg:grid-cols-2 gap-0 bg-[var(--maroon-red)]/5 border border-[var(--gold)]/10">
+                    {/* Left - Image */}
+                    <div className="relative h-[400px] lg:h-[500px] overflow-hidden">
                       <Image
-                        src={event.image}
-                        alt={event.artist}
+                        src={upcomingEvents[0].image}
+                        alt={upcomingEvents[0].artist}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[var(--black-grey)]/60" />
                       
-                      {/* Unique gradient overlays for each */}
-                      {index === 0 && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-[var(--black-grey)]/60 via-transparent to-[var(--black-grey)]/40" />
-                      )}
-                      {index === 1 && (
-                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)]/80 via-[var(--black-grey)]/20 to-transparent" />
-                      )}
-                      {index === 2 && (
-                        <div className="absolute inset-0 bg-gradient-to-bl from-[var(--black-grey)]/60 via-transparent to-[var(--black-grey)]/40" />
-                      )}
-
-                      {/* Floating Date Element - Different positions */}
-                      {index === 0 && (
-                        <div className="absolute top-6 left-6 bg-[var(--gold)] px-4 py-3">
-                          <p className="text-2xl font-prettywise text-[var(--maroon-red)]">
-                            {event.date.split(' ')[0]}
+                      {/* Floating month badge */}
+                      <div className="absolute top-8 left-8">
+                        <div className="bg-[var(--black-grey)]/90 backdrop-blur-sm px-6 py-4 border-l-4 border-[var(--gold)]">
+                          <p className="text-4xl font-prettywise text-[var(--gold)]">
+                            {upcomingEvents[0].date.split(' ')[1].toUpperCase()}
                           </p>
-                          <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--maroon-red)]">
-                            {event.date.split(' ')[1]}
+                          <p className="text-[10px] font-neue-haas uppercase tracking-[0.4em] text-[var(--white)]/60">
+                            Month
                           </p>
-                        </div>
-                      )}
-                      {index === 1 && (
-                        <div className="absolute -top-3 -right-3 bg-[var(--maroon-red)] border border-[var(--gold)] px-5 py-4">
-                          <p className="text-3xl font-prettywise text-[var(--gold)]">
-                            {event.date.split(' ')[0]}
-                          </p>
-                          <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/60">
-                            {event.date.split(' ')[1]}
-                          </p>
-                        </div>
-                      )}
-                      {index === 2 && (
-                        <div className="absolute bottom-6 right-6 backdrop-blur-sm bg-[var(--black-grey)]/70 border border-[var(--gold)]/30 px-4 py-3">
-                          <p className="text-2xl font-prettywise text-[var(--gold)]">
-                            {event.date.split(' ')[0]}
-                          </p>
-                          <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/60">
-                            {event.date.split(' ')[1]}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Event Info Overlay - Different layouts */}
-                      <div className={`absolute inset-x-0 bottom-0 p-6 ${
-                        index === 1 ? 'pb-8' : ''
-                      }`}>
-                        {/* Artist Name */}
-                        <h3 className={`font-prettywise text-[var(--white)] mb-2 ${
-                          index === 1 ? 'text-4xl' : 'text-3xl'
-                        }`}>
-                          {event.artist}
-                        </h3>
-                        
-                        {/* Event Title */}
-                        <p className="text-lg font-prettywise text-[var(--gold)] mb-4">
-                          {event.title}
-                        </p>
-                        
-                        {/* Venue and Price Info */}
-                        <div className="flex items-end justify-between">
-                          <div>
-                            <p className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40 mb-1">
-                              {event.city}, {event.country}
-                            </p>
-                            <p className="text-sm font-prettywise text-[var(--white)]">
-                              {event.venue}
-                            </p>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/60">
-                              From
-                            </p>
-                            <p className="text-2xl font-prettywise text-[var(--gold)]">
-                              ${event.price}
-                            </p>
-                          </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Status Bar - Below image */}
-                    <div className={`bg-[var(--black-grey)] border-t border-[var(--gold)]/10 px-6 py-3 ${
-                      index === 1 ? 'bg-[var(--maroon-red)]/10' : ''
-                    }`}>
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40">
-                          {event.status}
+                    {/* Right - Content */}
+                    <div className="relative p-8 lg:p-12 flex flex-col justify-between">
+                      {/* Date stamp in corner */}
+                      <div className="absolute top-8 right-8">
+                        <p className="text-6xl font-prettywise text-[var(--gold)]/10">
+                          {upcomingEvents[0].date.split(' ')[0]}
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/60">
+                          Headliner Performance
                         </span>
-                        <div className="flex items-center gap-2">
-                          <div className="w-1 h-1 rounded-full bg-[var(--gold)]" />
-                          <span className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40">
-                            View Details
-                          </span>
+                        <h3 className="text-[clamp(2.5rem,4vw,4rem)] font-prettywise leading-[0.9] text-[var(--white)] mt-4 mb-3">
+                          {upcomingEvents[0].artist}
+                        </h3>
+                        <p className="text-xl font-prettywise text-[var(--gold)] mb-6">
+                          {upcomingEvents[0].title}
+                        </p>
+                        
+                        <div className="space-y-3 py-6 border-t border-[var(--gold)]/10">
+                          <div className="flex items-baseline gap-4">
+                            <span className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40">
+                              Venue
+                            </span>
+                            <span className="text-base font-prettywise text-[var(--white)]">
+                              {upcomingEvents[0].venue}
+                            </span>
+                          </div>
+                          <div className="flex items-baseline gap-4">
+                            <span className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40">
+                              Location
+                            </span>
+                            <span className="text-base font-prettywise text-[var(--white)]">
+                              {upcomingEvents[0].city}, {upcomingEvents[0].country}
+                            </span>
+                          </div>
                         </div>
+                      </div>
+
+                      <div className="flex items-end justify-between">
+                        <div>
+                          <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40 mb-1">
+                            Starting From
+                          </p>
+                          <p className="text-3xl font-prettywise text-[var(--gold)]">
+                            ${upcomingEvents[0].price}
+                          </p>
+                        </div>
+                        <span className="text-[10px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/60 px-4 py-2 border border-[var(--gold)]/20">
+                          {upcomingEvents[0].status}
+                        </span>
                       </div>
                     </div>
                   </div>
-
-                  {/* Side accent for middle card */}
-                  {index === 1 && (
-                    <>
-                      <div className="absolute top-1/2 -left-8 -translate-y-1/2 rotate-90">
-                        <span className="text-[9px] font-neue-haas uppercase tracking-[0.6em] text-[var(--gold)]/20">
-                          Featured
-                        </span>
-                      </div>
-                      <div className="absolute top-1/2 -right-8 -translate-y-1/2 -rotate-90">
-                        <span className="text-[9px] font-neue-haas uppercase tracking-[0.6em] text-[var(--gold)]/20">
-                          Featured
-                        </span>
-                      </div>
-                    </>
-                  )}
                 </div>
               </div>
-            ))}
+
+              {/* Side Events - Takes up 4 columns */}
+              <div className="lg:col-span-4 space-y-8">
+                {upcomingEvents.slice(1, 3).map((event, index) => (
+                  <div key={event.id} className="group cursor-pointer">
+                    <div className="relative">
+                      {/* Accent element */}
+                      {index === 0 && (
+                        <div className="absolute -top-3 -right-3 w-12 h-12 border-t border-r border-[var(--gold)]/30" />
+                      )}
+                      
+                      <div className="relative h-[200px] overflow-hidden bg-[var(--black-grey)]">
+                        <Image
+                          src={event.image}
+                          alt={event.artist}
+                          fill
+                          className="object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)] via-[var(--black-grey)]/60 to-transparent" />
+                        
+                        {/* Content Overlay */}
+                        <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <p className="text-3xl font-prettywise text-[var(--gold)]">
+                                {event.date.split(' ')[0]}
+                              </p>
+                              <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/60">
+                                {event.date.split(' ')[1]}
+                              </p>
+                            </div>
+                            <span className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                              {event.status}
+                            </span>
+                          </div>
+                          
+                          <div>
+                            <h4 className="text-2xl font-prettywise text-[var(--white)] mb-1">
+                              {event.artist}
+                            </h4>
+                            <p className="text-sm font-prettywise text-[var(--gold)]/80 mb-2">
+                              {event.title}
+                            </p>
+                            <div className="flex items-baseline justify-between">
+                              <p className="text-[10px] font-neue-haas uppercase tracking-[0.2em] text-[var(--white)]/40">
+                                {event.venue}
+                              </p>
+                              <p className="text-lg font-prettywise text-[var(--gold)]">
+                                ${event.price}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Bottom accent */}
+                      {index === 1 && (
+                        <div className="absolute -bottom-3 -left-3 w-12 h-12 border-b border-l border-[var(--gold)]/30" />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Schedule List - Playbill Style */}

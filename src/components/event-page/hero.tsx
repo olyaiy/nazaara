@@ -1,13 +1,12 @@
 
 import Image from "next/image";
-import { getFeaturedEvent } from "@/content/events";
+import { Event } from "@/content/events";
 
-export default function Hero() {
-  const featuredEvent = getFeaturedEvent();
+interface EventHeroProps {
+  event: Event;
+}
 
-  if (!featuredEvent) {
-    return null;
-  }
+export default function EventHero({ event }: EventHeroProps) {
 
   return (
     <section className="relative  bg-gradient-to-br from-[var(--maroon-red)] via-[var(--maroon-red)] to-[var(--dark-green)]">
@@ -28,8 +27,8 @@ export default function Hero() {
                 <div className="relative w-full">
                   <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
                     <Image 
-                      src={featuredEvent.image}
-                      alt={featuredEvent.artist}
+                      src={event.image}
+                      alt={event.artist}
                       fill
                       className="object-cover"
                       priority
@@ -41,8 +40,8 @@ export default function Hero() {
                   
                   {/* Floating gold accent date element - top right */}
                   <div className="absolute -top-6 -right-6 w-24 h-24 bg-[var(--gold)] flex flex-col items-center justify-center">
-                    <p className="text-3xl font-prettywise text-[var(--maroon-red)]">31</p>
-                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--maroon-red)]">August</p>
+                    <p className="text-3xl font-prettywise text-[var(--maroon-red)]">{event.date.split(' ')[0]}</p>
+                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--maroon-red)]">{event.date.split(' ')[1]}</p>
                   </div>
                   
                   {/* Corner accents */}
@@ -63,37 +62,37 @@ export default function Hero() {
                     <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/50">Nazaara Live Presents</p>
                   </div>
                   <h1 className="text-[clamp(3.5rem,8vw,7rem)] font-prettywise leading-[0.85] text-[var(--white)] mb-4">
-                    {featuredEvent.artist}
+                    {event.artist}
                   </h1>
                   <p className="text-3xl lg:text-4xl font-prettywise text-[var(--gold)] mb-6">
-                    {featuredEvent.title}
+                    {event.title}
                   </p>
-                  <p className="text-sm font-neue-haas text-[var(--white)]/60 leading-relaxed max-w-md">
-                    {featuredEvent.tagline}
-                  </p>
+                  {event.tagline && (
+                    <p className="text-sm font-neue-haas text-[var(--white)]/60 leading-relaxed max-w-md">
+                      {event.tagline}
+                    </p>
+                  )}
                 </div>
                 
-                {/* Artists Grid */}
-                <div className="grid grid-cols-3 gap-6">
-                  {["Yasmina", "Sabzi", "Wian"].map((artist, i) => (
-                    <div key={i}>
-                      <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40 mb-1">Artist</p>
-                      <p className="text-base font-prettywise text-[var(--white)]">{artist}</p>
-                    </div>
-                  ))}
-                </div>
+                {/* Tour/Supporting Artists */}
+                {event.tour && (
+                  <div className="space-y-4">
+                    <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40">Featuring</p>
+                    <p className="text-lg font-prettywise text-[var(--white)]">{event.tour}</p>
+                  </div>
+                )}
                 
                 {/* Event Details */}
                 <div className="grid grid-cols-2 gap-8 py-8 border-y border-[var(--gold)]/10">
                   <div>
                     <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-3">Venue</p>
-                    <p className="text-lg font-prettywise text-[var(--white)]">Fortune Sound Club</p>
-                    <p className="text-xs font-neue-haas text-[var(--white)]/40">Vancouver, Canada</p>
+                    <p className="text-lg font-prettywise text-[var(--white)]">{event.venue}</p>
+                    <p className="text-xs font-neue-haas text-[var(--white)]/40">{event.city}, {event.country}</p>
                   </div>
                   <div>
                     <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-3">Time</p>
-                    <p className="text-lg font-neue-haas text-[var(--white)]">10:00 PM</p>
-                    <p className="text-xs font-neue-haas text-[var(--white)]/40">Late Night Session</p>
+                    <p className="text-lg font-neue-haas text-[var(--white)]">{event.dates || event.date}</p>
+                    <p className="text-xs font-neue-haas text-[var(--white)]/40">{event.status}</p>
                   </div>
                 </div>
                 
@@ -102,7 +101,7 @@ export default function Hero() {
                   <div>
                     <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-2">Starting From</p>
                     <div className="flex items-baseline gap-3">
-                      <span className="text-6xl lg:text-7xl font-prettywise text-[var(--gold)]">{featuredEvent.price}</span>
+                      <span className="text-6xl lg:text-7xl font-prettywise text-[var(--gold)]">{event.price}</span>
                       <span className="text-xs font-neue-haas text-[var(--gold)]/40 uppercase tracking-wider">CAD</span>
                     </div>
                   </div>

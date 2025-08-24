@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 import UpcomingEvents from "@/components/home/upcoming-events";
 import { EventMarquee } from "@/components/home/event-marquee";
-import Hero from "@/components/event-page/hero";
+import Hero from "@/components/home/hero";
 
 
 
