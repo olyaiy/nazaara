@@ -1,16 +1,17 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import Hero from "@/components/home/hero";
+
 import UpcomingEvents from "@/components/home/upcoming-events";
 import { EventMarquee } from "@/components/home/event-marquee";
+import Hero from "@/components/event-page/hero";
 
 
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Hero />
+      <Hero/>
 
       {/* Elegant Divider */}
       <div className="container mx-auto px-4">

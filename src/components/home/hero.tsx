@@ -1,5 +1,7 @@
 
+'use client'
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 import { getFeaturedEvent } from "@/content/events";
 
 export default function Hero() {
@@ -9,127 +11,171 @@ export default function Hero() {
     return null;
   }
 
+  // Parse artist names from the tour string - handle both & and , separators
+  const artistNames = featuredEvent.tour?.replace('Featuring ', '').split(/[,&]/).map(name => name.trim()) || [];
+
   return (
-    <section className="relative  bg-gradient-to-br from-[var(--maroon-red)] via-[var(--maroon-red)] to-[var(--dark-green)]">
-    
-      {/* Main Container */}
-      <div className="relative  px-6 lg:px-12 py-8 lg:py-12">
-        <div className="max-w-[1600px] mx-auto  flex items-center">
-          {/* Main Content Grid */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center w-full">
-            {/* Left Section - Poster Display */}
-            <div className="flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-[500px] lg:max-w-[600px]">
-                {/* Enhanced Gold accent frame */}
-                <div className="absolute -inset-[2px] bg-gradient-to-br from-[var(--gold)] via-[var(--gold)]/50 to-transparent opacity-60" />
-                <div className="absolute -inset-[1px] bg-[var(--maroon-red)]" />
-                
-                {/* Main Poster with enhanced presentation */}
-                <div className="relative w-full">
-                  <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
-                    <Image 
-                      src={featuredEvent.image}
-                      alt={featuredEvent.artist}
-                      fill
-                      className="object-cover"
-                      priority
-                    />
-                    {/* Premium vignette effects */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-[var(--dark-green)]/20 via-transparent to-transparent" />
-                  </div>
-                  
-                  {/* Floating gold accent date element - top right */}
-                  <div className="absolute -top-6 -right-6 w-24 h-24 bg-[var(--gold)] flex flex-col items-center justify-center">
-                    <p className="text-3xl font-prettywise text-[var(--maroon-red)]">31</p>
-                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--maroon-red)]">August</p>
-                  </div>
-                  
-                  {/* Corner accents */}
-                  <div className="absolute -bottom-2 -left-2 w-16 h-16 border-l-2 border-b-2 border-[var(--gold)]/40" />
-                  <div className="absolute -top-2 -left-2 w-16 h-16 border-l-2 border-t-2 border-[var(--gold)]/40" />
+    <section className="relative min-h-screen overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
+      {/* Geometric Pattern Overlay */}
+      <div className="absolute inset-0 opacity-10">
+        <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+          <defs>
+            <pattern id="hero-pattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+              <circle cx="30" cy="30" r="1" fill="var(--gold)" />
+              <path d="M0 30 L30 0 L60 30 L30 60 Z" stroke="var(--gold)" strokeWidth="0.5" fill="none" opacity="0.3" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hero-pattern)" />
+        </svg>
+      </div>
+      
+      <div className="relative container mx-auto px-4 md:px-6 lg:px-8">
+        <div className="min-h-screen flex flex-col justify-center py-12 lg:py-0">
+          {/* Editorial Composition */}
+          <div className="relative">
+            {/* Asymmetric Content Layout */}
+            <div className="relative grid lg:grid-cols-12 gap-8 lg:gap-0 items-center">
+              {/* Left Content - Editorial Style */}
+              <div className="lg:col-span-6 space-y-6 lg:space-y-8 z-20 lg:pr-12">
+                {/* Nazaara Live Presents Label */}
+                <div className="flex items-center gap-4">
+                  <div className="h-px w-12" style={{ backgroundColor: 'var(--gold)' }} />
+                  <span className="text-[10px] uppercase tracking-[0.4em] font-light" style={{ color: 'var(--gold)' }}>
+                    Nazaara Live Presents
+                  </span>
                 </div>
-              </div>
-            </div>
-            
-            {/* Right Section - Event Information */}
-            <div className="flex flex-col justify-center lg:pl-8">
-              <div className="space-y-10 lg:space-y-12 max-w-xl">
-                {/* Title Block */}
-                <div>
-                  {/* Nazaara Live Presents Label */}
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="h-[1px] w-8 bg-[var(--gold)]/30" />
-                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/50">Nazaara Live Presents</p>
+                
+                {/* Dynamic Title Composition */}
+                <div className="space-y-0">
+                  <div className="overflow-hidden">
+                    <h1 className="text-[15vw] sm:text-8xl md:text-9xl lg:text-[10rem] font-serif font-thin leading-[0.8] text-white">
+                      {featuredEvent.artist}
+                    </h1>
                   </div>
-                  <h1 className="text-[clamp(3.5rem,8vw,7rem)] font-prettywise leading-[0.85] text-[var(--white)] mb-4">
-                    {featuredEvent.artist}
-                  </h1>
-                  <p className="text-3xl lg:text-4xl font-prettywise text-[var(--gold)] mb-6">
-                    {featuredEvent.title}
-                  </p>
-                  <p className="text-sm font-neue-haas text-[var(--white)]/60 leading-relaxed max-w-md">
+                  <div className="flex items-baseline gap-4 mt-6">
+                    <span className="text-5xl md:text-6xl lg:text-7xl font-serif italic" style={{ color: 'var(--gold)' }}>
+                      {featuredEvent.title}
+                    </span>
+                    <div className="h-px flex-1" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
+                  </div>
+                  {/* Tagline/Description */}
+                  <p className="text-base md:text-lg text-white/70 leading-relaxed max-w-lg font-light pt-6">
                     {featuredEvent.tagline}
                   </p>
                 </div>
                 
-                {/* Artists Grid */}
-                <div className="grid grid-cols-3 gap-6">
-                  {["Yasmina", "Sabzi", "Wian"].map((artist, i) => (
-                    <div key={i}>
-                      <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40 mb-1">Artist</p>
-                      <p className="text-base font-prettywise text-[var(--white)]">{artist}</p>
+                {/* Featured Artists Section */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="text-[9px] uppercase tracking-[0.4em]" style={{ color: 'var(--gold)/60' }}>Featuring</span>
+                    <div className="h-px flex-1" style={{ backgroundColor: 'var(--gold)', opacity: 0.2 }} />
+                  </div>
+                  <div className="flex flex-wrap gap-x-6 gap-y-2">
+                    {artistNames.map((artist, index) => (
+                      <div key={index} className="flex items-baseline gap-2">
+                        <div className="w-1 h-1 rounded-full" style={{ backgroundColor: 'var(--gold)' }} />
+                        <p className="text-xl font-serif text-white">{artist.trim()}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Event Details - Editorial Layout */}
+                <div className="relative">
+                  {/* Top accent line */}
+                  <div className="absolute top-0 left-0 w-16 h-px" style={{ backgroundColor: 'var(--gold)' }} />
+                  
+                  <div className="pt-8 space-y-6">
+                    {/* Venue */}
+                    <div className="flex items-start gap-8">
+                      <div className="flex-1">
+                        <p className="text-2xl font-serif text-white mb-1">Fortune Sound Club</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-white/40">Vancouver, British Columbia</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-3xl font-thin text-white">10PM</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-white/40">Late Night</p>
+                      </div>
                     </div>
-                  ))}
-                </div>
-                
-                {/* Event Details */}
-                <div className="grid grid-cols-2 gap-8 py-8 border-y border-[var(--gold)]/10">
-                  <div>
-                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-3">Venue</p>
-                    <p className="text-lg font-prettywise text-[var(--white)]">Fortune Sound Club</p>
-                    <p className="text-xs font-neue-haas text-[var(--white)]/40">Vancouver, Canada</p>
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-3">Time</p>
-                    <p className="text-lg font-neue-haas text-[var(--white)]">10:00 PM</p>
-                    <p className="text-xs font-neue-haas text-[var(--white)]/40">Late Night Session</p>
+                    
+                    {/* Bottom details strip */}
+                    <div className="flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-white/60">
+                      <span style={{ color: 'var(--gold)' }}>19+</span>
+                      <div className="w-px h-3" style={{ backgroundColor: 'var(--gold)', opacity: 0.4 }} />
+                      <span>ID Required</span>
+                      <div className="w-px h-3" style={{ backgroundColor: 'var(--gold)', opacity: 0.4 }} />
+                      <span>4 Hour Session</span>
+                    </div>
                   </div>
                 </div>
-                
-                {/* Price & Action */}
-                <div className="space-y-8">
-                  <div>
-                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-2">Starting From</p>
-                    <div className="flex items-baseline gap-3">
-                      <span className="text-6xl lg:text-7xl font-prettywise text-[var(--gold)]">{featuredEvent.price}</span>
-                      <span className="text-xs font-neue-haas text-[var(--gold)]/40 uppercase tracking-wider">CAD</span>
+
+                {/* CTA Section */}
+                <div className="flex items-center gap-6 pt-4">
+                  <Button 
+                    size="lg"
+                    className="px-10 py-6 text-xs uppercase tracking-[0.3em] font-light border-0"
+                    style={{ 
+                      backgroundColor: 'var(--gold)', 
+                      color: 'var(--maroon-red)'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                  >
+                    Secure Tickets · ${featuredEvent.price}
+                  </Button>
+                  <button 
+                    className="text-xs uppercase tracking-[0.2em] text-white/60 hover:text-white"
+                    style={{ transition: 'color 0.3s' }}
+                  >
+                    Event Details
+                  </button>
+                </div>
+              </div>
+              
+              {/* Right - Creative Poster Layout */}
+              <div className="lg:col-span-6 relative flex justify-center lg:justify-end">
+                <div className="relative w-full max-w-[480px] lg:max-w-[560px]">
+                  {/* Geometric Frame Elements */}
+                  <div className="absolute -top-8 -right-8 w-32 h-32 border" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
+                  <div className="absolute -bottom-8 -left-8 w-32 h-32 border" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
+                  
+                  {/* Main Poster with Creative Crop */}
+                  <div className="relative aspect-[3/4] overflow-hidden">
+                    <div className="absolute inset-0 border" style={{ borderColor: 'var(--gold)', opacity: 0.3 }} />
+                    <Image
+                      src={featuredEvent.image}
+                      alt={featuredEvent.artist}
+                      fill
+                      className="object-cover scale-105"
+                      priority
+                    />
+                    {/* Subtle Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
+                    
+                    {/* Status Badge - Bottom Left */}
+                    <div className="absolute bottom-8 left-8">
+                      <div className="px-4 py-2 backdrop-blur-sm border" style={{ backgroundColor: 'var(--maroon-red)/60', borderColor: 'var(--gold)' }}>
+                        <p className="text-xs uppercase tracking-[0.3em] font-light" style={{ color: 'var(--gold)' }}>{featuredEvent.status}</p>
+                      </div>
                     </div>
                   </div>
                   
-                  {/* Luxury CTA */}
-                  <div className="space-y-4">
-                    <button className="w-full relative overflow-hidden group">
-                      <div className="absolute inset-0 bg-[var(--gold)] transition-all duration-300 ease-out" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100" />
-                      <div className="relative px-8 py-6">
-                        <p className="text-[11px] font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium transition-all duration-300">
-                          Reserve Experience
-                        </p>
-                      </div>
-                    </button>
-                    
-                    <div className="flex items-center justify-center gap-6 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/30">
-                      <span>19+ Event</span>
-                      <span className="w-1 h-1 bg-[var(--gold)]/30 rounded-full" />
-                      <span>ID Required</span>
-                    </div>
+                  {/* Floating Date Box - Outside Image */}
+                  <div className="absolute -top-6 -right-6 w-24 h-24 flex flex-col items-center justify-center" style={{ backgroundColor: 'var(--gold)' }}>
+                    <p className="text-3xl font-serif font-light" style={{ color: 'var(--maroon-red)' }}>31</p>
+                    <p className="text-[10px] uppercase tracking-[0.3em]" style={{ color: 'var(--maroon-red)' }}>August</p>
+                  </div>
+                  
+                  {/* Side Typography Element */}
+                  <div className="absolute -right-4 top-1/2 -translate-y-1/2 -rotate-90 origin-center">
+                    <span className="text-xs uppercase tracking-[0.8em] text-white/20 font-light">
+                      Vancouver Launch
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          
         </div>
       </div>
     </section>
