@@ -91,32 +91,40 @@ export const events: Event[] = [
   {
     id: 5,
     number: "05",
-    slug: "ar-rahman-symphony-orchestra-sydney-2025",
-    artist: "AR Rahman",
-    title: "Symphony Orchestra",
-    date: "15 Jun",
-    year: "2025",
-    venue: "Sydney Opera House",
-    city: "Sydney",
-    country: "Australia",
-    price: "250",
-    image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&q=80",
-    status: "Exclusive",
+    slug: "francis-mercier-fortune-sound-club-vancouver-2024",
+    artist: "FRANCIS MERCIER",
+    title: "Live at Fortune Sound Club",
+    tagline: "Deep, soulful, and globally inspired Afro house and melodic sound",
+    tour: "Featuring Freeky.P & I Am Sotto Voce",
+    description: "Francis Mercier brings his signature Afro house and melodic sound to Fortune Sound Club with local legends on support.",
+    date: "12 Sep",
+    dates: "Friday, September 12",
+    year: "2024",
+    venue: "Fortune Sound Club",
+    city: "Vancouver",
+    country: "Canada",
+    price: "TBD",
+    image: "/events/Francis Mercier Poster.webp",
+    status: "On Sale",
     isFeatured: false,
   },
   {
     id: 6,
     number: "06",
-    slug: "bollywood-night-summer-beach-party-miami-2025",
-    artist: "Bollywood Night",
-    title: "Summer Beach Party",
-    date: "04 Jul",
-    year: "2025",
-    venue: "Miami Beach",
-    city: "Miami",
-    country: "USA",
-    price: "35",
-    image: "https://images.unsplash.com/photo-1504680177321-2e6a879aac86?w=800&q=80",
+    slug: "neon-affair-wavy-edition-kolkata-2024",
+    artist: "Neon Affair",
+    title: "The Wavy Edition",
+    tagline: "The city's most exclusive night returns",
+    tour: "Featuring DJ Shubham",
+    description: "AJ Wavy all the way from London headlines an unforgettable evening of sound and spectacle. Limited capacity. Maximum energy. All class.",
+    date: "24 Aug",
+    dates: "Sunday, August 24 · 5:00 pm onwards",
+    year: "2024",
+    venue: "Miss Ginko",
+    city: "Kolkata",
+    country: "India",
+    price: "TBD",
+    image: "/events/neon affair.webp",
     status: "On Sale",
     isFeatured: false,
   },
@@ -128,7 +136,23 @@ export const getFeaturedEvent = (): Event | undefined => {
 };
 
 export const getUpcomingEvents = (): Event[] => {
-  return events.filter(event => !event.isFeatured);
+  return events
+    .filter(event => !event.isFeatured)
+    .sort((a, b) => {
+      // Parse dates for comparison (format: "DD MMM")
+      const monthMap: { [key: string]: number } = {
+        'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+        'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+      };
+      
+      const [dayA, monthA] = a.date.split(' ');
+      const [dayB, monthB] = b.date.split(' ');
+      
+      const dateA = new Date(parseInt(a.year), monthMap[monthA], parseInt(dayA));
+      const dateB = new Date(parseInt(b.year), monthMap[monthB], parseInt(dayB));
+      
+      return dateA.getTime() - dateB.getTime();
+    });
 };
 
 export const getEventBySlug = (slug: string): Event | undefined => {

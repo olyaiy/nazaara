@@ -1,6 +1,7 @@
 import "./globals.css";
 import localFont from "next/font/local";
 import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 
 const prettywise = localFont({
   src: [
@@ -151,6 +152,7 @@ export default function RootLayout({
         <main className="pt-24">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );
