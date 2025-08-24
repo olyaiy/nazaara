@@ -119,8 +119,8 @@ export default function BookingsPage() {
             </h1>
             
             <p className="text-lg font-neue-haas text-[var(--white)]/70 leading-relaxed max-w-2xl mb-12">
-              From intimate soirées to grand celebrations, we orchestrate extraordinary entertainment 
-              experiences with exclusive access to the world's most celebrated South Asian artists.
+              From intimate soirï¿½es to grand celebrations, we orchestrate extraordinary entertainment 
+              experiences with exclusive access to the world&apos;s most celebrated South Asian artists.
             </p>
             
             {/* Stats Bar */}
@@ -326,7 +326,7 @@ export default function BookingsPage() {
                 </h2>
                 
                 <p className="text-lg font-neue-haas text-[var(--white)]/70 leading-relaxed mb-8">
-                  We don't showcase portfolios. Our reputation speaks through whispers in elite circles. 
+                  We don&apos;t showcase portfolios. Our reputation speaks through whispers in elite circles. 
                   When you need Bollywood royalty, international sensations, or cultural icons, we make it happen.
                 </p>
                 
@@ -336,7 +336,7 @@ export default function BookingsPage() {
                     <div>
                       <h3 className="text-lg font-prettywise text-[var(--white)] mb-2">Bollywood A-Listers</h3>
                       <p className="text-sm font-neue-haas text-[var(--white)]/50">
-                        Direct access to India's biggest stars for your most prestigious events
+                        Direct access to India&apos;s biggest stars for your most prestigious events
                       </p>
                     </div>
                   </div>
@@ -416,13 +416,13 @@ export default function BookingsPage() {
             </div>
             
             <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--white)] mb-6">
-              Let's Create
+              Let&apos;s Create
               <span className="block text-[var(--gold)]">Magic Together</span>
             </h2>
             
             <p className="text-lg font-neue-haas text-[var(--white)]/60 max-w-2xl mx-auto mb-12">
               Every extraordinary event begins with a conversation. Share your vision, 
-              and we'll orchestrate an experience beyond imagination.
+              and we&apos;ll orchestrate an experience beyond imagination.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
