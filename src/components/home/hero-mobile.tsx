@@ -23,11 +23,21 @@ export default async function HeroMobile() {
 
   return (
     <section className="relative min-h-[100dvh] overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
-      {/* Geometric accent pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
-        <div className="absolute top-0 right-0 w-[200%] h-[200%] -translate-x-1/2 -translate-y-1/2 rotate-45" style={{ 
-          background: `repeating-linear-gradient(90deg, var(--gold) 0px, var(--gold) 1px, transparent 1px, transparent 80px)`
-        }} />
+      {/* Shadow Overlay for depth */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-transparent" />
+      
+      {/* Geometric Pattern Overlay */}
+      <div className="absolute inset-0 opacity-10">
+        <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+          <defs>
+            <pattern id="hero-pattern-mobile" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+              <circle cx="30" cy="30" r="1" fill="var(--gold)" />
+              <path d="M0 30 L30 0 L60 30 L30 60 Z" stroke="var(--gold)" strokeWidth="0.5" fill="none" opacity="0.35" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hero-pattern-mobile)" />
+        </svg>
       </div>
       
       <div className="relative flex flex-col min-h-[100dvh]">
