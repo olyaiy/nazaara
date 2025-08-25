@@ -45,27 +45,13 @@ export default async function HeroMobile() {
         {/* Creative poster layout */}
         <div className="relative px-6 pb-6">
           <div className="relative">
-            {/* Corner accent marks */}
-            <div className="absolute -top-2 -left-2 w-8 h-8">
-              <div className="absolute top-0 left-0 w-full h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
-              <div className="absolute top-0 left-0 h-full w-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
-            </div>
-            <div className="absolute -top-2 -right-2 w-8 h-8">
-              <div className="absolute top-0 right-0 w-full h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
-              <div className="absolute top-0 right-0 h-full w-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
-            </div>
-            <div className="absolute -bottom-2 -left-2 w-8 h-8">
-              <div className="absolute bottom-0 left-0 w-full h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
-              <div className="absolute bottom-0 left-0 h-full w-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
-            </div>
-            <div className="absolute -bottom-2 -right-2 w-8 h-8">
-              <div className="absolute bottom-0 right-0 w-full h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
-              <div className="absolute bottom-0 right-0 h-full w-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
-            </div>
+            {/* Artistic torn paper effect background */}
+            <div className="absolute inset-0 -rotate-1 scale-105" style={{ backgroundColor: 'var(--white)', opacity: 0.03 }} />
+            <div className="absolute inset-0 rotate-1 scale-102" style={{ backgroundColor: 'var(--gold)', opacity: 0.02 }} />
             
             {/* Main poster container */}
             <HeroMobileButton eventSlug={featuredEvent.slug} asChild>
-              <div className="relative aspect-[3/4] overflow-hidden">
+              <div className="relative aspect-[3/4] overflow-hidden shadow-2xl">
                 <Image 
                   src={featuredEvent.image}
                   alt={featuredEvent.title}
@@ -74,6 +60,33 @@ export default async function HeroMobile() {
                   priority
                 />
                 
+                {/* Vintage photo corner tabs */}
+                <div className="absolute -top-1 left-4 w-4 h-3 rotate-12" style={{ 
+                  backgroundColor: 'var(--gold)', 
+                  opacity: 0.15,
+                  clipPath: 'polygon(0% 0%, 100% 0%, 85% 100%, 15% 100%)'
+                }} />
+                <div className="absolute -top-1 right-4 w-4 h-3 -rotate-12" style={{ 
+                  backgroundColor: 'var(--gold)', 
+                  opacity: 0.15,
+                  clipPath: 'polygon(0% 0%, 100% 0%, 85% 100%, 15% 100%)'
+                }} />
+                
+                {/* Floating date element - separate from image */}
+                <div className="absolute -bottom-4 -right-4 w-16 h-16 flex items-center justify-center" style={{ 
+                  backgroundColor: 'var(--maroon-red)',
+                  border: '2px solid var(--gold)',
+                  borderRadius: '50%'
+                }}>
+                  <div className="text-center">
+                    <p className="font-prettywise text-xl leading-none" style={{ color: 'var(--gold)' }}>
+                      {day}
+                    </p>
+                    <p className="font-neue-haas text-[7px] uppercase tracking-wider" style={{ color: 'var(--white)', opacity: 0.7 }}>
+                      {month}
+                    </p>
+                  </div>
+                </div>
               </div>
             </HeroMobileButton>
           </div>
