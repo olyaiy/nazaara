@@ -134,7 +134,7 @@ export function Navigation() {
             aria-controls="mobile-menu"
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="lg:hidden text-foreground/80 hover:text-primary transition-colors p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="lg:hidden text-foreground/80 hover:text-primary transition-colors p-2 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
           >
             {open ? (
               <X className="h-6 w-6" />
