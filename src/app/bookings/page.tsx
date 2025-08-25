@@ -97,12 +97,12 @@ export default function BookingsPage() {
             </div>
             
             {/* Main Title */}
-            <h1 className="text-[clamp(4rem,10vw,10rem)] font-prettywise leading-[0.8] text-[var(--white)] mb-8">
+            <h1 className="text-[clamp(4rem,10vw,10rem)] font-prettywise leading-[0.8] text-[var(--off-white)] mb-8">
               Curated
               <span className="block text-[var(--gold)]">Excellence</span>
             </h1>
             
-            <p className="text-lg font-neue-haas text-[var(--white)]/70 leading-relaxed max-w-2xl mb-12">
+            <p className="text-lg font-neue-haas text-[var(--off-white)]/70 leading-relaxed max-w-2xl mb-12">
               From intimate soir�es to grand celebrations, we orchestrate extraordinary entertainment 
               experiences with exclusive access to the world&apos;s most celebrated South Asian artists.
             </p>
@@ -126,22 +126,36 @@ export default function BookingsPage() {
                   </span>
                 </div>
                 
-                <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--white)] mb-8">
+                <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-8">
                   Beyond
                   <span className="block text-[var(--gold)]">Extraordinary</span>
                 </h2>
                 
-                <div className="space-y-6 text-[var(--white)]/70 font-neue-haas leading-relaxed mb-12">
+                <div className="space-y-6 text-[var(--off-white)]/70 font-neue-haas leading-relaxed mb-12">
                   <p>
                     From intimate celebrations to grand spectacles, we orchestrate private experiences 
                     that transcend the ordinary. Our reputation isn&apos;t built on portfolios—it&apos;s earned 
                     through whispers in elite circles.
                   </p>
                   
-                  <p>
-                    Whether you seek Bollywood royalty for your private celebration or world-class DJs 
-                    for your luxury wedding, we provide exclusive access to the impossible.
-                  </p>
+                  {/* CTA Button */}
+                  <div className="pt-4">
+                    <button 
+                      onClick={() => {
+                        const formSection = document.getElementById('contact-form');
+                        formSection?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="group relative inline-flex items-center gap-4 bg-gradient-to-r from-[var(--gold)] to-[var(--dark-gold)] text-[var(--maroon-red)] hover:from-[var(--gold)]/90 hover:to-[var(--dark-gold)]/90 px-8 py-4 transition-all duration-300 overflow-hidden"
+                    >
+                      {/* Background shine effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--off-white)]/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                      
+                      <span className="relative text-sm font-prettywise uppercase tracking-[0.3em]">
+                        Book a Consultation
+                      </span>
+                      <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
                 </div>
                 
                 {/* Service Details */}
@@ -149,8 +163,8 @@ export default function BookingsPage() {
                   <div className="flex items-start gap-4">
                     <Star className="w-5 h-5 text-[var(--gold)] mt-1" />
                     <div>
-                      <h3 className="text-lg font-prettywise text-[var(--white)] mb-2">Bollywood A-Listers</h3>
-                      <p className="text-sm font-neue-haas text-[var(--white)]/50">
+                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">Bollywood A-Listers</h3>
+                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
                         Direct access to India&apos;s biggest stars for your most prestigious private events
                       </p>
                     </div>
@@ -158,8 +172,8 @@ export default function BookingsPage() {
                   <div className="flex items-start gap-4">
                     <Crown className="w-5 h-5 text-[var(--gold)] mt-1" />
                     <div>
-                      <h3 className="text-lg font-prettywise text-[var(--white)] mb-2">International Artists</h3>
-                      <p className="text-sm font-neue-haas text-[var(--white)]/50">
+                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">International Artists</h3>
+                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
                         Global South Asian sensations and cultural icons for exclusive performances
                       </p>
                     </div>
@@ -167,8 +181,8 @@ export default function BookingsPage() {
                   <div className="flex items-start gap-4">
                     <Users className="w-5 h-5 text-[var(--gold)] mt-1" />
                     <div>
-                      <h3 className="text-lg font-prettywise text-[var(--white)] mb-2">Private Concerts</h3>
-                      <p className="text-sm font-neue-haas text-[var(--white)]/50">
+                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">Private Concerts</h3>
+                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
                         Intimate performances and private concerts by legendary artists
                       </p>
                     </div>
@@ -219,10 +233,10 @@ export default function BookingsPage() {
                 </span>
                 <div className="w-16 h-px bg-[var(--gold)]/20" />
               </div>
-              <h2 className="text-[clamp(3rem,6vw,6rem)] font-prettywise leading-[0.9] text-[var(--white)] mb-6">
+              <h2 className="text-[clamp(3rem,6vw,6rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-6">
                 <span className="text-[var(--gold)]">DJ Roster</span>
               </h2>
-              <p className="text-lg font-neue-haas text-[var(--white)]/60 max-w-2xl mx-auto">
+              <p className="text-lg font-neue-haas text-[var(--off-white)]/60 max-w-2xl mx-auto">
                 Professional DJs available for private bookings
               </p>
             </div>
@@ -282,7 +296,7 @@ export default function BookingsPage() {
                         <p className="text-[9px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40 mb-2">
                           {dj.title}
                         </p>
-                        <h3 className="text-2xl font-prettywise text-[var(--white)]">
+                        <h3 className="text-2xl font-prettywise text-[var(--off-white)]">
                           {dj.name}
                         </h3>
                       </div>
@@ -290,15 +304,15 @@ export default function BookingsPage() {
                       {/* Info */}
                       <div className="space-y-3 mb-6">
                         <div className="flex justify-between items-baseline py-2 border-b border-[var(--gold)]/10">
-                          <span className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40">
+                          <span className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--off-white)]/40">
                             Specialty
                           </span>
-                          <span className="text-sm font-neue-haas text-[var(--white)]/70">
+                          <span className="text-sm font-neue-haas text-[var(--off-white)]/70">
                             {dj.specialty}
                           </span>
                         </div>
                         <div className="flex justify-between items-baseline">
-                          <span className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40">
+                          <span className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--off-white)]/40">
                             Experience
                           </span>
                           <span className="text-sm font-prettywise text-[var(--gold)]">
@@ -309,7 +323,7 @@ export default function BookingsPage() {
 
                       {/* Performances Count */}
                       <div className="flex items-center justify-between">
-                        <span className="text-[11px] font-neue-haas text-[var(--white)]/50">
+                        <span className="text-[11px] font-neue-haas text-[var(--off-white)]/50">
                           {dj.performances}
                         </span>
                         <button className="text-[var(--gold)] hover:text-[var(--gold)]/80 transition-colors">
@@ -332,7 +346,7 @@ export default function BookingsPage() {
   
 
       {/* Contact Section */}
-      <section className="py-24 border-t border-[var(--gold)]/10">
+      <section id="contact-form" className="py-24 border-t border-[var(--gold)]/10">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
@@ -345,33 +359,33 @@ export default function BookingsPage() {
                   </span>
                 </div>
                 
-                <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--white)] mb-8">
+                <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-8">
                   Let&apos;s Create
                   <span className="block text-[var(--gold)]">Magic Together</span>
                 </h2>
                 
-                <p className="text-lg font-neue-haas text-[var(--white)]/60 leading-relaxed mb-12">
+                <p className="text-lg font-neue-haas text-[var(--off-white)]/60 leading-relaxed mb-12">
                   Every extraordinary event begins with a conversation. Share your vision, 
                   and we&apos;ll orchestrate an experience beyond imagination.
                 </p>
                 
                 <div className="space-y-8 mb-12">
                   <div>
-                    <h3 className="text-xl font-prettywise text-[var(--white)] mb-2">What We Need</h3>
-                    <p className="text-sm font-neue-haas text-[var(--white)]/50">
+                    <h3 className="text-xl font-prettywise text-[var(--off-white)] mb-2">What We Need</h3>
+                    <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
                       Event type, date, location, and guest count to get started
                     </p>
                   </div>
                   <div>
-                    <h3 className="text-xl font-prettywise text-[var(--white)] mb-2">Response Time</h3>
-                    <p className="text-sm font-neue-haas text-[var(--white)]/50">
+                    <h3 className="text-xl font-prettywise text-[var(--off-white)] mb-2">Response Time</h3>
+                    <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
                       We typically respond within 24 hours with initial availability
                     </p>
                   </div>
                 </div>
                 
                 <div className="pt-8 border-t border-[var(--gold)]/10">
-                  <p className="text-sm font-neue-haas text-[var(--white)]/40 mb-4">
+                  <p className="text-sm font-neue-haas text-[var(--off-white)]/40 mb-4">
                     Preferred contact for urgent bookings
                   </p>
                   <a 
@@ -383,78 +397,123 @@ export default function BookingsPage() {
                 </div>
               </div>
 
-              {/* Right Form */}
-              <div className="lg:pl-8">
-                <form className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="Your Name"
-                        className="w-full px-0 py-4 bg-transparent border-0 border-b-2 border-[var(--gold)]/20 text-[var(--white)] placeholder:text-[var(--white)]/40 focus:border-[var(--gold)] focus:outline-none transition-colors font-neue-haas"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        type="email"
-                        placeholder="Email Address"
-                        className="w-full px-0 py-4 bg-transparent border-0 border-b-2 border-[var(--gold)]/20 text-[var(--white)] placeholder:text-[var(--white)]/40 focus:border-[var(--gold)] focus:outline-none transition-colors font-neue-haas"
-                      />
-                    </div>
-                  </div>
+              {/* Right Form - Enhanced Design */}
+              <div className="relative">
+                {/* Premium form container with subtle gradient background */}
+                <div className="relative bg-gradient-to-br from-[var(--maroon-red)]/10 via-transparent to-[var(--dark-green)]/5 p-12 backdrop-blur-sm">
                   
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="Event Type"
-                        className="w-full px-0 py-4 bg-transparent border-0 border-b-2 border-[var(--gold)]/20 text-[var(--white)] placeholder:text-[var(--white)]/40 focus:border-[var(--gold)] focus:outline-none transition-colors font-neue-haas"
+                  <form className="space-y-8">
+                    {/* Personal Information Row */}
+                    <div className="grid md:grid-cols-2 gap-8">
+                      <div className="relative">
+                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                          Full Name
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                          placeholder="John Doe"
+                        />
+                      </div>
+                      <div className="relative">
+                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                          Email Address
+                        </label>
+                        <input
+                          type="email"
+                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                          placeholder="john@example.com"
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Event Details Row */}
+                    <div className="grid md:grid-cols-2 gap-8">
+                      <div className="relative">
+                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                          Event Type
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                          placeholder="Wedding, Corporate Event, etc."
+                        />
+                      </div>
+                      <div className="relative">
+                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                          Event Date
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                          placeholder="MM/DD/YYYY"
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Location and Scale Row */}
+                    <div className="grid md:grid-cols-2 gap-8">
+                      <div className="relative">
+                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                          Event Location
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                          placeholder="City, Country"
+                        />
+                      </div>
+                      <div className="relative">
+                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                          Expected Guests
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                          placeholder="500"
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Vision Section */}
+                    <div className="relative">
+                      <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                        Your Vision
+                      </label>
+                      <textarea
+                        rows={4}
+                        className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg resize-none"
+                        placeholder="Share your dream event details, special requirements, and artistic preferences..."
                       />
                     </div>
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="Event Date"
-                        className="w-full px-0 py-4 bg-transparent border-0 border-b-2 border-[var(--gold)]/20 text-[var(--white)] placeholder:text-[var(--white)]/40 focus:border-[var(--gold)] focus:outline-none transition-colors font-neue-haas"
-                      />
+                    
+                    {/* Submit Section with Enhanced Design */}
+                    <div className="pt-8 space-y-6">
+                      {/* Privacy Note */}
+                      <p className="text-[10px] font-neue-haas text-[var(--off-white)]/30 tracking-wider">
+                        Your information is kept strictly confidential and used solely for event planning purposes.
+                      </p>
+                      
+                      {/* Premium Submit Button */}
+                      <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-[var(--gold)]/20 via-[var(--gold)]/10 to-[var(--gold)]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <Button 
+                          type="submit"
+                          className="relative w-full bg-gradient-to-r from-[var(--gold)] to-[var(--dark-gold-gradient)] text-[var(--maroon-red)] hover:from-[var(--gold)]/90 hover:to-[var(--dark-gold-gradient)]/90 px-12 py-7 text-xs uppercase tracking-[0.4em] font-light transition-all duration-300"
+                        >
+                          <span className="font-prettywise text-base tracking-[0.3em]">Begin Your Journey</span>
+                          <ArrowRight className="ml-4 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="Location"
-                        className="w-full px-0 py-4 bg-transparent border-0 border-b-2 border-[var(--gold)]/20 text-[var(--white)] placeholder:text-[var(--white)]/40 focus:border-[var(--gold)] focus:outline-none transition-colors font-neue-haas"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="Guest Count"
-                        className="w-full px-0 py-4 bg-transparent border-0 border-b-2 border-[var(--gold)]/20 text-[var(--white)] placeholder:text-[var(--white)]/40 focus:border-[var(--gold)] focus:outline-none transition-colors font-neue-haas"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <textarea
-                      placeholder="Tell us about your vision and requirements..."
-                      rows={4}
-                      className="w-full px-0 py-4 bg-transparent border-0 border-b-2 border-[var(--gold)]/20 text-[var(--white)] placeholder:text-[var(--white)]/40 focus:border-[var(--gold)] focus:outline-none transition-colors font-neue-haas resize-none"
-                    />
-                  </div>
-                  
-                  <div className="pt-8">
-                    <Button 
-                      type="submit"
-                      className="w-full bg-[var(--gold)] text-[var(--maroon-red)] hover:bg-[var(--gold)]/90 px-12 py-6 text-sm uppercase tracking-[0.3em] font-light"
-                    >
-                      Send Inquiry
-                      <ArrowRight className="ml-3 w-4 h-4" />
-                    </Button>
-                  </div>
-                </form>
+                  </form>
+                </div>
+                
+                {/* Subtle background pattern */}
+                <div className="absolute inset-0 opacity-5 pointer-events-none">
+                  <div className="absolute top-1/4 right-1/4 w-64 h-64 border border-[var(--gold)] rotate-45" />
+                  <div className="absolute bottom-1/4 left-1/3 w-48 h-48 border border-[var(--gold)] rotate-12" />
+                </div>
               </div>
             </div>
           </div>
