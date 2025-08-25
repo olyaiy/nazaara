@@ -52,20 +52,20 @@ export default function UpcomingEvents() {
       </div>
 
       {/* Main Content - More Compact */}
-      <div className="relative container mx-auto px-4 md:px-6 lg:px-8 py-16 lg:py-20">
+      <div className="relative container mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
           
           {/* Header - Editorial Style */}
-          <SectionHeader eyebrow="Season 2024/25" title="Next Up" className="mb-12" />
+          <SectionHeader eyebrow="Season 2024/25" title="Next Up" className="mb-8 md:mb-12" />
 
           {/* Three Event Layout - Compact Container */}
-          <div className="mb-12">
+          <div className="mb-8 md:mb-12">
             {/* Decorative header line */}
-            <div className="mb-10">
+            <div className="mb-6 md:mb-10">
               <div className="h-px bg-gradient-to-r from-transparent via-[var(--gold)]/20 to-transparent" />
             </div>
             
             {/* Three Column Premium Layout */}
-            <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6 lg:gap-8">
               {upcomingEvents.slice(0, 3).map((event, index) => (
                 <div 
                   key={event.id} 
@@ -89,11 +89,11 @@ export default function UpcomingEvents() {
                         <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)]/90 via-transparent to-transparent" />
                         
                         {/* Floating Date Box - Similar to Hero */}
-                        <div className="absolute -top-3 -right-3 w-16 h-16 flex flex-col items-center justify-center" style={{ backgroundColor: 'var(--gold)' }}>
-                          <p className="text-xl font-serif font-light" style={{ color: 'var(--maroon-red)' }}>
+                        <div className="absolute -top-2 -right-2 md:-top-3 md:-right-3 w-14 h-14 md:w-16 md:h-16 flex flex-col items-center justify-center" style={{ backgroundColor: 'var(--gold)' }}>
+                          <p className="text-lg md:text-xl font-serif font-light" style={{ color: 'var(--maroon-red)' }}>
                             {event.date.split(' ')[0]}
                           </p>
-                          <p className="text-[9px] uppercase tracking-[0.2em]" style={{ color: 'var(--maroon-red)' }}>
+                          <p className="text-[8px] md:text-[9px] uppercase tracking-[0.2em]" style={{ color: 'var(--maroon-red)' }}>
                             {event.date.split(' ')[1]}
                           </p>
                         </div>
@@ -101,14 +101,14 @@ export default function UpcomingEvents() {
                     </div>
                     
                     {/* Content - Compact typography and spacing */}
-                    <div className="pt-6 pb-2">
+                    <div className="pt-4 md:pt-6 pb-2">
                       {/* Artist name */}
-                      <h3 className="font-prettywise text-[var(--white)] text-2xl lg:text-3xl mb-2 leading-tight group-hover:text-[var(--gold)] transition-colors duration-500">
+                      <h3 className="font-prettywise text-[var(--white)] text-xl md:text-2xl lg:text-3xl mb-2 leading-tight group-hover:text-[var(--gold)] transition-colors duration-500">
                         {event.artist}
                       </h3>
                       
                       {/* Event title */}
-                      <p className="text-base font-prettywise text-[var(--gold)]/60 mb-4">
+                      <p className="text-sm md:text-base font-prettywise text-[var(--gold)]/60 mb-3 md:mb-4">
                         {event.title}
                       </p>
                       
@@ -130,7 +130,7 @@ export default function UpcomingEvents() {
                           
                           {/* Price tag */}
                           <div className="text-right">
-                            <p className="text-2xl font-prettywise text-[var(--gold)]">
+                            <p className="text-xl md:text-2xl font-prettywise text-[var(--gold)]">
                               ${event.price}
                             </p>
                           </div>
@@ -148,9 +148,9 @@ export default function UpcomingEvents() {
           {/* Schedule List - Playbill Style */}
           <div className="relative">
             {/* Section Title */}
-            <div className="flex items-center gap-6 mb-12">
+            <div className="flex items-center gap-4 md:gap-6 mb-8 md:mb-12">
               <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-[var(--gold)]/20" />
-              <h3 className="text-xl font-prettywise text-[var(--gold)]">Complete Schedule</h3>
+              <h3 className="text-lg md:text-xl font-prettywise text-[var(--gold)] whitespace-nowrap">Complete Schedule</h3>
               <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-[var(--gold)]/20" />
             </div>
 
@@ -162,7 +162,48 @@ export default function UpcomingEvents() {
                   className="group cursor-pointer border-b border-[var(--gold)]/10 hover:bg-[var(--gold)]/5 transition-all duration-500"
                   onClick={() => handleEventClick(event.slug)}
                 >
-                  <div className="grid grid-cols-12 gap-4 py-8 px-4">
+                  {/* Mobile Layout */}
+                  <div className="md:hidden py-6 px-4">
+                    <div className="flex gap-4">
+                      {/* Date - Mobile */}
+                      <div className="flex-shrink-0">
+                        <div className="w-12 text-center">
+                          <p className="text-2xl font-prettywise text-[var(--gold)]/30 group-hover:text-[var(--gold)]/50 transition-colors">
+                            {event.date.split(' ')[0]}
+                          </p>
+                          <p className="text-[8px] font-neue-haas uppercase tracking-[0.2em] text-[var(--white)]/30">
+                            {event.date.split(' ')[1]}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {/* Content - Mobile */}
+                      <div className="flex-1 min-w-0">
+                        <div className="mb-2">
+                          <h4 className="text-lg font-prettywise text-[var(--white)] group-hover:text-[var(--gold)] transition-colors truncate">
+                            {event.artist}
+                          </h4>
+                          <p className="text-xs font-prettywise text-[var(--gold)]/60 truncate">
+                            {event.title}
+                          </p>
+                        </div>
+                        <p className="text-[10px] font-neue-haas text-[var(--white)]/40 uppercase tracking-wider truncate">
+                          {event.venue} · {event.city}
+                        </p>
+                        <div className="flex items-center gap-3 mt-2">
+                          <p className="text-lg font-prettywise text-[var(--gold)]">
+                            ${event.price}
+                          </p>
+                          <span className="text-[8px] font-neue-haas uppercase tracking-[0.2em] text-[var(--gold)]/40">
+                            {event.status}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Desktop Layout */}
+                  <div className="hidden md:grid grid-cols-12 gap-4 py-8 px-4">
                     {/* Date Column */}
                     <div className="col-span-2 lg:col-span-1">
                       <div className="text-center">
