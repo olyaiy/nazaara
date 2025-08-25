@@ -181,10 +181,10 @@ export default function UpcomingEvents() {
                       <div className="flex-1 min-w-0">
                         <div className="mb-2">
                           <h4 className="text-lg font-prettywise text-[var(--white)] group-hover:text-[var(--gold)] transition-colors truncate">
-                            {event.artist}
+                            {event.title}
                           </h4>
                           <p className="text-xs font-prettywise text-[var(--gold)]/60 truncate">
-                            {event.title}
+                            {event.artists ? event.artists.map(artist => artist.name).join(', ') : event.artist}
                           </p>
                         </div>
                         <p className="text-[10px] font-neue-haas text-[var(--white)]/40 uppercase tracking-wider truncate">
@@ -221,10 +221,10 @@ export default function UpcomingEvents() {
                       <div>
                         <div className="flex items-baseline gap-4 mb-2">
                           <h4 className="text-2xl font-prettywise text-[var(--white)] group-hover:text-[var(--gold)] transition-colors">
-                            {event.artist}
+                            {event.title}
                           </h4>
                           <span className="text-sm font-prettywise text-[var(--gold)]/60">
-                            {event.title}
+                            {event.artists ? event.artists.map(artist => artist.name).join(', ') : event.artist}
                           </span>
                         </div>
                         <p className="text-[11px] font-neue-haas text-[var(--white)]/40 uppercase tracking-wider">
