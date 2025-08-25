@@ -83,9 +83,10 @@ export const events: Event[] = [
     id: 3,
     number: "03",
     slug: "tamasha-strictly-bollywood-calgary-2024",
-    artist: "TAMASHA",
+    artist: "SABZI & RAYTRIX",
     artists: [
-      { name: "TAMASHA", instagram: "tamasha", soundcloud: "tamasha" },
+      { name: "Sabzi", instagram: "sabzi", soundcloud: "sabzi" },
+      { name: "Raytrix", instagram: "raytrix", soundcloud: "raytrix" },
     ],
     title: "Strictly Bollywood",
     date: "23 Aug",
