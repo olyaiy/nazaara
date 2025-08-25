@@ -165,6 +165,18 @@ export default async function HeroMobile() {
         <div className="sticky bottom-0 px-6 pb-8 pt-6" style={{ 
           backgroundColor: 'var(--maroon-red)'
         }}>
+          {/* Subtle pattern overlay for CTA section */}
+          <div className="absolute inset-0 opacity-5">
+            <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+              <defs>
+                <pattern id="hero-pattern-cta" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                  <circle cx="30" cy="30" r="1" fill="var(--gold)" />
+                  <path d="M0 30 L30 0 L60 30 L30 60 Z" stroke="var(--gold)" strokeWidth="0.5" fill="none" opacity="0.35" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#hero-pattern-cta)" />
+            </svg>
+          </div>
           <HeroMobileButton eventSlug={featuredEvent.slug} asChild>
             <button className="relative w-full overflow-hidden group">
               {/* Creative button design */}

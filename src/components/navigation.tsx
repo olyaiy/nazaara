@@ -38,7 +38,7 @@ export function Navigation() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/75 backdrop-blur-md border-b border-border/30">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-20 lg:h-24">
+        <div className="flex justify-between items-center h-16 lg:h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center group" aria-label="Nazaara Live home">
             <Image
@@ -150,7 +150,7 @@ export function Navigation() {
       <div
         id="mobile-menu"
         className={cn(
-          "lg:hidden fixed left-0 right-0 top-20 lg:top-24 origin-top border-b border-border/30 bg-background/95 backdrop-blur-md shadow-lg transition-all duration-200",
+          "lg:hidden fixed left-0 right-0 top-16 lg:top-24 origin-top border-b border-border/30 bg-background/95 backdrop-blur-md shadow-lg transition-all duration-200",
           open ? "opacity-100 scale-y-100" : "pointer-events-none opacity-0 scale-y-95"
         )}
       >
