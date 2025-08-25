@@ -113,13 +113,7 @@ export default function BookingsPage() {
 
         <div className="container mx-auto px-6 lg:px-12 relative z-10">
           <div className="max-w-5xl">
-            {/* Label */}
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-12 h-px bg-[var(--gold)]/40" />
-              <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/60">
-                Exclusive Services
-              </span>
-            </div>
+        
             
             {/* Main Title */}
             <h1 className="text-[clamp(4rem,10vw,10rem)] font-prettywise leading-[0.8] text-[var(--off-white)] mb-8">
