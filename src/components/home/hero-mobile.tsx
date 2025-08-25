@@ -1,11 +1,8 @@
-'use client'
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { getFeaturedEvent } from "@/content/events";
+import HeroMobileButton from "./hero-mobile-button";
 
 export default function HeroMobile() {
-  const router = useRouter();
   const featuredEvent = getFeaturedEvent();
 
   if (!featuredEvent) {
@@ -14,10 +11,6 @@ export default function HeroMobile() {
 
   const artistNames = featuredEvent.tour?.replace('Featuring ', '').split(/[,&]/).map(name => name.trim()) || [];
   const [day, month] = featuredEvent.date.split(' ');
-
-  const handleEventDetailsClick = () => {
-    router.push(`/event/${featuredEvent.slug}`);
-  };
 
   return (
     <section className="relative min-h-[100dvh] overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
@@ -55,7 +48,8 @@ export default function HeroMobile() {
               </div>
             </div>
             
-            <div className="relative aspect-[4/5] mx-auto max-w-[280px] w-full" onClick={handleEventDetailsClick}>
+            <HeroMobileButton eventSlug={featuredEvent.slug} asChild>
+              <div className="relative aspect-[4/5] mx-auto max-w-[280px] w-full cursor-pointer">
               <div className="absolute inset-0 border" style={{ borderColor: 'var(--gold)', opacity: 0.3 }} />
               <Image
                 src={featuredEvent.image}
@@ -76,7 +70,8 @@ export default function HeroMobile() {
                   <p className="text-[10px] uppercase tracking-[0.2em] font-light" style={{ color: 'var(--gold)' }}>{featuredEvent.status}</p>
                 </div>
               </div>
-            </div>
+              </div>
+            </HeroMobileButton>
             
             <div className="space-y-4">
               <p className="text-sm text-white/70 leading-relaxed font-light">
@@ -126,25 +121,7 @@ export default function HeroMobile() {
           </div>
           
           <div className="space-y-3 pb-safe pt-6">
-            <Button 
-              className="w-full py-5 text-xs uppercase tracking-[0.3em] font-light border-0"
-              style={{ 
-                backgroundColor: 'var(--gold)', 
-                color: 'var(--maroon-red)'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-              onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-              onClick={handleEventDetailsClick}
-            >
-              RSVP TO EVENT
-            </Button>
-            <button 
-              className="w-full py-2 text-[10px] uppercase tracking-[0.2em] text-white/60 hover:text-white"
-              style={{ transition: 'color 0.3s' }}
-              onClick={handleEventDetailsClick}
-            >
-              View Event Details
-            </button>
+            <HeroMobileButton eventSlug={featuredEvent.slug} />
           </div>
         </div>
       </div>

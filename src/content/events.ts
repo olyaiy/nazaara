@@ -37,9 +37,9 @@ export const events: Event[] = [
     slug: "nazaara-live-vancouver-2024",
     artist: "NAZAARA",
     artists: [
-      { name: "Yasmina", image: "/Yasmina.webp" },
-      { name: "Sabzi",  },
-      { name: "Wian", },
+      { name: "Yasmina", image: "/Yasmina.webp", instagram: "yasmina", soundcloud: "yasmina" },
+      { name: "Sabzi", instagram: "sabzi", soundcloud: "sabzi" },
+      { name: "Wian", instagram: "wian", soundcloud: "wian" },
     ],
     title: "Live In Vancouver",
     tagline: "Vancouver, we begin here. Step into a soundscape built to move you.",
@@ -64,7 +64,7 @@ export const events: Event[] = [
     slug: "aj-wavy-back-2-school-boston-2024",
     artist: "AJ WAVY",
     artists: [
-      { name: "AJ WAVY" },
+      { name: "AJ WAVY", instagram: "ajwavy", soundcloud: "ajwavy" },
     ],
     title: "Back 2 School",
     date: "04 Sep",
@@ -85,7 +85,7 @@ export const events: Event[] = [
     slug: "tamasha-strictly-bollywood-calgary-2024",
     artist: "TAMASHA",
     artists: [
-      { name: "TAMASHA" },
+      { name: "TAMASHA", instagram: "tamasha", soundcloud: "tamasha" },
     ],
     title: "Strictly Bollywood",
     date: "23 Aug",
@@ -106,7 +106,7 @@ export const events: Event[] = [
     slug: "aj-wavy-back-2-school-nyc-2024",
     artist: "AJ WAVY",
     artists: [
-      { name: "AJ WAVY" },
+      { name: "AJ WAVY", instagram: "ajwavy", soundcloud: "ajwavy" },
     ],
     title: "Back 2 School NYC",
     date: "05 Sep",
@@ -127,7 +127,7 @@ export const events: Event[] = [
     slug: "francis-mercier-fortune-sound-club-vancouver-2024",
     artist: "FRANCIS MERCIER",
     artists: [
-      { name: "FRANCIS MERCIER" },
+      { name: "FRANCIS MERCIER", instagram: "francismercier", soundcloud: "francismercier" },
     ],
     title: "Live at Fortune Sound Club",
     tagline: "Deep, soulful, and globally inspired Afro house and melodic sound",
@@ -152,7 +152,7 @@ export const events: Event[] = [
     slug: "neon-affair-wavy-edition-kolkata-2024",
     artist: "Neon Affair",
     artists: [
-      { name: "Neon Affair" },
+      { name: "Neon Affair", instagram: "neonaffair", soundcloud: "neonaffair" },
     ],
     title: "The Wavy Edition",
     tagline: "The city's most exclusive night returns",

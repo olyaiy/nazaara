@@ -1,12 +1,9 @@
-'use client'
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { getFeaturedEvent } from "@/content/events";
 import HeroMobile from "./hero-mobile";
+import HeroButton from "./hero-button";
 
 export default function Hero() {
-  const router = useRouter();
   const featuredEvent = getFeaturedEvent();
 
   if (!featuredEvent) {
@@ -18,10 +15,6 @@ export default function Hero() {
 
   // Parse date for display
   const [day, month] = featuredEvent.date.split(' ');
-
-  const handleEventDetailsClick = () => {
-    router.push(`/event/${featuredEvent.slug}`);
-  };
 
   return (
     <>
@@ -131,32 +124,14 @@ export default function Hero() {
 
                 {/* CTA Section */}
                 <div className="flex items-center gap-6 pt-1">
-                  <Button 
-                    size="lg"
-                    className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0 min-w-60"
-                    style={{ 
-                      backgroundColor: 'var(--gold)', 
-                      color: 'var(--maroon-red)'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-                    onClick={handleEventDetailsClick}
-                  >
-                    RSVP
-                  </Button>
-                  <button 
-                    className="text-xs uppercase tracking-[0.2em] text-white/60 hover:text-white"
-                    style={{ transition: 'color 0.3s' }}
-                    onClick={handleEventDetailsClick}
-                  >
-                    Event Details
-                  </button>
+                  <HeroButton eventSlug={featuredEvent.slug} />
                 </div>
               </div>
               
               {/* Right - Creative Poster Layout */}
               <div className="lg:col-span-6 relative flex justify-center lg:justify-center">
-                <div className="relative w-full max-w-[360px] lg:max-w-[420px] cursor-pointer group" onClick={handleEventDetailsClick}>
+                <HeroButton eventSlug={featuredEvent.slug} asChild>
+                  <div className="relative w-full max-w-[360px] lg:max-w-[420px] cursor-pointer group">
                   {/* Geometric Frame Elements */}
                   <div className="absolute -top-6 -right-6 w-28 h-28 border" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
                   <div className="absolute -bottom-6 -left-6 w-28 h-28 border" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
@@ -194,7 +169,8 @@ export default function Hero() {
                       Vancouver Launch
                     </span>
                   </div>
-                </div>
+                  </div>
+                </HeroButton>
               </div>
             </div>
           </div>
