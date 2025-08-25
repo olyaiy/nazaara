@@ -1,18 +1,23 @@
 'use client'
 import Image from "next/image";
 import { Artist } from "@/content/events";
-import { ExternalLink } from "lucide-react";
 
 interface ArtistShowcaseProps {
   artists?: Artist[];
+  // Accept but ignore optional headline to maintain callsite compatibility
+  headline?: string;
 }
 
 export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
   if (!artists || artists.length === 0) return null;
 
-  const handleArtistClick = (instagram?: string) => {
-    if (instagram) {
-      window.open(`https://instagram.com/${instagram.replace('@', '')}`, '_blank');
+  const handleSocialClick = (platform: 'instagram' | 'soundcloud', handle?: string) => {
+    if (!handle) return;
+    
+    if (platform === 'instagram') {
+      window.open(`https://instagram.com/${handle.replace('@', '')}`, '_blank');
+    } else if (platform === 'soundcloud') {
+      window.open(`https://soundcloud.com/${handle.replace('@', '')}`, '_blank');
     }
   };
 
@@ -65,8 +70,7 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
           {artists.map((artist, index) => (
             <div 
               key={index}
-              className="group relative hover:cursor-pointer"
-              onClick={() => handleArtistClick(artist.instagram)}
+              className="group relative"
             >
               {/* Artist Card - Magazine Style */}
               <div className="relative">
@@ -91,10 +95,6 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/60 via-transparent to-transparent" />
-                      {/* Hover overlay for Instagram link */}
-                      {artist.instagram && (
-                        <div className="absolute inset-0 bg-[var(--gold)]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      )}
                     </>
                   ) : (
                     <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105" style={{ backgroundColor: 'var(--black-grey)' }}>
@@ -118,17 +118,47 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
                     </div>
                   )}
                   
-                  {/* Instagram Indicator - Only if has Instagram */}
-                  {artist.instagram && (
-                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-x-0 translate-x-2">
-                      <div 
-                        className="w-10 h-10 flex items-center justify-center backdrop-blur-sm rounded-sm"
+                  {/* Social Media Icons */}
+                  <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-x-0 translate-x-2">
+                    {artist.instagram && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSocialClick('instagram', artist.instagram);
+                        }}
+                        className="w-9 h-9 flex items-center justify-center backdrop-blur-sm hover:scale-110 transition-transform duration-200"
                         style={{ backgroundColor: 'var(--gold)' }}
                       >
-                        <ExternalLink className="w-4 h-4" style={{ color: 'var(--maroon-red)' }} />
-                      </div>
-                    </div>
-                  )}
+                        <Image
+                          src="/instagram-svgrepo-com.svg"
+                          alt="Instagram"
+                          width={16}
+                          height={16}
+                          className="opacity-90"
+                          style={{ filter: 'brightness(0) saturate(100%) invert(8%) sepia(46%) saturate(2916%) hue-rotate(316deg) brightness(94%) contrast(99%)' }}
+                        />
+                      </button>
+                    )}
+                    {artist.soundcloud && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSocialClick('soundcloud', artist.soundcloud);
+                        }}
+                        className="w-9 h-9 flex items-center justify-center backdrop-blur-sm hover:scale-110 transition-transform duration-200"
+                        style={{ backgroundColor: 'var(--gold)' }}
+                      >
+                        <Image
+                          src="/soundcloud-svgrepo-com.svg"
+                          alt="SoundCloud"
+                          width={16}
+                          height={16}
+                          className="opacity-90"
+                          style={{ filter: 'brightness(0) saturate(100%) invert(8%) sepia(46%) saturate(2916%) hue-rotate(316deg) brightness(94%) contrast(99%)' }}
+                        />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Artist Info - Typography Block */}
@@ -141,13 +171,18 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
                     </h3>
                   </div>
                   
-                  {/* Instagram handle if available */}
-                  {artist.instagram && (
-                    <div className="flex items-center gap-2 mt-3 group-hover:opacity-100 opacity-60 transition-opacity duration-500">
+                  {/* Social handles if available */}
+                  {(artist.instagram || artist.soundcloud) && (
+                    <div className="flex items-center gap-2 mt-3 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
                       <div className="h-px flex-1" style={{ backgroundColor: 'var(--gold)', opacity: 0.2 }} />
-                      <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 group-hover:text-white/60 transition-colors duration-500">
-                        @{artist.instagram.replace('@', '')}
-                      </p>
+                      <div className="flex gap-3 text-[10px] uppercase tracking-[0.3em] text-white/40 group-hover:text-white/60 transition-colors duration-500">
+                        {artist.instagram && (
+                          <span>@{artist.instagram.replace('@', '')}</span>
+                        )}
+                        {artist.soundcloud && (
+                          <span>SC</span>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -164,7 +199,6 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
               <div 
                 key={index}
                 className="group relative"
-                onClick={() => handleArtistClick(artist.instagram)}
               >
                 <div className={`flex items-center gap-6 ${isEven ? '' : 'flex-row-reverse'}`}>
                   {/* Artist Image - Smaller on mobile */}
@@ -216,15 +250,57 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
                       </h3>
                     </div>
                     
-                    {artist.instagram && (
+                    {(artist.instagram || artist.soundcloud) && (
                       <div className={`flex items-center gap-3 ${isEven ? '' : 'flex-row-reverse'}`}>
                         <div className="flex-1 max-w-[80px] h-px" style={{ backgroundColor: 'var(--gold)', opacity: 0.2 }} />
-                        <p className="text-[11px] uppercase tracking-[0.25em] text-white/50">
-                          @{artist.instagram.replace('@', '')}
-                        </p>
-                        {artist.instagram && (
-                          <ExternalLink className="w-3.5 h-3.5" style={{ color: 'var(--gold)', opacity: 0.4 }} />
-                        )}
+                        <div className={`flex items-center gap-2 ${isEven ? '' : 'flex-row-reverse'}`}>
+                          <div className="flex gap-2 text-[11px] uppercase tracking-[0.25em] text-white/50">
+                            {artist.instagram && (
+                              <span>@{artist.instagram.replace('@', '')}</span>
+                            )}
+                            {artist.soundcloud && (
+                              <span>SC</span>
+                            )}
+                          </div>
+                          <div className={`flex gap-1 ${isEven ? '' : 'flex-row-reverse'}`}>
+                            {artist.instagram && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleSocialClick('instagram', artist.instagram);
+                                }}
+                                className="w-6 h-6 flex items-center justify-center hover:scale-110 transition-transform duration-200 rounded-sm"
+                                style={{ backgroundColor: 'var(--gold)', opacity: 0.8 }}
+                              >
+                                <Image
+                                  src="/instagram-svgrepo-com.svg"
+                                  alt="Instagram"
+                                  width={12}
+                                  height={12}
+                                  style={{ filter: 'brightness(0) saturate(100%) invert(8%) sepia(46%) saturate(2916%) hue-rotate(316deg) brightness(94%) contrast(99%)' }}
+                                />
+                              </button>
+                            )}
+                            {artist.soundcloud && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleSocialClick('soundcloud', artist.soundcloud);
+                                }}
+                                className="w-6 h-6 flex items-center justify-center hover:scale-110 transition-transform duration-200 rounded-sm"
+                                style={{ backgroundColor: 'var(--gold)', opacity: 0.8 }}
+                              >
+                                <Image
+                                  src="/soundcloud-svgrepo-com.svg"
+                                  alt="SoundCloud"
+                                  width={12}
+                                  height={12}
+                                  style={{ filter: 'brightness(0) saturate(100%) invert(8%) sepia(46%) saturate(2916%) hue-rotate(316deg) brightness(94%) contrast(99%)' }}
+                                />
+                              </button>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>

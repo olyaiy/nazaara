@@ -1,6 +1,7 @@
 export interface Artist {
   name: string;
   instagram?: string;
+  soundcloud?: string;
   image?: string;
 }
 
