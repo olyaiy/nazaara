@@ -82,8 +82,11 @@ export default function Home() {
               
               <Button
                 asChild
-                variant="outline"
-                className="w-full md:w-auto border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 md:px-8 py-5 md:py-6 text-xs md:text-sm uppercase tracking-wider font-light"
+                className="w-full md:w-auto px-6 md:px-8 py-5 md:py-6 text-xs md:text-sm uppercase tracking-wider font-light border-0"
+                style={{ 
+                  backgroundColor: 'var(--gold)', 
+                  color: 'var(--maroon-red)'
+                }}
               >
                 <Link href="/bookings">Inquire Now</Link>
               </Button>
@@ -126,8 +129,11 @@ export default function Home() {
                 
                 {/* Learn More CTA */}
                 <Button 
-                  variant="outline" 
-                  className="w-full md:w-auto border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 md:px-8 py-5 md:py-6 text-xs md:text-sm uppercase tracking-wider font-light group"
+                  className="w-full md:w-auto px-6 md:px-8 py-5 md:py-6 text-xs md:text-sm uppercase tracking-wider font-light group border-0"
+                  style={{ 
+                    backgroundColor: 'var(--gold)', 
+                    color: 'var(--maroon-red)'
+                  }}
                 >
                   Discover Our Story
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />

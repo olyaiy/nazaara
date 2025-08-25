@@ -7,6 +7,9 @@ interface EventHeroProps {
 }
 
 export default function EventHero({ event }: EventHeroProps) {
+  // Supporting artists excluding the main headliner
+  const supportingArtists =
+    event.artists?.filter((a) => a.name.toLowerCase() !== event.artist.toLowerCase()).map((a) => a.name) ?? [];
 
   return (
     <section className="relative overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
@@ -97,11 +100,11 @@ export default function EventHero({ event }: EventHeroProps) {
 
             {/* Mobile Details Section - Below Poster */}
             <div className="space-y-6">
-              {/* Tour/Supporting Artists */}
-              {event.tour && (
+              {/* Supporting Artists */}
+              {supportingArtists.length > 0 && (
                 <div className="text-center">
                   <p className="text-[7px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40 mb-2">Featuring</p>
-                  <p className="text-sm font-prettywise text-[var(--white)]">{event.tour}</p>
+                  <p className="text-sm font-prettywise text-[var(--white)]">{supportingArtists.join(', ')}</p>
                 </div>
               )}
               
@@ -216,11 +219,11 @@ export default function EventHero({ event }: EventHeroProps) {
                   )}
                 </div>
                 
-                {/* Tour/Supporting Artists */}
-                {event.tour && (
+                {/* Supporting Artists */}
+                {supportingArtists.length > 0 && (
                   <div className="space-y-3">
                     <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40">Featuring</p>
-                    <p className="text-base font-prettywise text-[var(--white)]">{event.tour}</p>
+                    <p className="text-base font-prettywise text-[var(--white)]">{supportingArtists.join(', ')}</p>
                   </div>
                 )}
                 
