@@ -85,31 +85,14 @@ export default function VenueFeatures({ event }: VenueFeaturesProps) {
 
         {/* Venue Description */}
         {event.venueDescription && (
-          <div className="mb-16 lg:mb-20">
-            <div className="grid lg:grid-cols-12 gap-8 items-start">
-              <div className="lg:col-span-8">
-                <div className="relative">
-                  {/* Editorial accent line */}
-                  <div className="absolute -left-6 top-0 w-1 h-16" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
-                  
-                  <p className="text-base lg:text-lg font-light text-white/70 leading-relaxed pl-8">
-                    {event.venueDescription}
-                  </p>
-                </div>
-              </div>
-              
-              {/* Side element */}
-              <div className="lg:col-span-4 flex justify-end">
-                <div className="text-right">
-                  <div className="flex items-center justify-end gap-3 mb-2">
-                    <div className="h-px w-8" style={{ backgroundColor: 'var(--gold)', opacity: 0.4 }} />
-                    <div className="w-2 h-2 rotate-45" style={{ backgroundColor: 'var(--gold)', opacity: 0.6 }} />
-                  </div>
-                  <p className="text-[10px] uppercase tracking-[0.4em] font-light text-white/40">
-                    About The Space
-                  </p>
-                </div>
-              </div>
+          <div className="relative mb-12 lg:mb-16 ml-8">
+            {/* Subtle left accent */}
+            <div className="absolute -left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[var(--gold)]/30 via-[var(--gold)]/10 to-transparent" />
+            
+            <div className="max-w-2xl">
+              <p className="text-sm lg:text-base font-light text-white/60 leading-relaxed italic">
+                {event.venueDescription}
+              </p>
             </div>
           </div>
         )}
