@@ -1,14 +1,16 @@
 'use client'
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import React from "react";
 
 interface HeroButtonProps {
   eventSlug: string;
   asChild?: boolean;
   children?: React.ReactNode;
+  className?: string;
 }
 
-export default function HeroButton({ eventSlug, asChild, children }: HeroButtonProps) {
+export default function HeroButton({ eventSlug, asChild, children, className }: HeroButtonProps) {
   const router = useRouter();
 
   const handleEventDetailsClick = () => {
@@ -17,7 +19,7 @@ export default function HeroButton({ eventSlug, asChild, children }: HeroButtonP
 
   if (asChild) {
     return (
-      <div onClick={handleEventDetailsClick}>
+      <div onClick={handleEventDetailsClick} className={className}>
         {children}
       </div>
     );
