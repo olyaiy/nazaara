@@ -101,7 +101,7 @@ export default function Home() {
             className="mb-16"
           />
           
-          <div className="max-w-6xl mx-auto">
+          <div className=" mx-auto">
             {/* Main Content Grid */}
             <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
               {/* Left - Story Preview */}

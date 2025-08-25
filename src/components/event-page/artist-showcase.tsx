@@ -98,7 +98,7 @@ export default function ArtistShowcase({ artists, headline }: ArtistShowcaseProp
                       )}
                     </>
                   ) : (
-                    <div className="absolute inset-0" style={{ backgroundColor: 'var(--black-grey)' }}>
+                    <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105" style={{ backgroundColor: 'var(--black-grey)' }}>
                       {/* Simple border frame */}
                       <div 
                         className="absolute inset-4 border"

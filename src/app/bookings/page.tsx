@@ -97,9 +97,16 @@ export default function BookingsPage() {
     <div className="min-h-screen bg-[var(--black-grey)]">
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
-        {/* Background gradient with subtle pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--maroon-red)] via-[var(--maroon-red)]/90 to-[var(--dark-green)]">
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_50%,var(--gold)_0%,transparent_50%)]" />
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/bookings-bg.webp"
+            alt="DJ performing with dramatic lighting"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--maroon-red)]/80 via-[var(--maroon-red)]/60 to-[var(--dark-green)]/70" />
         </div>
 
         <div className="container mx-auto px-6 lg:px-12 relative z-10">

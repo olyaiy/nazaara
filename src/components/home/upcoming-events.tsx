@@ -55,7 +55,7 @@ export default function UpcomingEvents() {
       <div className="relative container mx-auto px-4 md:px-6 lg:px-8 py-16 lg:py-20">
           
           {/* Header - Editorial Style */}
-          <SectionHeader eyebrow="Season 2024/25" title="Program" className="mb-12" />
+          <SectionHeader eyebrow="Season 2024/25" title="Next Up" className="mb-12" />
 
           {/* Three Event Layout - Compact Container */}
           <div className="mb-12">
@@ -74,14 +74,14 @@ export default function UpcomingEvents() {
                 >
                   <div className="relative">
                     {/* The Poster - Enhanced presentation */}
-                    <div className="relative overflow-hidden">
+                    <div className="relative ">
                       {/* Main poster with refined aspect ratio */}
-                      <div className="relative aspect-[3/4] overflow-hidden bg-[var(--maroon-red)]/5">
+                      <div className="relative aspect-[3/4]  bg-[var(--maroon-red)]/5">
                         <Image
                           src={event.image}
                           alt={event.artist}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          className="object-cover group-hover:scale-102 transition-transform duration-300"
                           priority={index === 0}
                         />
                         

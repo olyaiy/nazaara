@@ -459,33 +459,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Contact CTA */}
-      <section className="py-20 bg-muted/5">
-        <div className="container mx-auto px-4">
-          <div className="max-w-xl mx-auto text-center">
-            <h3 className="text-2xl font-serif font-light text-foreground mb-4">
-              Ready to Create
-              <span className="block italic text-[var(--gold)]">Something Extraordinary?</span>
-            </h3>
-            <p className="text-sm text-muted-foreground font-light mb-8">
-              Let&apos;s discuss how Nazaara Live can elevate your next event
-            </p>
-            <div className="flex items-center justify-center gap-6">
-              <Button 
-                variant="outline"
-                className="border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold)] hover:text-[var(--maroon-red)] px-8 py-6 text-sm uppercase tracking-wider font-light"
-              >
-                View Gallery
-              </Button>
-              <Button 
-                className="bg-[var(--gold)] text-[var(--maroon-red)] hover:bg-[var(--gold)]/90 px-8 py-6 text-sm uppercase tracking-wider font-light"
-              >
-                Book Consultation
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </div>
   );
 }
