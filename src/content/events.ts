@@ -201,3 +201,24 @@ export const getUpcomingEvents = (): Event[] => {
 export const getEventBySlug = (slug: string): Event | undefined => {
   return events.find(event => event.slug === slug);
 };
+
+// Helper to parse an Event's date into a JS Date (month/day/year)
+function toDate(event: Event): Date {
+  const monthMap: { [key: string]: number } = {
+    Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+    Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+  };
+  const [day, month] = event.date.split(" ");
+  return new Date(parseInt(event.year), monthMap[month], parseInt(day));
+}
+
+export const getEventForCity = (city?: string): Event | undefined => {
+  if (city) {
+    const match = events.find((e) => e.city.toLowerCase() === city.toLowerCase());
+    if (match) return match;
+  }
+
+  // Fallback – pick the chronologically next event regardless of city
+  const sorted = [...events].sort((a, b) => toDate(a).getTime() - toDate(b).getTime());
+  return sorted[0] ?? getFeaturedEvent();
+};

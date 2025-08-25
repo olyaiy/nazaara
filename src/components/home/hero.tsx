@@ -1,15 +1,22 @@
-import { getFeaturedEvent } from "@/content/events";
+import { cookies } from "next/headers";
+import { getEventForCity, getFeaturedEvent } from "@/content/events";
 import HeroMobile from "./hero-mobile";
 
 import HeroImage from "./hero-image";
 import HeroButton from "./hero-button";
 
-export default function Hero() {
-  const featuredEvent = getFeaturedEvent();
+export default async function Hero() {
+  const cookieStore = await cookies();
+  const city = cookieStore.get("nza_city")?.value;
+  console.log("[Hero] city cookie:", city);
+  const featuredEvent = getEventForCity(city) || getFeaturedEvent();
 
   if (!featuredEvent) {
+    console.log("[Hero] no event found – returning null");
     return null;
   }
+
+  console.log("[Hero] chosen event:", featuredEvent.slug);
 
   // Parse artist names from the tour string - handle both & and , separators
   const artistNames = featuredEvent.tour?.replace('Featuring ', '').split(/[,&]/).map(name => name.trim()) || [];

@@ -1,5 +1,6 @@
 
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import SectionHeader from "@/components/ui/section-header";
@@ -79,11 +80,12 @@ export default function Home() {
                 </div>
               </div>
               
-              <Button 
-                variant="outline" 
+              <Button
+                asChild
+                variant="outline"
                 className="w-full md:w-auto border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 md:px-8 py-5 md:py-6 text-xs md:text-sm uppercase tracking-wider font-light"
               >
-                Begin Consultation
+                <Link href="/bookings">Inquire Now</Link>
               </Button>
             </div>
           </div>
