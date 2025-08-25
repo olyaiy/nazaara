@@ -1,7 +1,7 @@
 'use client';
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Music, Mic2, Users, Star, Crown, Sparkles } from "lucide-react";
+import { ArrowRight, Users, Star, Crown } from "lucide-react";
 import { useState } from "react";
 
 export default function BookingsPage() {
@@ -69,26 +69,6 @@ export default function BookingsPage() {
     }
   ];
 
-  const services = [
-    {
-      icon: Music,
-      title: "Celebrity Performances",
-      description: "A-list Bollywood artists and international South Asian stars",
-      highlight: "Exclusive Access"
-    },
-    {
-      icon: Crown,
-      title: "Luxury Weddings",
-      description: "Bespoke entertainment curation for once-in-a-lifetime celebrations",
-      highlight: "Full Production"
-    },
-    {
-      icon: Sparkles,
-      title: "Private Celebrations",
-      description: "Intimate gatherings with world-class entertainment",
-      highlight: "Tailored Experience"
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-[var(--black-grey)]">
@@ -127,38 +107,9 @@ export default function BookingsPage() {
               experiences with exclusive access to the world&apos;s most celebrated South Asian artists.
             </p>
             
-            {/* Stats Bar */}
-            <div className="flex flex-wrap gap-12 pt-8 border-t border-[var(--gold)]/10">
-              <div>
-                <p className="text-4xl font-prettywise text-[var(--gold)]">500+</p>
-                <p className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40 mt-1">
-                  Private Events
-                </p>
-              </div>
-              <div>
-                <p className="text-4xl font-prettywise text-[var(--gold)]">200+</p>
-                <p className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40 mt-1">
-                  Celebrity Bookings
-                </p>
-              </div>
-              <div>
-                <p className="text-4xl font-prettywise text-[var(--gold)]">98%</p>
-                <p className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40 mt-1">
-                  Client Satisfaction
-                </p>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Decorative side element */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 opacity-20">
-          <div className="relative w-full h-full">
-            <div className="absolute inset-0 border-2 border-[var(--gold)]/30 rounded-full" />
-            <div className="absolute inset-8 border border-[var(--gold)]/20 rounded-full" />
-            <div className="absolute inset-16 border border-[var(--gold)]/10 rounded-full" />
-          </div>
-        </div>
       </section>
 
       {/* Private Events Introduction */}
