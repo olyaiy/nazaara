@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { getFeaturedEvent } from "@/content/events";
+import HeroMobile from "./hero-mobile";
 
 export default function Hero() {
   const router = useRouter();
@@ -23,7 +24,14 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-[80dvh] overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
+    <>
+      {/* Mobile Hero */}
+      <div className="md:hidden">
+        <HeroMobile />
+      </div>
+      
+      {/* Desktop Hero */}
+      <section className="hidden md:block relative min-h-[80dvh] overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
       {/* Shadow Overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/50" />
       <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-transparent" />
