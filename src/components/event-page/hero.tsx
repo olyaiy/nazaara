@@ -9,10 +9,34 @@ interface EventHeroProps {
 export default function EventHero({ event }: EventHeroProps) {
 
   return (
-    <section className="relative  bg-gradient-to-br from-[var(--maroon-red)] via-[var(--maroon-red)] to-[var(--dark-green)]">
+    <section className="relative overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
+      {/* Subtle gradient overlays for depth */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-black/5 via-transparent to-[var(--dark-gold)]/10" />
+      <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-transparent to-black/20" />
+      
+      {/* Geometric Pattern - Different from home, more angular */}
+      <div className="absolute inset-0 opacity-5">
+        <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+          <defs>
+            <pattern id="event-pattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+              {/* Diamond grid pattern */}
+              <path d="M40 0 L80 40 L40 80 L0 40 Z" stroke="var(--gold)" strokeWidth="0.3" fill="none" />
+              <path d="M20 20 L60 20 L60 60 L20 60 Z" stroke="var(--gold)" strokeWidth="0.2" fill="none" opacity="0.5" />
+              <circle cx="40" cy="40" r="1.5" fill="var(--gold)" opacity="0.6" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#event-pattern)" />
+        </svg>
+      </div>
+      
+      {/* Radial gradient accent - subtle glow from center */}
+      <div className="absolute inset-0 bg-radial-gradient" style={{
+        background: 'radial-gradient(circle at 50% 30%, var(--gold) 0%, transparent 25%)',
+        opacity: '0.03'
+      }} />
     
       {/* Main Container */}
-      <div className="relative  px-6 lg:px-12 py-6 lg:py-8">
+      <div className="relative px-6 lg:px-12 py-6 lg:py-16">
         <div className="max-w-[1600px] mx-auto  flex items-center">
           {/* Main Content Grid */}
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-0 items-center w-full">
@@ -124,7 +148,7 @@ export default function EventHero({ event }: EventHeroProps) {
                     <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 group-hover:opacity-100" />
                     <div className="relative px-8 py-4">
                       <p className="text-[11px] font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium">
-                        Reserve Your Experience
+                        RSVP
                       </p>
                     </div>
                   </button>
@@ -138,14 +162,12 @@ export default function EventHero({ event }: EventHeroProps) {
       
       {/* Bottom Border Transition */}
       <div className="relative">
-        {/* Subtle gradient fade using the dark green from the background */}
-        <div className="absolute inset-x-0 -bottom-px h-12 bg-gradient-to-b from-transparent to-[var(--dark-green)]/5" />
-        
         {/* Decorative border element - fades from right to left */}
         <div className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-l from-[var(--gold)]/40 via-[var(--gold)]/20 to-transparent" />
-          <div className="h-px bg-gradient-to-l from-[var(--gold)]/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-l from-[var(--gold)]/30 via-[var(--gold)]/15 to-transparent" />
+          <div className="h-px bg-gradient-to-l from-[var(--gold)]/40 to-transparent" />
         </div>
+        
       </div>
     </section>
   )
