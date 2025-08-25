@@ -205,7 +205,7 @@ export default function BookingsPage() {
                 </div>
                 
                 {/* Secondary image - celebrity performance */}
-                <div className="absolute bottom-0 left-0 w-3/5 h-3/5 overflow-hidden border-8 border-[var(--black-grey)]">
+                <div className="absolute bottom-0 left-0 w-3/5 h-3/5 overflow-hidden border-8 border-[var(--maroon-red)]">
                   <Image
                     src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&q=80"
                     alt="Celebrity performance"
