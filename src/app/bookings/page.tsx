@@ -110,6 +110,18 @@ export default function BookingsPage() {
           </div>
         </div>
 
+        {/* Gold accent transition element */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[9]">
+          <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-12">
+            {/* Subtle upward glow */}
+            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[var(--gold)]/12 to-transparent [mask-image:linear-gradient(to_right,transparent,black_25%,black_75%,transparent)]" />
+            {/* Elegant divider line */}
+            <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)]/60 via-50% to-transparent" />
+            {/* Small centered accent dot */}
+            <div className="absolute left-1/2 bottom-0 w-2 h-2 bg-[var(--gold)] transform -translate-x-1/2 translate-y-1/2" style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }} />
+          </div>
+        </div>
+
       </section>
 
       {/* Private Events Introduction */}
