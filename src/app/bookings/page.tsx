@@ -140,21 +140,22 @@ export default function BookingsPage() {
                   
                   {/* CTA Button */}
                   <div className="pt-4">
-                    <button 
+                    <Button 
+                      size="lg"
+                      className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0 min-w-60"
+                      style={{ 
+                        backgroundColor: 'var(--gold)', 
+                        color: 'var(--maroon-red)'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                      onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                       onClick={() => {
                         const formSection = document.getElementById('contact-form');
                         formSection?.scrollIntoView({ behavior: 'smooth' });
                       }}
-                      className="group relative inline-flex items-center gap-4 bg-gradient-to-r from-[var(--gold)] to-[var(--dark-gold)] text-[var(--maroon-red)] hover:from-[var(--gold)]/90 hover:to-[var(--dark-gold)]/90 px-8 py-4 transition-all duration-300 overflow-hidden"
                     >
-                      {/* Background shine effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--off-white)]/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                      
-                      <span className="relative text-sm font-prettywise uppercase tracking-[0.3em]">
-                        Book a Consultation
-                      </span>
-                      <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </button>
+                      Book a Consultation
+                    </Button>
                   </div>
                 </div>
                 
@@ -494,17 +495,20 @@ export default function BookingsPage() {
                         Your information is kept strictly confidential and used solely for event planning purposes.
                       </p>
                       
-                      {/* Premium Submit Button */}
-                      <div className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-[var(--gold)]/20 via-[var(--gold)]/10 to-[var(--gold)]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <Button 
-                          type="submit"
-                          className="relative w-full bg-gradient-to-r from-[var(--gold)] to-[var(--dark-gold-gradient)] text-[var(--maroon-red)] hover:from-[var(--gold)]/90 hover:to-[var(--dark-gold-gradient)]/90 px-12 py-7 text-xs uppercase tracking-[0.4em] font-light transition-all duration-300"
-                        >
-                          <span className="font-prettywise text-base tracking-[0.3em]">Begin Your Journey</span>
-                          <ArrowRight className="ml-4 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </div>
+                      {/* Submit Button */}
+                      <Button 
+                        type="submit"
+                        size="lg"
+                        className="w-full px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0"
+                        style={{ 
+                          backgroundColor: 'var(--gold)', 
+                          color: 'var(--maroon-red)'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                        onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                      >
+                        Send Inquiry
+                      </Button>
                     </div>
                   </form>
                 </div>
