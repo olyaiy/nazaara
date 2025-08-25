@@ -65,7 +65,7 @@ export default async function EventPage({ params }: EventPageProps) {
   return (
     <div className="min-h-dvh bg-[var(--maroon-red)]">
       <EventHero event={event} />
-      <ArtistShowcase artists={event.artists} headline={event.tour?.replace('Featuring ', 'Featuring')} />
+      <ArtistShowcase artists={event.artists} />
       <VenueFeatures event={event} />
     </div>
   );

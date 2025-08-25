@@ -56,7 +56,7 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
         </div>
 
         {/* Artists Grid - Premium Editorial Layout */}
-        <div className={`grid gap-8 lg:gap-12 ${
+        <div className={`hidden lg:grid gap-8 lg:gap-12 ${
           artists.length === 1 ? 'lg:grid-cols-1 max-w-2xl mx-auto' :
           artists.length === 2 ? 'lg:grid-cols-2 max-w-4xl mx-auto' :
           artists.length === 3 ? 'lg:grid-cols-3' :
@@ -154,6 +154,91 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Mobile Layout - Alternating Rows */}
+        <div className="lg:hidden space-y-12">
+          {artists.map((artist, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <div 
+                key={index}
+                className="group relative"
+                onClick={() => handleArtistClick(artist.instagram)}
+              >
+                <div className={`flex items-center gap-6 ${isEven ? '' : 'flex-row-reverse'}`}>
+                  {/* Artist Image - Smaller on mobile */}
+                  <div className="flex-shrink-0 relative w-32 h-32 sm:w-40 sm:h-40">
+                    <div className="relative w-full h-full overflow-hidden">
+                      {artist.image ? (
+                        <>
+                          <Image
+                            src={artist.image}
+                            alt={artist.name}
+                            fill
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 to-transparent" />
+                        </>
+                      ) : (
+                        <div className="absolute inset-0" style={{ backgroundColor: 'var(--black-grey)' }}>
+                          <div 
+                            className="absolute inset-2 border"
+                            style={{ borderColor: 'var(--gold)', opacity: 0.1 }}
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <svg 
+                              className="w-12 h-12" 
+                              viewBox="0 0 24 24" 
+                              fill="none"
+                              style={{ color: 'var(--gold)', opacity: 0.15 }}
+                            >
+                              <circle cx="12" cy="8" r="3" stroke="currentColor" strokeWidth="1" />
+                              <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                            </svg>
+                          </div>
+                        </div>
+                      )}
+                      {/* Corner accent */}
+                      <div 
+                        className={`absolute ${isEven ? '-bottom-2 -right-2' : '-bottom-2 -left-2'} w-6 h-6 border-b ${isEven ? 'border-r' : 'border-l'}`} 
+                        style={{ borderColor: 'var(--gold)', opacity: 0.4 }} 
+                      />
+                    </div>
+                  </div>
+
+                  {/* Artist Info */}
+                  <div className={`flex-1 ${isEven ? 'text-left' : 'text-right'}`}>
+                    <div className={`flex items-center gap-3 mb-3 ${isEven ? '' : 'flex-row-reverse'}`}>
+                      <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: 'var(--gold)' }} />
+                      <h3 className="text-3xl sm:text-4xl font-prettywise text-white">
+                        {artist.name}
+                      </h3>
+                    </div>
+                    
+                    {artist.instagram && (
+                      <div className={`flex items-center gap-3 ${isEven ? '' : 'flex-row-reverse'}`}>
+                        <div className="flex-1 max-w-[80px] h-px" style={{ backgroundColor: 'var(--gold)', opacity: 0.2 }} />
+                        <p className="text-[11px] uppercase tracking-[0.25em] text-white/50">
+                          @{artist.instagram.replace('@', '')}
+                        </p>
+                        {artist.instagram && (
+                          <ExternalLink className="w-3.5 h-3.5" style={{ color: 'var(--gold)', opacity: 0.4 }} />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Divider line between artists */}
+                {index < artists.length - 1 && (
+                  <div className="mt-12 flex items-center justify-center">
+                    <div className="w-full max-w-[200px] h-px bg-gradient-to-r from-transparent via-[var(--gold)]/20 to-transparent" />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Bottom Decorative Element */}
