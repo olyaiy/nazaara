@@ -5,10 +5,9 @@ import { ExternalLink } from "lucide-react";
 
 interface ArtistShowcaseProps {
   artists?: Artist[];
-  headline?: string;
 }
 
-export default function ArtistShowcase({ artists, headline }: ArtistShowcaseProps) {
+export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
   if (!artists || artists.length === 0) return null;
 
   const handleArtistClick = (instagram?: string) => {

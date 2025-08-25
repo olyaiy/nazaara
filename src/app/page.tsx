@@ -49,7 +49,7 @@ export default function Home() {
             <div className="lg:pl-12 order-1 lg:order-2">
               
               <p className="text-sm md:text-base text-muted-foreground font-light leading-relaxed mb-6 md:mb-8">
-                Curate unforgettable moments with exclusive access to the world's most celebrated 
+                Curate unforgettable moments with exclusive access to the world&apos;s most celebrated 
                 South Asian artists. From intimate soirées to grand celebrations, we orchestrate 
                 extraordinary experiences tailored to your vision.
               </p>
@@ -118,7 +118,7 @@ export default function Home() {
                 </p>
                 
                 <p className="text-sm md:text-base text-muted-foreground font-light leading-relaxed mb-6 md:mb-8">
-                  From Tamasha's high-voltage shows to new cross-cultural collaborations, we build across 
+                  From Tamasha&apos;s high-voltage shows to new cross-cultural collaborations, we build across 
                   genres, mediums, and communities. We honor roots while expanding the frame.
                 </p>
                 

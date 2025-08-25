@@ -5,51 +5,7 @@ interface VenueFeaturesProps {
 }
 
 export default function VenueFeatures({ event }: VenueFeaturesProps) {
-  // Define venue-specific features based on common venue types
-  const getVenueFeatures = (venue: string) => {
-    const venueKey = venue.toLowerCase();
-    
-    if (venueKey.includes('fortune sound club')) {
-      return {
-        capacity: "500",
-        soundSystem: "Pioneer DJM & CDJ Setup",
-        features: ["State-of-the-art sound system", "LED wall displays", "VIP bottle service", "Premium bar selection"]
-      };
-    } else if (venueKey.includes('icon')) {
-      return {
-        capacity: "800",
-        soundSystem: "Premium Audio Experience",
-        features: ["Multi-level venue", "Professional lighting", "Full bar service", "Photo opportunities"]
-      };
-    } else if (venueKey.includes('evol')) {
-      return {
-        capacity: "600",
-        soundSystem: "Club-Grade Audio System",
-        features: ["Industrial design", "Premium cocktail bar", "Professional sound", "Late-night energy"]
-      };
-    } else if (venueKey.includes('lvl three')) {
-      return {
-        capacity: "400", 
-        soundSystem: "High-End Audio Setup",
-        features: ["Rooftop views", "Craft cocktails", "Premium atmosphere", "Sophisticated crowd"]
-      };
-    } else if (venueKey.includes('miss ginko')) {
-      return {
-        capacity: "200",
-        soundSystem: "Boutique Audio Experience",
-        features: ["Curated ambiance", "Signature cocktails", "Artistic interior", "Select crowd"]
-      };
-    }
-    
-    // Default features for unknown venues
-    return {
-      capacity: "TBA",
-      soundSystem: "Professional Audio Setup",
-      features: ["Professional sound system", "Full bar service", "Premium atmosphere", "Memorable experience"]
-    };
-  };
-
-  const venueInfo = getVenueFeatures(event.venue);
+  // Intentionally simplified: feature details may be added later
 
   return (
     <section className="relative py-20 lg:py-32 overflow-hidden">
