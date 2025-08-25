@@ -18,6 +18,7 @@ export interface Event {
   dates?: string; // Full date description for featured events
   year: string; // e.g., "2024"
   venue: string;
+  venueDescription?: string; // Two-sentence venue description
   // Optional physical address for the venue. Kept separate for backward compatibility.
   venueAddress?: string;
   city: string;
@@ -47,6 +48,7 @@ export const events: Event[] = [
     dates: "Sunday, August 31 · 10:00 pm - 2:00 am",
     year: "2024",
     venue: "Fortune Sound Club",
+    venueDescription: "Located in the heart of Vancouver's vibrant Chinatown, Fortune Sound Club is an underground institution known for its intimate atmosphere and world-class sound system. This iconic venue has hosted legendary artists and continues to be the epicenter of Vancouver's electronic music scene.",
     venueAddress: "147 E Pender St, Vancouver, BC V6A 1T6, Canada",
     city: "Vancouver",
     country: "Canada",
@@ -67,6 +69,7 @@ export const events: Event[] = [
     date: "04 Sep",
     year: "2024",
     venue: "Icon Boston",
+    venueDescription: "Situated in the bustling Theater District of downtown Boston, Icon is a multi-level nightlife destination that combines cutting-edge design with premium entertainment. The venue's sophisticated atmosphere and state-of-the-art production make it Boston's premier destination for unforgettable nights.",
     venueAddress: "100 Warrenton St, Boston, MA 02116, USA",
     city: "Boston",
     country: "USA",
@@ -87,6 +90,7 @@ export const events: Event[] = [
     date: "23 Aug",
     year: "2024",
     venue: "LVL Three Calgary",
+    venueDescription: "Perched above Calgary's dynamic downtown core, LVL Three offers an elevated nightlife experience with panoramic city views. This sophisticated venue combines craft cocktails, premium atmosphere, and carefully curated music programming.",
     // Address unknown; leaving undefined intentionally
     city: "Calgary",
     country: "Canada",
@@ -107,6 +111,7 @@ export const events: Event[] = [
     date: "05 Sep",
     year: "2024",
     venue: "EVOL New York",
+    venueDescription: "Hidden in the heart of Manhattan's Lower East Side, EVOL embodies NYC's underground club culture with its raw industrial design and uncompromising sound quality. This intimate venue attracts music connoisseurs seeking authentic late-night experiences away from the mainstream.",
     // Address unknown; leaving undefined intentionally
     city: "New York",
     country: "USA",
@@ -131,6 +136,7 @@ export const events: Event[] = [
     dates: "Friday, September 12",
     year: "2024",
     venue: "Fortune Sound Club",
+    venueDescription: "Located in the heart of Vancouver's vibrant Chinatown, Fortune Sound Club is an underground institution known for its intimate atmosphere and world-class sound system. This iconic venue has hosted legendary artists and continues to be the epicenter of Vancouver's electronic music scene.",
     venueAddress: "147 E Pender St, Vancouver, BC V6A 1T6, Canada",
     city: "Vancouver",
     country: "Canada",
@@ -155,6 +161,7 @@ export const events: Event[] = [
     dates: "Sunday, August 24 · 5:00 pm onwards",
     year: "2024",
     venue: "Miss Ginko",
+    venueDescription: "Nestled in the cultural heart of Kolkata, Miss Ginko is an exclusive boutique venue known for its curated ambiance and artistic interior design. This intimate space offers a sophisticated atmosphere where music, art, and culture converge for select audiences.",
     // Address unknown; leaving undefined intentionally
     city: "Kolkata",
     country: "India",

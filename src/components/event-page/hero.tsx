@@ -10,30 +10,29 @@ export default function EventHero({ event }: EventHeroProps) {
 
   return (
     <section className="relative overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
-      {/* Subtle gradient overlays for depth */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-black/5 via-transparent to-[var(--dark-gold)]/10" />
-      <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-transparent to-black/20" />
+      {/* Gradient darkening towards bottom right */}
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/25" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--gold)]/[0.02] via-transparent to-black/15" />
       
-      {/* Geometric Pattern - Different from home, more angular */}
-      <div className="absolute inset-0 opacity-5">
+      {/* Dot matrix pattern - modern and subtle */}
+      <div className="absolute inset-0 opacity-[0.04]">
         <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
           <defs>
-            <pattern id="event-pattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
-              {/* Diamond grid pattern */}
-              <path d="M40 0 L80 40 L40 80 L0 40 Z" stroke="var(--gold)" strokeWidth="0.3" fill="none" />
-              <path d="M20 20 L60 20 L60 60 L20 60 Z" stroke="var(--gold)" strokeWidth="0.2" fill="none" opacity="0.5" />
-              <circle cx="40" cy="40" r="1.5" fill="var(--gold)" opacity="0.6" />
+            <pattern id="dots-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              {/* Gradient of dots getting smaller */}
+              <circle cx="10" cy="10" r="0.8" fill="var(--gold)" />
+              <circle cx="30" cy="10" r="0.6" fill="var(--gold)" opacity="0.8" />
+              <circle cx="10" cy="30" r="0.6" fill="var(--gold)" opacity="0.8" />
+              <circle cx="30" cy="30" r="0.4" fill="var(--gold)" opacity="0.6" />
+              <circle cx="20" cy="20" r="1" fill="var(--gold)" opacity="0.4" />
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#event-pattern)" />
+          <rect width="100%" height="100%" fill="url(#dots-pattern)" />
         </svg>
       </div>
       
-      {/* Radial gradient accent - subtle glow from center */}
-      <div className="absolute inset-0 bg-radial-gradient" style={{
-        background: 'radial-gradient(circle at 50% 30%, var(--gold) 0%, transparent 25%)',
-        opacity: '0.03'
-      }} />
+      {/* Additional darkening overlay for bottom right corner */}
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent via-50% to-[var(--dark-green)]/10" />
     
       {/* Main Container */}
       <div className="relative px-6 lg:px-12 py-6 lg:py-16">

@@ -39,17 +39,20 @@ export default function AboutPage() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-serif font-light text-foreground mb-6">
-              Defining South Asian
-              <span className="block font-serif italic text-[var(--gold)]">Entertainment Excellence</span>
+              Experience, Culture, and Sound
+              <span className="block font-serif italic text-[var(--gold)]">Without Borders</span>
             </h1>
             
             <p className="text-lg text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
-              A decade of orchestrating unforgettable experiences across continents, 
-              bringing the pulse of South Asian culture to global audiences.
+              Nazaara is a platform shaped by perspective: a wider lens, a bolder rhythm, 
+              a new era rooted in the same fire. We create entry points into worlds defined 
+              by sound, culture, and movement—familiar energy, new expression.
             </p>
           </div>
         </div>
-      </section>
+  </section>
+
+      
 
       {/* Our Story */}
       <section className="py-24">
@@ -62,33 +65,34 @@ export default function AboutPage() {
               </div>
               
               <h2 className="text-4xl md:text-5xl font-serif font-light text-foreground mb-6">
-                From Vision to
-                <span className="block font-serif italic text-[var(--gold)]">Global Movement</span>
+                From Tamasha to
+                <span className="block font-serif italic text-[var(--gold)]">A Broader Vision</span>
               </h2>
               
               <div className="space-y-6 text-muted-foreground font-light leading-relaxed">
                 <p>
-                  What began as a passion project in 2014 has evolved into the premier force 
-                  in South Asian entertainment production. Nazaara Live was born from a simple 
-                  belief: that the vibrant energy of South Asian culture deserved a global stage.
+                  Nazaara launched in 2022 as a platform for experience, culture, and sound—without borders. 
+                  It emerged from a simple belief: that the scenes we believe in, the sounds that raised us, 
+                  and the stories we&apos;re excited to tell deserve a global stage.
                 </p>
                 
                 <p>
-                  Today, we stand as the bridge between South and West, curating experiences that 
-                  honor tradition while embracing innovation. From sold-out arena tours to intimate 
-                  private celebrations, we&apos;ve redefined what it means to celebrate South Asian artistry.
+                  Tamasha isn&apos;t ending—it now lives within Nazaara as a signature experience and part 
+                  of a bigger vision. Today, we build across genres, mediums, and communities. We honor 
+                  roots while expanding the frame: a wider lens, a bolder rhythm.
                 </p>
                 
                 <p>
-                  Our journey spans 150+ cities, 500,000+ hearts touched, and countless moments 
-                  that have become memories. Yet, we&apos;re just getting started.
+                  Our journey spans 150+ cities, 500,000+ hearts touched, and countless moments turned 
+                  into memory. And we&apos;re still evolving—introducing new IPs, fresh concepts, and curated 
+                  formats under the Nazaara umbrella.
                 </p>
               </div>
               
               <div className="flex gap-8 mt-12">
                 <div>
-                  <div className="text-3xl font-serif font-light text-[var(--gold)]">10+</div>
-                  <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Years of Excellence</div>
+                  <div className="text-3xl font-serif font-light text-[var(--gold)]">2022</div>
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Founded</div>
                 </div>
                 <div>
                   <div className="text-3xl font-serif font-light text-[var(--gold)]">500K+</div>
@@ -152,9 +156,9 @@ export default function AboutPage() {
                     <div className="w-24 h-px bg-[var(--gold)] mb-6" />
                     <p className="text-xs uppercase tracking-[0.3em] text-[var(--gold)] mb-6">Premium Events & Tours</p>
                     <p className="text-muted-foreground font-light leading-relaxed max-w-md">
-                      The crown jewel of South Asian entertainment. TAMASHA transforms venues into 
-                      cultural epicenters, presenting A-list artists in productions that rival 
-                      international touring standards.
+                      Tamasha lives within Nazaara as our signature live experience—high-voltage shows 
+                      that transform venues into cultural epicenters. A-list talent, world-class 
+                      production, and the unmistakable South Asian energy that started it all.
                     </p>
                     <div className="mt-8 space-y-2">
                       <div className="flex items-center gap-4 text-sm text-muted-foreground/60">
@@ -193,13 +197,13 @@ export default function AboutPage() {
                     <div className="w-24 h-px bg-[var(--gold)] mb-6" />
                     <p className="text-xs uppercase tracking-[0.3em] text-[var(--gold)] mb-6">Cultural Productions</p>
                     <p className="text-muted-foreground font-light leading-relaxed max-w-md">
-                      Where tradition meets innovation. Nazaara creates immersive cultural experiences 
-                      that honor heritage while embracing contemporary expression, connecting 
-                      diaspora communities worldwide.
+                      The umbrella for new IPs, cross-cultural collaborations, and curated formats. 
+                      We move across genres and mediums, connecting diaspora communities worldwide—
+                      familiar energy, new expression.
                     </p>
                     <div className="mt-8 space-y-2">
                       <div className="flex items-center gap-4 text-sm text-muted-foreground/60">
-                        <span className="font-light">Since 2014</span>
+                        <span className="font-light">Since 2022</span>
                         <span>·</span>
                         <span className="font-light">200+ Events</span>
                       </div>
@@ -217,12 +221,12 @@ export default function AboutPage() {
               <div className="text-center py-12">
                 <div className="relative inline-block">
                   <div className="text-8xl md:text-9xl font-serif font-light text-[var(--gold)]/10 absolute -top-12 left-1/2 -translate-x-1/2">03</div>
-                  <h3 className="text-5xl md:text-6xl font-serif font-light text-foreground/30 mb-2 relative">Unveiling Soon</h3>
+                  <h3 className="text-5xl md:text-6xl font-serif font-light text-foreground/30 mb-2 relative">New IPs Incoming</h3>
                   <div className="w-24 h-px bg-[var(--gold)]/30 mx-auto mb-6" />
                   <p className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]/50 mb-6">Next Chapter</p>
                   <p className="text-muted-foreground/50 font-light leading-relaxed max-w-md mx-auto">
-                    A revolutionary concept in South Asian entertainment. 
-                    Details coming 2025.
+                    Fresh concepts and formats under the Nazaara umbrella—global music, emerging styles, 
+                    and diasporic rhythms alongside the iconic South Asian sound that shaped us.
                   </p>
                 </div>
               </div>
@@ -298,34 +302,34 @@ export default function AboutPage() {
             {/* Key Achievements Timeline */}
             <div className="mt-20 space-y-12">
               <div className="flex gap-8 items-start">
-                <div className="text-[var(--gold)] font-serif text-2xl font-light min-w-[80px]">2014</div>
+                <div className="text-[var(--gold)] font-serif text-2xl font-light min-w-[80px]">2022</div>
                 <div>
-                  <h3 className="text-xl font-light text-foreground mb-2">The Genesis</h3>
-                  <p className="text-muted-foreground font-light">Founded with a vision to globalize South Asian entertainment</p>
-                </div>
-              </div>
-              
-              <div className="flex gap-8 items-start">
-                <div className="text-[var(--gold)] font-serif text-2xl font-light min-w-[80px]">2016</div>
-                <div>
-                  <h3 className="text-xl font-light text-foreground mb-2">Breaking Barriers</h3>
-                  <p className="text-muted-foreground font-light">First South Asian concert tour across North America&apos;s premier venues</p>
-                </div>
-              </div>
-              
-              <div className="flex gap-8 items-start">
-                <div className="text-[var(--gold)] font-serif text-2xl font-light min-w-[80px]">2019</div>
-                <div>
-                  <h3 className="text-xl font-light text-foreground mb-2">Global Expansion</h3>
-                  <p className="text-muted-foreground font-light">Extended operations to Europe, Middle South, and Asia-Pacific</p>
+                  <h3 className="text-xl font-light text-foreground mb-2">The Launch</h3>
+                  <p className="text-muted-foreground font-light">Launched to platform experience, culture, and sound—without borders</p>
                 </div>
               </div>
               
               <div className="flex gap-8 items-start">
                 <div className="text-[var(--gold)] font-serif text-2xl font-light min-w-[80px]">2023</div>
                 <div>
-                  <h3 className="text-xl font-light text-foreground mb-2">Half Million Milestone</h3>
-                  <p className="text-muted-foreground font-light">Celebrated 500,000 tickets sold with record-breaking arena tours</p>
+                  <h3 className="text-xl font-light text-foreground mb-2">Tamasha Joins</h3>
+                  <p className="text-muted-foreground font-light">Tamasha becomes the signature live experience within Nazaara</p>
+                </div>
+              </div>
+              
+              <div className="flex gap-8 items-start"> 
+                <div className="text-[var(--gold)] font-serif text-2xl font-light min-w-[80px]">2024</div>
+                <div>
+                  <h3 className="text-xl font-light text-foreground mb-2">Global Expansion</h3>
+                  <p className="text-muted-foreground font-light">Extended operations to Europe, Middle East, and Asia-Pacific</p>
+                </div>
+              </div>
+              
+              <div className="flex gap-8 items-start">
+                <div className="text-[var(--gold)] font-serif text-2xl font-light min-w-[80px]">2025</div>
+                <div>
+                  <h3 className="text-xl font-light text-foreground mb-2">New IPs</h3>
+                  <p className="text-muted-foreground font-light">Introducing curated formats and cross-cultural collaborations</p>
                 </div>
               </div>
             </div>

@@ -125,7 +125,7 @@ export default function Hero() {
                 <div className="flex items-center gap-6 pt-1">
                   <Button 
                     size="lg"
-                    className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0"
+                    className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0 min-w-60"
                     style={{ 
                       backgroundColor: 'var(--gold)', 
                       color: 'var(--maroon-red)'
@@ -134,7 +134,7 @@ export default function Hero() {
                     onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                     onClick={handleEventDetailsClick}
                   >
-                    Secure Tickets · ${featuredEvent.price}
+                    RSVP
                   </Button>
                   <button 
                     className="text-xs uppercase tracking-[0.2em] text-white/60 hover:text-white"
