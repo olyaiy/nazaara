@@ -73,19 +73,17 @@ export default async function Hero() {
                 <div className="space-y-0">
                   <div className="overflow-hidden">
                     <h1 className="text-[13vw] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-serif font-thin leading-[0.85] text-white">
-                      {featuredEvent.artist}
+                      {featuredEvent.title}
                     </h1>
                   </div>
-                  <div className="flex items-baseline gap-4 mt-3">
-                    <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-serif italic" style={{ color: 'var(--gold)' }}>
-                      {featuredEvent.title}
-                    </span>
-                    <div className="h-px flex-1" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
-                  </div>
-                  {/* Tagline/Description */}
-                  <p className="text-sm md:text-base text-white/70 leading-relaxed max-w-lg font-light pt-3">
-                    {featuredEvent.tagline}
-                  </p>
+                  {featuredEvent.tagline && (
+                    <div className="flex items-baseline gap-4 mt-3">
+                      <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-serif italic" style={{ color: 'var(--gold)' }}>
+                        {featuredEvent.tagline}
+                      </span>
+                      <div className="h-px flex-1" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
+                    </div>
+                  )}
                 </div>
                 
                 {/* Featured Artists Section */}
@@ -116,10 +114,6 @@ export default async function Hero() {
                         <p className="text-lg font-serif text-white mb-1">Fortune Sound Club</p>
                         <p className="text-xs uppercase tracking-[0.2em] text-white/40">Vancouver, British Columbia</p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-xl font-thin text-white">10PM</p>
-                        <p className="text-xs uppercase tracking-[0.2em] text-white/40">Late Night</p>
-                      </div>
                     </div>
                     
                     {/* Bottom details strip */}
@@ -127,8 +121,6 @@ export default async function Hero() {
                       <span style={{ color: 'var(--gold)' }}>19+</span>
                       <div className="w-px h-3" style={{ backgroundColor: 'var(--gold)', opacity: 0.4 }} />
                       <span>ID Required</span>
-                      <div className="w-px h-3" style={{ backgroundColor: 'var(--gold)', opacity: 0.4 }} />
-                      <span>4 Hour Session</span>
                     </div>
                   </div>
                 </div>
@@ -144,7 +136,7 @@ export default async function Hero() {
                 <HeroImage 
                   eventSlug={featuredEvent.slug}
                   src={featuredEvent.image}
-                  alt={featuredEvent.artist}
+                  alt={featuredEvent.title}
                   day={day}
                   month={month}
                 />

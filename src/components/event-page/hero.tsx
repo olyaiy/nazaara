@@ -50,13 +50,10 @@ export default function EventHero({ event }: EventHeroProps) {
                 <div className="h-[1px] w-8 bg-[var(--gold)]/30" />
               </div>
               <h1 className="text-[clamp(2.5rem,10vw,3.5rem)] font-prettywise leading-[0.85] text-[var(--white)] mb-2">
-                {event.artist}
-              </h1>
-              <p className="text-xl font-prettywise text-[var(--gold)]">
                 {event.title}
-              </p>
+              </h1>
               {event.tagline && (
-                <p className="text-xs font-neue-haas text-[var(--white)]/60 leading-relaxed mt-3 max-w-sm mx-auto">
+                <p className="text-xl font-prettywise text-[var(--gold)]">
                   {event.tagline}
                 </p>
               )}
@@ -74,7 +71,7 @@ export default function EventHero({ event }: EventHeroProps) {
                   <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
                     <Image 
                       src={event.image}
-                      alt={event.artist}
+                      alt={event.title}
                       fill
                       className="object-cover"
                       priority
@@ -172,7 +169,7 @@ export default function EventHero({ event }: EventHeroProps) {
                   <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
                     <Image 
                       src={event.image}
-                      alt={event.artist}
+                      alt={event.title}
                       fill
                       className="object-cover"
                       priority
@@ -207,13 +204,10 @@ export default function EventHero({ event }: EventHeroProps) {
                     <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/50">Nazaara Live Presents</p>
                   </div>
                   <h1 className="text-[clamp(3rem,7vw,6rem)] font-prettywise leading-[0.85] text-[var(--white)] mb-3">
-                    {event.artist}
-                  </h1>
-                  <p className="text-3xl font-prettywise text-[var(--gold)] mb-4">
                     {event.title}
-                  </p>
+                  </h1>
                   {event.tagline && (
-                    <p className="text-sm font-neue-haas text-[var(--white)]/60 leading-relaxed max-w-md">
+                    <p className="text-3xl font-prettywise text-[var(--gold)] mb-4">
                       {event.tagline}
                     </p>
                   )}

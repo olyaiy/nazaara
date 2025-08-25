@@ -21,14 +21,23 @@ export default function Home() {
       {/* Premium Stats removed as requested */}
 
       {/* Private Events - Luxury Focus */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4">
+      <section className="py-16 md:py-24 relative overflow-hidden">
+        {/* Background accent */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--maroon-red)] via-transparent to-[var(--dark-gold-gradient)] opacity-5" />
+        
+        <div className="container mx-auto px-4 relative z-10">
           {/* Full-width header above the two columns */}
-          <SectionHeader eyebrow="Private Bookings" title="Bespoke Entertainment" size="md" className="mb-8 md:mb-16" />
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-            {/* Left Image Collage - Mobile optimized */}
-            <div className="relative h-[400px] md:h-[500px] lg:h-[600px] order-2 lg:order-1">
-              <div className="absolute top-0 left-0 w-2/3 h-2/3 overflow-hidden">
+          <SectionHeader eyebrow="Private Bookings" title="Bespoke Entertainment" size="md" className="mb-10 md:mb-16" />
+          
+          <div className="grid lg:grid-cols-2 gap-10 md:gap-12 lg:gap-20 items-center">
+            {/* Left Image Composition - Elevated Design */}
+            <div className="relative h-[380px] md:h-[450px] lg:h-[500px] order-2 lg:order-1">
+              {/* Gold accent frame */}
+              <div className="absolute -top-3 -left-3 w-24 h-24 border-t border-l border-[var(--gold)] opacity-50" />
+              <div className="absolute -bottom-3 -right-3 w-24 h-24 border-b border-r border-[var(--gold)] opacity-50" />
+              
+              {/* Main large image */}
+              <div className="absolute top-0 left-0 w-3/4 h-3/4 overflow-hidden shadow-2xl">
                 <Image 
                   src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80"
                   alt="Luxury event"
@@ -36,7 +45,9 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="absolute bottom-0 right-0 w-2/3 h-2/3 overflow-hidden border-4 md:border-8 border-background">
+              
+              {/* Offset smaller image */}
+              <div className="absolute bottom-0 right-0 w-2/3 h-2/3 overflow-hidden shadow-2xl border-8 border-background">
                 <Image 
                   src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&q=80"
                   alt="Private performance"
@@ -44,43 +55,59 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
+              
+              {/* Floating accent element */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 border border-[var(--gold)]/30 rotate-45" />
             </div>
             
-            {/* Right Content - Mobile optimized */}
-            <div className="lg:pl-12 order-1 lg:order-2">
-              
-              <p className="text-sm md:text-base text-muted-foreground font-light leading-relaxed mb-6 md:mb-8">
+            {/* Right Content - Refined Typography */}
+            <div className="lg:pl-8 order-1 lg:order-2">
+              {/* Opening statement with enhanced typography */}
+              <p className="text-lg md:text-xl font-serif font-light leading-relaxed mb-6 md:mb-8" style={{ color: 'var(--gold)' }}>
                 Curate unforgettable moments with exclusive access to the world&apos;s most celebrated 
-                South Asian artists. From intimate soirées to grand celebrations, we orchestrate 
+                South Asian artists.
+              </p>
+              
+              <p className="text-sm md:text-base text-muted-foreground font-light leading-relaxed mb-8 md:mb-10">
+                From intimate soirées to grand celebrations, we orchestrate 
                 extraordinary experiences tailored to your vision.
               </p>
               
-              {/* Service List - Minimal */}
-              <div className="space-y-4 md:space-y-6 mb-8 md:mb-12">
-                <div className="flex items-start gap-3 md:gap-4">
-                  <div className="w-1 h-1 bg-primary rounded-full mt-2" />
-                  <div>
-                    <h3 className="text-base md:text-lg font-light text-foreground mb-1">Celebrity Performances</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground font-light">Exclusive bookings of A-list artists</p>
+              {/* Service List - Elevated Design */}
+              <div className="grid gap-8 mb-8 md:mb-12">
+                <div className="group relative flex gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full border border-[var(--gold)]/30 flex items-center justify-center">
+                    <div className="w-2 h-2 bg-[var(--gold)] rounded-full" />
+                  </div>
+                  <div className="pt-1">
+                    <h3 className="text-lg md:text-xl font-serif font-light text-foreground mb-2">Celebrity Performances</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground font-light leading-relaxed">Exclusive bookings of A-list artists from Bollywood and beyond</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 md:gap-4">
-                  <div className="w-1 h-1 bg-primary rounded-full mt-2" />
-                  <div>
-                    <h3 className="text-base md:text-lg font-light text-foreground mb-1">Luxury Weddings</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground font-light">Bespoke entertainment curation</p>
+                
+                <div className="group relative flex gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full border border-[var(--gold)]/30 flex items-center justify-center">
+                    <div className="w-2 h-2 bg-[var(--gold)] rounded-full" />
+                  </div>
+                  <div className="pt-1">
+                    <h3 className="text-lg md:text-xl font-serif font-light text-foreground mb-2">Luxury Weddings</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground font-light leading-relaxed">Bespoke entertainment curation for your most precious moments</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 md:gap-4">
-                  <div className="w-1 h-1 bg-primary rounded-full mt-2" />
-                  <div>
-                    <h3 className="text-base md:text-lg font-light text-foreground mb-1">Corporate Excellence</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground font-light">High-profile keynotes and performances</p>
+                
+                <div className="group relative flex gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full border border-[var(--gold)]/30 flex items-center justify-center">
+                    <div className="w-2 h-2 bg-[var(--gold)] rounded-full" />
+                  </div>
+                  <div className="pt-1">
+                    <h3 className="text-lg md:text-xl font-serif font-light text-foreground mb-2">Private Celebrations</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground font-light leading-relaxed">Intimate gatherings with world-class entertainment</p>
                   </div>
                 </div>
               </div>
               
-              <Button
+              {/* CTA - Simple design like About section */}
+              <Button 
                 asChild
                 className="w-full md:w-auto px-6 md:px-8 py-5 md:py-6 text-xs md:text-sm uppercase tracking-wider font-light border-0"
                 style={{ 
@@ -88,7 +115,7 @@ export default function Home() {
                   color: 'var(--maroon-red)'
                 }}
               >
-                <Link href="/bookings">Inquire Now</Link>
+                <Link href="/bookings">Begin Your Journey</Link>
               </Button>
             </div>
           </div>

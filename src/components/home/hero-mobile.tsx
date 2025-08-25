@@ -48,13 +48,15 @@ export default async function HeroMobile() {
           <div className="space-y-6">
             <div>
               <h1 className="text-[15vw] font-serif font-thin leading-[0.9] text-white mb-2">
-                {featuredEvent.artist}
+                {featuredEvent.title}
               </h1>
-              <div className="flex items-baseline gap-3">
-                <span className="text-[6.5vw] font-serif italic" style={{ color: 'var(--gold)' }}>
-                  {featuredEvent.title}
-                </span>
-              </div>
+              {featuredEvent.tagline && (
+                <div className="flex items-baseline gap-3">
+                  <span className="text-[6.5vw] font-serif italic" style={{ color: 'var(--gold)' }}>
+                    {featuredEvent.tagline}
+                  </span>
+                </div>
+              )}
             </div>
             
             <HeroMobileButton eventSlug={featuredEvent.slug} asChild>
@@ -62,7 +64,7 @@ export default async function HeroMobile() {
               <div className="absolute inset-0 border" style={{ borderColor: 'var(--gold)', opacity: 0.3 }} />
               <Image
                 src={featuredEvent.image}
-                alt={featuredEvent.artist}
+                alt={featuredEvent.title}
                 fill
                 className="object-cover"
                 priority
@@ -76,10 +78,7 @@ export default async function HeroMobile() {
               </div>
             </HeroMobileButton>
             
-            <div className="space-y-4">
-              <p className="text-sm text-white/70 leading-relaxed font-light">
-                {featuredEvent.tagline}
-              </p>
+              <div className="space-y-4">
               
               {artistNames.length > 0 && (
                 <div className="space-y-2">
@@ -105,18 +104,12 @@ export default async function HeroMobile() {
                       <p className="text-base font-serif text-white">Fortune Sound Club</p>
                       <p className="text-[10px] uppercase tracking-[0.15em] text-white/40">Vancouver, BC</p>
                     </div>
-                    <div className="text-right">
-                      <p className="text-lg font-thin text-white">10PM</p>
-                      <p className="text-[10px] uppercase tracking-[0.15em] text-white/40">Late Night</p>
-                    </div>
                   </div>
                   
                   <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] text-white/60">
                     <span style={{ color: 'var(--gold)' }}>19+</span>
                     <div className="w-px h-3" style={{ backgroundColor: 'var(--gold)', opacity: 0.4 }} />
                     <span>ID Required</span>
-                    <div className="w-px h-3" style={{ backgroundColor: 'var(--gold)', opacity: 0.4 }} />
-                    <span>4HR</span>
                   </div>
                 </div>
               </div>
