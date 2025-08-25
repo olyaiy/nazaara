@@ -1,12 +1,41 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { getUpcomingEvents, events as allEvents } from "@/content/events";
+import { useEffect, useState } from "react";
+import {
+  getUpcomingEvents,
+  events as allEvents,
+  getEventForCity,
+  getFeaturedEvent,
+} from "@/content/events";
 import SectionHeader from "@/components/ui/section-header";
 
 export default function UpcomingEvents() {
   const router = useRouter();
   const upcomingEvents = getUpcomingEvents();
+
+  // Track which event is featured in the hero so we can exclude it here
+  const [heroSlug, setHeroSlug] = useState<string | undefined>(undefined);
+
+  // Helper to read a cookie value in the browser
+  function getCookie(name: string): string | undefined {
+    if (typeof document === "undefined") return undefined;
+    const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+    return match ? decodeURIComponent(match[1]) : undefined;
+  }
+
+  useEffect(() => {
+    // Determine the event shown in the hero (mirrors logic used by Hero components)
+    const city = getCookie("nza_city");
+    const heroEvent = getEventForCity(city) || getFeaturedEvent();
+    setHeroSlug(heroEvent?.slug);
+  }, []);
+
+  // Filter out the hero event (if known)
+  const filteredEvents = heroSlug
+    ? upcomingEvents.filter((event) => event.slug !== heroSlug)
+    : upcomingEvents;
+
   // Build a chronologically sorted list of ALL events for the Complete Schedule
   const allEventsChrono = [...allEvents].sort((a, b) => {
     const monthMap: { [key: string]: number } = {
@@ -66,7 +95,7 @@ export default function UpcomingEvents() {
             
             {/* Three Column Premium Layout */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6 lg:gap-8">
-              {upcomingEvents.slice(0, 3).map((event, index) => (
+              {filteredEvents.slice(0, 3).map((event, index) => (
                 <div 
                   key={event.id} 
                   className="group cursor-pointer relative" 
@@ -156,7 +185,9 @@ export default function UpcomingEvents() {
 
             {/* Events Table - Theater Program Style */}
             <div className="space-y-0">
-              {allEventsChrono.map((event) => (
+              {allEventsChrono
+                .filter((event) => event.slug !== heroSlug)
+                .map((event) => (
                 <div 
                   key={event.id} 
                   className="group cursor-pointer border-b border-[var(--gold)]/10 hover:bg-[var(--gold)]/5 transition-all duration-500"
