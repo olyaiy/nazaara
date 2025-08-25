@@ -42,7 +42,7 @@ export const events: Event[] = [
     ],
     title: "Live In Vancouver",
     tagline: "Vancouver, we begin here. Step into a soundscape built to move you.",
-    tour: "Featuring Yasmina, Sabzi & Wian",
+    tour: "Yasmina, Sabzi & Wian",
     description: "An evening shaped by music, culture, and movement at Vancouver's most iconic dance floor. Three continents of sound converge for one unforgettable night.",
     date: "31 Aug",
     dates: "Sunday, August 31 · 10:00 pm - 2:00 am",

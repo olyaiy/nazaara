@@ -6,6 +6,7 @@ import { useState } from "react";
 
 export default function BookingsPage() {
   const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
+  const [expandedDj, setExpandedDj] = useState<number | null>(null);
   const djRoster = [
     {
       id: 1,
@@ -17,7 +18,9 @@ export default function BookingsPage() {
       image: "https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=800&q=80",
       availability: "Select Dates",
       instagram: "https://instagram.com/djrishi",
-      soundcloud: "https://soundcloud.com/djrishi"
+      soundcloud: "https://soundcloud.com/djrishi",
+      bio: "With over 15 years of experience, DJ Rishi has become synonymous with the evolution of Bollywood fusion. His signature blend of traditional Indian melodies with contemporary house beats has graced stages from Mumbai to Manhattan, creating unforgettable moments at over 500 exclusive events worldwide.",
+      highlights: ["Resident DJ at Mumbai's premier clubs", "Official tour DJ for major Bollywood artists", "Curated performances at Cannes Film Festival"]
     },
     {
       id: 2,
@@ -29,7 +32,9 @@ export default function BookingsPage() {
       image: "https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?w=800&q=80",
       availability: "Booking Now",
       instagram: "https://instagram.com/djpriya",
-      soundcloud: "https://soundcloud.com/djpriya"
+      soundcloud: "https://soundcloud.com/djpriya",
+      bio: "DJ Priya pioneered the electronic-classical fusion movement, seamlessly weaving traditional ragas with cutting-edge electronic production. Her innovative approach has redefined South Asian music for a new generation, earning residencies at the world's most exclusive venues.",
+      highlights: ["First female DJ to headline major South Asian festivals", "Collaborations with Grammy-winning producers", "Pioneer of the 'Neo-Classical' movement"]
     },
     {
       id: 3,
@@ -41,7 +46,9 @@ export default function BookingsPage() {
       image: "https://images.unsplash.com/photo-1516873240891-4bf014598ab4?w=800&q=80",
       availability: "Limited Availability",
       instagram: "https://instagram.com/djarjun",
-      soundcloud: "https://soundcloud.com/djarjun"
+      soundcloud: "https://soundcloud.com/djarjun",
+      bio: "Known as 'The Crowd Pleaser,' DJ Arjun's versatility spans from intimate gatherings to stadium-sized celebrations. His ability to read any room and deliver the perfect sonic journey has made him the go-to artist for discerning clients across the globe.",
+      highlights: ["400+ luxury weddings across 6 continents", "Preferred DJ for Fortune 500 corporate events", "Master of multi-genre mixing"]
     },
     {
       id: 4,
@@ -53,7 +60,9 @@ export default function BookingsPage() {
       image: "https://images.unsplash.com/photo-1485872299829-c673f5194813?w=800&q=80",
       availability: "Booking Now",
       instagram: "https://instagram.com/djmaya",
-      soundcloud: "https://soundcloud.com/djmaya"
+      soundcloud: "https://soundcloud.com/djmaya",
+      bio: "DJ Maya brings the energy of underground hip-hop to traditional Bhangra, creating an explosive fusion that ignites dance floors worldwide. Her sets are a celebration of rhythm, culture, and pure musical innovation.",
+      highlights: ["Breakthrough artist at Coachella 2023", "Creator of viral Bhangra remixes", "Youth icon with 2M+ social media following"]
     },
     {
       id: 5,
@@ -65,7 +74,9 @@ export default function BookingsPage() {
       image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80",
       availability: "Exclusive Events Only",
       instagram: "https://instagram.com/djkabir",
-      soundcloud: "https://soundcloud.com/djkabir"
+      soundcloud: "https://soundcloud.com/djkabir",
+      bio: "A living legend with two decades of mastery, DJ Kabir has performed at over 1000 events, each one a testament to his unparalleled ability to blend tradition with modernity. His sets are not just performances—they're cultural experiences.",
+      highlights: ["20+ years of international acclaim", "Performed for royal families and heads of state", "Mentor to emerging South Asian DJs"]
     },
     {
       id: 6,
@@ -77,7 +88,9 @@ export default function BookingsPage() {
       image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&q=80",
       availability: "Open for Bookings",
       instagram: "https://instagram.com/djsara",
-      soundcloud: "https://soundcloud.com/djsara"
+      soundcloud: "https://soundcloud.com/djsara",
+      bio: "DJ Sara's visionary approach to Progressive and Sufi fusion creates transcendent experiences that touch the soul. Her sets are spiritual journeys, blending ancient Sufi poetry with modern progressive house to create something truly magical.",
+      highlights: ["Rising star in the global fusion scene", "Featured in Rolling Stone India", "Creator of the 'Sufi House' movement"]
     }
   ];
 
@@ -244,7 +257,7 @@ export default function BookingsPage() {
       </section>
 
       {/* DJ Roster */}
-      <section className="py-24 bg-[var(--black-grey)]">
+      <section className="py-32 bg-gradient-to-b from-[var(--black-grey)] via-[var(--black-grey)] to-[var(--maroon-red)]/10">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
@@ -264,14 +277,28 @@ export default function BookingsPage() {
               </p>
             </div>
 
-            {/* DJ Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {djRoster.map((dj) => (
-                <div key={dj.id} className="group relative">
-                  {/* Card */}
-                  <div className="relative overflow-hidden bg-gradient-to-b from-[var(--maroon-red)]/10 to-transparent">
-                    {/* Image Container */}
-                    <div className="relative h-[400px] overflow-hidden">
+            {/* DJ Grid with Expandable Rows */}
+            <div className="space-y-8">
+              {/* Group DJs into rows of 3 for desktop */}
+              {[0, 3].map((startIdx) => (
+                <div key={startIdx} className="space-y-8">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {djRoster.slice(startIdx, startIdx + 3).map((dj) => (
+                      <div key={dj.id} className="group relative">
+                        {/* Card */}
+                        <div 
+                          className="relative cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+                          onClick={() => setExpandedDj(expandedDj === dj.id ? null : dj.id)}
+                        >
+                          {/* Click indicator */}
+                          <div className="absolute top-4 right-4 z-10 bg-[var(--black-grey)]/80 backdrop-blur-sm px-3 py-1.5 border border-[var(--gold)]/20">
+                            <span className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/60">
+                              {expandedDj === dj.id ? 'Close' : 'View Bio'}
+                            </span>
+                          </div>
+                    
+                    {/* Square Image Container */}
+                    <div className="relative aspect-square overflow-hidden bg-gradient-to-b from-[var(--maroon-red)]/5 to-[var(--black-grey)]">
                       {dj.image && !imageErrors[dj.id] ? (
                         <>
                           <Image
@@ -283,16 +310,22 @@ export default function BookingsPage() {
                               setImageErrors(prev => ({ ...prev, [dj.id]: true }));
                             }}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)] via-[var(--black-grey)]/50 to-transparent" />
+                          {/* Enhanced gradient overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)] via-[var(--black-grey)]/30 to-transparent" />
+                          {/* Gold accent line at bottom */}
+                          <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)]/30 to-transparent" />
                         </>
                       ) : (
-                        <div className="absolute inset-0 bg-[var(--black-grey)] transition-transform duration-700 group-hover:scale-105">
-                          {/* Simple border frame */}
-                          <div className="absolute inset-8 border border-[var(--gold)]/10" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-[var(--maroon-red)]/10 to-[var(--black-grey)]">
+                          {/* Geometric pattern background */}
+                          <div className="absolute inset-0 opacity-5">
+                            <div className="absolute inset-8 border border-[var(--gold)]" />
+                            <div className="absolute inset-12 border border-[var(--gold)] rotate-45" />
+                          </div>
                           {/* Minimalist user icon */}
                           <div className="absolute inset-0 flex items-center justify-center">
                             <svg 
-                              className="w-24 h-24 text-[var(--gold)]/15" 
+                              className="w-20 h-20 text-[var(--gold)]/10" 
                               viewBox="0 0 24 24" 
                               fill="none"
                             >
@@ -300,43 +333,32 @@ export default function BookingsPage() {
                               <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
                             </svg>
                           </div>
-                          <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)] via-[var(--black-grey)]/50 to-transparent" />
                         </div>
                       )}
-                      
                     </div>
 
-                    {/* Content */}
-                    <div className="p-6 relative">
-                      {/* Title Block */}
-                      <div className="mb-4">
-                        <h3 className="text-2xl font-prettywise text-[var(--off-white)]">
+                    {/* Content - Refined Layout */}
+                    <div className="relative">
+                      {/* Name and specialty */}
+                      <div className="border-t border-[var(--gold)]/10 pt-6 pb-4">
+                        <h3 className="text-2xl font-prettywise text-[var(--off-white)] mb-3">
                           {dj.name}
                         </h3>
+                        <p className="text-sm font-neue-haas text-[var(--gold)]/60 tracking-wide">
+                          {dj.specialty}
+                        </p>
                       </div>
 
-                      {/* Info */}
-                      <div className="space-y-3 mb-6">
-                        <div className="flex justify-between items-baseline py-2">
-                          <span className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--off-white)]/40">
-                            Specialty
-                          </span>
-                          <span className="text-sm font-neue-haas text-[var(--off-white)]/70">
-                            {dj.specialty}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Social Media Icons */}
-                      <div className="flex items-center gap-4 pt-2">
+                      {/* Social Media Icons - More elegant placement */}
+                      <div className="flex items-center gap-3 pt-4 border-t border-[var(--gold)]/5">
                         <a 
                           href={dj.instagram} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="group flex items-center justify-center w-8 h-8 hover:bg-[var(--gold)]/10 transition-all duration-300"
+                          className="group flex items-center justify-center w-9 h-9 border border-[var(--gold)]/10 hover:border-[var(--gold)]/30 hover:bg-[var(--gold)]/5 transition-all duration-300"
                         >
                           <svg 
-                            className="w-4 h-4 text-[var(--gold)]/60 group-hover:text-[var(--gold)] group-hover:scale-110 transition-all duration-300" 
+                            className="w-4 h-4 text-[var(--gold)]/40 group-hover:text-[var(--gold)]/80 transition-all duration-300" 
                             viewBox="0 0 24 24" 
                             fill="currentColor"
                           >
@@ -349,10 +371,10 @@ export default function BookingsPage() {
                           href={dj.soundcloud} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="group flex items-center justify-center w-8 h-8 hover:bg-[var(--gold)]/10 transition-all duration-300"
+                          className="group flex items-center justify-center w-9 h-9 border border-[var(--gold)]/10 hover:border-[var(--gold)]/30 hover:bg-[var(--gold)]/5 transition-all duration-300"
                         >
                           <svg 
-                            className="w-4 h-4 text-[var(--gold)]/60 group-hover:text-[var(--gold)] group-hover:scale-110 transition-all duration-300" 
+                            className="w-4 h-4 text-[var(--gold)]/40 group-hover:text-[var(--gold)]/80 transition-all duration-300" 
                             viewBox="-271 345.8 256 111.2" 
                             fill="currentColor"
                           >
@@ -372,14 +394,104 @@ export default function BookingsPage() {
                             <path d="M-165.2,369.9c-1.7,0-3,1.3-3,3l-1.4,54.7l1.4,26.3c0,1.7,1.4,3,3,3c1.7,0,3-1.3,3-3l1.5-26.3l-1.5-54.7C-162.2,371.3-163.5,369.9-165.2,369.9z"/>
                           </svg>
                         </a>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-
-                    </div>
-
-                    {/* Corner accents */}
-                    <div className="absolute top-0 left-0 w-12 h-12 border-t border-l border-[var(--gold)]/10" />
-                    <div className="absolute bottom-0 right-0 w-12 h-12 border-b border-r border-[var(--gold)]/10" />
+                    ))}
                   </div>
+                  
+                  {/* Expandable Bio Section for this row */}
+                  {djRoster.slice(startIdx, startIdx + 3).some(dj => expandedDj === dj.id) && (
+                    <div className="mt-8">
+                      {djRoster.slice(startIdx, startIdx + 3).map(dj => {
+                        if (expandedDj !== dj.id) return null;
+                        return (
+                          <div key={`bio-${dj.id}`} className="relative bg-[var(--black-grey)] border border-[var(--gold)]/10 overflow-hidden">
+                            {/* Decorative accent */}
+                            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)]/50 to-transparent" />
+                            
+                            <div className="p-8 lg:p-12">
+                              <div className="grid lg:grid-cols-3 gap-8">
+                                {/* Bio Text */}
+                                <div className="lg:col-span-2 space-y-6">
+                                  <div>
+                                    <h3 className="text-2xl font-prettywise text-[var(--gold)] mb-4">
+                                      About {dj.name}
+                                    </h3>
+                                    <p className="text-base font-neue-haas text-[var(--off-white)]/70 leading-relaxed">
+                                      {dj.bio}
+                                    </p>
+                                  </div>
+                                  
+                                  {/* Highlights */}
+                                  <div>
+                                    <h4 className="text-sm font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/60 mb-4">
+                                      Career Highlights
+                                    </h4>
+                                    <ul className="space-y-2">
+                                      {dj.highlights?.map((highlight, idx) => (
+                                        <li key={idx} className="flex items-start gap-3">
+                                          <div className="w-1 h-1 bg-[var(--gold)]/60 rounded-full mt-2" />
+                                          <span className="text-sm font-neue-haas text-[var(--off-white)]/60">
+                                            {highlight}
+                                          </span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                </div>
+                                
+                                {/* Contact/Booking CTA */}
+                                <div className="lg:border-l border-[var(--gold)]/10 lg:pl-8">
+                                  <div className="space-y-6">
+                                    <div>
+                                      <h4 className="text-sm font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/60 mb-2">
+                                        Booking Status
+                                      </h4>
+                                      <p className="text-lg font-prettywise text-[var(--off-white)]">
+                                        {dj.availability}
+                                      </p>
+                                    </div>
+                                    
+                                    <div className="pt-4">
+                                      <Button 
+                                        size="sm"
+                                        className="w-full px-6 py-3 text-xs uppercase tracking-[0.3em] font-light border-0"
+                                        style={{ 
+                                          backgroundColor: 'var(--gold)', 
+                                          color: 'var(--maroon-red)'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                                        onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          const formSection = document.getElementById('contact-form');
+                                          formSection?.scrollIntoView({ behavior: 'smooth' });
+                                        }}
+                                      >
+                                        Inquire About {dj.name.split(' ')[1]}
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              {/* Close button */}
+                              <div 
+                                className="absolute top-4 right-4 text-[var(--gold)]/40 hover:text-[var(--gold)]/60 cursor-pointer transition-colors"
+                                onClick={() => setExpandedDj(null)}
+                              >
+                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
