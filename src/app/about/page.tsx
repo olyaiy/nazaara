@@ -2,6 +2,35 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowRight, Users, Globe2, Trophy, Sparkles } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us - Nazaara Live | Experience, Culture, and Sound Without Borders",
+  description: "Founded in 2022, Nazaara Live has touched 500K+ hearts across 150+ cities worldwide. Discover our story of bringing South Asian entertainment to global stages through innovative experiences.",
+  keywords: ["about Nazaara Live", "South Asian entertainment company", "Tamasha", "cultural events", "global music platform", "entertainment history"],
+  openGraph: {
+    title: "About Us - Nazaara Live | Experience, Culture, and Sound Without Borders",
+    description: "Founded in 2022, Nazaara Live has touched 500K+ hearts across 150+ cities worldwide. Discover our story of bringing South Asian entertainment to global stages through innovative experiences.",
+    url: "https://nazaaralive.com/about",
+    siteName: "Nazaara Live",
+    images: [
+      {
+        url: "/OG.png",
+        width: 1200,
+        height: 630,
+        alt: "About Nazaara Live - Our Story",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us - Nazaara Live | Experience, Culture, and Sound Without Borders",
+    description: "Founded in 2022, Nazaara Live has touched 500K+ hearts across 150+ cities worldwide. Discover our story of bringing South Asian entertainment to global stages through innovative experiences.",
+    images: ["/OG.png"],
+  },
+};
 
 export default function AboutPage() {
   return (

@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,35 @@ import SectionHeader from "@/components/ui/section-header";
 import UpcomingEvents from "@/components/home/upcoming-events";
 import { EventMarquee } from "@/components/home/event-marquee";
 import Hero from "@/components/home/hero";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Nazaara Live - Premium South Asian Entertainment Worldwide",
+  description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities.",
+  keywords: ["South Asian events", "Bollywood concerts", "Indian music", "celebrity bookings", "private events", "DJ services", "entertainment"],
+  openGraph: {
+    title: "Nazaara Live - Premium South Asian Entertainment Worldwide",
+    description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities.",
+    url: "https://nazaaralive.com",
+    siteName: "Nazaara Live",
+    images: [
+      {
+        url: "/OG.png",
+        width: 1200,
+        height: 630,
+        alt: "Nazaara Live - Premium South Asian Entertainment",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nazaara Live - Premium South Asian Entertainment Worldwide",
+    description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities.",
+    images: ["/OG.png"],
+  },
+};
 
 export default function Home() {
   return (
