@@ -90,51 +90,88 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About & Partners - Minimal Luxury */}
+      {/* About Preview Section */}
       <section className="py-24 bg-muted/5">
         <div className="container mx-auto px-4">
-          {/* Section header for About/Work With Us */}
+          {/* Consistent Section Header */}
           <SectionHeader
-            eyebrow="Since 2014"
+            eyebrow="Est. 2022"
             title="About Nazaara"
             size="md"
-            className="mb-12"
+            className="mb-16"
           />
-          <div className="max-w-4xl mx-auto text-center">
-            
-            <p className="text-muted-foreground font-light leading-relaxed mb-12 max-w-2xl mx-auto">
-              The premier name in South Asian entertainment. For over a decade, Nazaara Live has 
-              set the standard for excellence in South Asian entertainment production. We are the 
-              trusted partner for the world's most prestigious venues and discerning clients.
-            </p>
-            
-            {/* Minimal Stats */}
-            <div className="grid grid-cols-3 gap-8 max-w-lg mx-auto mb-12">
+          
+          <div className="max-w-6xl mx-auto">
+            {/* Main Content Grid */}
+            <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
+              {/* Left - Story Preview */}
               <div>
-                <div className="text-3xl font-serif font-light text-primary">500+</div>
-                <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Productions</div>
+                <h3 className="text-3xl md:text-4xl font-serif font-light text-foreground mb-2">
+                  Experience, Culture, and Sound
+                </h3>
+                <span className="text-2xl md:text-3xl font-serif italic text-[var(--gold)] block mb-8">Without Borders</span>
+                
+                <p className="text-muted-foreground font-light leading-relaxed mb-6">
+                  Nazaara launched in 2022 as a platform for experience, culture, and sound—without borders. 
+                  It emerged from a simple belief: that the scenes we believe in and the sounds that raised us 
+                  deserve a global stage.
+                </p>
+                
+                <p className="text-muted-foreground font-light leading-relaxed mb-8">
+                  From Tamasha's high-voltage shows to new cross-cultural collaborations, we build across 
+                  genres, mediums, and communities. We honor roots while expanding the frame.
+                </p>
+                
+                {/* Learn More CTA */}
+                <Button 
+                  variant="outline" 
+                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-sm uppercase tracking-wider font-light group"
+                >
+                  Discover Our Story
+                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
               </div>
+              
+              {/* Right - Impact Numbers */}
               <div>
-                <div className="text-3xl font-serif font-light text-primary">150+</div>
-                <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Partners</div>
-              </div>
-              <div>
-                <div className="text-3xl font-serif font-light text-primary">98%</div>
-                <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Excellence</div>
+                <div className="space-y-8">
+                  {/* Top row */}
+                  <div className="flex gap-8">
+                    <div className="flex-1">
+                      <div className="text-4xl md:text-5xl font-serif font-light text-[var(--gold)] mb-2">500K+</div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground">Hearts Touched</div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-4xl md:text-5xl font-serif font-light text-[var(--gold)] mb-2">150+</div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground">Global Cities</div>
+                    </div>
+                  </div>
+                  
+                  {/* Divider */}
+                  <div className="h-px bg-[var(--gold)]/20" />
+                  
+                  {/* Bottom row */}
+                  <div className="flex gap-8">
+                    <div className="flex-1">
+                      <div className="text-4xl md:text-5xl font-serif font-light text-[var(--gold)] mb-2">200+</div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground">Artist Partners</div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-4xl md:text-5xl font-serif font-light text-[var(--gold)] mb-2">30+</div>
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground">Countries</div>
+                    </div>
+                  </div>
+                  
+                  {/* Bottom accent */}
+                  <div className="pt-8">
+                    <p className="text-lg font-serif font-light text-foreground">
+                      The premier name in <span className="italic text-[var(--gold)]">South Asian entertainment</span>
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
             
-            <div className="flex items-center justify-center gap-6">
-              <button className="text-sm uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-2 group">
-                Our Story
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <span className="text-muted-foreground/30">·</span>
-              <button className="text-sm uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-2 group">
-                Partnerships
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
           </div>
         </div>
       </section>
