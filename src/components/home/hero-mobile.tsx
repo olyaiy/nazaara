@@ -33,16 +33,12 @@ export default async function HeroMobile() {
       <div className="relative flex flex-col min-h-[100dvh]">
         {/* Elevated header */}
         <div className="relative px-6 pt-8 pb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--gold)' }} />
-              <span className="font-neue-haas text-[10px] uppercase tracking-[0.4em]" style={{ color: 'var(--gold)' }}>
-                Live
-              </span>
-            </div>
-            <span className="font-prettywise text-2xl" style={{ color: 'var(--gold)' }}>
-              NAZAARA
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.6 }} />
+            <span className="font-neue-haas text-[10px] uppercase tracking-[0.5em]" style={{ color: 'var(--gold)' }}>
+              Nazaara Live Presents
             </span>
+            <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.6 }} />
           </div>
         </div>
         

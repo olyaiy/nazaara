@@ -72,7 +72,7 @@ export default function VenueFeatures({ event }: VenueFeaturesProps) {
         {/* Mobile-optimized Image Grid */}
         <div className="space-y-3 sm:space-y-4 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-6">
           {/* Large feature image - full width on mobile */}
-          <div className="lg:col-span-7 relative aspect-[16/10] sm:aspect-[4/3] overflow-hidden rounded-sm">
+          <div className="lg:col-span-7 relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto lg:h-full overflow-hidden rounded-sm">
             {/* Frame accents */}
             <div className="absolute -top-2 -left-2 sm:-top-4 sm:-left-4 w-12 sm:w-16 h-12 sm:h-16 border-t border-l" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
             {event.venueImages?.[0] ? (
