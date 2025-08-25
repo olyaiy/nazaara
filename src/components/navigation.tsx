@@ -1,8 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function Navigation() {
+  const pathname = usePathname();
+
+  const isCurrent = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/75 backdrop-blur-md border-b border-border/30">
       <div className="container mx-auto px-4">
@@ -24,17 +33,41 @@ export function Navigation() {
           
           {/* Center Navigation */}
           <div className="hidden lg:flex items-center gap-12 absolute left-1/2 -translate-x-1/2">
-            <Link 
-              href="/about" 
-              className="text-sm uppercase tracking-[0.2em] text-foreground/80 hover:text-primary font-light transition-colors"
+            <Link
+              href="/about"
+              aria-current={isCurrent("/about") ? "page" : undefined}
+              className={cn(
+                "relative group text-sm uppercase tracking-[0.2em] font-light transition-colors",
+                isCurrent("/about") ? "text-foreground" : "text-foreground/80 hover:text-primary"
+              )}
             >
-              About
+              <span>About</span>
+              <span
+                className={cn(
+                  "pointer-events-none absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
+                  isCurrent("/about")
+                    ? "w-full opacity-80"
+                    : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                )}
+              />
             </Link>
-            <Link 
-              href="/bookings" 
-              className="text-sm uppercase tracking-[0.2em] text-foreground/80 hover:text-primary font-light transition-colors"
+            <Link
+              href="/bookings"
+              aria-current={isCurrent("/bookings") ? "page" : undefined}
+              className={cn(
+                "relative group text-sm uppercase tracking-[0.2em] font-light transition-colors",
+                isCurrent("/bookings") ? "text-foreground" : "text-foreground/80 hover:text-primary"
+              )}
             >
-              Bookings
+              <span>Bookings</span>
+              <span
+                className={cn(
+                  "pointer-events-none absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
+                  isCurrent("/bookings")
+                    ? "w-full opacity-80"
+                    : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                )}
+              />
             </Link>
             <a
               href="https://tamasha.myportfolio.com/"
@@ -49,14 +82,20 @@ export function Navigation() {
 
           {/* Right Side CTA */}
           <div className="hidden md:flex items-center gap-6">
-            <Link 
-              href="/contact" 
-              className="relative group"
+            <Link
+              href="/contact"
+              aria-current={isCurrent("/contact") ? "page" : undefined}
+              className={cn("relative group")}
             >
-              <span className="text-sm uppercase tracking-[0.2em] text-primary font-light">
+              <span className="text-sm uppercase tracking-[0.2em] text-primary font-light transition-colors group-hover:opacity-90">
                 Contact
               </span>
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
+              <span
+                className={cn(
+                  "absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
+                  isCurrent("/contact") ? "w-full opacity-80" : "w-0 group-hover:w-full"
+                )}
+              />
             </Link>
           </div>
 

@@ -73,7 +73,7 @@ export default function BookingsPage() {
   return (
     <div className="min-h-screen bg-[var(--black-grey)]">
       {/* Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[60vh] flex items-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -137,26 +137,6 @@ export default function BookingsPage() {
                     that transcend the ordinary. Our reputation isn&apos;t built on portfolios—it&apos;s earned 
                     through whispers in elite circles.
                   </p>
-                  
-                  {/* CTA Button */}
-                  <div className="pt-4">
-                    <Button 
-                      size="lg"
-                      className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0 min-w-60"
-                      style={{ 
-                        backgroundColor: 'var(--gold)', 
-                        color: 'var(--maroon-red)'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-                      onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-                      onClick={() => {
-                        const formSection = document.getElementById('contact-form');
-                        formSection?.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                    >
-                      Book a Consultation
-                    </Button>
-                  </div>
                 </div>
                 
                 {/* Service Details */}
@@ -187,6 +167,26 @@ export default function BookingsPage() {
                         Intimate performances and private concerts by legendary artists
                       </p>
                     </div>
+                  </div>
+                  
+                  {/* CTA Button */}
+                  <div className="pt-8">
+                    <Button 
+                      size="lg"
+                      className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0 min-w-60"
+                      style={{ 
+                        backgroundColor: 'var(--gold)', 
+                        color: 'var(--maroon-red)'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                      onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                      onClick={() => {
+                        const formSection = document.getElementById('contact-form');
+                        formSection?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      Book a Consultation
+                    </Button>
                   </div>
                 </div>
               </div>
