@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Event } from "@/content/events";
 
 interface VenueFeaturesProps {
@@ -74,18 +75,58 @@ export default function VenueFeatures({ event }: VenueFeaturesProps) {
           <div className="lg:col-span-7 relative aspect-[16/10] sm:aspect-[4/3] overflow-hidden rounded-sm">
             {/* Frame accents */}
             <div className="absolute -top-2 -left-2 sm:-top-4 sm:-left-4 w-12 sm:w-16 h-12 sm:h-16 border-t border-l" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
-            <div className="absolute inset-0 bg-gradient-to-br from-[var(--gold)]/20 via-[var(--maroon-red)]/30 to-[var(--dark-green)]/40" />
+            {event.venueImages?.[0] ? (
+              <>
+                <Image
+                  src={event.venueImages[0]}
+                  alt={`${event.venue} interior 1`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--gold)]/10 via-transparent to-[var(--dark-green)]/30" />
+              </>
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-[var(--gold)]/20 via-[var(--maroon-red)]/30 to-[var(--dark-green)]/40" />
+            )}
           </div>
           
           {/* Mobile: Side-by-side smaller images */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-1 lg:col-span-5 lg:gap-6">
             <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden rounded-sm">
               <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-10 sm:w-12 h-10 sm:h-12 border-t border-r" style={{ borderColor: 'var(--turquoise)', opacity: 0.2 }} />
-              <div className="absolute inset-0 bg-gradient-to-br from-[var(--turquoise)]/20 to-[var(--dark-green)]/30" />
+              {event.venueImages?.[1] ? (
+                <>
+                  <Image
+                    src={event.venueImages[1]}
+                    alt={`${event.venue} interior 2`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 50vw, 40vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[var(--turquoise)]/10 to-[var(--dark-green)]/20" />
+                </>
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--turquoise)]/20 to-[var(--dark-green)]/30" />
+              )}
             </div>
             <div className="relative aspect-[4/3] sm:aspect-[16/10] overflow-hidden rounded-sm">
               <div className="absolute -bottom-2 -right-2 sm:-bottom-4 sm:-right-4 w-10 sm:w-12 h-10 sm:h-12 border-b border-r" style={{ borderColor: 'var(--gold)', opacity: 0.2 }} />
-              <div className="absolute inset-0 bg-gradient-to-br from-[var(--maroon-red)]/20 to-[var(--gold)]/10" />
+              {event.venueImages?.[2] ? (
+                <>
+                  <Image
+                    src={event.venueImages[2]}
+                    alt={`${event.venue} interior 3`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 50vw, 40vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[var(--maroon-red)]/10 to-[var(--gold)]/10" />
+                </>
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--maroon-red)]/20 to-[var(--gold)]/10" />
+              )}
             </div>
           </div>
         </div>

@@ -23,6 +23,8 @@ export interface Event {
   venueAddress?: string;
   // Optional link to a map/directions page for the venue
   venueAddressUrl?: string;
+  // Optional images to showcase the venue (paths under /public)
+  venueImages?: string[];
   city: string;
   country: string;
   price: string; // displayed as ${price}
@@ -52,6 +54,11 @@ export const events: Event[] = [
     venueDescription: "Located in the heart of Vancouver's vibrant Chinatown, Fortune Sound Club is an underground institution known for its intimate atmosphere and world-class sound system. This iconic venue has hosted legendary artists and continues to be the epicenter of Vancouver's electronic music scene.",
     venueAddress: "147 E Pender St, Vancouver, BC V6A 1T6, Canada",
     venueAddressUrl: "https://share.google/KxbmlbahhpFePIA9f",
+    venueImages: [
+      "/fortune-1.jpg",
+      "/fortune-2.jpg",
+      "/fortune-3.webp",
+    ],
     city: "Vancouver",
     country: "Canada",
     image: "/events/nazaaea live poster.webp",
@@ -141,6 +148,11 @@ export const events: Event[] = [
     venueDescription: "Located in the heart of Vancouver's vibrant Chinatown, Fortune Sound Club is an underground institution known for its intimate atmosphere and world-class sound system. This iconic venue has hosted legendary artists and continues to be the epicenter of Vancouver's electronic music scene.",
     venueAddress: "147 E Pender St, Vancouver, BC V6A 1T6, Canada",
     venueAddressUrl: "https://share.google/KxbmlbahhpFePIA9f",
+    venueImages: [
+      "/fortune-1.jpg",
+      "/fortune-2.jpg",
+      "/fortune-3.webp",
+    ],
     city: "Vancouver",
     country: "Canada",
     price: "20",
