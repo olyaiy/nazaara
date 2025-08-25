@@ -2,6 +2,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import type { Metadata } from "next";
 
 const prettywise = localFont({
   src: [
@@ -139,6 +140,29 @@ const neueHaas = localFont({
   ],
   variable: "--font-neue-haas",
 });
+
+export const metadata: Metadata = {
+  title: "Nazaara Live",
+  description: "Premium South Asian/Indian music events worldwide. Professional DJ services, celebrity bookings, and unforgettable live experiences.",
+  openGraph: {
+    title: "Nazaara Live",
+    description: "Premium South Asian/Indian music events worldwide. Professional DJ services, celebrity bookings, and unforgettable live experiences.",
+    images: [
+      {
+        url: "/OG.png",
+        width: 1200,
+        height: 630,
+        alt: "Nazaara Live",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nazaara Live",
+    description: "Premium South Asian/Indian music events worldwide. Professional DJ services, celebrity bookings, and unforgettable live experiences.",
+    images: ["/OG.png"],
+  },
+};
 
 export default function RootLayout({
   children,

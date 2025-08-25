@@ -162,9 +162,7 @@ export default async function HeroMobile() {
         </div>
         
         {/* Elevated CTA section */}
-        <div className="sticky bottom-0 px-6 pb-8 pt-6" style={{ 
-          backgroundColor: 'var(--maroon-red)'
-        }}>
+        <div className="sticky bottom-0 px-6 pb-8 pt-6 relative">
           {/* Subtle pattern overlay for CTA section */}
           <div className="absolute inset-0 opacity-5">
             <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
