@@ -45,11 +45,23 @@ export default async function HeroMobile() {
         {/* Creative poster layout */}
         <div className="relative px-6 pb-6">
           <div className="relative">
-            {/* Offset gold frame */}
-            <div className="absolute -top-3 -left-3 right-3 bottom-3" style={{ 
-              border: '1px solid var(--gold)',
-              opacity: 0.3
-            }} />
+            {/* Corner accent marks */}
+            <div className="absolute -top-2 -left-2 w-8 h-8">
+              <div className="absolute top-0 left-0 w-full h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
+              <div className="absolute top-0 left-0 h-full w-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
+            </div>
+            <div className="absolute -top-2 -right-2 w-8 h-8">
+              <div className="absolute top-0 right-0 w-full h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
+              <div className="absolute top-0 right-0 h-full w-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
+            </div>
+            <div className="absolute -bottom-2 -left-2 w-8 h-8">
+              <div className="absolute bottom-0 left-0 w-full h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
+              <div className="absolute bottom-0 left-0 h-full w-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
+            </div>
+            <div className="absolute -bottom-2 -right-2 w-8 h-8">
+              <div className="absolute bottom-0 right-0 w-full h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
+              <div className="absolute bottom-0 right-0 h-full w-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.5 }} />
+            </div>
             
             {/* Main poster container */}
             <HeroMobileButton eventSlug={featuredEvent.slug} asChild>
@@ -62,15 +74,6 @@ export default async function HeroMobile() {
                   priority
                 />
                 
-                {/* Date overlay - integrated design */}
-                <div className="absolute top-6 left-6 flex flex-col">
-                  <span className="font-prettywise text-5xl leading-none" style={{ color: 'var(--white)' }}>
-                    {day}
-                  </span>
-                  <span className="font-neue-haas text-xs uppercase tracking-[0.3em] mt-1" style={{ color: 'var(--gold)' }}>
-                    {month}
-                  </span>
-                </div>
               </div>
             </HeroMobileButton>
           </div>
