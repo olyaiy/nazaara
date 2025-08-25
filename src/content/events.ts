@@ -18,6 +18,8 @@ export interface Event {
   dates?: string; // Full date description for featured events
   year: string; // e.g., "2024"
   venue: string;
+  // Optional physical address for the venue. Kept separate for backward compatibility.
+  venueAddress?: string;
   city: string;
   country: string;
   price: string; // displayed as ${price}
@@ -33,9 +35,9 @@ export const events: Event[] = [
     slug: "nazaara-live-vancouver-2024",
     artist: "NAZAARA",
     artists: [
-      { name: "Yasmina" },
-      { name: "Sabzi" },
-      { name: "Wian" },
+      { name: "Yasmina", image: "/Yasmina.webp" },
+      { name: "Sabzi",  },
+      { name: "Wian", },
     ],
     title: "Live In Vancouver",
     tagline: "Vancouver, we begin here. Step into a soundscape built to move you.",
@@ -44,7 +46,8 @@ export const events: Event[] = [
     date: "31 Aug",
     dates: "Sunday, August 31 · 10:00 pm - 2:00 am",
     year: "2024",
-    venue: "Fortune Sound Club, Vancouver",
+    venue: "Fortune Sound Club",
+    venueAddress: "147 E Pender St, Vancouver, BC V6A 1T6, Canada",
     city: "Vancouver",
     country: "Canada",
     image: "/events/nazaaea live poster.webp",
@@ -64,6 +67,7 @@ export const events: Event[] = [
     date: "04 Sep",
     year: "2024",
     venue: "Icon Boston",
+    venueAddress: "100 Warrenton St, Boston, MA 02116, USA",
     city: "Boston",
     country: "USA",
     price: "35",
@@ -83,6 +87,7 @@ export const events: Event[] = [
     date: "23 Aug",
     year: "2024",
     venue: "LVL Three Calgary",
+    // Address unknown; leaving undefined intentionally
     city: "Calgary",
     country: "Canada",
     price: "28",
@@ -102,6 +107,7 @@ export const events: Event[] = [
     date: "05 Sep",
     year: "2024",
     venue: "EVOL New York",
+    // Address unknown; leaving undefined intentionally
     city: "New York",
     country: "USA",
     price: "40",
@@ -125,6 +131,7 @@ export const events: Event[] = [
     dates: "Friday, September 12",
     year: "2024",
     venue: "Fortune Sound Club",
+    venueAddress: "147 E Pender St, Vancouver, BC V6A 1T6, Canada",
     city: "Vancouver",
     country: "Canada",
     price: "20",
@@ -148,6 +155,7 @@ export const events: Event[] = [
     dates: "Sunday, August 24 · 5:00 pm onwards",
     year: "2024",
     venue: "Miss Ginko",
+    // Address unknown; leaving undefined intentionally
     city: "Kolkata",
     country: "India",
     price: "20",

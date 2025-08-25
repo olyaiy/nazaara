@@ -51,112 +51,88 @@ export default function UpcomingEvents() {
         </svg>
       </div>
 
-      {/* Main Content */}
-      <div className="relative px-6 lg:px-12 py-24">
-        <div className="max-w-[1600px] mx-auto">
+      {/* Main Content - More Compact */}
+      <div className="relative container mx-auto px-4 md:px-6 lg:px-8 py-16 lg:py-20">
           
           {/* Header - Editorial Style */}
-          <SectionHeader eyebrow="Season 2024/25" title="Program" className="mb-20" />
+          <SectionHeader eyebrow="Season 2024/25" title="Program" className="mb-12" />
 
-          {/* Three Event Layout - Premium Gallery */}
-          <div className="mb-16">
+          {/* Three Event Layout - Compact Container */}
+          <div className="mb-12">
             {/* Decorative header line */}
-            <div className="mb-16">
+            <div className="mb-10">
               <div className="h-px bg-gradient-to-r from-transparent via-[var(--gold)]/20 to-transparent" />
             </div>
             
             {/* Three Column Premium Layout */}
-            <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+            <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
               {upcomingEvents.slice(0, 3).map((event, index) => (
                 <div 
                   key={event.id} 
                   className="group cursor-pointer relative" 
                   onClick={() => handleEventClick(event.slug)}
                 >
-                  {/* Elegant border treatment */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--gold)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  
                   <div className="relative">
                     {/* The Poster - Enhanced presentation */}
                     <div className="relative overflow-hidden">
-                      {/* Golden accent line at top */}
-                      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)]/40 to-transparent z-10" />
-                      
                       {/* Main poster with refined aspect ratio */}
                       <div className="relative aspect-[3/4] overflow-hidden bg-[var(--maroon-red)]/5">
                         <Image
                           src={event.image}
                           alt={event.artist}
                           fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                          className="object-cover group-hover:scale-105 transition-transform duration-700"
                           priority={index === 0}
                         />
                         
-                        {/* Sophisticated gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)] via-[var(--black-grey)]/20 to-transparent opacity-90" />
+                        {/* Subtle gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)]/90 via-transparent to-transparent" />
                         
-                        {/* Date display - elegant corner placement */}
-                        <div className="absolute bottom-6 left-6">
-                          <div className="flex items-baseline gap-2">
-                            <span className="text-5xl font-prettywise text-[var(--gold)] leading-none">
-                              {event.date.split(' ')[0]}
-                            </span>
-                            <span className="text-sm font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/70">
-                              {event.date.split(' ')[1]}
-                            </span>
-                          </div>
+                        {/* Floating Date Box - Similar to Hero */}
+                        <div className="absolute -top-3 -right-3 w-16 h-16 flex flex-col items-center justify-center" style={{ backgroundColor: 'var(--gold)' }}>
+                          <p className="text-xl font-serif font-light" style={{ color: 'var(--maroon-red)' }}>
+                            {event.date.split(' ')[0]}
+                          </p>
+                          <p className="text-[9px] uppercase tracking-[0.2em]" style={{ color: 'var(--maroon-red)' }}>
+                            {event.date.split(' ')[1]}
+                          </p>
                         </div>
                       </div>
                     </div>
                     
-                    {/* Content - Refined typography and spacing */}
-                    <div className="pt-8 pb-4">
-                      {/* Artist name with enhanced prominence */}
-                      <h3 className="font-prettywise text-[var(--white)] text-3xl lg:text-4xl mb-3 leading-tight group-hover:text-[var(--gold)] transition-colors duration-500">
+                    {/* Content - Compact typography and spacing */}
+                    <div className="pt-6 pb-2">
+                      {/* Artist name */}
+                      <h3 className="font-prettywise text-[var(--white)] text-2xl lg:text-3xl mb-2 leading-tight group-hover:text-[var(--gold)] transition-colors duration-500">
                         {event.artist}
                       </h3>
                       
-                      {/* Event title with subtle styling */}
-                      <p className="text-lg font-prettywise text-[var(--gold)]/60 mb-6">
+                      {/* Event title */}
+                      <p className="text-base font-prettywise text-[var(--gold)]/60 mb-4">
                         {event.title}
                       </p>
                       
-                      {/* Venue and pricing in elegant layout */}
-                      <div className="space-y-4">
+                      {/* Venue and pricing - Compact */}
+                      <div className="space-y-3">
                         {/* Divider */}
                         <div className="h-[1px] bg-gradient-to-r from-[var(--gold)]/20 via-[var(--gold)]/10 to-transparent" />
                         
                         {/* Venue information */}
                         <div className="flex justify-between items-end">
-                          <div className="space-y-1">
-                            <p className="text-base font-prettywise text-[var(--white)]/80">
+                          <div>
+                            <p className="text-sm font-prettywise text-[var(--white)]/80">
                               {event.venue}
                             </p>
-                            <p className="text-sm font-neue-haas text-[var(--white)]/50">
-                              {event.city}, {event.country}
+                            <p className="text-xs font-neue-haas text-[var(--white)]/50">
+                              {event.city}
                             </p>
                           </div>
                           
                           {/* Price tag */}
                           <div className="text-right">
-                            <p className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40 mb-1">
-                              Starting at
-                            </p>
-                            <p className="text-3xl font-prettywise text-[var(--gold)]">
+                            <p className="text-2xl font-prettywise text-[var(--gold)]">
                               ${event.price}
                             </p>
-                          </div>
-                        </div>
-                        
-                        {/* Subtle CTA on hover */}
-                        <div className="pt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          <div className="flex items-center justify-center gap-3 text-[var(--gold)]/60">
-                            <span className="text-xs font-neue-haas uppercase tracking-[0.3em]">
-                              Explore Event
-                            </span>
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
                           </div>
                         </div>
                       </div>
@@ -236,7 +212,6 @@ export default function UpcomingEvents() {
               ))}
             </div>
           </div>
-        </div>
       </div>
 
     </section>

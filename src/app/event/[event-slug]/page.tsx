@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { getEventBySlug, events } from "@/content/events";
 import EventHero from "@/components/event-page/hero";
 import VenueFeatures from "@/components/event-page/venue-features";
+import ArtistShowcase from "@/components/event-page/artist-showcase";
 
 interface EventPageProps {
   params: Promise<{
@@ -62,8 +63,9 @@ export default async function EventPage({ params }: EventPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--maroon-red)]">
+    <div className="min-h-dvh bg-[var(--maroon-red)]">
       <EventHero event={event} />
+      <ArtistShowcase artists={event.artists} headline={event.tour?.replace('Featuring ', 'Featuring')} />
       <VenueFeatures event={event} />
     </div>
   );

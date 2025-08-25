@@ -58,7 +58,7 @@ export default function VenueFeatures({ event }: VenueFeaturesProps) {
   const venueInfo = getVenueFeatures(event.venue, event.city);
 
   return (
-    <section className="relative bg-gradient-to-b from-[var(--maroon-red)] via-[var(--maroon-red)] to-[var(--dark-green)] py-20 lg:py-32 overflow-hidden">
+    <section className="relative py-20 lg:py-32 overflow-hidden">
       {/* Geometric Pattern Overlay */}
       <div className="absolute inset-0 opacity-[0.02]">
         <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
@@ -91,7 +91,7 @@ export default function VenueFeatures({ event }: VenueFeaturesProps) {
                 </h2>
                 <div className="flex items-baseline gap-6">
                   <p className="text-xl lg:text-2xl font-neue-haas text-[var(--white)]/70">
-                    {event.city}, {event.country}
+                    {event.venueAddress ?? `${event.city}, ${event.country}`}
                   </p>
                   <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--gold)]/30 to-transparent" />
                 </div>

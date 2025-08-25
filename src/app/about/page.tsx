@@ -74,7 +74,7 @@ export default function AboutPage() {
                 </p>
                 
                 <p>
-                  Today, we stand as the bridge between East and West, curating experiences that 
+                  Today, we stand as the bridge between South and West, curating experiences that 
                   honor tradition while embracing innovation. From sold-out arena tours to intimate 
                   private celebrations, we&apos;ve redefined what it means to celebrate South Asian artistry.
                 </p>
@@ -317,7 +317,7 @@ export default function AboutPage() {
                 <div className="text-[var(--gold)] font-serif text-2xl font-light min-w-[80px]">2019</div>
                 <div>
                   <h3 className="text-xl font-light text-foreground mb-2">Global Expansion</h3>
-                  <p className="text-muted-foreground font-light">Extended operations to Europe, Middle East, and Asia-Pacific</p>
+                  <p className="text-muted-foreground font-light">Extended operations to Europe, Middle South, and Asia-Pacific</p>
                 </div>
               </div>
               

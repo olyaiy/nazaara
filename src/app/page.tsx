@@ -139,24 +139,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Premium Footer CTA */}
-      <section className="py-20 border-t border-border/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-xl mx-auto text-center">
-            <h3 className="text-2xl font-serif font-light text-foreground mb-4">
-              Stay <span className="italic text-primary">Informed</span>
-            </h3>
-            <p className="text-sm text-muted-foreground font-light mb-8">
-              Receive exclusive presale access and curated event announcements
-            </p>
-            <Button 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm uppercase tracking-wider font-light"
-            >
-              Subscribe
-            </Button>
-          </div>
-        </div>
-      </section>
+      
 
 
 
