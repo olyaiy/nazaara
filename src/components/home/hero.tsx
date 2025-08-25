@@ -1,7 +1,8 @@
 import { getFeaturedEvent } from "@/content/events";
 import HeroMobile from "./hero-mobile";
-import HeroButton from "./hero-button";
+
 import HeroImage from "./hero-image";
+import HeroButton from "./hero-button";
 
 export default function Hero() {
   const featuredEvent = getFeaturedEvent();
