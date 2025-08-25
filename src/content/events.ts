@@ -13,7 +13,6 @@ export interface Event {
   artists?: Artist[];
   title: string;
   tagline?: string;
-  tour?: string;
   description?: string;
   date: string; // e.g., "04 Sep"
   dates?: string; // Full date description for featured events
@@ -43,7 +42,6 @@ export const events: Event[] = [
     ],
     title: "Live In Vancouver",
     tagline: "Vancouver, we begin here. Step into a soundscape built to move you.",
-    tour: "Yasmina, Sabzi & Wian",
     description: "An evening shaped by music, culture, and movement at Vancouver's most iconic dance floor. Three continents of sound converge for one unforgettable night.",
     date: "31 Aug",
     dates: "Sunday, August 31 · 10:00 pm - 2:00 am",
@@ -132,7 +130,6 @@ export const events: Event[] = [
     ],
     title: "Live at Fortune Sound Club",
     tagline: "Deep, soulful, and globally inspired Afro house and melodic sound",
-    tour: "Featuring Freeky.P & I Am Sotto Voce",
     description: "Francis Mercier brings his signature Afro house and melodic sound to Fortune Sound Club with local legends on support.",
     date: "12 Sep",
     dates: "Friday, September 12",
@@ -157,7 +154,6 @@ export const events: Event[] = [
     ],
     title: "The Wavy Edition",
     tagline: "The city's most exclusive night returns",
-    tour: "Featuring DJ Shubham",
     description: "AJ Wavy all the way from London headlines an unforgettable evening of sound and spectacle. Limited capacity. Maximum energy. All class.",
     date: "24 Aug",
     dates: "Sunday, August 24 · 5:00 pm onwards",

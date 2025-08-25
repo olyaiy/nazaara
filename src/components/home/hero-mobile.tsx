@@ -15,7 +15,10 @@ export default async function HeroMobile() {
   }
 
   console.log("[HeroMobile] chosen event:", featuredEvent.slug);
-  const artistNames = featuredEvent.tour?.replace('Featuring ', '').split(/[,&]/).map(name => name.trim()) || [];
+  const artistNames =
+    featuredEvent.artists
+      ?.filter((a) => a.name.toLowerCase() !== featuredEvent.artist.toLowerCase())
+      .map((a) => a.name) || [];
   const [day, month] = featuredEvent.date.split(' ');
 
   return (

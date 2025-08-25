@@ -18,8 +18,11 @@ export default async function Hero() {
 
   console.log("[Hero] chosen event:", featuredEvent.slug);
 
-  // Parse artist names from the tour string - handle both & and , separators
-  const artistNames = featuredEvent.tour?.replace('Featuring ', '').split(/[,&]/).map(name => name.trim()) || [];
+  // Derive featuring artist names from the `artists` array (exclude the headliner)
+  const artistNames =
+    featuredEvent.artists
+      ?.filter((a) => a.name.toLowerCase() !== featuredEvent.artist.toLowerCase())
+      .map((a) => a.name) || [];
 
   // Parse date for display
   const [day, month] = featuredEvent.date.split(' ');
