@@ -34,9 +34,24 @@ export default function VenueFeatures({ event }: VenueFeaturesProps) {
           <h2 className="text-[2rem] sm:text-[clamp(2.5rem,6vw,5rem)] font-serif font-thin leading-[0.95] sm:leading-[0.9] text-white mb-3 sm:mb-4">
             {event.venue}
           </h2>
-          <p className="text-base sm:text-lg font-light text-white/60">
-            {event.venueAddress ?? `${event.city}, ${event.country}`}
-          </p>
+          {(() => {
+            const addressText = event.venueAddress ?? `${event.city}, ${event.country}`;
+            if (event.venueAddressUrl) {
+              return (
+                <a
+                  href={event.venueAddressUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-base sm:text-lg font-light text-white/60 hover:text-[var(--gold)]/80 transition-colors underline-offset-4 hover:underline"
+                >
+                  {addressText}
+                </a>
+              );
+            }
+            return (
+              <p className="text-base sm:text-lg font-light text-white/60">{addressText}</p>
+            );
+          })()}
         </div>
 
         {/* Venue Description */}
