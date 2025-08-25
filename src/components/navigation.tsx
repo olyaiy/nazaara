@@ -25,12 +25,6 @@ export function Navigation() {
           {/* Center Navigation */}
           <div className="hidden lg:flex items-center gap-12 absolute left-1/2 -translate-x-1/2">
             <Link 
-              href="/events" 
-              className="text-sm uppercase tracking-[0.2em] text-foreground/80 hover:text-primary font-light transition-colors"
-            >
-              Events
-            </Link>
-            <Link 
               href="/about" 
               className="text-sm uppercase tracking-[0.2em] text-foreground/80 hover:text-primary font-light transition-colors"
             >
