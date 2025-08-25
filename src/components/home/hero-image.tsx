@@ -8,10 +8,9 @@ interface HeroImageProps {
   alt: string;
   day: string;
   month: string;
-  status: string;
 }
 
-export default function HeroImage({ eventSlug, src, alt, day, month, status }: HeroImageProps) {
+export default function HeroImage({ eventSlug, src, alt, day, month }: HeroImageProps) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -36,13 +35,6 @@ export default function HeroImage({ eventSlug, src, alt, day, month, status }: H
         />
         {/* Subtle Gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
-        
-        {/* Status Badge - Bottom Left */}
-        <div className="absolute bottom-6 left-6">
-          <div className="px-3 py-1.5 backdrop-blur-sm border" style={{ backgroundColor: 'var(--maroon-red)/60', borderColor: 'var(--gold)' }}>
-            <p className="text-xs uppercase tracking-[0.3em] font-light" style={{ color: 'var(--gold)' }}>{status}</p>
-          </div>
-        </div>
       </div>
       
       {/* Floating Date Box - Outside Image */}

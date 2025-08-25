@@ -156,7 +156,7 @@ export default function EventHero({ event }: EventHeroProps) {
           </div>
 
           {/* Desktop Layout - Original Side by Side */}
-          <div className="hidden lg:grid lg:grid-cols-2 lg:gap-0 items-center w-full">
+          <div className="hidden lg:grid lg:grid-cols-2 md:gap-8 xl:gap-0 items-center w-full">
             {/* Desktop Poster */}
             <div className="flex justify-center">
               <div className="relative w-full max-w-[500px]">

@@ -173,7 +173,7 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     /* Prevent scroll chaining and bounce/overscroll glow */
-    overscroll-behavior: none;
+    overscroll-behavior-y: none;
   }
   html::-webkit-scrollbar,
   body::-webkit-scrollbar {

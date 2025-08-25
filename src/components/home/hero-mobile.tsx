@@ -64,12 +64,6 @@ export default function HeroMobile() {
                 <p className="text-lg font-serif font-light" style={{ color: 'var(--maroon-red)' }}>{day}</p>
                 <p className="text-[9px] uppercase tracking-[0.2em]" style={{ color: 'var(--maroon-red)' }}>{month}</p>
               </div>
-              
-              <div className="absolute bottom-3 left-3">
-                <div className="px-2.5 py-1 backdrop-blur-sm border" style={{ backgroundColor: 'var(--maroon-red)/60', borderColor: 'var(--gold)' }}>
-                  <p className="text-[10px] uppercase tracking-[0.2em] font-light" style={{ color: 'var(--gold)' }}>{featuredEvent.status}</p>
-                </div>
-              </div>
               </div>
             </HeroMobileButton>
             

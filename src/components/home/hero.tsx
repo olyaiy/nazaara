@@ -137,7 +137,6 @@ export default function Hero() {
                   alt={featuredEvent.artist}
                   day={day}
                   month={month}
-                  status={featuredEvent.status}
                 />
               </div>
             </div>
