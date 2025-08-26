@@ -57,7 +57,6 @@ Joining her is our very own @djsabzii from Vancouver and @wian_music all the way
 
 One night. Three continents of sound. This is NAZAARA, and it starts now 🧿
 
-🎟 Tickets live now at tamashawrld.com
 📍 @fortunesound
 📅 Sunday, August 31 (Long Weekend)
 ⏰ 10PM till Late`,
@@ -99,8 +98,7 @@ Roll call: Bring your crew. Sing every hook. Own the floor💃🏻
 📍Boston: September 04 | @iconnightclub1
 📍New York City: September 05 | @evolclubnyc
 
-🍾 Bottle Service: DM @nazaara.live
-🎟️ Tickets: nazaara.flite.city (link in bio)`,
+🍾 Bottle Service: DM @nazaara.live`,
     date: "04 Sep",
     year: "2025",
     venue: "Icon Boston",
@@ -132,8 +130,7 @@ Roll call: Bring your crew. Sing every hook. Own the floor💃🏻
 📍Boston: September 04 | @iconnightclub1
 📍New York City: September 05 | @evolclubnyc
 
-🍾 Bottle Service: DM @nazaara.live
-🎟️ Tickets: nazaara.flite.city (link in bio)`,
+🍾 Bottle Service: DM @nazaara.live`,
     date: "05 Sep",
     year: "2025",
     venue: "EVOL New York",
@@ -170,9 +167,7 @@ you bring the energy, we'll bring the bangers. let's kick off the semester the o
 📍 @thepitubc
 📅 friday, september 12
 ⏰ 9:30pm – 2am
-🪩 19+ event
-
-Tickets ON SALE now, link in bio 🔗`,
+🪩 19+ event`,
     date: "12 Sep",
     year: "2025",
     venue: "The Pit",
