@@ -103,9 +103,18 @@ export default function EventHero({ event }: EventHeroProps) {
                   <span className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/50 block mb-1">
                     Featuring
                   </span>
-                  <p className="font-prettywise text-lg text-[var(--white)]">
-                    {supportingArtists.join(' / ')}
-                  </p>
+                  <div className="flex items-center justify-center gap-3 flex-wrap">
+                    {supportingArtists.map((artist, index) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <p className="font-prettywise text-lg text-[var(--white)]">
+                          {artist.trim()}
+                        </p>
+                        {index < supportingArtists.length - 1 && (
+                          <div className="w-2 h-2 rotate-45 border border-[var(--gold)]/40" />
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
               
