@@ -90,6 +90,17 @@ One night. Three continents of sound. This is NAZAARA, and it starts now 🧿
       { name: "AJ WAVY", instagram: "ajwavy", soundcloud: "ajwavy" },
     ],
     title: "Back 2 School with AJ Wavy",
+    description: `This Back 2 School season, join us to kick off your semester with @itsajwavy & special guests 👀 for ONE NIGHT ONLY in Boston & New York 🗽🇺🇸
+
+@itsajwavy x @nazaara.live take over @iconnightclub1 & @evolclubnyc ft. his viral mashups along with timeless bollywood bangers🪩
+
+Roll call: Bring your crew. Sing every hook. Own the floor💃🏻
+
+📍Boston: September 04 | @iconnightclub1
+📍New York City: September 05 | @evolclubnyc
+
+🍾 Bottle Service: DM @nazaara.live
+🎟️ Tickets: nazaara.flite.city (link in bio)`,
     date: "04 Sep",
     year: "2025",
     venue: "Icon Boston",
@@ -112,6 +123,17 @@ One night. Three continents of sound. This is NAZAARA, and it starts now 🧿
       { name: "AJ WAVY", instagram: "ajwavy", soundcloud: "ajwavy" },
     ],
     title: "Back 2 School with AJ Wavy",
+    description: `This Back 2 School season, join us to kick off your semester with @itsajwavy & special guests 👀 for ONE NIGHT ONLY in Boston & New York 🗽🇺🇸
+
+@itsajwavy x @nazaara.live take over @iconnightclub1 & @evolclubnyc ft. his viral mashups along with timeless bollywood bangers🪩
+
+Roll call: Bring your crew. Sing every hook. Own the floor💃🏻
+
+📍Boston: September 04 | @iconnightclub1
+📍New York City: September 05 | @evolclubnyc
+
+🍾 Bottle Service: DM @nazaara.live
+🎟️ Tickets: nazaara.flite.city (link in bio)`,
     date: "05 Sep",
     year: "2025",
     venue: "EVOL New York",
@@ -137,6 +159,20 @@ One night. Three continents of sound. This is NAZAARA, and it starts now 🧿
     ],
     title: "Tamasha",
     tagline: "Back to School",
+    description: `ANCOUUUVER! this back to school, we're bringing back the city's favourite: TAMASHA 🌍✨ bollywood that feels like home, global sounds that keep you moving all night.
+
+if you know, you know. if you don't, now's your chance 🙏
+
+behind the decks: @shalv.m, @djsurbee & @raytrixofficial vancouver's finest, bringing the classic TAMASHA Sound you've been waiting for all summer.
+
+you bring the energy, we'll bring the bangers. let's kick off the semester the only way we know how, it's a tradition after all 🤭
+
+📍 @thepitubc
+📅 friday, september 12
+⏰ 9:30pm – 2am
+🪩 19+ event
+
+Tickets ON SALE now, link in bio 🔗`,
     date: "12 Sep",
     year: "2025",
     venue: "The Pit",
