@@ -18,11 +18,11 @@ export default async function Hero() {
 
   console.log("[Hero] chosen event:", featuredEvent.slug);
 
-  // Derive featuring artist names from the `artists` array (exclude the headliner)
-  const artistNames =
-    featuredEvent.artists
-      ?.filter((a) => a.name.toLowerCase() !== featuredEvent.artist.toLowerCase())
-      .map((a) => a.name) || [];
+  // Derive featuring artists (exclude the headliner)
+  const featuringArtists =
+    featuredEvent.artists?.filter(
+      (a) => a.name.toLowerCase() !== featuredEvent.artist.toLowerCase()
+    ) || [];
 
   // Parse date for display
   const [day, month] = featuredEvent.date.split(' ');
@@ -93,12 +93,28 @@ export default async function Hero() {
                     <div className="h-px flex-1" style={{ backgroundColor: 'var(--gold)', opacity: 0.2 }} />
                   </div>
                   <div className="flex flex-wrap gap-x-5 gap-y-2">
-                    {artistNames.map((artist, index) => (
-                      <div key={index} className="flex items-baseline gap-2">
-                        <div className="w-1 h-1 rounded-full" style={{ backgroundColor: 'var(--gold)' }} />
-                        <p className="text-base font-serif text-white">{artist.trim()}</p>
-                      </div>
-                    ))}
+                    {featuringArtists.map((artist, index) => {
+                      const ig = artist.instagram?.trim();
+                      const name = artist.name.trim();
+                      const href = ig ? `https://instagram.com/${ig}` : undefined;
+                      return (
+                        <div key={index} className="flex items-baseline gap-2">
+                          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: 'var(--gold)' }} />
+                          {href ? (
+                            <a
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-base font-serif text-white hover:text-[var(--gold)] transition-colors"
+                            >
+                              {name}
+                            </a>
+                          ) : (
+                            <p className="text-base font-serif text-white">{name}</p>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -111,8 +127,33 @@ export default async function Hero() {
                     {/* Venue */}
                     <div className="flex items-start gap-8">
                       <div className="flex-1">
-                        <p className="text-lg font-serif text-white mb-1">{featuredEvent.venue}</p>
-                        <p className="text-xs uppercase tracking-[0.2em] text-white/40">{featuredEvent.city}, {featuredEvent.country}</p>
+                        {(() => {
+                          const mapsHref =
+                            featuredEvent.venueAddressUrl ||
+                            `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                              featuredEvent.venueAddress || `${featuredEvent.venue}, ${featuredEvent.city}, ${featuredEvent.country}`
+                            )}`;
+                          return (
+                            <>
+                              <a
+                                href={mapsHref}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-lg font-serif text-white mb-1 inline-block hover:text-[var(--gold)] transition-colors"
+                              >
+                                {featuredEvent.venue}
+                              </a>
+                              <a
+                                href={mapsHref}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block text-xs uppercase tracking-[0.2em] text-white/40 hover:text-[var(--gold)]/80 transition-colors"
+                              >
+                                {featuredEvent.city}, {featuredEvent.country}
+                              </a>
+                            </>
+                          );
+                        })()}
                       </div>
                     </div>
                     
