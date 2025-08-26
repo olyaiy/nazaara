@@ -272,10 +272,9 @@ export default function EventHero({ event }: EventHeroProps) {
                         const href = ig ? `https://instagram.com/${ig}` : undefined;
                         const isLast = index === supportingArtists.length - 1;
                         return (
-                          <>
+                          <span key={`artist-${index}`}>
                             {href ? (
                               <a
-                                key={`a-${index}`}
                                 href={href}
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -284,10 +283,10 @@ export default function EventHero({ event }: EventHeroProps) {
                                 {name}
                               </a>
                             ) : (
-                              <span key={`s-${index}`}>{name}</span>
+                              <span>{name}</span>
                             )}
-                            {!isLast && <span key={`sep-${index}`}>, </span>}
-                          </>
+                            {!isLast && <span>, </span>}
+                          </span>
                         );
                       })}
                     </p>

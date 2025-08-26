@@ -203,6 +203,7 @@ export function Navigation() {
               Bookings
             </Link>
             */}
+            {/* TEMPORARILY HIDDEN - Gallery is sufficient for now
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
@@ -216,6 +217,7 @@ export function Navigation() {
             >
               Contact
             </Link>
+            */}
             <a
               href="https://tamasha.myportfolio.com/"
               target="_blank"
