@@ -143,7 +143,7 @@ export default function Home() {
                   color: 'var(--maroon-red)'
                 }}
               >
-                <Link href="/bookings">Begin Your Journey</Link>
+                <Link href="/bookings">Inquire Now</Link>
               </Button>
             </div>
           </div>
