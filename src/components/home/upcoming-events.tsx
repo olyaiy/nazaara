@@ -154,12 +154,10 @@ export default function UpcomingEvents() {
                             </p>
                           </div>
                           
-                          {/* Price tag */}
-                          <div className="text-right">
-                            <p className="text-xl md:text-2xl font-prettywise text-[var(--gold)]">
-                              ${event.price}
-                            </p>
-                          </div>
+                          {/* Ticket Button */}
+                          <button className="px-4 py-2 bg-[var(--gold)] text-[var(--maroon-red)] font-prettywise text-sm uppercase tracking-wider hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-colors duration-300">
+                            Get Tickets
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -183,7 +181,6 @@ export default function UpcomingEvents() {
             {/* Events Table - Theater Program Style */}
             <div className="space-y-0">
               {allEventsChrono
-                .filter((event) => event.slug !== heroSlug)
                 .map((event) => (
                 <div 
                   key={event.id} 
@@ -218,13 +215,10 @@ export default function UpcomingEvents() {
                         <p className="text-[10px] font-neue-haas text-[var(--white)]/40 uppercase tracking-wider truncate">
                           {event.venue} · {event.city}
                         </p>
-                        <div className="flex items-center gap-3 mt-2">
-                          <p className="text-lg font-prettywise text-[var(--gold)]">
-                            ${event.price}
-                          </p>
-                          <span className="text-[8px] font-neue-haas uppercase tracking-[0.2em] text-[var(--gold)]/40">
-                            {event.status}
-                          </span>
+                        <div className="mt-3">
+                          <button className="px-3 py-1.5 bg-[var(--gold)]/10 border border-[var(--gold)]/30 text-[var(--gold)] font-neue-haas text-xs uppercase tracking-wider hover:bg-[var(--gold)] hover:text-[var(--maroon-red)] transition-all duration-300">
+                            Tickets
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -261,20 +255,11 @@ export default function UpcomingEvents() {
                       </div>
                     </div>
 
-                    {/* Price & Status */}
-                    <div className="col-span-3 lg:col-span-3 flex items-center justify-end gap-6">
-                      <div className="text-right">
-                        <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/30 mb-1">
-                          From
-                        </p>
-                        <p className="text-2xl font-prettywise text-[var(--gold)]">
-                          ${event.price}
-                        </p>
-                      </div>
-                      <div className="w-px h-8 bg-[var(--gold)]/10" />
-                      <span className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                        {event.status}
-                      </span>
+                    {/* Ticket Button */}
+                    <div className="col-span-3 lg:col-span-3 flex items-center justify-end">
+                      <button className="px-4 py-2 border border-[var(--gold)]/20 text-[var(--gold)] font-neue-haas text-[11px] uppercase tracking-[0.2em] hover:bg-[var(--gold)] hover:text-[var(--maroon-red)] hover:border-[var(--gold)] transition-all duration-300">
+                        Tickets
+                      </button>
                     </div>
                   </div>
                 </div>
