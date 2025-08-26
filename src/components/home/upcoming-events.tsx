@@ -220,7 +220,7 @@ export default function UpcomingEvents() {
                           {event.venue} · {event.city}
                         </p>
                         <div className="flex items-center gap-3 mt-3">
-                          {/* TEMPORARY: Learn More redirects to ticket URL */}
+                          {/* TEMPORARY: Learn More button hidden
                           <a 
                             href={event.ticketUrl || "#"}
                             target="_blank"
@@ -233,6 +233,7 @@ export default function UpcomingEvents() {
                           >
                             Learn More
                           </a>
+                          */}
                           <a 
                             href={event.ticketUrl || "#"}
                             target="_blank"
@@ -283,7 +284,7 @@ export default function UpcomingEvents() {
 
                     {/* Action Buttons */}
                     <div className="col-span-3 lg:col-span-3 flex items-center justify-end gap-3">
-                      {/* TEMPORARY: Learn More redirects to ticket URL */}
+                      {/* TEMPORARY: Learn More button hidden
                       <a 
                         href={event.ticketUrl || "#"}
                         target="_blank"
@@ -296,6 +297,7 @@ export default function UpcomingEvents() {
                       >
                         Learn More
                       </a>
+                      */}
                       <a 
                         href={event.ticketUrl || "#"}
                         target="_blank"
