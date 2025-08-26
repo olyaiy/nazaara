@@ -111,8 +111,8 @@ export default async function Hero() {
                     {/* Venue */}
                     <div className="flex items-start gap-8">
                       <div className="flex-1">
-                        <p className="text-lg font-serif text-white mb-1">Fortune Sound Club</p>
-                        <p className="text-xs uppercase tracking-[0.2em] text-white/40">Vancouver, British Columbia</p>
+                        <p className="text-lg font-serif text-white mb-1">{featuredEvent.venue}</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-white/40">{featuredEvent.city}, {featuredEvent.country}</p>
                       </div>
                     </div>
                     
