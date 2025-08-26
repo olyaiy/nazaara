@@ -88,10 +88,7 @@ export default function UpcomingEvents() {
 
           {/* Three Event Layout - Compact Container */}
           <div className="mb-8 md:mb-12">
-            {/* Decorative header line */}
-            <div className="mb-6 md:mb-10">
-              <div className="h-px bg-gradient-to-r from-transparent via-[var(--gold)]/20 to-transparent" />
-            </div>
+            
             
             {/* Three Column Premium Layout */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6 lg:gap-8">
