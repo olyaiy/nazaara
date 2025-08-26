@@ -100,8 +100,12 @@ export default function EventHero({ event }: EventHeroProps) {
               {/* Supporting Artists */}
               {supportingArtists.length > 0 && (
                 <div className="text-center">
-                  <p className="text-[9px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/60 mb-2">Featuring</p>
-                  <p className="text-base font-prettywise text-[var(--white)]">{supportingArtists.join(', ')}</p>
+                  <span className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/50 block mb-1">
+                    Featuring
+                  </span>
+                  <p className="font-prettywise text-lg text-[var(--white)]">
+                    {supportingArtists.join(' / ')}
+                  </p>
                 </div>
               )}
               
