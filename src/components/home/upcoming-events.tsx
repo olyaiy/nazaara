@@ -59,8 +59,12 @@ export default function UpcomingEvents() {
     return dateA.getTime() - dateB.getTime();
   });
 
-  const handleEventClick = (slug: string) => {
-    router.push(`/event/${slug}`);
+  // TEMPORARY: Redirect to ticket URL instead of event page
+  const handleEventClick = (event: typeof events[0]) => {
+    // router.push(`/event/${event.slug}`); // TEMPORARY: Commented out
+    if (event.ticketUrl) {
+      window.open(event.ticketUrl, '_blank');
+    }
   };
   
   return (
@@ -96,7 +100,7 @@ export default function UpcomingEvents() {
                 <div 
                   key={event.id} 
                   className="group cursor-pointer relative" 
-                  onClick={() => handleEventClick(event.slug)}
+                  onClick={() => handleEventClick(event)}
                 >
                   <div className="relative">
                     {/* The Poster - Enhanced presentation */}
@@ -185,7 +189,7 @@ export default function UpcomingEvents() {
                 <div 
                   key={event.id} 
                   className="group cursor-pointer border-b border-[var(--gold)]/10 hover:bg-[var(--gold)]/5 transition-all duration-500"
-                  onClick={() => handleEventClick(event.slug)}
+                  onClick={() => handleEventClick(event)}
                 >
                   {/* Mobile Layout */}
                   <div className="md:hidden py-6 px-4">
@@ -216,9 +220,19 @@ export default function UpcomingEvents() {
                           {event.venue} · {event.city}
                         </p>
                         <div className="flex items-center gap-3 mt-3">
-                          <button className="text-[var(--gold)]/60 font-neue-haas text-[10px] uppercase tracking-wider hover:text-[var(--gold)] transition-colors duration-300 underline underline-offset-2 decoration-[var(--gold)]/20">
+                          {/* TEMPORARY: Learn More redirects to ticket URL */}
+                          <a 
+                            href={event.ticketUrl || "#"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => {
+                              if (!event.ticketUrl) e.preventDefault();
+                              else e.stopPropagation();
+                            }}
+                            className="text-[var(--gold)]/60 font-neue-haas text-[10px] uppercase tracking-wider hover:text-[var(--gold)] transition-colors duration-300 underline underline-offset-2 decoration-[var(--gold)]/20"
+                          >
                             Learn More
-                          </button>
+                          </a>
                           <a 
                             href={event.ticketUrl || "#"}
                             target="_blank"
@@ -269,9 +283,19 @@ export default function UpcomingEvents() {
 
                     {/* Action Buttons */}
                     <div className="col-span-3 lg:col-span-3 flex items-center justify-end gap-3">
-                      <button className="text-[var(--gold)]/60 font-neue-haas text-[10px] uppercase tracking-[0.2em] hover:text-[var(--gold)] transition-colors duration-300 underline underline-offset-4 decoration-[var(--gold)]/20">
+                      {/* TEMPORARY: Learn More redirects to ticket URL */}
+                      <a 
+                        href={event.ticketUrl || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => {
+                          if (!event.ticketUrl) e.preventDefault();
+                          else e.stopPropagation();
+                        }}
+                        className="text-[var(--gold)]/60 font-neue-haas text-[10px] uppercase tracking-[0.2em] hover:text-[var(--gold)] transition-colors duration-300 underline underline-offset-4 decoration-[var(--gold)]/20"
+                      >
                         Learn More
-                      </button>
+                      </a>
                       <a 
                         href={event.ticketUrl || "#"}
                         target="_blank"

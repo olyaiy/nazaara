@@ -60,7 +60,8 @@ export default async function HeroMobile() {
             <div className="absolute inset-0 rotate-1 scale-102" style={{ backgroundColor: 'var(--gold)', opacity: 0.02 }} />
             
             {/* Main poster container */}
-            <HeroMobileButton eventSlug={featuredEvent.slug} asChild>
+            {/* TEMPORARY: Pass ticketUrl for redirect */}
+            <HeroMobileButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl} asChild>
               <div className="relative aspect-[3/4] overflow-hidden shadow-2xl">
                 <Image 
                   src={featuredEvent.image}

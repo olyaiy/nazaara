@@ -5,16 +5,21 @@ import React from "react";
 
 interface HeroButtonProps {
   eventSlug: string;
+  ticketUrl?: string; // TEMPORARY: Added for ticket redirect
   asChild?: boolean;
   children?: React.ReactNode;
   className?: string;
 }
 
-export default function HeroButton({ eventSlug, asChild, children, className }: HeroButtonProps) {
+export default function HeroButton({ eventSlug, ticketUrl, asChild, children, className }: HeroButtonProps) {
   const router = useRouter();
 
   const handleEventDetailsClick = () => {
-    router.push(`/event/${eventSlug}`);
+    // TEMPORARY: Redirect to ticket URL instead of event page
+    // router.push(`/event/${eventSlug}`); // TEMPORARY: Commented out
+    if (ticketUrl) {
+      window.open(ticketUrl, '_blank');
+    }
   };
 
   if (asChild) {

@@ -4,15 +4,20 @@ import { Button } from "@/components/ui/button";
 
 interface HeroMobileButtonProps {
   eventSlug: string;
+  ticketUrl?: string; // TEMPORARY: Added for ticket redirect
   asChild?: boolean;
   children?: React.ReactNode;
 }
 
-export default function HeroMobileButton({ eventSlug, asChild, children }: HeroMobileButtonProps) {
+export default function HeroMobileButton({ eventSlug, ticketUrl, asChild, children }: HeroMobileButtonProps) {
   const router = useRouter();
 
   const handleEventDetailsClick = () => {
-    router.push(`/event/${eventSlug}`);
+    // TEMPORARY: Redirect to ticket URL instead of event page
+    // router.push(`/event/${eventSlug}`); // TEMPORARY: Commented out
+    if (ticketUrl) {
+      window.open(ticketUrl, '_blank');
+    }
   };
 
   if (asChild) {

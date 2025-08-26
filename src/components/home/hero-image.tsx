@@ -4,17 +4,22 @@ import { useRouter } from "next/navigation";
 
 interface HeroImageProps {
   eventSlug: string;
+  ticketUrl?: string; // TEMPORARY: Added for ticket redirect
   src: string;
   alt: string;
   day: string;
   month: string;
 }
 
-export default function HeroImage({ eventSlug, src, alt, day, month }: HeroImageProps) {
+export default function HeroImage({ eventSlug, ticketUrl, src, alt, day, month }: HeroImageProps) {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/event/${eventSlug}`);
+    // TEMPORARY: Redirect to ticket URL instead of event page
+    // router.push(`/event/${eventSlug}`); // TEMPORARY: Commented out
+    if (ticketUrl) {
+      window.open(ticketUrl, '_blank');
+    }
   };
 
   return (

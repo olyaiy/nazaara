@@ -168,14 +168,17 @@ export default async function Hero() {
 
                 {/* CTA Section */}
                 <div className="flex items-center gap-6 pt-1">
-                  <HeroButton eventSlug={featuredEvent.slug} />
+                  {/* TEMPORARY: Pass ticketUrl for redirect */}
+                  <HeroButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl} />
                 </div>
               </div>
               
               {/* Right - Creative Poster Layout */}
               <div className="lg:col-span-6 relative flex justify-center lg:justify-center">
+                {/* TEMPORARY: Pass ticketUrl for redirect */}
                 <HeroImage 
                   eventSlug={featuredEvent.slug}
+                  ticketUrl={featuredEvent.ticketUrl}
                   src={featuredEvent.image}
                   alt={featuredEvent.title}
                   day={day}
