@@ -184,14 +184,17 @@ export default function Home() {
                 
                 {/* Learn More CTA */}
                 <Button 
+                  asChild
                   className="w-full md:w-auto px-6 md:px-8 py-5 md:py-6 text-xs md:text-sm uppercase tracking-wider font-light group border-0"
                   style={{ 
                     backgroundColor: 'var(--gold)', 
                     color: 'var(--maroon-red)'
                   }}
                 >
-                  Discover Our Story
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <Link href="/about">
+                    Discover Our Story
+                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
                 </Button>
               </div>
               

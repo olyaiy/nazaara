@@ -43,12 +43,7 @@ export default function HeroImage({ eventSlug, src, alt, day, month }: HeroImage
         <p className="text-[10px] uppercase tracking-[0.3em]" style={{ color: 'var(--maroon-red)' }}>{month}</p>
       </div>
       
-      {/* Side Typography Element */}
-      <div className="absolute -right-4 top-1/2 -translate-y-1/2 -rotate-90 origin-center">
-        <span className="text-xs uppercase tracking-[0.8em] text-white/20 font-light">
-          Vancouver Launch
-        </span>
-      </div>
+   
     </div>
   );
 }
