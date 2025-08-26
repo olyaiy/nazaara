@@ -31,6 +31,7 @@ export interface Event {
   image: string;
   status: string; // e.g., "On Sale", "Waitlist"
   isFeatured: boolean;
+  ticketUrl?: string; // Optional URL for ticket purchasing
 }
 
 export const events: Event[] = [
