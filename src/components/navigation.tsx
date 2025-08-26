@@ -57,6 +57,7 @@ export function Navigation() {
 
           {/* Center Navigation (Desktop) */}
           <div className="hidden lg:flex items-center gap-12 absolute left-1/2 -translate-x-1/2">
+            {/* TEMPORARILY HIDDEN - Will be brought back later
             <Link
               href="/about"
               aria-current={isCurrent("/about") ? "page" : undefined}
@@ -97,6 +98,8 @@ export function Navigation() {
                 )}
               />
             </Link>
+            */}
+            {/* Gallery link moved to right side temporarily
             <a
               href="https://tamasha.myportfolio.com/"
               target="_blank"
@@ -106,10 +109,12 @@ export function Navigation() {
               Gallery
               <ArrowUpRight className="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" />
             </a>
+            */}
           </div>
 
           {/* Right Side CTA (Desktop) */}
           <div className="hidden md:flex items-center gap-6">
+            {/* TEMPORARILY REPLACED WITH GALLERY - Easy to swap back
             <Link
               href="/contact"
               aria-current={isCurrent("/contact") ? "page" : undefined}
@@ -125,6 +130,20 @@ export function Navigation() {
                 )}
               />
             </Link>
+            */}
+            {/* GALLERY BUTTON - Temporary placement */}
+            <a
+              href="https://tamasha.myportfolio.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative group"
+            >
+              <span className="text-sm uppercase tracking-[0.2em] text-primary font-light transition-colors group-hover:opacity-90 flex items-center gap-2">
+                Gallery
+                <ArrowUpRight className="w-3 h-3 opacity-70 group-hover:opacity-100 transition-opacity" />
+              </span>
+              <span className="absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 w-0 group-hover:w-full" />
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -156,6 +175,7 @@ export function Navigation() {
       >
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col gap-2 py-2">
+            {/* TEMPORARILY HIDDEN - Will be brought back later
             <Link
               href="/about"
               onClick={() => setOpen(false)}
@@ -182,6 +202,7 @@ export function Navigation() {
             >
               Bookings
             </Link>
+            */}
             <Link
               href="/contact"
               onClick={() => setOpen(false)}

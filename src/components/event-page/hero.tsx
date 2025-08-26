@@ -9,7 +9,9 @@ interface EventHeroProps {
 export default function EventHero({ event }: EventHeroProps) {
   // Supporting artists excluding the main headliner
   const supportingArtists =
-    event.artists?.filter((a) => a.name.toLowerCase() !== event.artist.toLowerCase()).map((a) => a.name) ?? [];
+    event.artists?.filter(
+      (a) => a.name.toLowerCase() !== event.artist.toLowerCase()
+    ) ?? [];
 
   return (
     <section className="relative overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
@@ -104,16 +106,30 @@ export default function EventHero({ event }: EventHeroProps) {
                     Featuring
                   </span>
                   <div className="flex items-center justify-center gap-3 flex-wrap">
-                    {supportingArtists.map((artist, index) => (
-                      <div key={index} className="flex items-center gap-3">
-                        <p className="font-prettywise text-lg text-[var(--white)]">
-                          {artist.trim()}
-                        </p>
-                        {index < supportingArtists.length - 1 && (
-                          <div className="w-2 h-2 rotate-45 border border-[var(--gold)]/40" />
-                        )}
-                      </div>
-                    ))}
+                    {supportingArtists.map((artist, index) => {
+                      const ig = artist.instagram?.trim();
+                      const name = artist.name.trim();
+                      const href = ig ? `https://instagram.com/${ig}` : undefined;
+                      return (
+                        <div key={index} className="flex items-center gap-3">
+                          {href ? (
+                            <a
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-prettywise text-lg text-[var(--white)] hover:text-[var(--gold)] transition-colors"
+                            >
+                              {name}
+                            </a>
+                          ) : (
+                            <p className="font-prettywise text-lg text-[var(--white)]">{name}</p>
+                          )}
+                          {index < supportingArtists.length - 1 && (
+                            <div className="w-2 h-2 rotate-45 border border-[var(--gold)]/40" />
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -126,16 +142,32 @@ export default function EventHero({ event }: EventHeroProps) {
                   <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
                 </div>
                 
-                <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-2 gap-6">
                   <div className="text-center">
                     <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40 mb-1">Venue</p>
-                    <p className="text-base font-prettywise text-[var(--white)]">{event.venue}</p>
+                    {(() => {
+                      const mapsHref =
+                        event.venueAddressUrl ||
+                        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                          event.venueAddress || `${event.venue}, ${event.city}, ${event.country}`
+                        )}`;
+                      return (
+                        <a
+                          href={mapsHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-base font-prettywise text-[var(--white)] hover:text-[var(--gold)] transition-colors"
+                        >
+                          {event.venue}
+                        </a>
+                      );
+                    })()}
                   </div>
                   <div className="text-center">
                     <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40 mb-1">Date & Time</p>
                     <p className="text-base font-prettywise text-[var(--white)]">{event.dates || event.date}</p>
                   </div>
-                </div>
+                  </div>
                 
               </div>
               
@@ -233,7 +265,32 @@ export default function EventHero({ event }: EventHeroProps) {
                 {supportingArtists.length > 0 && (
                   <div className="space-y-3">
                     <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40">Featuring</p>
-                    <p className="text-base font-prettywise text-[var(--white)]">{supportingArtists.join(', ')}</p>
+                    <p className="text-base font-prettywise text-[var(--white)]">
+                      {supportingArtists.map((artist, index) => {
+                        const ig = artist.instagram?.trim();
+                        const name = artist.name.trim();
+                        const href = ig ? `https://instagram.com/${ig}` : undefined;
+                        const isLast = index === supportingArtists.length - 1;
+                        return (
+                          <>
+                            {href ? (
+                              <a
+                                key={`a-${index}`}
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:text-[var(--gold)] transition-colors"
+                              >
+                                {name}
+                              </a>
+                            ) : (
+                              <span key={`s-${index}`}>{name}</span>
+                            )}
+                            {!isLast && <span key={`sep-${index}`}>, </span>}
+                          </>
+                        );
+                      })}
+                    </p>
                   </div>
                 )}
                 
@@ -248,7 +305,23 @@ export default function EventHero({ event }: EventHeroProps) {
                   <div className="grid grid-cols-2 gap-6">
                     <div>
                       <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-1.5">Venue</p>
-                      <p className="text-lg font-prettywise text-[var(--white)]">{event.venue}</p>
+                      {(() => {
+                        const mapsHref =
+                          event.venueAddressUrl ||
+                          `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                            event.venueAddress || `${event.venue}, ${event.city}, ${event.country}`
+                          )}`;
+                        return (
+                          <a
+                            href={mapsHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-lg font-prettywise text-[var(--white)] hover:text-[var(--gold)] transition-colors"
+                          >
+                            {event.venue}
+                          </a>
+                        );
+                      })()}
                     </div>
                     <div>
                       <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-1.5">Date & Time</p>

@@ -76,6 +76,7 @@ export function Footer() {
                     >
                       Events
                     </Link>
+                    {/* TEMPORARILY HIDDEN - Will be brought back later
                     <Link 
                       href="/about" 
                       className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
@@ -88,6 +89,7 @@ export function Footer() {
                     >
                       Private Bookings
                     </Link>
+                    */}
                     <Link 
                       href="/gallery" 
                       className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
@@ -200,7 +202,9 @@ export function Footer() {
                     <p className="text-xs font-neue-haas uppercase tracking-[0.2em] text-white/40 mb-4">Follow Us</p>
                     <div>
                       <a 
-                        href="#" 
+                        href="https://www.instagram.com/nazaara.live/" 
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-white/60 hover:text-[var(--gold)] transition-colors"
                         aria-label="Instagram"
                       >

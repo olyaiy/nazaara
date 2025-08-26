@@ -4,6 +4,13 @@ const COOKIE_NAME = "nza_city";
 const MAX_AGE = 60 * 60 * 24 * 3; // 3 days
 
 export function middleware(req: NextRequest) {
+  // Temporary redirects for About and Bookings pages
+  const pathname = req.nextUrl.pathname;
+  if (pathname === "/about" || pathname === "/bookings") {
+    console.log(`[middleware] Redirecting from ${pathname} to home (temporary)`);
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
   // If cookie already present, proceed without changes
   if (req.cookies.get(COOKIE_NAME)?.value) {
     console.log("[middleware] city cookie already set:", req.cookies.get(COOKIE_NAME)?.value);
@@ -38,6 +45,6 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   runtime: "edge",
-  // Run only on pages where hero is rendered (home and events list)
-  matcher: ["/", "/events"],
+  // Run on home, events, and the temporarily redirected pages
+  matcher: ["/", "/events", "/about", "/bookings"],
 };
