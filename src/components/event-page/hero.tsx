@@ -100,8 +100,8 @@ export default function EventHero({ event }: EventHeroProps) {
               {/* Supporting Artists */}
               {supportingArtists.length > 0 && (
                 <div className="text-center">
-                  <p className="text-[7px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40 mb-2">Featuring</p>
-                  <p className="text-sm font-prettywise text-[var(--white)]">{supportingArtists.join(', ')}</p>
+                  <p className="text-[9px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/60 mb-2">Featuring</p>
+                  <p className="text-base font-prettywise text-[var(--white)]">{supportingArtists.join(', ')}</p>
                 </div>
               )}
               
@@ -124,33 +124,36 @@ export default function EventHero({ event }: EventHeroProps) {
                   </div>
                 </div>
                 
-                <div className="flex justify-center flex-wrap items-center gap-4 text-[9px] font-neue-haas uppercase tracking-[0.2em] text-[var(--white)]/40">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-1 h-1 bg-[var(--gold)] rounded-full" />
-                    19+ Event
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-1 h-1 bg-[var(--gold)] rounded-full" />
-                    ID Required
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-1 h-1 bg-[var(--gold)] rounded-full" />
-                    Limited Capacity
-                  </span>
-                </div>
               </div>
               
               {/* CTA Section */}
               <div className="flex justify-center">
-                <button className="w-full max-w-xs relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-[var(--gold)]" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 group-hover:opacity-100" />
-                  <div className="relative px-8 py-3.5">
-                    <p className="text-[10px] font-neue-haas uppercase tracking-[0.4em] text-[var(--maroon-red)] font-medium">
-                      RSVP
-                    </p>
+                <button className="relative w-full overflow-hidden group">
+                  {/* Creative button design */}
+                  <div className="absolute inset-0" style={{ backgroundColor: 'var(--gold)' }} />
+                  <div className="absolute inset-0 flex items-center justify-between px-6">
+                    <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
+                    <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
+                  </div>
+                  <div className="relative py-5 flex items-center justify-center">
+                    <span className="font-neue-haas text-[11px] uppercase tracking-[0.5em] font-medium" style={{ color: 'var(--maroon-red)' }}>
+                      Reserve Your Spot
+                    </span>
                   </div>
                 </button>
+              </div>
+              
+              {/* Minimal info bar */}
+              <div className="mt-4 flex items-center justify-center gap-6">
+                <span className="font-neue-haas text-[9px] uppercase tracking-[0.3em]" style={{ color: 'var(--gold)', opacity: 0.7 }}>
+                  19+
+                </span>
+                <span className="font-neue-haas text-[9px] uppercase tracking-[0.3em]" style={{ color: 'var(--white)', opacity: 0.4 }}>
+                  ID Required
+                </span>
+                <span className="font-neue-haas text-[9px] uppercase tracking-[0.3em]" style={{ color: 'var(--white)', opacity: 0.4 }}>
+                  Limited Capacity
+                </span>
               </div>
             </div>
           </div>

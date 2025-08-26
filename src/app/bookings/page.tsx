@@ -551,7 +551,7 @@ export default function BookingsPage() {
               {/* Right Form - Enhanced Design */}
               <div className="relative">
                 {/* Premium form container with subtle gradient background */}
-                <div className="relative bg-gradient-to-br from-[var(--maroon-red)]/10 via-transparent to-[var(--dark-green)]/5 p-12 backdrop-blur-sm">
+                <div className="relative bg-gradient-to-br from-[var(--maroon-red)]/10 via-transparent to-[var(--dark-green)]/5 sm:p-12 backdrop-blur-sm">
                   
                   <form className="space-y-8">
                     {/* Personal Information Row */}
