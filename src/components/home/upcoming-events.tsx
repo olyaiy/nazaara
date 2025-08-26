@@ -84,7 +84,7 @@ export default function UpcomingEvents() {
       <div className="relative container mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
           
           {/* Header - Editorial Style */}
-          <SectionHeader eyebrow="Season 2024/25" title="Next Up" className="mb-8 md:mb-12" />
+          <SectionHeader eyebrow="Season 2025/26" title="Next Up" className="mb-8 md:mb-12" />
 
           {/* Three Event Layout - Compact Container */}
           <div className="mb-8 md:mb-12">
