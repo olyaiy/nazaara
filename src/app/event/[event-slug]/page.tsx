@@ -4,6 +4,7 @@ import { getEventBySlug, events } from "@/content/events";
 import EventHero from "@/components/event-page/hero";
 import VenueFeatures from "@/components/event-page/venue-features";
 import ArtistShowcase from "@/components/event-page/artist-showcase";
+import EventBio from "@/components/event-page/event-bio";
 
 interface EventPageProps {
   params: Promise<{
@@ -65,6 +66,7 @@ export default async function EventPage({ params }: EventPageProps) {
   return (
     <div className="min-h-dvh bg-[var(--maroon-red)]">
       <EventHero event={event} />
+      <EventBio bio={event.description} />
       <ArtistShowcase artists={event.artists} />
       <VenueFeatures event={event} />
     </div>

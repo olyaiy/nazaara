@@ -47,7 +47,20 @@ export const events: Event[] = [
     ],
     title: "NAZAARA",
     tagline: "Live In Vancouver",
-    description: "Vancouver, we begin here. Step into a soundscape built to move you.",
+    description: `Vancouver, we begin here. Step into a soundscape built to move you👁️‍🗨️
+
+On August 31, we launch NAZAARA at the legendary @fortunesound 🌐 An evening shaped by music, culture, and movement at Vancouver's most iconic dance floor.
+
+We're excited to welcome @yas.mina to Vancouver for her debut at NAZAARA✨Known for her versatile style and natural feel for her audience, she's been building a name across North America and beyond, with performances spanning LA, Montreal, and Morocco.
+
+Joining her is our very own @djsabzii from Vancouver and @wian_music all the way from India, each bringing their own distinct sound to the journey. Hosted by @shalv.m 🪭
+
+One night. Three continents of sound. This is NAZAARA, and it starts now 🧿
+
+🎟 Tickets live now at tamashawrld.com
+📍 @fortunesound
+📅 Sunday, August 31 (Long Weekend)
+⏰ 10PM till Late`,
     date: "31 Aug",
     dates: "Sunday, August 31 · 10:00 pm - 2:00 am",
     year: "2025",

@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 const prettywise = localFont({
   src: [
@@ -177,6 +178,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
