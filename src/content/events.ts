@@ -66,6 +66,7 @@ export const events: Event[] = [
     image: "/events/nazaaea live poster.webp",
     status: "Featured",
     isFeatured: true,
+    ticketUrl: "https://www.ticketweb.ca/event/nazaara-fortune-sound-club-tickets/13937864?pl=blueprint~",
   },
   {
     id: 2,
@@ -87,6 +88,7 @@ export const events: Event[] = [
     image: "/events/back 2 school poster.webp",
     status: "Waitlist",
     isFeatured: false,
+    ticketUrl: "https://flite.city/e/back-2-school-with-aj-wavy?t=website",
   },
   {
     id: 3,
@@ -108,6 +110,7 @@ export const events: Event[] = [
     image: "/events/back 2 school NYC Poster.webp",
     status: "On Sale",
     isFeatured: false,
+    ticketUrl: "https://flite.city/e/nyc-back-2-school-with-aj-wavy?t=website",
   },
   {
     id: 4,
@@ -132,6 +135,7 @@ export const events: Event[] = [
     image: "/events/tamasha-back-2-school-sept-12-poster.webp",
     status: "On Sale",
     isFeatured: false,
+    ticketUrl: "https://www.showpass.com/pitkickoff",
   },
   {
     id: 5,
@@ -162,6 +166,7 @@ export const events: Event[] = [
     image: "/events/Francis Mercier Poster.webp",
     status: "On Sale",
     isFeatured: false,
+    ticketUrl: "https://www.ticketweb.ca/event/francis-mercier-fortune-sound-club-tickets/13934854?pl=blueprint",
   },
   {
     id: 6,
@@ -191,6 +196,7 @@ export const events: Event[] = [
     image: "/events/Francis Mercier Poster.webp",
     status: "On Sale",
     isFeatured: false,
+    ticketUrl: "https://www.ticketweb.ca/event/dj-habibeats-fortune-sound-club-tickets/13916184?pl=blueprintt",
   },
 ];
 

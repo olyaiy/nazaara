@@ -215,10 +215,22 @@ export default function UpcomingEvents() {
                         <p className="text-[10px] font-neue-haas text-[var(--white)]/40 uppercase tracking-wider truncate">
                           {event.venue} · {event.city}
                         </p>
-                        <div className="mt-3">
-                          <button className="px-3 py-1.5 bg-[var(--gold)]/10 border border-[var(--gold)]/30 text-[var(--gold)] font-neue-haas text-xs uppercase tracking-wider hover:bg-[var(--gold)] hover:text-[var(--maroon-red)] transition-all duration-300">
-                            Tickets
+                        <div className="flex items-center gap-3 mt-3">
+                          <button className="text-[var(--gold)]/60 font-neue-haas text-[10px] uppercase tracking-wider hover:text-[var(--gold)] transition-colors duration-300 underline underline-offset-2 decoration-[var(--gold)]/20">
+                            Learn More
                           </button>
+                          <a 
+                            href={event.ticketUrl || "#"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => {
+                              if (!event.ticketUrl) e.preventDefault();
+                              else e.stopPropagation();
+                            }}
+                            className="px-3 py-1.5 bg-[var(--gold)] text-[var(--maroon-red)] font-neue-haas text-xs uppercase tracking-wider hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-all duration-300"
+                          >
+                            Tickets
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -255,11 +267,23 @@ export default function UpcomingEvents() {
                       </div>
                     </div>
 
-                    {/* Ticket Button */}
-                    <div className="col-span-3 lg:col-span-3 flex items-center justify-end">
-                      <button className="px-4 py-2 border border-[var(--gold)]/20 text-[var(--gold)] font-neue-haas text-[11px] uppercase tracking-[0.2em] hover:bg-[var(--gold)] hover:text-[var(--maroon-red)] hover:border-[var(--gold)] transition-all duration-300">
-                        Tickets
+                    {/* Action Buttons */}
+                    <div className="col-span-3 lg:col-span-3 flex items-center justify-end gap-3">
+                      <button className="text-[var(--gold)]/60 font-neue-haas text-[10px] uppercase tracking-[0.2em] hover:text-[var(--gold)] transition-colors duration-300 underline underline-offset-4 decoration-[var(--gold)]/20">
+                        Learn More
                       </button>
+                      <a 
+                        href={event.ticketUrl || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => {
+                          if (!event.ticketUrl) e.preventDefault();
+                          else e.stopPropagation();
+                        }}
+                        className="px-4 py-2 bg-[var(--gold)] text-[var(--maroon-red)] font-neue-haas text-[11px] uppercase tracking-[0.2em] hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-all duration-300"
+                      >
+                        Tickets
+                      </a>
                     </div>
                   </div>
                 </div>
