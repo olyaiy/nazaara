@@ -16,7 +16,7 @@ export interface Event {
   description?: string;
   date: string; // e.g., "04 Sep"
   dates?: string; // Full date description for featured events
-  year: string; // e.g., "2024"
+  year: string; // e.g., "2025"
   venue: string;
   venueDescription?: string; // Two-sentence venue description
   // Optional physical address for the venue. Kept separate for backward compatibility.
@@ -37,7 +37,7 @@ export const events: Event[] = [
   {
     id: 1,
     number: "01",
-    slug: "nazaara-live-vancouver-2024",
+    slug: "nazaara-live-vancouver-2025",
     artist: "NAZAARA",
     artists: [
       { name: "Yasmina", image: "/Yasmina.webp", instagram: "yasmina", soundcloud: "yasmina" },
@@ -49,7 +49,7 @@ export const events: Event[] = [
     description: "Vancouver, we begin here. Step into a soundscape built to move you.",
     date: "31 Aug",
     dates: "Sunday, August 31 · 10:00 pm - 2:00 am",
-    year: "2024",
+    year: "2025",
     venue: "Fortune Sound Club",
     venueDescription: "Located in the heart of Vancouver's vibrant Chinatown, Fortune Sound Club is an underground institution known for its intimate atmosphere and world-class sound system. This iconic venue has hosted legendary artists and continues to be the epicenter of Vancouver's electronic music scene.",
     venueAddress: "147 E Pender St, Vancouver, BC V6A 1T6, Canada",
@@ -69,14 +69,14 @@ export const events: Event[] = [
   {
     id: 2,
     number: "02",
-    slug: "aj-wavy-back-2-school-boston-2024",
-    artist: "AJ WAVY",
+    slug: "aj-wavy-back-2-school-boston-2025",
+    artist: "",
     artists: [
       { name: "AJ WAVY", instagram: "ajwavy", soundcloud: "ajwavy" },
     ],
     title: "Back 2 School",
     date: "04 Sep",
-    year: "2024",
+    year: "2025",
     venue: "Icon Boston",
     venueDescription: "Situated in the bustling Theater District of downtown Boston, Icon is a multi-level nightlife destination that combines cutting-edge design with premium entertainment. The venue's sophisticated atmosphere and state-of-the-art production make it Boston's premier destination for unforgettable nights.",
     venueAddress: "100 Warrenton St, Boston, MA 02116, USA",
@@ -90,7 +90,7 @@ export const events: Event[] = [
   {
     id: 3,
     number: "03",
-    slug: "tamasha-strictly-bollywood-calgary-2024",
+    slug: "tamasha-strictly-bollywood-calgary-2025",
     artist: "SABZI & RAYTRIX",
     artists: [
       { name: "Sabzi", instagram: "sabzi", soundcloud: "sabzi" },
@@ -98,7 +98,7 @@ export const events: Event[] = [
     ],
     title: "Strictly Bollywood",
     date: "23 Aug",
-    year: "2024",
+    year: "2025",
     venue: "LVL Three Calgary",
     venueDescription: "Perched above Calgary's dynamic downtown core, LVL Three offers an elevated nightlife experience with panoramic city views. This sophisticated venue combines craft cocktails, premium atmosphere, and carefully curated music programming.",
     // Address unknown; leaving undefined intentionally
@@ -112,14 +112,14 @@ export const events: Event[] = [
   {
     id: 4,
     number: "04",
-    slug: "aj-wavy-back-2-school-nyc-2024",
+    slug: "aj-wavy-back-2-school-nyc-2025",
     artist: "AJ WAVY",
     artists: [
       { name: "AJ WAVY", instagram: "ajwavy", soundcloud: "ajwavy" },
     ],
     title: "Back 2 School NYC",
     date: "05 Sep",
-    year: "2024",
+    year: "2025",
     venue: "EVOL New York",
     venueDescription: "Hidden in the heart of Manhattan's Lower East Side, EVOL embodies NYC's underground club culture with its raw industrial design and uncompromising sound quality. This intimate venue attracts music connoisseurs seeking authentic late-night experiences away from the mainstream.",
     // Address unknown; leaving undefined intentionally
@@ -133,7 +133,7 @@ export const events: Event[] = [
   {
     id: 5,
     number: "05",
-    slug: "francis-mercier-fortune-sound-club-vancouver-2024",
+    slug: "francis-mercier-fortune-sound-club-vancouver-2025",
     artist: "FRANCIS MERCIER",
     artists: [
       { name: "FRANCIS MERCIER", instagram: "francismercier", soundcloud: "francismercier" },
@@ -143,7 +143,7 @@ export const events: Event[] = [
     description: "Francis Mercier brings his signature Afro house and melodic sound to Fortune Sound Club with local legends on support.",
     date: "12 Sep",
     dates: "Friday, September 12",
-    year: "2024",
+    year: "2025",
     venue: "Fortune Sound Club",
     venueDescription: "Located in the heart of Vancouver's vibrant Chinatown, Fortune Sound Club is an underground institution known for its intimate atmosphere and world-class sound system. This iconic venue has hosted legendary artists and continues to be the epicenter of Vancouver's electronic music scene.",
     venueAddress: "147 E Pender St, Vancouver, BC V6A 1T6, Canada",
@@ -163,7 +163,7 @@ export const events: Event[] = [
   {
     id: 6,
     number: "06",
-    slug: "neon-affair-wavy-edition-kolkata-2024",
+    slug: "neon-affair-wavy-edition-kolkata-2025",
     artist: "Neon Affair",
     artists: [
       { name: "AJ WAVY", instagram: "ajwavy", soundcloud: "ajwavy" },
@@ -174,7 +174,7 @@ export const events: Event[] = [
     description: "AJ Wavy all the way from London headlines an unforgettable evening of sound and spectacle. Limited capacity. Maximum energy. All class.",
     date: "24 Aug",
     dates: "Sunday, August 24 · 5:00 pm onwards",
-    year: "2024",
+    year: "2025",
     venue: "Miss Ginko",
     venueDescription: "Nestled in the cultural heart of Kolkata, Miss Ginko is an exclusive boutique venue known for its curated ambiance and artistic interior design. This intimate space offers a sophisticated atmosphere where music, art, and culture converge for select audiences.",
     // Address unknown; leaving undefined intentionally
