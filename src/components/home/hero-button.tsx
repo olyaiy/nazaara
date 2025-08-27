@@ -45,6 +45,7 @@ export default function HeroButton({ eventSlug, ticketUrl, asChild, children, cl
       >
         RSVP
       </Button>
+      {/* TEMPORARY: Event Details button hidden - can be restored by uncommenting
       <button 
         className="text-xs uppercase tracking-[0.2em] text-white/60 hover:text-white"
         style={{ transition: 'color 0.3s' }}
@@ -52,6 +53,7 @@ export default function HeroButton({ eventSlug, ticketUrl, asChild, children, cl
       >
         Event Details
       </button>
+      */}
     </>
   );
 }

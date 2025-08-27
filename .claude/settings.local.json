@@ -5,7 +5,8 @@
       "Bash(gh:*)",
       "Bash(git add:*)",
       "Bash(pnpm lint:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

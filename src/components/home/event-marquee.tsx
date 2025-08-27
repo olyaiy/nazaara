@@ -5,8 +5,12 @@ import { events } from "@/content/events";
 export function EventMarquee() {
     const router = useRouter();
 
-    const handleEventClick = (slug: string) => {
-      router.push(`/event/${slug}`);
+    const handleEventClick = (slug: string, ticketUrl?: string) => {
+      // TEMPORARY: Redirect to ticket URL instead of event page
+      // router.push(`/event/${slug}`); // TEMPORARY: Commented out
+      if (ticketUrl) {
+        window.open(ticketUrl, '_blank');
+      }
     };
 
     return (
@@ -16,7 +20,7 @@ export function EventMarquee() {
             {[...events, ...events].map((event, i) => (
               <button 
                 key={`${event.id}-${i}`} 
-                onClick={() => handleEventClick(event.slug)}
+                onClick={() => handleEventClick(event.slug, event.ticketUrl)}
                 className="group mx-8 flex items-center gap-3 transition-all duration-300 ease-out cursor-pointer hover:transform hover:scale-[1.02] hover:brightness-110"
               >
                 <span className="text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40 group-hover:text-[var(--gold)]/70 transition-colors duration-300">
