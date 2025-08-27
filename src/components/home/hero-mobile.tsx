@@ -216,7 +216,7 @@ export default async function HeroMobile() {
               <rect width="100%" height="100%" fill="url(#hero-pattern-cta)" />
             </svg>
           </div>
-          <HeroMobileButton eventSlug={featuredEvent.slug} asChild>
+          <HeroMobileButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl} asChild>
             <button className="relative w-full overflow-hidden group">
               {/* Creative button design */}
               <div className="absolute inset-0" style={{ backgroundColor: 'var(--gold)' }} />
