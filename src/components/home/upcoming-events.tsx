@@ -178,7 +178,7 @@ export default function UpcomingEvents() {
             {/* Section Title */}
             <div className="flex items-center gap-4 md:gap-6 mb-8 md:mb-12">
               <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-[var(--gold)]/20" />
-              <h3 className="text-lg md:text-xl font-prettywise text-[var(--gold)] whitespace-nowrap">Complete Schedule</h3>
+              <h3 className="text-lg md:text-xl font-prettywise text-[var(--gold)] whitespace-nowrap">Upcoming Shows</h3>
               <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-[var(--gold)]/20" />
             </div>
 

@@ -245,7 +245,7 @@ export function Footer() {
 
                 <div className="flex items-center gap-8">
                   <span className="text-xs font-neue-haas text-white/40">
-                    Proudly Canadian, Globally Celebrated
+                    Globally Celebrated
                   </span>
                 </div>
               </div>
