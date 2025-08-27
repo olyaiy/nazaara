@@ -136,7 +136,7 @@ export default async function HeroMobile() {
                         href={href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-prettywise text-2xl hover:text-[var(--gold)] transition-colors"
+                        className="block font-prettywise text-2xl hover:text-[var(--gold)] transition-colors"
                         style={{ color: 'var(--white)', opacity: 0.9 - index * 0.1 }}
                       >
                         {name}

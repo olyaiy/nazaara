@@ -243,11 +243,7 @@ export function Footer() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-8">
-                  <span className="text-xs font-neue-haas text-white/40">
-                    Globally Celebrated
-                  </span>
-                </div>
+                {/* Intentionally left blank */}
               </div>
             </div>
           </div>
