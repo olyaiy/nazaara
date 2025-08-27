@@ -60,7 +60,7 @@ export default function UpcomingEvents() {
   });
 
   // TEMPORARY: Redirect to ticket URL instead of event page
-  const handleEventClick = (event: typeof events[0]) => {
+  const handleEventClick = (event: typeof allEvents[0]) => {
     // router.push(`/event/${event.slug}`); // TEMPORARY: Commented out
     if (event.ticketUrl) {
       window.open(event.ticketUrl, '_blank');
