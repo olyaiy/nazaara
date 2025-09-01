@@ -246,12 +246,46 @@ you bring the energy, we'll bring the bangers. let's kick off the semester the o
 
 // Helper functions for backward compatibility and convenience
 export const getFeaturedEvent = (): Event | undefined => {
-  return events.find(event => event.isFeatured);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to start of day for comparison
+  
+  return events.find(event => {
+    if (!event.isFeatured) return false;
+    
+    // Parse event date
+    const monthMap: { [key: string]: number } = {
+      'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+      'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+    };
+    
+    const [day, month] = event.date.split(' ');
+    const eventDate = new Date(parseInt(event.year), monthMap[month], parseInt(day));
+    
+    // Only return featured event if it's today or in the future
+    return eventDate >= today;
+  });
 };
 
 export const getUpcomingEvents = (): Event[] => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to start of day for comparison
+  
   return events
-    .filter(event => !event.isFeatured)
+    .filter(event => {
+      if (event.isFeatured) return false;
+      
+      // Parse event date
+      const monthMap: { [key: string]: number } = {
+        'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+        'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+      };
+      
+      const [day, month] = event.date.split(' ');
+      const eventDate = new Date(parseInt(event.year), monthMap[month], parseInt(day));
+      
+      // Only include events that are today or in the future
+      return eventDate >= today;
+    })
     .sort((a, b) => {
       // Parse dates for comparison (format: "DD MMM")
       const monthMap: { [key: string]: number } = {
@@ -284,12 +318,21 @@ function toDate(event: Event): Date {
 }
 
 export const getEventForCity = (city?: string): Event | undefined => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to start of day for comparison
+  
+  // Filter out past events
+  const upcomingEvents = events.filter(event => {
+    const eventDate = toDate(event);
+    return eventDate >= today;
+  });
+  
   if (city) {
-    const match = events.find((e) => e.city.toLowerCase() === city.toLowerCase());
+    const match = upcomingEvents.find((e) => e.city.toLowerCase() === city.toLowerCase());
     if (match) return match;
   }
 
-  // Fallback – pick the chronologically next event regardless of city
-  const sorted = [...events].sort((a, b) => toDate(a).getTime() - toDate(b).getTime());
+  // Fallback – pick the chronologically next upcoming event regardless of city
+  const sorted = [...upcomingEvents].sort((a, b) => toDate(a).getTime() - toDate(b).getTime());
   return sorted[0] ?? getFeaturedEvent();
 };
