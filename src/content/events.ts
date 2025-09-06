@@ -242,6 +242,43 @@ you bring the energy, we'll bring the bangers. let's kick off the semester the o
     isFeatured: false,
     ticketUrl: "https://www.ticketweb.ca/event/dj-habibeats-fortune-sound-club-tickets/13916184?pl=blueprintt",
   },
+  {
+    id: 7,
+    number: "07",
+    slug: "tamasha-all-white-retro-affair-calgary-2025",
+    artist: "SHALV & REMY",
+    artists: [
+      { name: "Shalv", instagram: "shalv", soundcloud: "shalv" },
+      { name: "Remy", instagram: "remy", soundcloud: "remy" },
+    ],
+    title: "Tamasha",
+    tagline: "An All White Retro Affair",
+    description: `CALGARY! 🚨 Nazaara is bringing you a new experience: AN ALL WHITE RETRO AFFAIR🤍
+
+Step into a night where classics and throwbacks collide with the energy of today, bringing you timeless anthems and iconic singalongs in true retro style.
+
+We are flying in the perfect DJs for this occasion. Vancouver’s very own SHALV and Toronto’s vibe setter REMY will be behind the decks, bringing the sounds and nostalgia that define a Tamasha night while giving Calgary a retro experience that you’ll remember long after the last track fades.
+
+📅 Saturday, Sept 27
+📍 LVL 3 Bar & Lounge, 818 16 Ave SW
+⏰ 10PM - Late
+🪩 18+ Event
+
+For Vip/Table Reservations, Call/text: (403) 605-1435
+Note: Tables are reserved exclusively for those who have made a reservation.`,
+    date: "27 Sep",
+    year: "2025",
+    venue: "LVL 3 Bar & Lounge",
+    venueDescription: "Situated on Calgary's buzzing 17th Ave, LVL 3 Bar & Lounge offers an elevated nightlife experience with cutting-edge lighting, premium sound, and a spacious dance floor.",
+    venueAddress: "818 16 Ave SW, Calgary, AB, Canada",
+    city: "Calgary",
+    country: "Canada",
+    price: "18.08",
+    image: "/events/all-white-party.webp",
+    status: "On Sale",
+    isFeatured: false,
+    ticketUrl: "https://www.showpass.com/retroaffair/",
+  },
 ];
 
 // Helper functions for backward compatibility and convenience
