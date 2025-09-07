@@ -7,10 +7,12 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowLeft } from "lucide-react"
 import { getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
 import { createEvent } from "@/lib/admin-actions"
+import { EventDatePicker } from "@/components/admin/event-date-picker"
 
 export default async function NewEventPage() {
   const session = await auth.api.getSession({
@@ -90,45 +92,7 @@ export default async function NewEventPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="eventDate">Event Date *</Label>
-                  <Input 
-                    id="eventDate" 
-                    name="eventDate" 
-                    type="date"
-                    required 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="year">Year *</Label>
-                  <Input 
-                    id="year" 
-                    name="year" 
-                    defaultValue={new Date().getFullYear().toString()}
-                    required 
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="dateDisplay">Date Display</Label>
-                  <Input 
-                    id="dateDisplay" 
-                    name="dateDisplay" 
-                    placeholder="04 Sep"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="datesDescription">Date Description</Label>
-                  <Input 
-                    id="datesDescription" 
-                    name="datesDescription" 
-                    placeholder="Sunday, August 31 · 10:00 pm - 2:00 am"
-                  />
-                </div>
-              </div>
+              <EventDatePicker />
 
               <div className="space-y-2">
                 <Label htmlFor="venueId">Venue *</Label>
@@ -147,11 +111,10 @@ export default async function NewEventPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="image">Event Image URL *</Label>
+                <Label htmlFor="image">Event Image URL</Label>
                 <Input 
                   id="image" 
                   name="image" 
-                  required 
                   placeholder="https://example.com/event-poster.jpg"
                 />
               </div>
@@ -163,6 +126,14 @@ export default async function NewEventPage() {
                   name="ticketUrl" 
                   placeholder="https://tickets.example.com/event"
                 />
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="isPublished" 
+                  name="isPublished"
+                />
+                <Label htmlFor="isPublished">Published (visible to public)</Label>
               </div>
 
               <div className="flex gap-4 pt-4">

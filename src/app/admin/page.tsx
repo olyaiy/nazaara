@@ -123,13 +123,19 @@ export default async function AdminPage() {
                                                                 </CardDescription>
                                                             </div>
                                                             <div className="text-right text-sm text-muted-foreground">
-                                                                <div>{event.dateDisplay}</div>
+                                                                <div>{new Date(event.startTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
                                                             </div>
                                                         </div>
                                                     </CardHeader>
                                                     <CardContent>
                                                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                                                     <span>Artists: {event.artists.join(", ") || "TBA"}</span>
+                                                    {!event.isPublished && (
+                                                        <>
+                                                            <span>•</span>
+                                                            <span className="text-yellow-600">Draft</span>
+                                                        </>
+                                                    )}
                                                 </div>
                                             </CardContent>
                                                 </div>

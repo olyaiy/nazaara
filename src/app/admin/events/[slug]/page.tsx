@@ -7,10 +7,12 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowLeft, Calendar } from "lucide-react"
 import { getEventBySlug, updateEvent, getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
 import { DeleteEventForm } from "@/components/admin/delete-event-form"
+import { EventDatePicker } from "@/components/admin/event-date-picker"
 
 interface PageProps {
   params: Promise<{
@@ -42,10 +44,6 @@ export default async function EventEditPage({ params }: PageProps) {
     redirect("/admin")
   }
 
-  const formatDateForInput = (date: Date | string) => {
-    const d = new Date(date)
-    return d.toISOString().split('T')[0]
-  }
 
   return (
     <div className="min-h-screen bg-background p-8">
@@ -118,48 +116,10 @@ export default async function EventEditPage({ params }: PageProps) {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="eventDate">Event Date *</Label>
-                      <Input 
-                        id="eventDate" 
-                        name="eventDate" 
-                        type="date"
-                        defaultValue={formatDateForInput(event.eventDate)} 
-                        required 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="year">Year *</Label>
-                      <Input 
-                        id="year" 
-                        name="year" 
-                        defaultValue={event.year} 
-                        required 
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="dateDisplay">Date Display</Label>
-                      <Input 
-                        id="dateDisplay" 
-                        name="dateDisplay" 
-                        defaultValue={event.dateDisplay || ""} 
-                        placeholder="04 Sep"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="datesDescription">Date Description</Label>
-                      <Input 
-                        id="datesDescription" 
-                        name="datesDescription" 
-                        defaultValue={event.datesDescription || ""} 
-                        placeholder="Sunday, August 31 · 10:00 pm - 2:00 am"
-                      />
-                    </div>
-                  </div>
+                  <EventDatePicker 
+                    startTime={new Date(event.startTime)} 
+                    endTime={new Date(event.endTime)} 
+                  />
 
                   <div className="space-y-2">
                     <Label htmlFor="venueId">Venue *</Label>
@@ -178,12 +138,11 @@ export default async function EventEditPage({ params }: PageProps) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="image">Event Image URL *</Label>
+                    <Label htmlFor="image">Event Image URL</Label>
                     <Input 
                       id="image" 
                       name="image" 
-                      defaultValue={event.image} 
-                      required 
+                      defaultValue={event.image || ""} 
                     />
                   </div>
 
@@ -195,6 +154,15 @@ export default async function EventEditPage({ params }: PageProps) {
                       defaultValue={event.ticketUrl || ""} 
                       placeholder="https://tickets.example.com/event"
                     />
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="isPublished" 
+                      name="isPublished" 
+                      defaultChecked={event.isPublished}
+                    />
+                    <Label htmlFor="isPublished">Published (visible to public)</Label>
                   </div>
 
                   <div className="flex gap-4 pt-4">

@@ -14,9 +14,8 @@ import {
   serial, 
   text, 
   varchar, 
-  boolean, 
+  boolean,
   timestamp, 
-  date,
   integer,
   primaryKey,
   index
@@ -109,19 +108,19 @@ export const events = pgTable("events", {
   description: text("description"), // Full marketing description with formatting
   
   // Date and time information
-  // Multiple date fields support different display formats and sorting needs
-  eventDate: date("event_date").notNull(), // Actual date for sorting and filtering
-  dateDisplay: varchar("date_display", { length: 50 }), // Short format: "04 Sep"
-  datesDescription: text("dates_description"), // Full description: "Sunday, August 31 · 10:00 pm - 2:00 am"
-  year: varchar("year", { length: 4 }).notNull(), // "2025" - allows for easy year-based filtering
+  startTime: timestamp("start_time").notNull(), // Event start date and time
+  endTime: timestamp("end_time").notNull(), // Event end date and time
   
   // Venue relationship
   // Foreign key to venues table - ensures referential integrity
   venueId: integer("venue_id").references(() => venues.id).notNull(),
   
   // Media and external links
-  image: text("image").notNull(), // Event poster/promotional image
+  image: text("image"), // Event poster/promotional image (optional)
   ticketUrl: text("ticket_url"), // External ticket purchasing link
+  
+  // Publishing status
+  isPublished: boolean("is_published").default(false).notNull(), // Whether event is visible to public
   
   // Audit timestamps
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -130,7 +129,7 @@ export const events = pgTable("events", {
   return {
     // Strategic indexes for common query patterns
     slugIdx: index("event_slug_idx").on(table.slug), // Route lookup by slug
-    dateIdx: index("event_date_idx").on(table.eventDate), // Sort by date, filter upcoming
+    startTimeIdx: index("event_start_time_idx").on(table.startTime), // Sort by date, filter upcoming
   };
 });
 

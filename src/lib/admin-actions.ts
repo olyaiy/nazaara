@@ -27,14 +27,14 @@ export async function getAdminEvents() {
       slug: events.slug,
       title: events.title,
       tagline: events.tagline,
-      eventDate: events.eventDate,
-      dateDisplay: events.dateDisplay,
+      startTime: events.startTime,
+      endTime: events.endTime,
       image: events.image,
       venueName: venues.name,
     })
     .from(events)
     .leftJoin(venues, eq(events.venueId, venues.id))
-    .orderBy(events.eventDate)
+    .orderBy(events.startTime)
 
   // Get artists for each event in a single query
   const eventArtists = await db
@@ -105,10 +105,8 @@ export async function getEventBySlug(slug: string) {
       title: events.title,
       tagline: events.tagline,
       description: events.description,
-      eventDate: events.eventDate,
-      dateDisplay: events.dateDisplay,
-      datesDescription: events.datesDescription,
-      year: events.year,
+      startTime: events.startTime,
+      endTime: events.endTime,
       image: events.image,
       ticketUrl: events.ticketUrl,
       venueId: events.venueId,
@@ -165,15 +163,14 @@ export async function updateEvent(formData: FormData) {
   const title = formData.get("title") as string
   const tagline = formData.get("tagline") as string
   const description = formData.get("description") as string
-  const eventDate = formData.get("eventDate") as string
-  const dateDisplay = formData.get("dateDisplay") as string
-  const datesDescription = formData.get("datesDescription") as string
-  const year = formData.get("year") as string
+  const startTime = formData.get("startTime") as string
+  const endTime = formData.get("endTime") as string
   const image = formData.get("image") as string
   const ticketUrl = formData.get("ticketUrl") as string
+  const isPublished = formData.get("isPublished") === "on"
   const venueId = parseInt(formData.get("venueId") as string)
 
-  if (!eventId || !slug || !title || !eventDate || !venueId) {
+  if (!eventId || !slug || !title || !startTime || !endTime || !venueId) {
     throw new Error("Required fields missing")
   }
 
@@ -184,12 +181,11 @@ export async function updateEvent(formData: FormData) {
       title,
       tagline: tagline || null,
       description: description || null,
-      eventDate: eventDate,
-      dateDisplay: dateDisplay || null,
-      datesDescription: datesDescription || null,
-      year,
-      image,
+      startTime: new Date(startTime),
+      endTime: new Date(endTime),
+      image: image || null,
       ticketUrl: ticketUrl || null,
+      isPublished,
       venueId,
     })
     .where(eq(events.id, eventId))
@@ -204,15 +200,14 @@ export async function createEvent(formData: FormData) {
   const title = formData.get("title") as string
   const tagline = formData.get("tagline") as string
   const description = formData.get("description") as string
-  const eventDate = formData.get("eventDate") as string
-  const dateDisplay = formData.get("dateDisplay") as string
-  const datesDescription = formData.get("datesDescription") as string
-  const year = formData.get("year") as string
+  const startTime = formData.get("startTime") as string
+  const endTime = formData.get("endTime") as string
   const image = formData.get("image") as string
   const ticketUrl = formData.get("ticketUrl") as string
+  const isPublished = formData.get("isPublished") === "on"
   const venueId = parseInt(formData.get("venueId") as string)
 
-  if (!slug || !title || !eventDate || !venueId || !image) {
+  if (!slug || !title || !startTime || !endTime || !venueId) {
     throw new Error("Required fields missing")
   }
 
@@ -223,12 +218,11 @@ export async function createEvent(formData: FormData) {
       title,
       tagline: tagline || null,
       description: description || null,
-      eventDate: eventDate,
-      dateDisplay: dateDisplay || null,
-      datesDescription: datesDescription || null,
-      year: year || new Date().getFullYear().toString(),
-      image,
+      startTime: new Date(startTime),
+      endTime: new Date(endTime),
+      image: image || null,
       ticketUrl: ticketUrl || null,
+      isPublished,
       venueId,
     })
 
