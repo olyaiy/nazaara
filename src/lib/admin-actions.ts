@@ -229,3 +229,205 @@ export async function createEvent(formData: FormData) {
   revalidatePath("/admin")
   redirect(`/admin/events/${slug}`)
 }
+
+// Venue CRUD operations
+export async function getVenueById(id: number) {
+  const venue = await db
+    .select()
+    .from(venues)
+    .where(eq(venues.id, id))
+    .limit(1)
+
+  if (!venue[0]) {
+    return null
+  }
+
+  // Get event count for this venue
+  const eventCount = await db
+    .select({ count: count() })
+    .from(events)
+    .where(eq(events.venueId, id))
+
+  return {
+    ...venue[0],
+    eventCount: eventCount[0]?.count || 0,
+  }
+}
+
+export async function createVenue(formData: FormData) {
+  const name = formData.get("name") as string
+  const description = formData.get("description") as string
+  const address = formData.get("address") as string
+  const addressUrl = formData.get("addressUrl") as string
+  const city = formData.get("city") as string
+  const country = formData.get("country") as string
+
+  if (!name || !city || !country) {
+    throw new Error("Required fields missing")
+  }
+
+  const result = await db
+    .insert(venues)
+    .values({
+      name,
+      description: description || null,
+      address: address || null,
+      addressUrl: addressUrl || null,
+      city,
+      country,
+    })
+    .returning({ id: venues.id })
+
+  revalidatePath("/admin")
+  redirect(`/admin/venues/${result[0].id}`)
+}
+
+export async function updateVenue(formData: FormData) {
+  const venueId = parseInt(formData.get("venueId") as string)
+  const name = formData.get("name") as string
+  const description = formData.get("description") as string
+  const address = formData.get("address") as string
+  const addressUrl = formData.get("addressUrl") as string
+  const city = formData.get("city") as string
+  const country = formData.get("country") as string
+
+  if (!venueId || !name || !city || !country) {
+    throw new Error("Required fields missing")
+  }
+
+  await db
+    .update(venues)
+    .set({
+      name,
+      description: description || null,
+      address: address || null,
+      addressUrl: addressUrl || null,
+      city,
+      country,
+      updatedAt: new Date(),
+    })
+    .where(eq(venues.id, venueId))
+
+  revalidatePath("/admin")
+  revalidatePath(`/admin/venues/${venueId}`)
+  redirect("/admin")
+}
+
+export async function deleteVenue(formData: FormData) {
+  const venueId = parseInt(formData.get("venueId") as string)
+  
+  if (!venueId) {
+    throw new Error("Venue ID is required")
+  }
+
+  // Check if there are events using this venue
+  const eventCount = await db
+    .select({ count: count() })
+    .from(events)
+    .where(eq(events.venueId, venueId))
+
+  if (eventCount[0]?.count > 0) {
+    throw new Error("Cannot delete venue with associated events")
+  }
+
+  await db.delete(venues).where(eq(venues.id, venueId))
+  
+  revalidatePath("/admin")
+  redirect("/admin")
+}
+
+// Artist CRUD operations
+export async function getArtistById(id: number) {
+  const artist = await db
+    .select()
+    .from(artists)
+    .where(eq(artists.id, id))
+    .limit(1)
+
+  if (!artist[0]) {
+    return null
+  }
+
+  // Get events for this artist
+  const artistEvents = await db
+    .select({
+      eventId: events.id,
+      eventTitle: events.title,
+      eventSlug: events.slug,
+      startTime: events.startTime,
+    })
+    .from(eventsArtists)
+    .leftJoin(events, eq(eventsArtists.eventId, events.id))
+    .where(eq(eventsArtists.artistId, id))
+    .orderBy(events.startTime)
+
+  return {
+    ...artist[0],
+    events: artistEvents,
+  }
+}
+
+export async function createArtist(formData: FormData) {
+  const name = formData.get("name") as string
+  const instagram = formData.get("instagram") as string
+  const soundcloud = formData.get("soundcloud") as string
+  const image = formData.get("image") as string
+
+  if (!name) {
+    throw new Error("Artist name is required")
+  }
+
+  const result = await db
+    .insert(artists)
+    .values({
+      name,
+      instagram: instagram || null,
+      soundcloud: soundcloud || null,
+      image: image || null,
+    })
+    .returning({ id: artists.id })
+
+  revalidatePath("/admin")
+  redirect(`/admin/artists/${result[0].id}`)
+}
+
+export async function updateArtist(formData: FormData) {
+  const artistId = parseInt(formData.get("artistId") as string)
+  const name = formData.get("name") as string
+  const instagram = formData.get("instagram") as string
+  const soundcloud = formData.get("soundcloud") as string
+  const image = formData.get("image") as string
+
+  if (!artistId || !name) {
+    throw new Error("Required fields missing")
+  }
+
+  await db
+    .update(artists)
+    .set({
+      name,
+      instagram: instagram || null,
+      soundcloud: soundcloud || null,
+      image: image || null,
+      updatedAt: new Date(),
+    })
+    .where(eq(artists.id, artistId))
+
+  revalidatePath("/admin")
+  revalidatePath(`/admin/artists/${artistId}`)
+  redirect("/admin")
+}
+
+export async function deleteArtist(formData: FormData) {
+  const artistId = parseInt(formData.get("artistId") as string)
+  
+  if (!artistId) {
+    throw new Error("Artist ID is required")
+  }
+
+  // Deleting artist will cascade delete from eventsArtists junction table
+  await db.delete(artists).where(eq(artists.id, artistId))
+  
+  revalidatePath("/admin")
+  redirect("/admin")
+}

@@ -186,32 +186,40 @@ export default async function AdminPage() {
                                 <h2 className="text-2xl font-semibold text-foreground">Artists</h2>
                                 <p className="text-muted-foreground">Manage artist profiles and social links</p>
                             </div>
-                            <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
-                                Add Artist
-                            </Button>
+                            <Link href="/admin/artists/new">
+                                <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    Add Artist
+                                </Button>
+                            </Link>
                         </div>
                         
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                             {artists.map((artist) => (
-                                <Card key={artist.id}>
-                                    <CardHeader>
-                                        <CardTitle className="text-lg">{artist.name}</CardTitle>
-                                        <CardDescription>
-                                            {artist.instagram && `@${artist.instagram}`}
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="text-sm text-muted-foreground">
-                                            {artist.instagram && (
-                                                <div>Instagram: {artist.instagram}</div>
-                                            )}
-                                            {artist.soundcloud && (
-                                                <div>SoundCloud: {artist.soundcloud}</div>
-                                            )}
-                                           
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                <Link key={artist.id} href={`/admin/artists/${artist.id}`}>
+                                    <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+                                        <CardHeader>
+                                            <CardTitle className="text-lg">{artist.name}</CardTitle>
+                                            <CardDescription>
+                                                {artist.instagram && `@${artist.instagram}`}
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className="text-sm text-muted-foreground space-y-1">
+                                                {artist.instagram && (
+                                                    <div>Instagram: {artist.instagram}</div>
+                                                )}
+                                                {artist.soundcloud && (
+                                                    <div>SoundCloud: {artist.soundcloud}</div>
+                                                )}
+                                                <div className="pt-2 flex items-center justify-between">
+                                                    <span className="text-xs">{artist.eventCount} events</span>
+                                                    <ExternalLink className="h-3 w-3" />
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
                             ))}
                         </div>
                     </TabsContent>
@@ -222,26 +230,34 @@ export default async function AdminPage() {
                                 <h2 className="text-2xl font-semibold text-foreground">Venues</h2>
                                 <p className="text-muted-foreground">Manage venue information and locations</p>
                             </div>
-                            <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
-                                Add Venue
-                            </Button>
+                            <Link href="/admin/venues/new">
+                                <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    Add Venue
+                                </Button>
+                            </Link>
                         </div>
                         
                         <div className="grid gap-4">
                             {venues.map((venue) => (
-                                <Card key={venue.id}>
-                                    <CardHeader>
-                                        <CardTitle className="text-lg">{venue.name}</CardTitle>
-                                        <CardDescription>{venue.city}, {venue.country}</CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="text-sm text-muted-foreground space-y-1">
-                                            {venue.address && <div>{venue.address}</div>}
-                                            {venue.description && <div>{venue.description}</div>}
-                                    
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                <Link key={venue.id} href={`/admin/venues/${venue.id}`}>
+                                    <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+                                        <CardHeader>
+                                            <CardTitle className="text-lg">{venue.name}</CardTitle>
+                                            <CardDescription>{venue.city}, {venue.country}</CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className="text-sm text-muted-foreground space-y-1">
+                                                {venue.address && <div>{venue.address}</div>}
+                                                {venue.description && <div className="line-clamp-2">{venue.description}</div>}
+                                                <div className="pt-2 flex items-center justify-between">
+                                                    <span className="text-xs">{venue.eventCount} events</span>
+                                                    <ExternalLink className="h-3 w-3" />
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
                             ))}
                         </div>
                     </TabsContent>
