@@ -25,15 +25,11 @@ export async function getAdminEvents() {
     .select({
       id: events.id,
       slug: events.slug,
-      number: events.number,
       title: events.title,
       tagline: events.tagline,
       eventDate: events.eventDate,
       dateDisplay: events.dateDisplay,
-      price: events.price,
-      currency: events.currency,
-      status: events.status,
-      isFeatured: events.isFeatured,
+      image: events.image,
       venueName: venues.name,
     })
     .from(events)
@@ -106,7 +102,6 @@ export async function getEventBySlug(slug: string) {
     .select({
       id: events.id,
       slug: events.slug,
-      number: events.number,
       title: events.title,
       tagline: events.tagline,
       description: events.description,
@@ -114,10 +109,6 @@ export async function getEventBySlug(slug: string) {
       dateDisplay: events.dateDisplay,
       datesDescription: events.datesDescription,
       year: events.year,
-      price: events.price,
-      currency: events.currency,
-      status: events.status,
-      isFeatured: events.isFeatured,
       image: events.image,
       ticketUrl: events.ticketUrl,
       venueId: events.venueId,
@@ -171,7 +162,6 @@ export async function updateEvent(formData: FormData) {
   
   const eventId = parseInt(formData.get("eventId") as string)
   const slug = formData.get("slug") as string
-  const number = formData.get("number") as string
   const title = formData.get("title") as string
   const tagline = formData.get("tagline") as string
   const description = formData.get("description") as string
@@ -179,15 +169,11 @@ export async function updateEvent(formData: FormData) {
   const dateDisplay = formData.get("dateDisplay") as string
   const datesDescription = formData.get("datesDescription") as string
   const year = formData.get("year") as string
-  const price = formData.get("price") as string
-  const currency = formData.get("currency") as string
-  const status = formData.get("status") as string
-  const isFeatured = formData.get("isFeatured") === "on"
   const image = formData.get("image") as string
   const ticketUrl = formData.get("ticketUrl") as string
   const venueId = parseInt(formData.get("venueId") as string)
 
-  if (!eventId || !slug || !title || !eventDate || !price || !venueId) {
+  if (!eventId || !slug || !title || !eventDate || !venueId) {
     throw new Error("Required fields missing")
   }
 
@@ -195,7 +181,6 @@ export async function updateEvent(formData: FormData) {
     .update(events)
     .set({
       slug,
-      number: number || null,
       title,
       tagline: tagline || null,
       description: description || null,
@@ -203,10 +188,6 @@ export async function updateEvent(formData: FormData) {
       dateDisplay: dateDisplay || null,
       datesDescription: datesDescription || null,
       year,
-      price,
-      currency,
-      status,
-      isFeatured,
       image,
       ticketUrl: ticketUrl || null,
       venueId,
@@ -220,7 +201,6 @@ export async function updateEvent(formData: FormData) {
 
 export async function createEvent(formData: FormData) {
   const slug = formData.get("slug") as string
-  const number = formData.get("number") as string
   const title = formData.get("title") as string
   const tagline = formData.get("tagline") as string
   const description = formData.get("description") as string
@@ -228,15 +208,11 @@ export async function createEvent(formData: FormData) {
   const dateDisplay = formData.get("dateDisplay") as string
   const datesDescription = formData.get("datesDescription") as string
   const year = formData.get("year") as string
-  const price = formData.get("price") as string
-  const currency = formData.get("currency") as string
-  const status = formData.get("status") as string
-  const isFeatured = formData.get("isFeatured") === "on"
   const image = formData.get("image") as string
   const ticketUrl = formData.get("ticketUrl") as string
   const venueId = parseInt(formData.get("venueId") as string)
 
-  if (!slug || !title || !eventDate || !price || !venueId || !image) {
+  if (!slug || !title || !eventDate || !venueId || !image) {
     throw new Error("Required fields missing")
   }
 
@@ -244,7 +220,6 @@ export async function createEvent(formData: FormData) {
     .insert(events)
     .values({
       slug,
-      number: number || null,
       title,
       tagline: tagline || null,
       description: description || null,
@@ -252,10 +227,6 @@ export async function createEvent(formData: FormData) {
       dateDisplay: dateDisplay || null,
       datesDescription: datesDescription || null,
       year: year || new Date().getFullYear().toString(),
-      price,
-      currency: currency || "CAD",
-      status: status || "On Sale",
-      isFeatured,
       image,
       ticketUrl: ticketUrl || null,
       venueId,

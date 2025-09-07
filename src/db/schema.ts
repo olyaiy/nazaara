@@ -14,7 +14,6 @@ import {
   serial, 
   text, 
   varchar, 
-  decimal, 
   boolean, 
   timestamp, 
   date,
@@ -103,7 +102,6 @@ export const events = pgTable("events", {
   
   // Event identity and routing
   slug: varchar("slug", { length: 255 }).notNull().unique(), // URL-friendly identifier
-  number: varchar("number", { length: 10 }), // Display number like "01", "02" for ordering
   
   // Event branding and content
   title: varchar("title", { length: 255 }).notNull(), // e.g., "NAZAARA", "Back 2 School with AJ Wavy"
@@ -121,12 +119,6 @@ export const events = pgTable("events", {
   // Foreign key to venues table - ensures referential integrity
   venueId: integer("venue_id").references(() => venues.id).notNull(),
   
-  // Pricing and availability
-  price: decimal("price", { precision: 10, scale: 2 }).notNull(), // Ticket price with cents precision
-  currency: varchar("currency", { length: 3 }).default("CAD"), // ISO currency code
-  status: varchar("status", { length: 50 }).notNull(), // "On Sale", "Waitlist", "Featured", "Sold Out"
-  isFeatured: boolean("is_featured").default(false).notNull(), // Highlight on homepage
-  
   // Media and external links
   image: text("image").notNull(), // Event poster/promotional image
   ticketUrl: text("ticket_url"), // External ticket purchasing link
@@ -139,8 +131,6 @@ export const events = pgTable("events", {
     // Strategic indexes for common query patterns
     slugIdx: index("event_slug_idx").on(table.slug), // Route lookup by slug
     dateIdx: index("event_date_idx").on(table.eventDate), // Sort by date, filter upcoming
-    statusIdx: index("event_status_idx").on(table.status), // Filter by availability
-    featuredIdx: index("event_featured_idx").on(table.isFeatured), // Quick featured event lookup
   };
 });
 

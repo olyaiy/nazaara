@@ -7,8 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Calendar } from "lucide-react"
 import { getEventBySlug, updateEvent, getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
 import { DeleteEventForm } from "@/components/admin/delete-event-form"
@@ -79,25 +78,14 @@ export default async function EventEditPage({ params }: PageProps) {
                 <form action={updateEvent} className="space-y-4">
                   <input type="hidden" name="eventId" value={event.id} />
                   
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="title">Title *</Label>
-                      <Input 
-                        id="title" 
-                        name="title" 
-                        defaultValue={event.title} 
-                        required 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="number">Number</Label>
-                      <Input 
-                        id="number" 
-                        name="number" 
-                        defaultValue={event.number || ""} 
-                        placeholder="01, 02, etc."
-                      />
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Title *</Label>
+                    <Input 
+                      id="title" 
+                      name="title" 
+                      defaultValue={event.title} 
+                      required 
+                    />
                   </div>
 
                   <div className="space-y-2">
@@ -189,47 +177,6 @@ export default async function EventEditPage({ params }: PageProps) {
                     </Select>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="price">Price *</Label>
-                      <Input 
-                        id="price" 
-                        name="price" 
-                        type="number" 
-                        step="0.01"
-                        defaultValue={event.price} 
-                        required 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="currency">Currency</Label>
-                      <Select name="currency" defaultValue={event.currency || "CAD"}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="CAD">CAD</SelectItem>
-                          <SelectItem value="USD">USD</SelectItem>
-                          <SelectItem value="EUR">EUR</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="status">Status *</Label>
-                      <Select name="status" defaultValue={event.status}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="On Sale">On Sale</SelectItem>
-                          <SelectItem value="Sold Out">Sold Out</SelectItem>
-                          <SelectItem value="Featured">Featured</SelectItem>
-                          <SelectItem value="Waitlist">Waitlist</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
                   <div className="space-y-2">
                     <Label htmlFor="image">Event Image URL *</Label>
                     <Input 
@@ -250,15 +197,6 @@ export default async function EventEditPage({ params }: PageProps) {
                     />
                   </div>
 
-                  <div className="flex items-center space-x-2">
-                    <Checkbox 
-                      id="isFeatured" 
-                      name="isFeatured" 
-                      defaultChecked={event.isFeatured} 
-                    />
-                    <Label htmlFor="isFeatured">Featured Event</Label>
-                  </div>
-
                   <div className="flex gap-4 pt-4">
                     <Button type="submit" className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
                       Save Changes
@@ -275,6 +213,30 @@ export default async function EventEditPage({ params }: PageProps) {
           </div>
 
           <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Event Image</CardTitle>
+                <CardDescription>Preview of the event poster</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="aspect-square bg-muted rounded-lg overflow-hidden">
+                  {event.image ? (
+                    <img 
+                      src={event.image} 
+                      alt={event.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground bg-muted/50 border-2 border-dashed border-muted-foreground/20">
+                      <Calendar className="h-10 w-10 mb-2 opacity-50" />
+                      <span className="text-sm font-medium">No Image</span>
+                      <span className="text-xs mt-1 opacity-70">Upload an event poster</span>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle>Event Artists</CardTitle>

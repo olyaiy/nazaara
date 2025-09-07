@@ -2,6 +2,17 @@
 
 import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { deleteEvent } from "@/lib/admin-actions"
 
 interface DeleteEventFormProps {
@@ -10,27 +21,37 @@ interface DeleteEventFormProps {
 
 export function DeleteEventForm({ eventId }: DeleteEventFormProps) {
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this event? This action cannot be undone.")) {
-      return
-    }
-
     const formData = new FormData()
     formData.append("eventId", eventId.toString())
     await deleteEvent(formData)
   }
 
   return (
-    <form action={deleteEvent}>
-      <input type="hidden" name="eventId" value={eventId} />
-      <Button 
-        type="button" 
-        variant="destructive" 
-        className="w-full"
-        onClick={handleDelete}
-      >
-        <Trash2 className="h-4 w-4 mr-2" />
-        Delete Event
-      </Button>
-    </form>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive" className="w-full">
+          <Trash2 className="h-4 w-4 mr-2" />
+          Delete Event
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete the event
+            and remove all associated data from the database.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-red-600 hover:bg-red-700"
+            onClick={handleDelete}
+          >
+            Delete Event
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }

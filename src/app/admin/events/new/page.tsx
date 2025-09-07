@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowLeft } from "lucide-react"
 import { getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
@@ -52,24 +51,14 @@ export default async function NewEventPage() {
           <CardContent>
             <form action={createEvent} className="space-y-4">
               
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Title *</Label>
-                  <Input 
-                    id="title" 
-                    name="title" 
-                    required 
-                    placeholder="NAZAARA"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="number">Number</Label>
-                  <Input 
-                    id="number" 
-                    name="number" 
-                    placeholder="01, 02, etc."
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="title">Title *</Label>
+                <Input 
+                  id="title" 
+                  name="title" 
+                  required 
+                  placeholder="NAZAARA"
+                />
               </div>
 
               <div className="space-y-2">
@@ -157,47 +146,6 @@ export default async function NewEventPage() {
                 </Select>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="price">Price *</Label>
-                  <Input 
-                    id="price" 
-                    name="price" 
-                    type="number" 
-                    step="0.01"
-                    required 
-                    placeholder="25.00"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="currency">Currency</Label>
-                  <Select name="currency" defaultValue="CAD">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="CAD">CAD</SelectItem>
-                      <SelectItem value="USD">USD</SelectItem>
-                      <SelectItem value="EUR">EUR</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="status">Status</Label>
-                  <Select name="status" defaultValue="On Sale">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="On Sale">On Sale</SelectItem>
-                      <SelectItem value="Sold Out">Sold Out</SelectItem>
-                      <SelectItem value="Featured">Featured</SelectItem>
-                      <SelectItem value="Waitlist">Waitlist</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
               <div className="space-y-2">
                 <Label htmlFor="image">Event Image URL *</Label>
                 <Input 
@@ -215,14 +163,6 @@ export default async function NewEventPage() {
                   name="ticketUrl" 
                   placeholder="https://tickets.example.com/event"
                 />
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox 
-                  id="isFeatured" 
-                  name="isFeatured"
-                />
-                <Label htmlFor="isFeatured">Featured Event</Label>
               </div>
 
               <div className="flex gap-4 pt-4">

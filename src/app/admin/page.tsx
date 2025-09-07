@@ -93,46 +93,47 @@ export default async function AdminPage() {
                         
                         <div className="grid gap-4">
                             {events.map((event) => {
-                                const statusColor = 
-                                    event.status === 'On Sale' ? 'text-green-600' :
-                                    event.status === 'Sold Out' ? 'text-red-600' :
-                                    event.status === 'Featured' ? 'text-blue-600' :
-                                    'text-yellow-600'
-                                
                                 return (
                                     <Link key={event.id} href={`/admin/events/${event.slug}`}>
-                                        <Card className="cursor-pointer hover:bg-accent/5 transition-colors">
-                                            <CardHeader className="pb-3">
-                                                <div className="flex justify-between items-start">
-                                                    <div>
-                                                        <CardTitle className="text-lg">
-                                                            {event.number && `${event.title} ${event.number}` || event.title}
-                                                        </CardTitle>
-                                                        <CardDescription>
-                                                            {event.tagline} • {event.venueName}
-                                                        </CardDescription>
-                                                    </div>
-                                                    <div className="text-right text-sm text-muted-foreground">
-                                                        <div>{event.dateDisplay}</div>
-                                                        <div className={`font-medium ${statusColor}`}>
-                                                            {event.status}
+                                        <Card className="cursor-pointer hover:bg-accent/5 transition-colors overflow-hidden">
+                                            <div className="flex">
+                                                <div className="w-32 h-32 bg-muted flex-shrink-0">
+                                                    {event.image ? (
+                                                        <img 
+                                                            src={event.image} 
+                                                            alt={event.title}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground bg-muted">
+                                                            <Calendar className="h-6 w-6 mb-1" />
+                                                            <span className="text-xs">No Image</span>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </CardHeader>
-                                            <CardContent>
-                                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                                    <span>Artists: {event.artists.join(", ") || "TBA"}</span>
-                                                    <span>•</span>
-                                                    <span>${event.price} {event.currency}</span>
-                                                    {event.isFeatured && (
-                                                        <>
-                                                            <span>•</span>
-                                                            <span>Featured</span>
-                                                        </>
                                                     )}
                                                 </div>
+                                                <div className="flex-1">
+                                                    <CardHeader className="pb-3">
+                                                        <div className="flex justify-between items-start">
+                                                            <div>
+                                                                <CardTitle className="text-lg">
+                                                                    {event.title}
+                                                                </CardTitle>
+                                                                <CardDescription>
+                                                                    {event.tagline} • {event.venueName}
+                                                                </CardDescription>
+                                                            </div>
+                                                            <div className="text-right text-sm text-muted-foreground">
+                                                                <div>{event.dateDisplay}</div>
+                                                            </div>
+                                                        </div>
+                                                    </CardHeader>
+                                                    <CardContent>
+                                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                                    <span>Artists: {event.artists.join(", ") || "TBA"}</span>
+                                                </div>
                                             </CardContent>
+                                                </div>
+                                            </div>
                                         </Card>
                                     </Link>
                                 )
@@ -168,9 +169,7 @@ export default async function AdminPage() {
                                             {artist.soundcloud && (
                                                 <div>SoundCloud: {artist.soundcloud}</div>
                                             )}
-                                            <div className="mt-2 text-xs">
-                                                {artist.eventCount} event{artist.eventCount !== 1 ? 's' : ''} performed
-                                            </div>
+                                           
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -200,9 +199,7 @@ export default async function AdminPage() {
                                         <div className="text-sm text-muted-foreground space-y-1">
                                             {venue.address && <div>{venue.address}</div>}
                                             {venue.description && <div>{venue.description}</div>}
-                                            <div className="mt-2 text-xs">
-                                                {venue.eventCount} event{venue.eventCount !== 1 ? 's' : ''} hosted
-                                            </div>
+                                    
                                         </div>
                                     </CardContent>
                                 </Card>
