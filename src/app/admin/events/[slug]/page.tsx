@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ArrowLeft, Calendar } from "lucide-react"
+import { ArrowLeft, Save } from "lucide-react"
 import { getEventBySlug, updateEvent, getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
 import { DeleteEventForm } from "@/components/admin/delete-event-form"
 import { EventDatePicker } from "@/components/admin/event-date-picker"
+import { ImageUpload } from "@/components/admin/image-upload"
 
 interface PageProps {
   params: Promise<{
@@ -46,54 +46,78 @@ export default async function EventEditPage({ params }: PageProps) {
 
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-4 mb-8">
-          <Link href="/admin">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Admin
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-3xl font-bold text-foreground font-serif">
-              Edit Event
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              {event.title}
-            </p>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="border-b border-border">
+        <div className="max-w-7xl mx-auto px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Link href="/admin">
+                <Button variant="ghost" size="sm">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">
+                  Edit Event
+                </h1>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  {event.title} • {event.venueName}
+                </p>
+              </div>
+            </div>
+            
+            {/* Preview Badge */}
+            <div className="flex items-center gap-2">
+              {event.isPublished ? (
+                <span className="px-3 py-1 bg-green-500/10 text-green-600 text-sm font-medium rounded-full">
+                  Published
+                </span>
+              ) : (
+                <span className="px-3 py-1 bg-yellow-500/10 text-yellow-600 text-sm font-medium rounded-full">
+                  Draft
+                </span>
+              )}
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2 space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Event Details</CardTitle>
-                <CardDescription>Update the core event information</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form action={updateEvent} className="space-y-4">
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-8 py-8">
+        <div className="grid gap-8 lg:grid-cols-3">
+          {/* Main Form */}
+          <div className="lg:col-span-2">
+            <form action={updateEvent} className="space-y-8">
+              {/* Basic Information */}
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
+                <div className="space-y-4">
                   <input type="hidden" name="eventId" value={event.id} />
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="title">Title *</Label>
-                    <Input 
-                      id="title" 
-                      name="title" 
-                      defaultValue={event.title} 
-                      required 
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="slug">URL Slug *</Label>
-                    <Input 
-                      id="slug" 
-                      name="slug" 
-                      defaultValue={event.slug} 
-                      required 
-                    />
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Event Title *</Label>
+                      <Input 
+                        id="title" 
+                        name="title" 
+                        defaultValue={event.title} 
+                        required 
+                        className="bg-background"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="slug">URL Slug *</Label>
+                      <Input 
+                        id="slug" 
+                        name="slug" 
+                        defaultValue={event.slug} 
+                        required 
+                        className="bg-background"
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-2">
@@ -103,6 +127,7 @@ export default async function EventEditPage({ params }: PageProps) {
                       name="tagline" 
                       defaultValue={event.tagline || ""} 
                       placeholder="Live In Vancouver"
+                      className="bg-background"
                     />
                   </div>
 
@@ -112,38 +137,49 @@ export default async function EventEditPage({ params }: PageProps) {
                       id="description" 
                       name="description" 
                       defaultValue={event.description || ""} 
-                      rows={3}
+                      rows={4}
+                      className="bg-background resize-none"
                     />
                   </div>
+                </div>
+              </div>
 
-                  <EventDatePicker 
-                    startTime={new Date(event.startTime)} 
-                    endTime={new Date(event.endTime)} 
-                  />
+              {/* Date & Time */}
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Date & Time</h2>
+                <EventDatePicker 
+                  startTime={new Date(event.startTime)} 
+                  endTime={new Date(event.endTime)} 
+                />
+              </div>
 
+              {/* Location */}
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Location</h2>
+                <div className="space-y-2">
+                  <Label htmlFor="venueId">Venue *</Label>
+                  <Select name="venueId" defaultValue={event.venueId.toString()}>
+                    <SelectTrigger className="bg-background">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {venues.map((venue) => (
+                        <SelectItem key={venue.id} value={venue.id.toString()}>
+                          {venue.name} - {venue.city}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Media & Links */}
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Media & Links</h2>
+                <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="venueId">Venue *</Label>
-                    <Select name="venueId" defaultValue={event.venueId.toString()}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {venues.map((venue) => (
-                          <SelectItem key={venue.id} value={venue.id.toString()}>
-                            {venue.name} - {venue.city}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="image">Event Image URL</Label>
-                    <Input 
-                      id="image" 
-                      name="image" 
-                      defaultValue={event.image || ""} 
-                    />
+                    <Label>Event Poster</Label>
+                    <ImageUpload defaultImage={event.image} name="image" />
                   </div>
 
                   <div className="space-y-2">
@@ -153,88 +189,102 @@ export default async function EventEditPage({ params }: PageProps) {
                       name="ticketUrl" 
                       defaultValue={event.ticketUrl || ""} 
                       placeholder="https://tickets.example.com/event"
+                      className="bg-background"
                     />
                   </div>
+                </div>
+              </div>
 
-                  <div className="flex items-center space-x-2">
-                    <Checkbox 
-                      id="isPublished" 
-                      name="isPublished" 
-                      defaultChecked={event.isPublished}
-                    />
-                    <Label htmlFor="isPublished">Published (visible to public)</Label>
+              {/* Publishing */}
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Publishing</h2>
+                <div className="flex items-center space-x-3 p-4 bg-muted/50 rounded-lg">
+                  <Checkbox 
+                    id="isPublished" 
+                    name="isPublished" 
+                    defaultChecked={event.isPublished}
+                    className="data-[state=checked]:bg-[--gold] data-[state=checked]:border-[--gold]"
+                  />
+                  <div>
+                    <Label htmlFor="isPublished" className="text-base cursor-pointer">Publish Event</Label>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                      Make this event visible to the public
+                    </p>
                   </div>
+                </div>
+              </div>
 
-                  <div className="flex gap-4 pt-4">
-                    <Button type="submit" className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
-                      Save Changes
-                    </Button>
-                    <Link href="/admin">
-                      <Button variant="outline">
-                        Cancel
-                      </Button>
-                    </Link>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
+              {/* Actions */}
+              <div className="flex justify-end gap-3 pt-6 border-t border-border">
+                <Link href="/admin">
+                  <Button variant="outline">
+                    Cancel
+                  </Button>
+                </Link>
+                <Button type="submit" className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Changes
+                </Button>
+              </div>
+            </form>
+            
+            {/* Delete Section - Outside the form */}
+            <div className="mt-8 pt-8 border-t border-border">
+              <DeleteEventForm eventId={event.id} />
+            </div>
           </div>
 
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Event Image</CardTitle>
-                <CardDescription>Preview of the event poster</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="aspect-square bg-muted rounded-lg overflow-hidden">
-                  {event.image ? (
-                    <img 
-                      src={event.image} 
-                      alt={event.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground bg-muted/50 border-2 border-dashed border-muted-foreground/20">
-                      <Calendar className="h-10 w-10 mb-2 opacity-50" />
-                      <span className="text-sm font-medium">No Image</span>
-                      <span className="text-xs mt-1 opacity-70">Upload an event poster</span>
+          {/* Sidebar */}
+          <div className="lg:col-span-1 space-y-6">
+            {/* Event Info */}
+            <div>
+              <h3 className="text-sm font-medium text-muted-foreground mb-3">Event Schedule</h3>
+              <div className="space-y-3 text-sm">
+                <div>
+                  <p className="text-muted-foreground text-xs">Start Time</p>
+                  <p className="text-foreground">
+                    {new Date(event.startTime).toLocaleDateString('en-US', { 
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground text-xs">End Time</p>
+                  <p className="text-foreground">
+                    {new Date(event.endTime).toLocaleDateString('en-US', { 
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Artists */}
+            <div>
+              <h3 className="text-sm font-medium text-muted-foreground mb-3">Artists</h3>
+              <div className="space-y-2">
+                {event.artists.length > 0 ? (
+                  event.artists.map((artist, index) => (
+                    <div key={artist.id} className="flex items-center gap-2 text-sm">
+                      <span className="text-muted-foreground">{index + 1}.</span>
+                      <span className="text-foreground">{artist.name}</span>
                     </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Event Artists</CardTitle>
-                <CardDescription>Artists performing at this event</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {event.artists.length > 0 ? (
-                    event.artists.map((artist, index) => (
-                      <div key={artist.id} className="text-sm">
-                        <span className="font-medium">{index + 1}. </span>
-                        {artist.name}
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-muted-foreground text-sm">No artists assigned</p>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-red-600">Danger Zone</CardTitle>
-                <CardDescription>Irreversible actions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <DeleteEventForm eventId={event.id} />
-              </CardContent>
-            </Card>
+                  ))
+                ) : (
+                  <p className="text-muted-foreground text-sm">No artists assigned</p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

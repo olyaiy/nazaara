@@ -13,6 +13,7 @@ import { getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
 import { createEvent } from "@/lib/admin-actions"
 import { EventDatePicker } from "@/components/admin/event-date-picker"
+import { ImageUpload } from "@/components/admin/image-upload"
 
 export default async function NewEventPage() {
   const session = await auth.api.getSession({
@@ -111,12 +112,8 @@ export default async function NewEventPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="image">Event Image URL</Label>
-                <Input 
-                  id="image" 
-                  name="image" 
-                  placeholder="https://example.com/event-poster.jpg"
-                />
+                <Label>Event Poster</Label>
+                <ImageUpload name="image" />
               </div>
 
               <div className="space-y-2">

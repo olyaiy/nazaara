@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, Users, MapPin, Settings } from "lucide-react"
+import { Calendar, Users, MapPin, Settings, Plus, ExternalLink } from "lucide-react"
 import { getAdminStats, getAdminEvents, getAdminArtists, getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
 
@@ -78,69 +78,102 @@ export default async function AdminPage() {
                         </TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="events" className="space-y-6">
-                        <div className="flex justify-between items-center">
+                    <TabsContent value="events" className="space-y-8">
+                        <div className="flex justify-between items-center pb-6 border-b border-border">
                             <div>
-                                <h2 className="text-2xl font-semibold text-foreground">Events</h2>
-                                <p className="text-muted-foreground">Manage your events, lineups, and schedules</p>
+                                <h2 className="text-3xl font-bold text-foreground">Events</h2>
+                                <p className="text-muted-foreground mt-1">Manage your events, lineups, and schedules</p>
                             </div>
                             <Link href="/admin/events/new">
                                 <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
-                                    Add Event
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    New Event
                                 </Button>
                             </Link>
                         </div>
                         
-                        <div className="grid gap-4">
+                        {/* Grid Layout - Similar to upcoming-events */}
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {events.map((event) => {
+                                const startDate = new Date(event.startTime);
+                                const day = startDate.getDate();
+                                const month = startDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+                                
                                 return (
                                     <Link key={event.id} href={`/admin/events/${event.slug}`}>
-                                        <Card className="cursor-pointer hover:bg-accent/5 transition-colors overflow-hidden">
-                                            <div className="flex">
-                                                <div className="w-32 h-32 bg-muted flex-shrink-0">
-                                                    {event.image ? (
-                                                        <img 
-                                                            src={event.image} 
+                                        <div className="group cursor-pointer relative">
+                                            <div className="relative">
+                                                {/* Event Poster */}
+                                                <div className="relative aspect-[3/4] bg-muted overflow-hidden rounded-lg">
+                                                    {event.image && event.image.startsWith('http') ? (
+                                                        <img
+                                                            src={event.image}
                                                             alt={event.title}
-                                                            className="w-full h-full object-cover"
+                                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                                         />
                                                     ) : (
                                                         <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground bg-muted">
-                                                            <Calendar className="h-6 w-6 mb-1" />
-                                                            <span className="text-xs">No Image</span>
+                                                            <Calendar className="h-12 w-12 mb-2" />
+                                                            <span className="text-sm">No Image</span>
                                                         </div>
                                                     )}
-                                                </div>
-                                                <div className="flex-1">
-                                                    <CardHeader className="pb-3">
-                                                        <div className="flex justify-between items-start">
-                                                            <div>
-                                                                <CardTitle className="text-lg">
-                                                                    {event.title}
-                                                                </CardTitle>
-                                                                <CardDescription>
-                                                                    {event.tagline} • {event.venueName}
-                                                                </CardDescription>
-                                                            </div>
-                                                            <div className="text-right text-sm text-muted-foreground">
-                                                                <div>{new Date(event.startTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
-                                                            </div>
-                                                        </div>
-                                                    </CardHeader>
-                                                    <CardContent>
-                                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                                    <span>Artists: {event.artists.join(", ") || "TBA"}</span>
+                                                    
+                                                    {/* Gradient overlay */}
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                                    
+                                                    {/* Date Badge */}
+                                                    <div className="absolute -top-2 -right-2 w-14 h-14 bg-[--gold] flex flex-col items-center justify-center rounded">
+                                                        <p className="text-lg font-bold text-[--maroon-red]">
+                                                            {day}
+                                                        </p>
+                                                        <p className="text-[8px] uppercase tracking-wider text-[--maroon-red]">
+                                                            {month}
+                                                        </p>
+                                                    </div>
+                                                    
+                                                    {/* Status Badge */}
                                                     {!event.isPublished && (
-                                                        <>
-                                                            <span>•</span>
-                                                            <span className="text-yellow-600">Draft</span>
-                                                        </>
+                                                        <div className="absolute top-3 left-3 px-2 py-1 bg-yellow-500/90 text-black text-xs font-medium rounded">
+                                                            DRAFT
+                                                        </div>
                                                     )}
                                                 </div>
-                                            </CardContent>
+                                                
+                                                {/* Event Info */}
+                                                <div className="pt-4">
+                                                    <h3 className="font-semibold text-lg text-foreground group-hover:text-[--gold] transition-colors duration-300">
+                                                        {event.title}
+                                                    </h3>
+                                                    {event.tagline && (
+                                                        <p className="text-sm text-muted-foreground mt-1">
+                                                            {event.tagline}
+                                                        </p>
+                                                    )}
+                                                    
+                                                    <div className="mt-3 space-y-1">
+                                                        <p className="text-sm text-foreground">
+                                                            {event.venueName}
+                                                        </p>
+                                                        <p className="text-xs text-muted-foreground">
+                                                            {event.artists.join(", ") || "No artists assigned"}
+                                                        </p>
+                                                    </div>
+                                                    
+                                                    <div className="mt-4 flex items-center justify-between">
+                                                        <span className="text-xs text-muted-foreground">
+                                                            {new Date(event.startTime).toLocaleDateString('en-US', { 
+                                                                weekday: 'short',
+                                                                month: 'short', 
+                                                                day: 'numeric',
+                                                                hour: 'numeric',
+                                                                minute: '2-digit'
+                                                            })}
+                                                        </span>
+                                                        <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-[--gold]" />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </Card>
+                                        </div>
                                     </Link>
                                 )
                             })}
