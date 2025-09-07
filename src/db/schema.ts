@@ -116,7 +116,8 @@ export const events = pgTable("events", {
   venueId: integer("venue_id").references(() => venues.id).notNull(),
   
   // Media and external links
-  image: text("image"), // Event poster/promotional image (optional)
+  image: text("image"), // Event poster/promotional image URL from UploadThing
+  imageKey: text("image_key"), // UploadThing file key for deletion management
   ticketUrl: text("ticket_url"), // External ticket purchasing link
   
   // Publishing status

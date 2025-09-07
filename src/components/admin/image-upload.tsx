@@ -1,80 +1,53 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { Upload, X, Image as ImageIcon } from "lucide-react"
+import { X, Image as ImageIcon, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { UploadDropzone } from "@/lib/uploadthing"
+import type { UploadFileResponse } from "uploadthing/client"
 
 interface ImageUploadProps {
   defaultImage?: string | null
+  defaultImageKey?: string | null
   name?: string
+  onImageChange?: (url: string | null, key: string | null) => void
 }
 
-export function ImageUpload({ defaultImage, name = "image" }: ImageUploadProps) {
+export function ImageUpload({ 
+  defaultImage, 
+  defaultImageKey,
+  name = "image",
+  onImageChange 
+}: ImageUploadProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(defaultImage || null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [previewFile, setPreviewFile] = useState<File | null>(null)
+  const [imageKey, setImageKey] = useState<string | null>(defaultImageKey || null)
+  const [isUploading, setIsUploading] = useState(false)
 
-  const handleDragEnter = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(true)
-  }, [])
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(false)
-  }, [])
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }, [])
-
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(false)
-
-    const files = e.dataTransfer.files
-    if (files && files[0]) {
-      handleFile(files[0])
+  const handleUploadComplete = useCallback((res: UploadFileResponse<{
+    uploadedBy: string;
+    url: string;
+    key: string;
+    name: string;
+    size: number;
+  }>[]) => {
+    if (res && res[0]) {
+      const file = res[0]
+      setImageUrl(file.url)
+      setImageKey(file.key)
+      onImageChange?.(file.url, file.key)
     }
-  }, [])
+  }, [onImageChange])
 
-  const handleFile = (file: File) => {
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload an image file')
-      return
-    }
-
-    // Create preview URL
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setImageUrl(reader.result as string)
-      setPreviewFile(file)
-    }
-    reader.readAsDataURL(file)
-  }
-
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (files && files[0]) {
-      handleFile(files[0])
-    }
-  }
-
-  const removeImage = () => {
+  const removeImage = useCallback(() => {
     setImageUrl(null)
-    setPreviewFile(null)
-  }
+    setImageKey(null)
+    onImageChange?.(null, null)
+  }, [onImageChange])
 
-  return (
-    <div className="space-y-2">
-      {imageUrl ? (
-        // Image preview with remove button
+  if (imageUrl) {
+    return (
+      <div className="space-y-2">
         <div className="relative group">
           <div className="aspect-[3/4] bg-muted rounded-lg overflow-hidden">
             <img
@@ -93,65 +66,88 @@ export function ImageUpload({ defaultImage, name = "image" }: ImageUploadProps) 
             <X className="h-4 w-4 mr-1" />
             Remove
           </Button>
-          {previewFile && (
-            <div className="mt-2 p-2 bg-muted rounded text-xs text-muted-foreground">
-              <p>Ready to upload: {previewFile.name}</p>
-              <p className="text-yellow-600 mt-1">Note: Upload functionality not yet implemented</p>
-            </div>
-          )}
         </div>
-      ) : (
-        // Dropzone
-        <div
-          className={cn(
+        
+        {/* Hidden inputs to maintain the image data for form submission */}
+        <input type="hidden" name={name} value={imageUrl || ""} />
+        <input type="hidden" name={`${name}Key`} value={imageKey || ""} />
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-2">
+      <UploadDropzone
+        endpoint="eventPoster"
+        onClientUploadComplete={handleUploadComplete}
+        onUploadError={(error: Error) => {
+          console.error("Upload error:", error)
+          alert(`Upload failed: ${error.message}`)
+        }}
+        onUploadBegin={() => {
+          setIsUploading(true)
+        }}
+        onUploadProgress={() => {
+          // Could add progress tracking here if needed
+        }}
+        config={{
+          mode: "auto"
+        }}
+        appearance={{
+          container: cn(
             "aspect-[3/4] border-2 border-dashed rounded-lg transition-all",
             "flex flex-col items-center justify-center cursor-pointer",
             "hover:border-muted-foreground/50 hover:bg-muted/50",
-            isDragging 
-              ? "border-[--gold] bg-[--gold]/10" 
-              : "border-muted-foreground/20 bg-muted/30"
-          )}
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          onClick={() => document.getElementById('file-input')?.click()}
-        >
-          <input
-            id="file-input"
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleFileInput}
-          />
-          
-          <div className="text-center p-6">
-            {isDragging ? (
-              <>
-                <Upload className="h-12 w-12 mx-auto mb-3 text-[--gold]" />
-                <p className="text-sm font-medium text-foreground">Drop image here</p>
-              </>
-            ) : (
-              <>
-                <ImageIcon className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
+            "border-muted-foreground/20 bg-muted/30",
+            "ut-uploading:border-[--gold] ut-uploading:bg-[--gold]/10",
+            "ut-ready:hover:border-[--gold]/50"
+          ),
+          uploadIcon: "hidden",
+          label: "hidden",
+          allowedContent: "hidden",
+          button: cn(
+            "hidden" // We'll use our custom UI instead
+          ),
+        }}
+        content={{
+          uploadIcon() {
+            if (isUploading) {
+              return <Loader2 className="h-12 w-12 mx-auto mb-3 text-[--gold] animate-spin" />
+            }
+            return <ImageIcon className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
+          },
+          label() {
+            if (isUploading) {
+              return (
+                <div className="text-center">
+                  <p className="text-sm font-medium text-foreground">Uploading...</p>
+                  <p className="text-xs text-muted-foreground mt-1">Please wait</p>
+                </div>
+              )
+            }
+            return (
+              <div className="text-center">
                 <p className="text-sm font-medium text-foreground mb-1">
                   Drop image here or click to upload
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  PNG, JPG, WEBP up to 10MB
+                  PNG, JPG, WEBP up to 4MB
                 </p>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-      
-      {/* Hidden input to maintain the image URL for form submission */}
-      <input 
-        type="hidden" 
-        name={name} 
-        value={imageUrl || ""} 
+              </div>
+            )
+          },
+          allowedContent() {
+            return null // Hidden via appearance
+          },
+          button() {
+            return null // Hidden via appearance
+          }
+        }}
       />
+      
+      {/* Hidden inputs for form submission */}
+      <input type="hidden" name={name} value={imageUrl || ""} />
+      <input type="hidden" name={`${name}Key`} value={imageKey || ""} />
     </div>
   )
 }
