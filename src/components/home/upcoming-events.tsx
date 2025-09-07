@@ -32,12 +32,21 @@ export default function UpcomingEvents() {
   }, []);
 
   // Filter out the hero event (if known)
-  const filteredEvents = heroSlug
+  let filteredEvents = heroSlug
     ? upcomingEvents.filter((event) => event.slug !== heroSlug)
     : upcomingEvents;
 
+  // Hardcode preference for Tamasha event over Francis Mercier when both are on Sep 12
+  const tamashaEvent = filteredEvents.find(event => event.slug === "back-2-school-vancouver-2025");
+  const francisEvent = filteredEvents.find(event => event.slug === "francis-mercier-vancouver-2025");
+  
+  if (tamashaEvent && francisEvent && tamashaEvent.date === "12 Sep" && francisEvent.date === "12 Sep") {
+    // Remove Francis Mercier event to prefer Tamasha
+    filteredEvents = filteredEvents.filter(event => event.slug !== "francis-mercier-vancouver-2025");
+  }
+
   // Build a chronologically sorted list of ALL events for the Complete Schedule
-  const allEventsChrono = [...allEvents].sort((a, b) => {
+  let allEventsChrono = [...allEvents].sort((a, b) => {
     const monthMap: { [key: string]: number } = {
       Jan: 0,
       Feb: 1,
@@ -58,6 +67,15 @@ export default function UpcomingEvents() {
     const dateB = new Date(parseInt(b.year), monthMap[monthB], parseInt(dayB));
     return dateA.getTime() - dateB.getTime();
   });
+
+  // Apply same Tamasha preference to the chronological list
+  const allTamashaEvent = allEventsChrono.find(event => event.slug === "back-2-school-vancouver-2025");
+  const allFrancisEvent = allEventsChrono.find(event => event.slug === "francis-mercier-vancouver-2025");
+  
+  if (allTamashaEvent && allFrancisEvent && allTamashaEvent.date === "12 Sep" && allFrancisEvent.date === "12 Sep") {
+    // Remove Francis Mercier event to prefer Tamasha
+    allEventsChrono = allEventsChrono.filter(event => event.slug !== "francis-mercier-vancouver-2025");
+  }
 
   // TEMPORARY: Redirect to ticket URL instead of event page
   const handleEventClick = (event: typeof allEvents[0]) => {
