@@ -237,7 +237,7 @@ you bring the energy, we'll bring the bangers. let's kick off the semester the o
     city: "Vancouver",
     country: "Canada",
     price: "20",
-    image: "/events/Francis Mercier Poster.webp",
+    image: "/events/Habibeats.jpg",
     status: "On Sale",
     isFeatured: false,
     ticketUrl: "https://www.ticketweb.ca/event/dj-habibeats-fortune-sound-club-tickets/13916184?pl=blueprintt",
