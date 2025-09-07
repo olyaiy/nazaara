@@ -15,6 +15,13 @@
       "when": 1757272641861,
       "tag": "0001_lumpy_hairball",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1757273110924,
+      "tag": "0002_wooden_rogue",
+      "breakpoints": true
     }
   ]
 }
