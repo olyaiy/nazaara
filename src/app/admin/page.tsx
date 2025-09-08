@@ -8,6 +8,7 @@ import { Calendar, Users, MapPin, Settings, Plus, ExternalLink } from "lucide-re
 import { getAdminStats, getAdminEvents, getAdminArtists, getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
 import { SuccessToast } from "@/components/admin/success-toast"
+import { ArtistImage } from "@/components/admin/artist-image"
 
 async function signOutAction() {
   "use server"
@@ -202,18 +203,8 @@ export default async function AdminPage() {
                                     <Card className="hover:bg-muted/50 transition-colors cursor-pointer overflow-hidden">
                                         <div className="flex">
                                             {/* Artist Image */}
-                                            <div className="w-24 h-24 bg-muted flex-shrink-0">
-                                                {artist.image ? (
-                                                    <img 
-                                                        src={artist.image} 
-                                                        alt={artist.name}
-                                                        className="w-full h-full object-cover"
-                                                    />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                                                        <Users className="h-8 w-8" />
-                                                    </div>
-                                                )}
+                                            <div className="w-20 h-20 bg-muted flex-shrink-0 rounded-full overflow-hidden m-4">
+                                                <ArtistImage src={artist.image} alt={artist.name} />
                                             </div>
                                             {/* Artist Info */}
                                             <div className="flex-1 p-4">
