@@ -1,0 +1,315 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
+import { EventDatePicker } from "@/components/admin/event-date-picker"
+import { ImageUpload } from "@/components/admin/image-upload"
+import { ArtistSelector } from "@/components/admin/artist-selector"
+import { updateEvent } from "@/lib/admin-actions"
+import { DeleteEventForm } from "@/components/admin/delete-event-form"
+import { Save, Calendar, Clock } from "lucide-react"
+import Link from "next/link"
+
+interface Venue {
+  id: number
+  name: string
+  city: string
+}
+
+interface Artist {
+  id: number
+  name: string
+  slug: string
+}
+
+interface EventEditFormProps {
+  event: {
+    id: string
+    title: string
+    slug: string
+    tagline: string | null
+    description: string | null
+    startTime: string | Date
+    endTime: string | Date
+    venueId: number | null
+    venueName: string
+    image: string | null
+    imageKey: string | null
+    ticketUrl: string | null
+    isPublished: boolean
+    artists: { id: number; name: string; orderIndex?: number }[]
+  }
+  venues: Venue[]
+  artists: Artist[]
+}
+
+function generateSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/[\s_]+/g, '-')   // Replace spaces and underscores with hyphens
+    .replace(/^-+|-+$/g, '')   // Remove leading/trailing hyphens
+}
+
+export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
+  const [title, setTitle] = useState(event.title)
+  const [slug, setSlug] = useState(event.slug)
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(true) // Default to true for existing events
+
+  // Only auto-generate if slug is empty and not manually edited
+  useEffect(() => {
+    if (!isSlugManuallyEdited && title && !slug) {
+      setSlug(generateSlug(title))
+    }
+  }, [title, isSlugManuallyEdited, slug])
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value
+    setTitle(newTitle)
+    
+    // If slug is empty and title changes, allow auto-generation
+    if (!slug) {
+      setIsSlugManuallyEdited(false)
+    }
+  }
+
+  const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSlug = e.target.value
+    setSlug(newSlug)
+    
+    // Mark as manually edited when user types
+    if (newSlug !== generateSlug(title)) {
+      setIsSlugManuallyEdited(true)
+    }
+  }
+
+  const handleSlugFocus = () => {
+    // When user focuses the slug field with content, mark as manually edited
+    if (slug) {
+      setIsSlugManuallyEdited(true)
+    }
+  }
+
+  return (
+    <form action={updateEvent}>
+      <div className="grid gap-8 lg:grid-cols-3">
+        {/* Left Column - Form Fields (2/3 width) */}
+        <div className="lg:col-span-2 space-y-8">
+          <input type="hidden" name="eventId" value={event.id} />
+          
+          {/* Basic Information */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
+            <div className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Event Title *</Label>
+                  <Input 
+                    id="title" 
+                    name="title" 
+                    value={title}
+                    onChange={handleTitleChange}
+                    required 
+                    className="bg-background"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="slug">
+                    URL Slug *
+                    {!isSlugManuallyEdited && !event.slug && title && (
+                      <span className="ml-2 text-xs text-muted-foreground">
+                        (auto-generated)
+                      </span>
+                    )}
+                  </Label>
+                  <Input 
+                    id="slug" 
+                    name="slug" 
+                    value={slug}
+                    onChange={handleSlugChange}
+                    onFocus={handleSlugFocus}
+                    required 
+                    className={`bg-background ${!isSlugManuallyEdited && !event.slug && title ? "text-muted-foreground" : ""}`}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    /events/{slug || "your-event-slug"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="tagline">Tagline</Label>
+                <Input 
+                  id="tagline" 
+                  name="tagline" 
+                  defaultValue={event.tagline || ""} 
+                  placeholder="Live In Vancouver"
+                  className="bg-background"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea 
+                  id="description" 
+                  name="description" 
+                  defaultValue={event.description || ""} 
+                  rows={4}
+                  className="bg-background resize-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Date & Time */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Date & Time</h2>
+            <EventDatePicker 
+              startTime={new Date(event.startTime)} 
+              endTime={new Date(event.endTime)} 
+            />
+          </div>
+
+          {/* Location */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Location</h2>
+            <div className="space-y-2">
+              <Label htmlFor="venueId">Venue *</Label>
+              <Select name="venueId" defaultValue={event.venueId?.toString() || ""}>
+                <SelectTrigger className="bg-background">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {venues.map((venue) => (
+                    <SelectItem key={venue.id} value={venue.id.toString()}>
+                      {venue.name} - {venue.city}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Artists */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Artists</h2>
+            <ArtistSelector 
+              artists={artists} 
+              selectedArtists={event.artists}
+            />
+          </div>
+        </div>
+
+        {/* Right Column - Media and Publishing (1/3 width) */}
+        <div className="lg:col-span-1 space-y-8">
+          {/* Media */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Media</h2>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>Event Poster</Label>
+                <ImageUpload 
+                  defaultImage={event.image} 
+                  defaultImageKey={event.imageKey}
+                  name="image" 
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="ticketUrl">Ticket URL</Label>
+                <Input 
+                  id="ticketUrl" 
+                  name="ticketUrl" 
+                  defaultValue={event.ticketUrl || ""} 
+                  placeholder="https://tickets.example.com/event"
+                  className="bg-background"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Publishing */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Publishing</h2>
+            <div className="flex items-center space-x-3 p-4 bg-muted/50 rounded-lg">
+              <Checkbox 
+                id="isPublished" 
+                name="isPublished" 
+                defaultChecked={event.isPublished}
+                className="data-[state=checked]:bg-[--gold] data-[state=checked]:border-[--gold]"
+              />
+              <div>
+                <Label htmlFor="isPublished" className="text-base cursor-pointer">Publish Event</Label>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  Make this event visible to the public
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Event Schedule Info */}
+          <div>
+            <h3 className="text-sm font-medium text-muted-foreground mb-3">Event Schedule</h3>
+            <div className="space-y-3 text-sm">
+              <div className="flex items-start gap-2">
+                <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />
+                <div>
+                  <p className="text-muted-foreground text-xs">Start Time</p>
+                  <p className="text-foreground">
+                    {new Date(event.startTime).toLocaleDateString('en-US', { 
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <Clock className="h-4 w-4 text-muted-foreground mt-0.5" />
+                <div>
+                  <p className="text-muted-foreground text-xs">End Time</p>
+                  <p className="text-foreground">
+                    {new Date(event.endTime).toLocaleDateString('en-US', { 
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Actions - Full Width */}
+      <div className="flex justify-between items-center pt-8 mt-8 border-t border-border">
+        <DeleteEventForm eventId={event.id} />
+        <div className="flex gap-3">
+          <Link href="/admin">
+            <Button variant="outline">
+              Cancel
+            </Button>
+          </Link>
+          <Button type="submit" className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
+            <Save className="h-4 w-4 mr-2" />
+            Save Changes
+          </Button>
+        </div>
+      </div>
+    </form>
+  )
+}

@@ -86,13 +86,7 @@ export default async function VenueEditPage({ params }: PageProps) {
               </div>
             </div>
             
-            {/* Event Count Badge */}
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 bg-muted text-foreground text-sm font-medium rounded-full flex items-center gap-1">
-                <Calendar className="h-3 w-3" />
-                {venue.eventCount} Event{venue.eventCount !== 1 ? 's' : ''}
-              </span>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -205,15 +199,6 @@ export default async function VenueEditPage({ params }: PageProps) {
                     </div>
                   </div>
                   
-                  <div className="flex items-start gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />
-                    <div className="flex-1">
-                      <p className="text-sm text-foreground font-medium">Events</p>
-                      <p className="text-sm text-muted-foreground">
-                        {venue.eventCount} event{venue.eventCount !== 1 ? 's' : ''} scheduled
-                      </p>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

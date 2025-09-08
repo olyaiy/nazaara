@@ -32,6 +32,7 @@ export async function getAdminEvents() {
       startTime: events.startTime,
       endTime: events.endTime,
       image: events.image,
+      isPublished: events.isPublished,
       venueName: venues.name,
     })
     .from(events)
@@ -202,6 +203,16 @@ export async function updateEvent(formData: FormData) {
     throw new Error("Required fields missing")
   }
 
+  // Parse artist data from form
+  const artistData: { id: number; orderIndex: number }[] = []
+  let index = 0
+  while (formData.has(`artists[${index}][id]`)) {
+    const artistId = parseInt(formData.get(`artists[${index}][id]`) as string)
+    const orderIndex = parseInt(formData.get(`artists[${index}][orderIndex]`) as string)
+    artistData.push({ id: artistId, orderIndex })
+    index++
+  }
+
   // Get the current event to check if image is being replaced
   const currentEvent = await db
     .select({ 
@@ -223,6 +234,7 @@ export async function updateEvent(formData: FormData) {
     }
   }
 
+  // Update the event
   await db
     .update(events)
     .set({
@@ -239,6 +251,24 @@ export async function updateEvent(formData: FormData) {
       venueId,
     })
     .where(eq(events.id, eventId))
+
+  // Delete existing artist relationships
+  await db
+    .delete(eventsArtists)
+    .where(eq(eventsArtists.eventId, eventId))
+
+  // Insert new artist relationships if any artists were selected
+  if (artistData.length > 0) {
+    await db
+      .insert(eventsArtists)
+      .values(
+        artistData.map(artist => ({
+          eventId: eventId,
+          artistId: artist.id,
+          orderIndex: artist.orderIndex,
+        }))
+      )
+  }
 
   revalidatePath("/admin")
   revalidatePath(`/admin/events/${slug}`)
@@ -263,7 +293,18 @@ export async function createEvent(formData: FormData) {
     throw new Error("Required fields missing")
   }
 
-  await db
+  // Parse artist data from form
+  const artistData: { id: number; orderIndex: number }[] = []
+  let index = 0
+  while (formData.has(`artists[${index}][id]`)) {
+    const artistId = parseInt(formData.get(`artists[${index}][id]`) as string)
+    const orderIndex = parseInt(formData.get(`artists[${index}][orderIndex]`) as string)
+    artistData.push({ id: artistId, orderIndex })
+    index++
+  }
+
+  // Insert event and get the ID
+  const [newEvent] = await db
     .insert(events)
     .values({
       slug,
@@ -278,6 +319,20 @@ export async function createEvent(formData: FormData) {
       isPublished,
       venueId,
     })
+    .returning({ id: events.id })
+
+  // Insert artist relationships if any artists were selected
+  if (artistData.length > 0 && newEvent) {
+    await db
+      .insert(eventsArtists)
+      .values(
+        artistData.map(artist => ({
+          eventId: newEvent.id,
+          artistId: artist.id,
+          orderIndex: artist.orderIndex,
+        }))
+      )
+  }
 
   revalidatePath("/admin")
   redirect(`/admin?success=event-created`)

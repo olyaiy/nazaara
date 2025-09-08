@@ -226,7 +226,6 @@ export default async function AdminPage() {
                                                         <p className="text-xs text-muted-foreground">SoundCloud: {artist.soundcloud}</p>
                                                     )}
                                                     <div className="pt-2 flex items-center justify-between">
-                                                        <span className="text-xs text-muted-foreground">{artist.eventCount} events</span>
                                                         <ExternalLink className="h-3 w-3 text-muted-foreground" />
                                                     </div>
                                                 </div>
@@ -265,7 +264,6 @@ export default async function AdminPage() {
                                                 {venue.address && <div>{venue.address}</div>}
                                                 {venue.description && <div className="line-clamp-2">{venue.description}</div>}
                                                 <div className="pt-2 flex items-center justify-between">
-                                                    <span className="text-xs">{venue.eventCount} events</span>
                                                     <ExternalLink className="h-3 w-3" />
                                                 </div>
                                             </div>
