@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Calendar, Users, MapPin, Settings, Plus, ExternalLink } from "lucide-react"
-import { getAdminStats, getAdminEvents, getAdminArtists, getAdminVenues } from "@/lib/admin-actions"
+import { getAdminEvents, getAdminArtists, getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
 import { SuccessToast } from "@/components/admin/success-toast"
 import { ArtistImage } from "@/components/admin/artist-image"
@@ -31,8 +31,7 @@ export default async function AdminPage() {
     }
 
     // Fetch all admin data in parallel for optimal performance
-    const [stats, events, artists, venues] = await Promise.all([
-        getAdminStats(),
+    const [events, artists, venues] = await Promise.all([
         getAdminEvents(),
         getAdminArtists(),
         getAdminVenues()
@@ -282,86 +281,25 @@ export default async function AdminPage() {
                     <TabsContent value="settings" className="space-y-6">
                         <div>
                             <h2 className="text-2xl font-semibold text-foreground">Settings</h2>
-                            <p className="text-muted-foreground">Manage site configuration and preferences</p>
+                            <p className="text-muted-foreground">Account information</p>
                         </div>
                         
-                        <div className="grid gap-6 md:grid-cols-2">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="text-lg">Site Configuration</CardTitle>
-                                    <CardDescription>General site settings and metadata</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-3">
-                                    <div className="text-sm">
-                                        <div className="font-medium">Site Title</div>
-                                        <div className="text-muted-foreground">Nazaara Live - Premium South Asian Events</div>
-                                    </div>
-                                    <div className="text-sm">
-                                        <div className="font-medium">Default Currency</div>
-                                        <div className="text-muted-foreground">CAD</div>
-                                    </div>
-                                    <div className="text-sm">
-                                        <div className="font-medium">Featured Events Limit</div>
-                                        <div className="text-muted-foreground">6 events</div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                            
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="text-lg">Media & Assets</CardTitle>
-                                    <CardDescription>Image hosting and media management</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-3">
-                                    <div className="text-sm">
-                                        <div className="font-medium">Image Storage</div>
-                                        <div className="text-muted-foreground">Cloudinary (connected)</div>
-                                    </div>
-                                    <div className="text-sm">
-                                        <div className="font-medium">Gallery Link</div>
-                                        <div className="text-muted-foreground">Adobe Lightroom</div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                            
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="text-lg">Authentication</CardTitle>
-                                    <CardDescription>User and session management</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-3">
-                                    <div className="text-sm">
-                                        <div className="font-medium">Current User</div>
-                                        <div className="text-muted-foreground">{session.user.name}</div>
-                                    </div>
-                                    <div className="text-sm">
-                                        <div className="font-medium">Session Timeout</div>
-                                        <div className="text-muted-foreground">7 days</div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                            
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="text-lg">Database</CardTitle>
-                                    <CardDescription>Database status and statistics</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-3">
-                                    <div className="text-sm">
-                                        <div className="font-medium">Total Events</div>
-                                        <div className="text-muted-foreground">{stats.totalEvents} events</div>
-                                    </div>
-                                    <div className="text-sm">
-                                        <div className="font-medium">Total Artists</div>
-                                        <div className="text-muted-foreground">{stats.totalArtists} artists</div>
-                                    </div>
-                                    <div className="text-sm">
-                                        <div className="font-medium">Total Venues</div>
-                                        <div className="text-muted-foreground">{stats.totalVenues} venues</div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
+                        <Card className="max-w-2xl">
+                            <CardHeader>
+                                <CardTitle className="text-lg">Current User</CardTitle>
+                                <CardDescription>Your account information</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div className="space-y-2">
+                                    <div className="text-sm font-medium text-muted-foreground">Name</div>
+                                    <div className="text-base text-foreground">{session.user.name || "Not set"}</div>
+                                </div>
+                                <div className="space-y-2">
+                                    <div className="text-sm font-medium text-muted-foreground">Email</div>
+                                    <div className="text-base text-foreground">{session.user.email}</div>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </TabsContent>
                 </Tabs>
                 
