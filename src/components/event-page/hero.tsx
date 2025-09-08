@@ -1,9 +1,9 @@
 
 import Image from "next/image";
-import { Event } from "@/content/events";
+import { PublicEvent } from "@/lib/public-actions";
 
 interface EventHeroProps {
-  event: Event;
+  event: PublicEvent;
 }
 
 export default function EventHero({ event }: EventHeroProps) {

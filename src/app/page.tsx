@@ -6,6 +6,7 @@ import SectionHeader from "@/components/ui/section-header";
 import UpcomingEvents from "@/components/home/upcoming-events";
 import { EventMarquee } from "@/components/home/event-marquee";
 import Hero from "@/components/home/hero";
+import { getPublicEvents } from "@/lib/public-actions";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -36,13 +37,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  // Fetch events for the marquee
+  const events = await getPublicEvents();
+  
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Hero />
 
       {/* Event Marquee - Animated Transition */}
-      <EventMarquee />
+      <EventMarquee events={events} />
 
       <UpcomingEvents />
 

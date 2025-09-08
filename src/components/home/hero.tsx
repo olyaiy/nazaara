@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { getEventForCity, getFeaturedEvent } from "@/content/events";
+import { getPublicEventForCity, getPublicFeaturedEvent } from "@/lib/public-actions";
 import HeroMobile from "./hero-mobile";
 
 import HeroImage from "./hero-image";
@@ -9,7 +9,7 @@ export default async function Hero() {
   const cookieStore = await cookies();
   const city = cookieStore.get("nza_city")?.value;
   console.log("[Hero] city cookie:", city);
-  const featuredEvent = getEventForCity(city) || getFeaturedEvent();
+  const featuredEvent = await getPublicEventForCity(city) || await getPublicFeaturedEvent();
 
   if (!featuredEvent) {
     console.log("[Hero] no event found – returning null");

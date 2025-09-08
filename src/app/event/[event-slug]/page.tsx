@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { getEventBySlug, events } from "@/content/events";
+import { getPublicEventBySlug, getPublicEvents } from "@/lib/public-actions";
 import EventHero from "@/components/event-page/hero";
 import VenueFeatures from "@/components/event-page/venue-features";
 import ArtistShowcase from "@/components/event-page/artist-showcase";
@@ -15,7 +15,7 @@ interface EventPageProps {
 // Generate metadata for each event page
 export async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
   const { "event-slug": eventSlug } = await params;
-  const event = getEventBySlug(eventSlug);
+  const event = await getPublicEventBySlug(eventSlug);
 
   if (!event) {
     return {
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
 
   return {
     title: `${event.artist} - ${event.title} | Nazaara Live`,
-    description: `${event.tagline || `Join us for ${event.artist} ${event.title} at ${event.venue} in ${event.city}, ${event.country} on ${event.date}, ${event.year}.`} Tickets starting from $${event.price}.`,
+    description: `${event.tagline || `Join us for ${event.artist} ${event.title} at ${event.venue} in ${event.city}, ${event.country} on ${event.date}, ${event.year}.`}`,
     openGraph: {
       title: `${event.artist} - ${event.title}`,
       description: event.tagline || `Experience ${event.artist} live at ${event.venue}`,
@@ -50,6 +50,7 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
 
 // Generate static params for all events (optional, for better performance)
 export async function generateStaticParams() {
+  const events = await getPublicEvents();
   return events.map((event) => ({
     "event-slug": event.slug,
   }));
@@ -57,7 +58,7 @@ export async function generateStaticParams() {
 
 export default async function EventPage({ params }: EventPageProps) {
   const { "event-slug": eventSlug } = await params;
-  const event = getEventBySlug(eventSlug);
+  const event = await getPublicEventBySlug(eventSlug);
 
   if (!event) {
     notFound();

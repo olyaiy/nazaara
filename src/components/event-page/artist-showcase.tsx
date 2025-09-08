@@ -1,9 +1,9 @@
 'use client'
 import Image from "next/image";
-import { Artist } from "@/content/events";
+import { PublicArtist } from "@/lib/public-actions";
 
 interface ArtistShowcaseProps {
-  artists?: Artist[];
+  artists?: PublicArtist[];
   // Accept but ignore optional headline to maintain callsite compatibility
   headline?: string;
 }

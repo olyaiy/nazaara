@@ -1,11 +1,24 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { events } from "@/content/events";
 
-export function EventMarquee() {
+interface MarqueeEvent {
+  id: number;
+  slug: string;
+  date: string;
+  year: string;
+  artist: string;
+  venue: string;
+  ticketUrl?: string | null;
+}
+
+interface EventMarqueeProps {
+  events: MarqueeEvent[];
+}
+
+export function EventMarquee({ events }: EventMarqueeProps) {
     const router = useRouter();
 
-    const handleEventClick = (slug: string, ticketUrl?: string) => {
+    const handleEventClick = (slug: string, ticketUrl?: string | null) => {
       // TEMPORARY: Redirect to ticket URL instead of event page
       // router.push(`/event/${slug}`); // TEMPORARY: Commented out
       if (ticketUrl) {
@@ -49,4 +62,4 @@ export function EventMarquee() {
         `}</style>
       </div>
     );
-  }
+}
