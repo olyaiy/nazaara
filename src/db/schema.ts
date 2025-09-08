@@ -33,6 +33,9 @@ export const venues = pgTable("venues", {
   // Primary identifier
   id: serial("id").primaryKey(),
   
+  // URL-friendly identifier
+  slug: varchar("slug", { length: 255 }).notNull().unique(), // e.g., "fortune-sound-club"
+  
   // Basic venue information
   name: varchar("name", { length: 255 }).notNull(), // e.g., "Fortune Sound Club"
   description: text("description"), // Two-sentence venue description for marketing
@@ -45,6 +48,7 @@ export const venues = pgTable("venues", {
   
   // Media assets
   images: text("images").array(), // Array of venue image URLs for showcasing
+  imageKeys: text("image_keys").array(), // Array of UploadThing file keys for deletion management
   
   // Audit timestamps
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -52,6 +56,7 @@ export const venues = pgTable("venues", {
 }, (table) => {
   return {
     // Indexes for common query patterns
+    slugIdx: index("venue_slug_idx").on(table.slug), // Route lookup by slug
     nameIdx: index("venue_name_idx").on(table.name), // Search by venue name
     cityIdx: index("venue_city_idx").on(table.city), // Filter events by city
   };
@@ -67,6 +72,9 @@ export const venues = pgTable("venues", {
 export const artists = pgTable("artists", {
   // Primary identifier
   id: serial("id").primaryKey(),
+  
+  // URL-friendly identifier
+  slug: varchar("slug", { length: 255 }).notNull().unique(), // e.g., "yasmina", "aj-wavy"
   
   // Artist identity - unique constraint prevents duplicates
   name: varchar("name", { length: 255 }).notNull().unique(), // e.g., "Yasmina", "AJ WAVY"
@@ -84,6 +92,7 @@ export const artists = pgTable("artists", {
 }, (table) => {
   return {
     // Index for artist search and lookup
+    slugIdx: index("artist_slug_idx").on(table.slug), // Route lookup by slug
     nameIdx: index("artist_name_idx").on(table.name),
   };
 });
@@ -113,7 +122,8 @@ export const events = pgTable("events", {
   
   // Venue relationship
   // Foreign key to venues table - ensures referential integrity
-  venueId: integer("venue_id").references(() => venues.id).notNull(),
+  // When venue is deleted, this field is set to null
+  venueId: integer("venue_id").references(() => venues.id, { onDelete: "set null" }),
   
   // Media and external links
   image: text("image"), // Event poster/promotional image URL from UploadThing

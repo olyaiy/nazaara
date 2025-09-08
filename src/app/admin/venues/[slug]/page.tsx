@@ -6,12 +6,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ArrowLeft, Save, MapPin, Calendar } from "lucide-react"
-import { getVenueById, updateVenue, deleteVenue } from "@/lib/admin-actions"
+import { getVenueBySlug, updateVenue, deleteVenue } from "@/lib/admin-actions"
 import Link from "next/link"
+import { MultiImageUpload } from "@/components/admin/multi-image-upload"
 
 interface PageProps {
   params: Promise<{
-    id: string
+    slug: string
   }>
 }
 
@@ -19,28 +20,24 @@ function DeleteVenueForm({ venueId, eventCount }: { venueId: number; eventCount:
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-red-600">Danger Zone</h2>
-      {eventCount > 0 ? (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-800">
-            This venue cannot be deleted because it has {eventCount} associated event{eventCount !== 1 ? 's' : ''}.
-            Please reassign or delete these events first.
-          </p>
-        </div>
-      ) : (
-        <form action={deleteVenue}>
-          <input type="hidden" name="venueId" value={venueId} />
-          <Button
-            type="submit"
-            variant="destructive"
-            className="bg-red-600 hover:bg-red-700"
-          >
-            Delete Venue
-          </Button>
-          <p className="text-sm text-muted-foreground mt-2">
-            This action cannot be undone. The venue will be permanently deleted.
-          </p>
-        </form>
-      )}
+      <form action={deleteVenue}>
+        <input type="hidden" name="venueId" value={venueId} />
+        <Button
+          type="submit"
+          variant="destructive"
+          className="bg-red-600 hover:bg-red-700"
+        >
+          Delete Venue
+        </Button>
+        <p className="text-sm text-muted-foreground mt-2">
+          This action cannot be undone. The venue will be permanently deleted.
+          {eventCount > 0 && (
+            <span className="block mt-1 text-yellow-600">
+              Note: {eventCount} event{eventCount !== 1 ? 's' : ''} currently use this venue. They will be updated to have no venue.
+            </span>
+          )}
+        </p>
+      </form>
     </div>
   )
 }
@@ -54,13 +51,13 @@ export default async function VenueEditPage({ params }: PageProps) {
     redirect("/admin/auth")
   }
 
-  const { id } = await params
+  const { slug } = await params
   
-  if (!id || isNaN(parseInt(id))) {
+  if (!slug) {
     redirect("/admin")
   }
 
-  const venue = await getVenueById(parseInt(id))
+  const venue = await getVenueBySlug(slug)
 
   if (!venue) {
     redirect("/admin")
@@ -102,16 +99,16 @@ export default async function VenueEditPage({ params }: PageProps) {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-8 py-8">
-        <div className="grid gap-8 lg:grid-cols-3">
-          {/* Main Form */}
-          <div className="lg:col-span-2">
-            <form action={updateVenue} className="space-y-8">
+        <form action={updateVenue}>
+          <div className="grid gap-8 lg:grid-cols-2">
+            {/* Left Column - Form Fields */}
+            <div className="space-y-8">
+              <input type="hidden" name="venueId" value={venue.id} />
+              
               {/* Basic Information */}
               <div>
                 <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
                 <div className="space-y-4">
-                  <input type="hidden" name="venueId" value={venue.id} />
-                  
                   <div className="space-y-2">
                     <Label htmlFor="name">Venue Name *</Label>
                     <Input 
@@ -189,86 +186,96 @@ export default async function VenueEditPage({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* Actions */}
-              <div className="flex justify-end gap-3 pt-6 border-t border-border">
-                <Link href="/admin">
-                  <Button variant="outline">
-                    Cancel
-                  </Button>
-                </Link>
-                <Button type="submit" className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
-                  <Save className="h-4 w-4 mr-2" />
-                  Save Changes
-                </Button>
-              </div>
-            </form>
-            
-            {/* Delete Section - Outside the form */}
-            <div className="mt-8 pt-8 border-t border-border">
-              <DeleteVenueForm venueId={venue.id} eventCount={venue.eventCount} />
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Venue Info */}
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-3">Venue Details</h3>
-              <div className="space-y-3">
-                <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
-                  <div className="flex-1">
-                    <p className="text-sm text-foreground font-medium">Location</p>
-                    <p className="text-sm text-muted-foreground">
-                      {venue.city}, {venue.country}
-                    </p>
-                    {venue.address && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {venue.address}
+              {/* Venue Info */}
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground mb-3">Venue Details</h3>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-2">
+                    <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-sm text-foreground font-medium">Location</p>
+                      <p className="text-sm text-muted-foreground">
+                        {venue.city}, {venue.country}
                       </p>
-                    )}
+                      {venue.address && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {venue.address}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-                
-                <div className="flex items-start gap-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />
-                  <div className="flex-1">
-                    <p className="text-sm text-foreground font-medium">Events</p>
-                    <p className="text-sm text-muted-foreground">
-                      {venue.eventCount} event{venue.eventCount !== 1 ? 's' : ''} scheduled
-                    </p>
+                  
+                  <div className="flex items-start gap-2">
+                    <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-sm text-foreground font-medium">Events</p>
+                      <p className="text-sm text-muted-foreground">
+                        {venue.eventCount} event{venue.eventCount !== 1 ? 's' : ''} scheduled
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Timestamps */}
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-3">Timestamps</h3>
-              <div className="space-y-2 text-sm">
-                <div>
-                  <p className="text-muted-foreground text-xs">Created</p>
-                  <p className="text-foreground">
-                    {new Date(venue.createdAt).toLocaleDateString('en-US', { 
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground text-xs">Last Updated</p>
-                  <p className="text-foreground">
-                    {new Date(venue.updatedAt).toLocaleDateString('en-US', { 
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
+            {/* Right Column - Images and Timestamps */}
+            <div className="space-y-8">
+              {/* Media */}
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Media</h2>
+                <MultiImageUpload 
+                  defaultImages={venue.images || []} 
+                  defaultImageKeys={venue.imageKeys || []}
+                  names={["image1", "image2", "image3"]} 
+                />
+              </div>
+
+              {/* Timestamps */}
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground mb-3">Timestamps</h3>
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <p className="text-muted-foreground text-xs">Created</p>
+                    <p className="text-foreground">
+                      {new Date(venue.createdAt).toLocaleDateString('en-US', { 
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground text-xs">Last Updated</p>
+                    <p className="text-foreground">
+                      {new Date(venue.updatedAt).toLocaleDateString('en-US', { 
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Actions - Full Width */}
+          <div className="flex justify-end gap-3 pt-8 mt-8 border-t border-border">
+            <Link href="/admin">
+              <Button variant="outline">
+                Cancel
+              </Button>
+            </Link>
+            <Button type="submit" className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
+              <Save className="h-4 w-4 mr-2" />
+              Save Changes
+            </Button>
+          </div>
+        </form>
+        
+        {/* Delete Section - Outside the form */}
+        <div className="mt-8 pt-8 border-t border-border">
+          <DeleteVenueForm venueId={venue.id} eventCount={venue.eventCount} />
         </div>
       </div>
     </div>

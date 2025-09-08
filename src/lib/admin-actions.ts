@@ -5,6 +5,8 @@ import { events, artists, venues, eventsArtists } from "@/db/schema"
 import { eq, count, sql } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { generateSlug } from "@/lib/utils/slug"
+import { getUTApi } from "@/lib/uploadthing-server"
 
 export async function getAdminStats() {
   const [eventCount, artistCount, venueCount] = await Promise.all([
@@ -64,6 +66,7 @@ export async function getAdminArtists() {
   const artistsWithEventCount = await db
     .select({
       id: artists.id,
+      slug: artists.slug,
       name: artists.name,
       instagram: artists.instagram,
       soundcloud: artists.soundcloud,
@@ -72,7 +75,7 @@ export async function getAdminArtists() {
     })
     .from(artists)
     .leftJoin(eventsArtists, eq(artists.id, eventsArtists.artistId))
-    .groupBy(artists.id, artists.name, artists.instagram, artists.soundcloud, artists.image)
+    .groupBy(artists.id, artists.slug, artists.name, artists.instagram, artists.soundcloud, artists.image)
     .orderBy(artists.name)
 
   return artistsWithEventCount
@@ -82,6 +85,7 @@ export async function getAdminVenues() {
   const venuesWithEventCount = await db
     .select({
       id: venues.id,
+      slug: venues.slug,
       name: venues.name,
       description: venues.description,
       address: venues.address,
@@ -91,7 +95,7 @@ export async function getAdminVenues() {
     })
     .from(venues)
     .leftJoin(events, eq(venues.id, events.venueId))
-    .groupBy(venues.id, venues.name, venues.description, venues.address, venues.city, venues.country)
+    .groupBy(venues.id, venues.slug, venues.name, venues.description, venues.address, venues.city, venues.country)
     .orderBy(venues.name)
 
   return venuesWithEventCount
@@ -108,7 +112,9 @@ export async function getEventBySlug(slug: string) {
       startTime: events.startTime,
       endTime: events.endTime,
       image: events.image,
+      imageKey: events.imageKey,
       ticketUrl: events.ticketUrl,
+      isPublished: events.isPublished,
       venueId: events.venueId,
       venueName: venues.name,
     })
@@ -150,6 +156,26 @@ export async function deleteEvent(formData: FormData) {
     throw new Error("Event ID is required")
   }
 
+  // First, get the event to retrieve the imageKey if it exists
+  const event = await db
+    .select({ imageKey: events.imageKey })
+    .from(events)
+    .where(eq(events.id, eventId))
+    .limit(1)
+
+  // If the event has an imageKey, delete the image from UploadThing
+  if (event[0]?.imageKey) {
+    try {
+      const utapi = getUTApi()
+      await utapi.deleteFiles(event[0].imageKey)
+      console.log(`Deleted image ${event[0].imageKey} from UploadThing`)
+    } catch (error) {
+      // Log error but don't fail the event deletion
+      console.error("Failed to delete image from UploadThing:", error)
+    }
+  }
+
+  // Delete the event from the database
   await db.delete(events).where(eq(events.id, eventId))
   
   revalidatePath("/admin")
@@ -166,12 +192,35 @@ export async function updateEvent(formData: FormData) {
   const startTime = formData.get("startTime") as string
   const endTime = formData.get("endTime") as string
   const image = formData.get("image") as string
+  const imageKey = formData.get("imageKey") as string
   const ticketUrl = formData.get("ticketUrl") as string
   const isPublished = formData.get("isPublished") === "on"
-  const venueId = parseInt(formData.get("venueId") as string)
+  const venueIdStr = formData.get("venueId") as string
+  const venueId = venueIdStr ? parseInt(venueIdStr) : null
 
-  if (!eventId || !slug || !title || !startTime || !endTime || !venueId) {
+  if (!eventId || !slug || !title || !startTime || !endTime) {
     throw new Error("Required fields missing")
+  }
+
+  // Get the current event to check if image is being replaced
+  const currentEvent = await db
+    .select({ 
+      imageKey: events.imageKey,
+      image: events.image 
+    })
+    .from(events)
+    .where(eq(events.id, eventId))
+    .limit(1)
+
+  // If there's an old imageKey and it's different from the new one, delete the old image
+  if (currentEvent[0]?.imageKey && currentEvent[0].imageKey !== imageKey) {
+    try {
+      const utapi = getUTApi()
+      await utapi.deleteFiles(currentEvent[0].imageKey)
+      console.log(`Deleted old image ${currentEvent[0].imageKey} from UploadThing`)
+    } catch (error) {
+      console.error("Failed to delete old image from UploadThing:", error)
+    }
   }
 
   await db
@@ -184,6 +233,7 @@ export async function updateEvent(formData: FormData) {
       startTime: new Date(startTime),
       endTime: new Date(endTime),
       image: image || null,
+      imageKey: imageKey || null,
       ticketUrl: ticketUrl || null,
       isPublished,
       venueId,
@@ -192,7 +242,7 @@ export async function updateEvent(formData: FormData) {
 
   revalidatePath("/admin")
   revalidatePath(`/admin/events/${slug}`)
-  redirect("/admin")
+  redirect("/admin?success=event-updated")
 }
 
 export async function createEvent(formData: FormData) {
@@ -203,11 +253,13 @@ export async function createEvent(formData: FormData) {
   const startTime = formData.get("startTime") as string
   const endTime = formData.get("endTime") as string
   const image = formData.get("image") as string
+  const imageKey = formData.get("imageKey") as string
   const ticketUrl = formData.get("ticketUrl") as string
   const isPublished = formData.get("isPublished") === "on"
-  const venueId = parseInt(formData.get("venueId") as string)
+  const venueIdStr = formData.get("venueId") as string
+  const venueId = venueIdStr ? parseInt(venueIdStr) : null
 
-  if (!slug || !title || !startTime || !endTime || !venueId) {
+  if (!slug || !title || !startTime || !endTime) {
     throw new Error("Required fields missing")
   }
 
@@ -221,21 +273,22 @@ export async function createEvent(formData: FormData) {
       startTime: new Date(startTime),
       endTime: new Date(endTime),
       image: image || null,
+      imageKey: imageKey || null,
       ticketUrl: ticketUrl || null,
       isPublished,
       venueId,
     })
 
   revalidatePath("/admin")
-  redirect(`/admin/events/${slug}`)
+  redirect(`/admin?success=event-created`)
 }
 
 // Venue CRUD operations
-export async function getVenueById(id: number) {
+export async function getVenueBySlug(slug: string) {
   const venue = await db
     .select()
     .from(venues)
-    .where(eq(venues.id, id))
+    .where(eq(venues.slug, slug))
     .limit(1)
 
   if (!venue[0]) {
@@ -246,7 +299,7 @@ export async function getVenueById(id: number) {
   const eventCount = await db
     .select({ count: count() })
     .from(events)
-    .where(eq(events.venueId, id))
+    .where(eq(events.venueId, venue[0].id))
 
   return {
     ...venue[0],
@@ -261,25 +314,35 @@ export async function createVenue(formData: FormData) {
   const addressUrl = formData.get("addressUrl") as string
   const city = formData.get("city") as string
   const country = formData.get("country") as string
+  
+  // Handle multiple images
+  const image1 = formData.get("image1") as string
+  const image2 = formData.get("image2") as string
+  const image3 = formData.get("image3") as string
+  const images = [image1, image2, image3].filter(Boolean)
 
   if (!name || !city || !country) {
     throw new Error("Required fields missing")
   }
 
+  const slug = generateSlug(name)
+
   const result = await db
     .insert(venues)
     .values({
+      slug,
       name,
       description: description || null,
       address: address || null,
       addressUrl: addressUrl || null,
       city,
       country,
+      images: images.length > 0 ? images : null,
     })
-    .returning({ id: venues.id })
+    .returning({ slug: venues.slug })
 
   revalidatePath("/admin")
-  redirect(`/admin/venues/${result[0].id}`)
+  redirect(`/admin?success=venue-created`)
 }
 
 export async function updateVenue(formData: FormData) {
@@ -290,27 +353,43 @@ export async function updateVenue(formData: FormData) {
   const addressUrl = formData.get("addressUrl") as string
   const city = formData.get("city") as string
   const country = formData.get("country") as string
+  
+  // Handle multiple images and their keys
+  const image1 = formData.get("image1") as string
+  const image2 = formData.get("image2") as string
+  const image3 = formData.get("image3") as string
+  const image1Key = formData.get("image1Key") as string
+  const image2Key = formData.get("image2Key") as string
+  const image3Key = formData.get("image3Key") as string
+  
+  const images = [image1, image2, image3].filter(Boolean)
+  const imageKeys = [image1Key, image2Key, image3Key].filter(Boolean)
 
   if (!venueId || !name || !city || !country) {
     throw new Error("Required fields missing")
   }
 
+  const slug = generateSlug(name)
+
   await db
     .update(venues)
     .set({
+      slug,
       name,
       description: description || null,
       address: address || null,
       addressUrl: addressUrl || null,
       city,
       country,
+      images: images.length > 0 ? images : null,
+      imageKeys: imageKeys.length > 0 ? imageKeys : null,
       updatedAt: new Date(),
     })
     .where(eq(venues.id, venueId))
 
   revalidatePath("/admin")
-  revalidatePath(`/admin/venues/${venueId}`)
-  redirect("/admin")
+  revalidatePath(`/admin/venues/${slug}`)
+  redirect("/admin?success=venue-updated")
 }
 
 export async function deleteVenue(formData: FormData) {
@@ -320,16 +399,7 @@ export async function deleteVenue(formData: FormData) {
     throw new Error("Venue ID is required")
   }
 
-  // Check if there are events using this venue
-  const eventCount = await db
-    .select({ count: count() })
-    .from(events)
-    .where(eq(events.venueId, venueId))
-
-  if (eventCount[0]?.count > 0) {
-    throw new Error("Cannot delete venue with associated events")
-  }
-
+  // Delete venue - associated events will have their venueId set to null
   await db.delete(venues).where(eq(venues.id, venueId))
   
   revalidatePath("/admin")
@@ -337,11 +407,11 @@ export async function deleteVenue(formData: FormData) {
 }
 
 // Artist CRUD operations
-export async function getArtistById(id: number) {
+export async function getArtistBySlug(slug: string) {
   const artist = await db
     .select()
     .from(artists)
-    .where(eq(artists.id, id))
+    .where(eq(artists.slug, slug))
     .limit(1)
 
   if (!artist[0]) {
@@ -358,7 +428,7 @@ export async function getArtistById(id: number) {
     })
     .from(eventsArtists)
     .leftJoin(events, eq(eventsArtists.eventId, events.id))
-    .where(eq(eventsArtists.artistId, id))
+    .where(eq(eventsArtists.artistId, artist[0].id))
     .orderBy(events.startTime)
 
   return {
@@ -377,18 +447,21 @@ export async function createArtist(formData: FormData) {
     throw new Error("Artist name is required")
   }
 
+  const slug = generateSlug(name)
+
   const result = await db
     .insert(artists)
     .values({
+      slug,
       name,
       instagram: instagram || null,
       soundcloud: soundcloud || null,
       image: image || null,
     })
-    .returning({ id: artists.id })
+    .returning({ slug: artists.slug })
 
   revalidatePath("/admin")
-  redirect(`/admin/artists/${result[0].id}`)
+  redirect(`/admin?success=artist-created`)
 }
 
 export async function updateArtist(formData: FormData) {
@@ -402,9 +475,12 @@ export async function updateArtist(formData: FormData) {
     throw new Error("Required fields missing")
   }
 
+  const slug = generateSlug(name)
+
   await db
     .update(artists)
     .set({
+      slug,
       name,
       instagram: instagram || null,
       soundcloud: soundcloud || null,
@@ -414,8 +490,8 @@ export async function updateArtist(formData: FormData) {
     .where(eq(artists.id, artistId))
 
   revalidatePath("/admin")
-  revalidatePath(`/admin/artists/${artistId}`)
-  redirect("/admin")
+  revalidatePath(`/admin/artists/${slug}`)
+  redirect("/admin?success=artist-updated")
 }
 
 export async function deleteArtist(formData: FormData) {

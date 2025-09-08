@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { createVenue } from "@/lib/admin-actions"
+import { MultiImageUpload } from "@/components/admin/multi-image-upload"
 
 export default async function NewVenuePage() {
   const session = await auth.api.getSession({
@@ -21,7 +21,7 @@ export default async function NewVenuePage() {
 
   return (
     <div className="min-h-screen bg-background p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="flex items-center gap-4 mb-8">
           <Link href="/admin">
             <Button variant="outline" size="sm">
@@ -39,95 +39,107 @@ export default async function NewVenuePage() {
           </div>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Venue Details</CardTitle>
-            <CardDescription>Fill in the information for your new venue</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form action={createVenue} className="space-y-6">
-              
+        <form action={createVenue}>
+          <div className="grid gap-8 lg:grid-cols-2">
+            {/* Left Column - Form Fields */}
+            <div className="space-y-8">
               {/* Basic Information */}
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Venue Name *</Label>
-                  <Input 
-                    id="name" 
-                    name="name" 
-                    required 
-                    placeholder="Fortune Sound Club"
-                  />
-                </div>
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Venue Name *</Label>
+                    <Input 
+                      id="name" 
+                      name="name" 
+                      required 
+                      placeholder="Fortune Sound Club"
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea 
-                    id="description" 
-                    name="description" 
-                    rows={3}
-                    placeholder="A premier nightclub known for its state-of-the-art sound system..."
-                  />
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea 
+                      id="description" 
+                      name="description" 
+                      rows={3}
+                      placeholder="A premier nightclub known for its state-of-the-art sound system..."
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Location */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium">Location</h3>
-                
-                <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Location</h2>
+                <div className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="city">City *</Label>
+                      <Input 
+                        id="city" 
+                        name="city" 
+                        required 
+                        placeholder="Vancouver"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="country">Country *</Label>
+                      <Input 
+                        id="country" 
+                        name="country" 
+                        required 
+                        placeholder="Canada"
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="city">City *</Label>
+                    <Label htmlFor="address">Street Address</Label>
                     <Input 
-                      id="city" 
-                      name="city" 
-                      required 
-                      placeholder="Vancouver"
+                      id="address" 
+                      name="address" 
+                      placeholder="147 E Pender St"
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
-                    <Label htmlFor="country">Country *</Label>
+                    <Label htmlFor="addressUrl">Directions URL</Label>
                     <Input 
-                      id="country" 
-                      name="country" 
-                      required 
-                      placeholder="Canada"
+                      id="addressUrl" 
+                      name="addressUrl" 
+                      placeholder="https://maps.google.com/..."
                     />
                   </div>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="address">Street Address</Label>
-                  <Input 
-                    id="address" 
-                    name="address" 
-                    placeholder="147 E Pender St"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="addressUrl">Directions URL</Label>
-                  <Input 
-                    id="addressUrl" 
-                    name="addressUrl" 
-                    placeholder="https://maps.google.com/..."
-                  />
-                </div>
               </div>
+            </div>
 
-              <div className="flex gap-4 pt-4">
-                <Button type="submit" className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
-                  Create Venue
-                </Button>
-                <Link href="/admin">
-                  <Button variant="outline">
-                    Cancel
-                  </Button>
-                </Link>
+            {/* Right Column - Images */}
+            <div className="space-y-8">
+              {/* Media */}
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Media</h2>
+                <MultiImageUpload 
+                  names={["image1", "image2", "image3"]} 
+                />
               </div>
-            </form>
-          </CardContent>
-        </Card>
+            </div>
+          </div>
+
+          {/* Actions - Full Width */}
+          <div className="flex gap-4 pt-8 mt-8 border-t border-border">
+            <Button type="submit" className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
+              Create Venue
+            </Button>
+            <Link href="/admin">
+              <Button variant="outline">
+                Cancel
+              </Button>
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
   )

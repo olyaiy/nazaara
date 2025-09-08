@@ -59,12 +59,8 @@ export default function UpcomingEvents() {
     return dateA.getTime() - dateB.getTime();
   });
 
-  // TEMPORARY: Redirect to ticket URL instead of event page
   const handleEventClick = (event: typeof allEvents[0]) => {
-    // router.push(`/event/${event.slug}`); // TEMPORARY: Commented out
-    if (event.ticketUrl) {
-      window.open(event.ticketUrl, '_blank');
-    }
+    router.push(`/event/${event.slug}`);
   };
   
   return (
@@ -159,7 +155,15 @@ export default function UpcomingEvents() {
                           </div>
                           
                           {/* Ticket Button */}
-                          <button className="px-4 py-2 bg-[var(--gold)] text-[var(--maroon-red)] font-prettywise text-sm uppercase tracking-wider hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-colors duration-300">
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (event.ticketUrl) {
+                                window.open(event.ticketUrl, '_blank');
+                              }
+                            }}
+                            className="px-4 py-2 bg-[var(--gold)] text-[var(--maroon-red)] font-prettywise text-sm uppercase tracking-wider hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-colors duration-300"
+                          >
                             Get Tickets
                           </button>
                         </div>
@@ -234,18 +238,17 @@ export default function UpcomingEvents() {
                             Learn More
                           </a>
                           */}
-                          <a 
-                            href={event.ticketUrl || "#"}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <button 
                             onClick={(e) => {
-                              if (!event.ticketUrl) e.preventDefault();
-                              else e.stopPropagation();
+                              e.stopPropagation();
+                              if (event.ticketUrl) {
+                                window.open(event.ticketUrl, '_blank');
+                              }
                             }}
                             className="px-3 py-1.5 bg-[var(--gold)] text-[var(--maroon-red)] font-neue-haas text-xs uppercase tracking-wider hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-all duration-300"
                           >
                             Tickets
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -298,18 +301,17 @@ export default function UpcomingEvents() {
                         Learn More
                       </a>
                       */}
-                      <a 
-                        href={event.ticketUrl || "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button 
                         onClick={(e) => {
-                          if (!event.ticketUrl) e.preventDefault();
-                          else e.stopPropagation();
+                          e.stopPropagation();
+                          if (event.ticketUrl) {
+                            window.open(event.ticketUrl, '_blank');
+                          }
                         }}
                         className="px-4 py-2 bg-[var(--gold)] text-[var(--maroon-red)] font-neue-haas text-[11px] uppercase tracking-[0.2em] hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-all duration-300"
                       >
                         Tickets
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>

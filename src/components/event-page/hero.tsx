@@ -203,45 +203,9 @@ export default function EventHero({ event }: EventHeroProps) {
             </div>
           </div>
 
-          {/* Desktop Layout - Original Side by Side */}
+          {/* Desktop Layout - Content Left, Image Right */}
           <div className="hidden lg:grid lg:grid-cols-2 md:gap-8 xl:gap-0 items-center w-full">
-            {/* Desktop Poster */}
-            <div className="flex justify-center">
-              <div className="relative w-full max-w-[500px]">
-                {/* Enhanced Gold accent frame */}
-                <div className="absolute -inset-[2px] bg-gradient-to-br from-[var(--gold)] via-[var(--gold)]/50 to-transparent opacity-60" />
-                <div className="absolute -inset-[1px] bg-[var(--maroon-red)]" />
-                
-                {/* Main Poster with enhanced presentation */}
-                <div className="relative w-full">
-                  <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
-                    <Image 
-                      src={event.image}
-                      alt={event.title}
-                      fill
-                      className="object-cover"
-                      priority
-                      sizes="500px"
-                    />
-                    {/* Premium vignette effects */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-[var(--dark-green)]/20 via-transparent to-transparent" />
-                  </div>
-                  
-                  {/* Floating gold accent date element - top right */}
-                  <div className="absolute -top-5 -right-5 w-20 h-20 bg-[var(--gold)] flex flex-col items-center justify-center">
-                    <p className="text-2xl font-prettywise text-[var(--maroon-red)]">{event.date.split(' ')[0]}</p>
-                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--maroon-red)]">{event.date.split(' ')[1]}</p>
-                  </div>
-                  
-                  {/* Corner accents */}
-                  <div className="absolute -bottom-2 -left-2 w-16 h-16 border-l-2 border-b-2 border-[var(--gold)]/40" />
-                  <div className="absolute -top-2 -left-2 w-16 h-16 border-l-2 border-t-2 border-[var(--gold)]/40" />
-                </div>
-              </div>
-            </div>
-            
-            {/* Desktop Event Information */}
+            {/* Desktop Event Information - Now on Left */}
             <div className="flex flex-col justify-center">
               <div className="space-y-8 max-w-xl">
                 {/* Title Block */}
@@ -355,6 +319,42 @@ export default function EventHero({ event }: EventHeroProps) {
                       </p>
                     </div>
                   </button>
+                </div>
+              </div>
+            </div>
+            
+            {/* Desktop Poster - Now on Right */}
+            <div className="flex justify-center">
+              <div className="relative w-full max-w-[500px]">
+                {/* Enhanced Gold accent frame */}
+                <div className="absolute -inset-[2px] bg-gradient-to-br from-[var(--gold)] via-[var(--gold)]/50 to-transparent opacity-60" />
+                <div className="absolute -inset-[1px] bg-[var(--maroon-red)]" />
+                
+                {/* Main Poster with enhanced presentation */}
+                <div className="relative w-full">
+                  <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
+                    <Image 
+                      src={event.image}
+                      alt={event.title}
+                      fill
+                      className="object-cover"
+                      priority
+                      sizes="500px"
+                    />
+                    {/* Premium vignette effects */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[var(--dark-green)]/20 via-transparent to-transparent" />
+                  </div>
+                  
+                  {/* Floating gold accent date element - top right */}
+                  <div className="absolute -top-5 -right-5 w-20 h-20 bg-[var(--gold)] flex flex-col items-center justify-center">
+                    <p className="text-2xl font-prettywise text-[var(--maroon-red)]">{event.date.split(' ')[0]}</p>
+                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--maroon-red)]">{event.date.split(' ')[1]}</p>
+                  </div>
+                  
+                  {/* Corner accents */}
+                  <div className="absolute -bottom-2 -left-2 w-16 h-16 border-l-2 border-b-2 border-[var(--gold)]/40" />
+                  <div className="absolute -top-2 -left-2 w-16 h-16 border-l-2 border-t-2 border-[var(--gold)]/40" />
                 </div>
               </div>
             </div>

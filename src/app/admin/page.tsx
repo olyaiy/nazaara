@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Calendar, Users, MapPin, Settings, Plus, ExternalLink } from "lucide-react"
 import { getAdminStats, getAdminEvents, getAdminArtists, getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
+import { SuccessToast } from "@/components/admin/success-toast"
 
 async function signOutAction() {
   "use server"
@@ -37,6 +38,7 @@ export default async function AdminPage() {
 
     return (
         <div className="min-h-screen bg-background p-8">
+            <SuccessToast />
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <div>
@@ -196,28 +198,40 @@ export default async function AdminPage() {
                         
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                             {artists.map((artist) => (
-                                <Link key={artist.id} href={`/admin/artists/${artist.id}`}>
-                                    <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
-                                        <CardHeader>
-                                            <CardTitle className="text-lg">{artist.name}</CardTitle>
-                                            <CardDescription>
-                                                {artist.instagram && `@${artist.instagram}`}
-                                            </CardDescription>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <div className="text-sm text-muted-foreground space-y-1">
-                                                {artist.instagram && (
-                                                    <div>Instagram: {artist.instagram}</div>
+                                <Link key={artist.id} href={`/admin/artists/${artist.slug}`}>
+                                    <Card className="hover:bg-muted/50 transition-colors cursor-pointer overflow-hidden">
+                                        <div className="flex">
+                                            {/* Artist Image */}
+                                            <div className="w-24 h-24 bg-muted flex-shrink-0">
+                                                {artist.image ? (
+                                                    <img 
+                                                        src={artist.image} 
+                                                        alt={artist.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                                                        <Users className="h-8 w-8" />
+                                                    </div>
                                                 )}
-                                                {artist.soundcloud && (
-                                                    <div>SoundCloud: {artist.soundcloud}</div>
-                                                )}
-                                                <div className="pt-2 flex items-center justify-between">
-                                                    <span className="text-xs">{artist.eventCount} events</span>
-                                                    <ExternalLink className="h-3 w-3" />
+                                            </div>
+                                            {/* Artist Info */}
+                                            <div className="flex-1 p-4">
+                                                <div className="space-y-1">
+                                                    <h3 className="font-semibold text-foreground">{artist.name}</h3>
+                                                    {artist.instagram && (
+                                                        <p className="text-xs text-muted-foreground">@{artist.instagram}</p>
+                                                    )}
+                                                    {artist.soundcloud && (
+                                                        <p className="text-xs text-muted-foreground">SoundCloud: {artist.soundcloud}</p>
+                                                    )}
+                                                    <div className="pt-2 flex items-center justify-between">
+                                                        <span className="text-xs text-muted-foreground">{artist.eventCount} events</span>
+                                                        <ExternalLink className="h-3 w-3 text-muted-foreground" />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </CardContent>
+                                        </div>
                                     </Card>
                                 </Link>
                             ))}
@@ -240,7 +254,7 @@ export default async function AdminPage() {
                         
                         <div className="grid gap-4">
                             {venues.map((venue) => (
-                                <Link key={venue.id} href={`/admin/venues/${venue.id}`}>
+                                <Link key={venue.id} href={`/admin/venues/${venue.slug}`}>
                                     <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
                                         <CardHeader>
                                             <CardTitle className="text-lg">{venue.name}</CardTitle>
