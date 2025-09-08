@@ -92,11 +92,12 @@ export async function getAdminVenues() {
       address: venues.address,
       city: venues.city,
       country: venues.country,
+      images: venues.images,
       eventCount: sql<number>`COALESCE(COUNT(${events.id}), 0)`.as('eventCount'),
     })
     .from(venues)
     .leftJoin(events, eq(venues.id, events.venueId))
-    .groupBy(venues.id, venues.slug, venues.name, venues.description, venues.address, venues.city, venues.country)
+    .groupBy(venues.id, venues.slug, venues.name, venues.description, venues.address, venues.city, venues.country, venues.images)
     .orderBy(venues.name)
 
   return venuesWithEventCount

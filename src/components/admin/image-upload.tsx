@@ -12,13 +12,15 @@ interface ImageUploadProps {
   defaultImageKey?: string | null
   name?: string
   onImageChange?: (url: string | null, key: string | null) => void
+  aspectRatio?: "square" | "poster"
 }
 
 export function ImageUpload({ 
   defaultImage, 
   defaultImageKey,
   name = "image",
-  onImageChange 
+  onImageChange,
+  aspectRatio = "poster"
 }: ImageUploadProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(defaultImage || null)
   const [imageKey, setImageKey] = useState<string | null>(defaultImageKey || null)
@@ -45,14 +47,16 @@ export function ImageUpload({
     onImageChange?.(null, null)
   }, [onImageChange])
 
+  const aspectClass = aspectRatio === "square" ? "aspect-square" : "aspect-[3/4]"
+
   if (imageUrl) {
     return (
       <div className="space-y-2">
         <div className="relative group">
-          <div className="aspect-[3/4] bg-muted rounded-lg overflow-hidden">
+          <div className={cn(aspectClass, "bg-muted rounded-lg overflow-hidden")}>
             <img
               src={imageUrl}
-              alt="Event poster"
+              alt={aspectRatio === "square" ? "Artist photo" : "Event poster"}
               className="w-full h-full object-cover"
             />
           </div>
@@ -95,7 +99,7 @@ export function ImageUpload({
         }}
         appearance={{
           container: cn(
-            "aspect-[3/4] border-2 border-dashed rounded-lg transition-all",
+            aspectClass, "border-2 border-dashed rounded-lg transition-all",
             "flex flex-col items-center justify-center cursor-pointer",
             "hover:border-muted-foreground/50 hover:bg-muted/50",
             "border-muted-foreground/20 bg-muted/30",

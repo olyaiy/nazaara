@@ -110,7 +110,7 @@ export default async function ArtistEditPage({ params }: PageProps) {
                       name="name" 
                       defaultValue={artist.name} 
                       required 
-                      className="bg-background"
+                      className="bg-background border-border"
                     />
                   </div>
                 </div>
@@ -129,7 +129,7 @@ export default async function ArtistEditPage({ params }: PageProps) {
                         name="instagram" 
                         defaultValue={artist.instagram || ""} 
                         placeholder="username"
-                        className="bg-background pl-10"
+                        className="bg-background pl-10 border-border"
                       />
                     </div>
                     <p className="text-xs text-muted-foreground">Enter username without @ symbol</p>
@@ -144,7 +144,7 @@ export default async function ArtistEditPage({ params }: PageProps) {
                         name="soundcloud" 
                         defaultValue={artist.soundcloud || ""} 
                         placeholder="username"
-                        className="bg-background pl-10"
+                        className="bg-background pl-10 border-border"
                       />
                     </div>
                   </div>
@@ -188,7 +188,7 @@ export default async function ArtistEditPage({ params }: PageProps) {
                 <h2 className="text-lg font-semibold mb-4">Media</h2>
                 <div className="space-y-2">
                   <Label>Artist Photo</Label>
-                  <ImageUpload defaultImage={artist.image} name="image" />
+                  <ImageUpload defaultImage={artist.image} name="image" aspectRatio="square" />
                 </div>
               </div>
 

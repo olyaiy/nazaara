@@ -2,7 +2,6 @@ import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft } from "lucide-react"
 import { getAdminVenues, getAdminArtists } from "@/lib/admin-actions"
 import Link from "next/link"
@@ -23,34 +22,34 @@ export default async function NewEventPage() {
   ])
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-4 mb-8">
-          <Link href="/admin">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Admin
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-3xl font-bold text-foreground font-serif">
-              Create New Event
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Add a new event to your catalog
-            </p>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="border-b border-border">
+        <div className="max-w-7xl mx-auto px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Link href="/admin">
+                <Button variant="ghost" size="sm">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">
+                  Create New Event
+                </h1>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  Add a new event to your catalog
+                </p>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Event Details</CardTitle>
-            <CardDescription>Fill in the information for your new event</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <EventForm venues={venues} artists={artists} />
-          </CardContent>
-        </Card>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-8 py-8">
+        <EventForm venues={venues} artists={artists} />
       </div>
     </div>
   )

@@ -9,6 +9,7 @@ import { getAdminStats, getAdminEvents, getAdminArtists, getAdminVenues } from "
 import Link from "next/link"
 import { SuccessToast } from "@/components/admin/success-toast"
 import { ArtistImage } from "@/components/admin/artist-image"
+import { VenueImage } from "@/components/admin/venue-image"
 
 async function signOutAction() {
   "use server"
@@ -197,32 +198,33 @@ export default async function AdminPage() {
                             </Link>
                         </div>
                         
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            {artists.map((artist) => (
+                        <div className="grid gap-2">
+                            {artists.map((artist, index) => (
                                 <Link key={artist.id} href={`/admin/artists/${artist.slug}`}>
-                                    <Card className="hover:bg-muted/50 transition-colors cursor-pointer overflow-hidden">
-                                        <div className="flex">
-                                            {/* Artist Image */}
-                                            <div className="w-20 h-20 bg-muted flex-shrink-0 rounded-full overflow-hidden m-4">
-                                                <ArtistImage src={artist.image} alt={artist.name} />
-                                            </div>
-                                            {/* Artist Info */}
-                                            <div className="flex-1 p-4">
-                                                <div className="space-y-1">
-                                                    <h3 className="font-semibold text-foreground">{artist.name}</h3>
-                                                    {artist.instagram && (
-                                                        <p className="text-xs text-muted-foreground">@{artist.instagram}</p>
-                                                    )}
-                                                    {artist.soundcloud && (
-                                                        <p className="text-xs text-muted-foreground">SoundCloud: {artist.soundcloud}</p>
-                                                    )}
-                                                    <div className="pt-2 flex items-center justify-between">
-                                                        <ExternalLink className="h-3 w-3 text-muted-foreground" />
-                                                    </div>
-                                                </div>
+                                    <div className="group flex items-center gap-4 p-3 rounded-lg hover:bg-[--gold]/5 transition-colors cursor-pointer">
+                                        {/* Artist Image */}
+                                        <div className="w-14 h-14 bg-muted flex-shrink-0 rounded-full overflow-hidden">
+                                            <ArtistImage src={artist.image} alt={artist.name} />
+                                        </div>
+                                        {/* Artist Info */}
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="font-medium text-foreground group-hover:text-[--gold] transition-colors">
+                                                {artist.name}
+                                            </h3>
+                                            <div className="flex items-center gap-3 mt-1">
+                                                {artist.instagram && (
+                                                    <span className="text-xs text-muted-foreground">@{artist.instagram}</span>
+                                                )}
+                                                {artist.soundcloud && (
+                                                    <span className="text-xs text-muted-foreground">SoundCloud</span>
+                                                )}
                                             </div>
                                         </div>
-                                    </Card>
+                                        <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    </div>
+                                    {index < artists.length - 1 && (
+                                        <div className="border-b border-border/50 ml-[74px]" />
+                                    )}
                                 </Link>
                             ))}
                         </div>
@@ -242,24 +244,36 @@ export default async function AdminPage() {
                             </Link>
                         </div>
                         
-                        <div className="grid gap-4">
+                        <div className="divide-y divide-border/50">
                             {venues.map((venue) => (
                                 <Link key={venue.id} href={`/admin/venues/${venue.slug}`}>
-                                    <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
-                                        <CardHeader>
-                                            <CardTitle className="text-lg">{venue.name}</CardTitle>
-                                            <CardDescription>{venue.city}, {venue.country}</CardDescription>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <div className="text-sm text-muted-foreground space-y-1">
-                                                {venue.address && <div>{venue.address}</div>}
-                                                {venue.description && <div className="line-clamp-2">{venue.description}</div>}
-                                                <div className="pt-2 flex items-center justify-between">
-                                                    <ExternalLink className="h-3 w-3" />
-                                                </div>
+                                    <div className="group py-4 px-2 hover:bg-[--gold]/5 rounded-lg transition-colors cursor-pointer">
+                                        <div className="flex items-start gap-4">
+                                            {/* Venue Image */}
+                                            <div className="w-20 h-20 bg-muted flex-shrink-0 rounded-lg overflow-hidden">
+                                                <VenueImage 
+                                                    src={venue.images?.[0]} 
+                                                    alt={venue.name} 
+                                                />
                                             </div>
-                                        </CardContent>
-                                    </Card>
+                                            {/* Venue Info */}
+                                            <div className="flex-1">
+                                                <h3 className="font-medium text-foreground group-hover:text-[--gold] transition-colors">
+                                                    {venue.name}
+                                                </h3>
+                                                <p className="text-sm text-muted-foreground mt-1">
+                                                    {venue.city}, {venue.country}
+                                                    {venue.address && <span className="ml-2">• {venue.address}</span>}
+                                                </p>
+                                                {venue.description && (
+                                                    <p className="text-sm text-muted-foreground mt-2 line-clamp-1">
+                                                        {venue.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <MapPin className="h-4 w-4 text-muted-foreground ml-4 mt-1 opacity-50 group-hover:opacity-100 transition-opacity" />
+                                        </div>
+                                    </div>
                                 </Link>
                             ))}
                         </div>
