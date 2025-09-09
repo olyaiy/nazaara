@@ -63,7 +63,12 @@ export function UserManagement() {
       })
       
       if (response.data) {
-        setUsers(response.data.users)
+        // Ensure all users have a role field (default to "user" if undefined)
+        const usersWithRole = response.data.users.map((user: any) => ({
+          ...user,
+          role: user.role || "user"
+        }))
+        setUsers(usersWithRole)
         setTotalUsers(response.data.total)
       }
     } catch (error) {
@@ -85,7 +90,7 @@ export function UserManagement() {
         name: createForm.name,
         email: createForm.email,
         password: createForm.password,
-        role: createForm.role,
+        role: createForm.role as "admin" | "user",
         data: {}
       })
       
@@ -103,7 +108,7 @@ export function UserManagement() {
     try {
       await authClient.admin.setRole({
         userId,
-        role
+        role: role as "admin" | "user"
       })
       toast.success(`User role updated to ${role}`)
       loadUsers()

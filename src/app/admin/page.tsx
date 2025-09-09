@@ -11,6 +11,7 @@ import { SuccessToast } from "@/components/admin/success-toast"
 import { ArtistImage } from "@/components/admin/artist-image"
 import { VenueImage } from "@/components/admin/venue-image"
 import { UserManagement } from "@/components/admin/user-management"
+import { ArtistsGrid } from "@/components/admin/artists-grid"
 
 async function signOutAction() {
   "use server"
@@ -188,10 +189,10 @@ export default async function AdminPage() {
                     </TabsContent>
 
                     <TabsContent value="artists" className="space-y-6">
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center pb-6 border-b border-border">
                             <div>
-                                <h2 className="text-2xl font-semibold text-foreground">Artists</h2>
-                                <p className="text-muted-foreground">Manage artist profiles and social links</p>
+                                <h2 className="text-3xl font-bold text-foreground">Artists</h2>
+                                <p className="text-muted-foreground mt-1">Manage artist profiles and social links</p>
                             </div>
                             <Link href="/admin/artists/new">
                                 <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
@@ -201,36 +202,7 @@ export default async function AdminPage() {
                             </Link>
                         </div>
                         
-                        <div className="grid gap-2">
-                            {artists.map((artist, index) => (
-                                <Link key={artist.id} href={`/admin/artists/${artist.slug}`}>
-                                    <div className="group flex items-center gap-4 p-3 rounded-lg hover:bg-[--gold]/5 transition-colors cursor-pointer">
-                                        {/* Artist Image */}
-                                        <div className="w-14 h-14 bg-muted flex-shrink-0 rounded-full overflow-hidden">
-                                            <ArtistImage src={artist.image} alt={artist.name} />
-                                        </div>
-                                        {/* Artist Info */}
-                                        <div className="flex-1 min-w-0">
-                                            <h3 className="font-medium text-foreground group-hover:text-[--gold] transition-colors">
-                                                {artist.name}
-                                            </h3>
-                                            <div className="flex items-center gap-3 mt-1">
-                                                {artist.instagram && (
-                                                    <span className="text-xs text-muted-foreground">@{artist.instagram}</span>
-                                                )}
-                                                {artist.soundcloud && (
-                                                    <span className="text-xs text-muted-foreground">SoundCloud</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                                    </div>
-                                    {index < artists.length - 1 && (
-                                        <div className="border-b border-border/50 ml-[74px]" />
-                                    )}
-                                </Link>
-                            ))}
-                        </div>
+                        <ArtistsGrid artists={artists} />
                     </TabsContent>
 
                     <TabsContent value="venues" className="space-y-6">

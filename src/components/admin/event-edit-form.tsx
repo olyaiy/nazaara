@@ -243,7 +243,7 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
                 id="isPublished" 
                 name="isPublished" 
                 defaultChecked={event.isPublished}
-                className="data-[state=checked]:bg-[--gold] data-[state=checked]:border-[--gold]"
+                className="data-[state=checked]:bg-[--gold] data-[state=checked]:border-[--gold] border-border"
               />
               <div>
                 <Label htmlFor="isPublished" className="text-base cursor-pointer">Publish Event</Label>
