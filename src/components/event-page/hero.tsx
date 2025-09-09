@@ -14,25 +14,17 @@ export default function EventHero({ event }: EventHeroProps) {
     ) ?? [];
 
   // Format time display
-  const formatEventTime = () => {
-    const startDate = new Date(event.startTime);
-    const endDate = new Date(event.endTime);
-    
-    // Format time as HH:MM AM/PM
-    const formatTime = (date: Date) => {
-      const hours = date.getHours();
-      const minutes = date.getMinutes();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      const displayHours = hours % 12 || 12;
-      const displayMinutes = minutes.toString().padStart(2, '0');
-      return `${displayHours}:${displayMinutes} ${ampm}`;
-    };
-    
-    const startTimeStr = formatTime(startDate);
-    const endTimeStr = formatTime(endDate);
-    
-    return `${event.date}, ${startTimeStr} - ${endTimeStr}`;
+  const formatTime = (date: Date) => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    const displayMinutes = minutes.toString().padStart(2, '0');
+    return minutes === 0 ? `${displayHours}${ampm}` : `${displayHours}:${displayMinutes}${ampm}`;
   };
+  
+  const startTimeStr = formatTime(new Date(event.startTime));
+  const endTimeStr = formatTime(new Date(event.endTime));
 
   return (
     <section className="relative overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
@@ -92,14 +84,16 @@ export default function EventHero({ event }: EventHeroProps) {
                 {/* Main Poster with enhanced presentation */}
                 <div className="relative w-full">
                   <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
-                    <Image 
-                      src={event.image}
-                      alt={event.title}
-                      fill
-                      className="object-cover"
-                      priority
-                      sizes="(max-width: 640px) 320px, 380px"
-                    />
+                    {event.image && (
+                      <Image 
+                        src={event.image}
+                        alt={event.title}
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="(max-width: 640px) 320px, 380px"
+                      />
+                    )}
                     {/* Premium vignette effects */}
                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
                     <div className="absolute inset-0 bg-gradient-to-b from-[var(--dark-green)]/20 via-transparent to-transparent" />
@@ -186,7 +180,10 @@ export default function EventHero({ event }: EventHeroProps) {
                   </div>
                   <div className="text-center">
                     <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40 mb-1">Date & Time</p>
-                    <p className="text-base font-prettywise text-[var(--white)]">{event.dates || event.date}</p>
+                    <div className="space-y-0.5">
+                      <p className="text-base font-prettywise text-[var(--white)]">{event.date}</p>
+                      <p className="text-sm font-neue-haas text-[var(--white)]/80">{startTimeStr} - {endTimeStr}</p>
+                    </div>
                   </div>
                   </div>
                 
@@ -325,7 +322,10 @@ export default function EventHero({ event }: EventHeroProps) {
                     </div>
                     <div>
                       <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-1.5">Date & Time</p>
-                      <p className="text-lg font-prettywise text-[var(--white)]">{event.dates || event.date}</p>
+                      <div className="space-y-0.5">
+                        <p className="text-lg font-prettywise text-[var(--white)]">{event.date}</p>
+                        <p className="text-sm font-neue-haas text-[var(--white)]/80">{startTimeStr} - {endTimeStr}</p>
+                      </div>
                     </div>
                   </div>
                   
@@ -382,14 +382,16 @@ export default function EventHero({ event }: EventHeroProps) {
                 {/* Main Poster with enhanced presentation */}
                 <div className="relative w-full">
                   <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
-                    <Image 
-                      src={event.image}
-                      alt={event.title}
-                      fill
-                      className="object-cover"
-                      priority
-                      sizes="500px"
-                    />
+                    {event.image && (
+                      <Image 
+                        src={event.image}
+                        alt={event.title}
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="500px"
+                      />
+                    )}
                     {/* Premium vignette effects */}
                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
                     <div className="absolute inset-0 bg-gradient-to-b from-[var(--dark-green)]/20 via-transparent to-transparent" />
