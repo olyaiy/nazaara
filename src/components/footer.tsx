@@ -70,15 +70,8 @@ export function Footer() {
                     >
                       Home
                     </Link>
-                    {/* TEMPORARILY HIDDEN - Will be brought back later
-                    <Link 
-                      href="/events" 
-                      className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
-                    >
-                      Events
-                    </Link>
-                    */}
-                    {/* TEMPORARILY HIDDEN - Will be brought back later
+                   
+                    
                     <Link 
                       href="/about" 
                       className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
@@ -91,7 +84,7 @@ export function Footer() {
                     >
                       Private Bookings
                     </Link>
-                    */}
+                   
                     <Link 
                       href="/gallery" 
                       className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"

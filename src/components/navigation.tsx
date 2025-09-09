@@ -57,7 +57,6 @@ export function Navigation() {
 
           {/* Center Navigation (Desktop) */}
           <div className="hidden lg:flex items-center gap-12 absolute left-1/2 -translate-x-1/2">
-            {/* TEMPORARILY HIDDEN - Will be brought back later
             <Link
               href="/about"
               aria-current={isCurrent("/about") ? "page" : undefined}
@@ -98,40 +97,11 @@ export function Navigation() {
                 )}
               />
             </Link>
-            */}
-            {/* Gallery link moved to right side temporarily
-            <a
-              href="https://tamasha.myportfolio.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm uppercase tracking-[0.2em] text-foreground/80 hover:text-primary font-light transition-colors flex items-center gap-1 group"
-            >
-              Gallery
-              <ArrowUpRight className="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" />
-            </a>
-            */}
+           
           </div>
 
           {/* Right Side CTA (Desktop) */}
           <div className="hidden md:flex items-center gap-6">
-            {/* TEMPORARILY REPLACED WITH GALLERY - Easy to swap back
-            <Link
-              href="/contact"
-              aria-current={isCurrent("/contact") ? "page" : undefined}
-              className={cn("relative group")}
-            >
-              <span className="text-sm uppercase tracking-[0.2em] text-primary font-light transition-colors group-hover:opacity-90">
-                Contact
-              </span>
-              <span
-                className={cn(
-                  "absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
-                  isCurrent("/contact") ? "w-full opacity-80" : "w-0 group-hover:w-full"
-                )}
-              />
-            </Link>
-            */}
-            {/* GALLERY BUTTON - Temporary placement */}
             <a
               href="https://tamasha.myportfolio.com/"
               target="_blank"
@@ -175,7 +145,6 @@ export function Navigation() {
       >
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col gap-2 py-2">
-            {/* TEMPORARILY HIDDEN - Will be brought back later
             <Link
               href="/about"
               onClick={() => setOpen(false)}
@@ -202,22 +171,7 @@ export function Navigation() {
             >
               Bookings
             </Link>
-            */}
-            {/* TEMPORARILY HIDDEN - Gallery is sufficient for now
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
-              className={cn(
-                "block rounded-md px-3 py-3 text-base uppercase tracking-[0.18em] transition-colors",
-                isCurrent("/contact")
-                  ? "text-primary bg-primary/10"
-                  : "text-foreground/90 hover:bg-muted/30 hover:text-primary"
-              )}
-              aria-current={isCurrent("/contact") ? "page" : undefined}
-            >
-              Contact
-            </Link>
-            */}
+            
             <a
               href="https://tamasha.myportfolio.com/"
               target="_blank"
