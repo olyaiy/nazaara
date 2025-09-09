@@ -4,12 +4,13 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, Users, MapPin, Settings, Plus, ExternalLink } from "lucide-react"
+import { Calendar, Users, MapPin, Settings, Plus, ExternalLink, UserCheck, Shield } from "lucide-react"
 import { getAdminEvents, getAdminArtists, getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
 import { SuccessToast } from "@/components/admin/success-toast"
 import { ArtistImage } from "@/components/admin/artist-image"
 import { VenueImage } from "@/components/admin/venue-image"
+import { UserManagement } from "@/components/admin/user-management"
 
 async function signOutAction() {
   "use server"
@@ -29,6 +30,9 @@ export default async function AdminPage() {
     if(!session) {
         redirect("/admin/auth")
     }
+
+    // Check if user has admin role
+    const isAdmin = session.user.role === "admin"
 
     // Fetch all admin data in parallel for optimal performance
     const [events, artists, venues] = await Promise.all([
@@ -281,25 +285,58 @@ export default async function AdminPage() {
                     <TabsContent value="settings" className="space-y-6">
                         <div>
                             <h2 className="text-2xl font-semibold text-foreground">Settings</h2>
-                            <p className="text-muted-foreground">Account information</p>
+                            <p className="text-muted-foreground">Account information and system management</p>
                         </div>
                         
-                        <Card className="max-w-2xl">
-                            <CardHeader>
-                                <CardTitle className="text-lg">Current User</CardTitle>
-                                <CardDescription>Your account information</CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <div className="space-y-2">
-                                    <div className="text-sm font-medium text-muted-foreground">Name</div>
-                                    <div className="text-base text-foreground">{session.user.name || "Not set"}</div>
-                                </div>
-                                <div className="space-y-2">
-                                    <div className="text-sm font-medium text-muted-foreground">Email</div>
-                                    <div className="text-base text-foreground">{session.user.email}</div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <div className="grid gap-6 max-w-4xl">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="text-lg flex items-center gap-2">
+                                        <UserCheck className="h-5 w-5" />
+                                        Current User
+                                    </CardTitle>
+                                    <CardDescription>Your account information</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <div className="text-sm font-medium text-muted-foreground">Name</div>
+                                            <div className="text-base text-foreground">{session.user.name || "Not set"}</div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <div className="text-sm font-medium text-muted-foreground">Email</div>
+                                            <div className="text-base text-foreground">{session.user.email}</div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <div className="text-sm font-medium text-muted-foreground">Role</div>
+                                            <div className="text-base text-foreground flex items-center gap-2">
+                                                {session.user.role === "admin" && <Shield className="h-4 w-4 text-[--gold]" />}
+                                                {session.user.role || "user"}
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <div className="text-sm font-medium text-muted-foreground">User ID</div>
+                                            <div className="text-sm font-mono text-muted-foreground">{session.user.id}</div>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            {isAdmin && (
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="text-lg flex items-center gap-2">
+                                            <Shield className="h-5 w-5" />
+                                            User Management
+                                        </CardTitle>
+                                        <CardDescription>Manage users, roles, and permissions</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <UserManagement />
+                                    </CardContent>
+                                </Card>
+                            )}
+                        </div>
                     </TabsContent>
                 </Tabs>
                 

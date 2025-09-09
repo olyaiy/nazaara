@@ -4,8 +4,22 @@ const COOKIE_NAME = "nza_city";
 const MAX_AGE = 60 * 60 * 24 * 3; // 3 days
 
 export function middleware(req: NextRequest) {
-  // Temporary redirects for About and Bookings pages
   const pathname = req.nextUrl.pathname;
+
+  // Admin route protection
+  if (pathname.startsWith("/admin") && pathname !== "/admin/auth") {
+    const sessionToken = req.cookies.get("better-auth.session_token")?.value;
+    
+    if (!sessionToken) {
+      console.log("[middleware] No session token, redirecting to admin auth");
+      return NextResponse.redirect(new URL("/admin/auth", req.url));
+    }
+    
+    // Note: Full role verification is done server-side in the admin pages
+    // This is just a basic check for session existence
+  }
+  
+  // Temporary redirects for About and Bookings pages
   if (pathname === "/about" || pathname === "/bookings") {
     console.log(`[middleware] Redirecting from ${pathname} to home (temporary)`);
     return NextResponse.redirect(new URL("/", req.url));
@@ -45,6 +59,6 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   runtime: "edge",
-  // Run on home, events, and the temporarily redirected pages
-  matcher: ["/", "/events", "/about", "/bookings"],
+  // Run on home, events, admin routes, and the temporarily redirected pages
+  matcher: ["/", "/events", "/about", "/bookings", "/admin/:path*"],
 };
