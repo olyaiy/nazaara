@@ -60,7 +60,7 @@ export function EventDatePicker({ startTime, endTime }: EventDatePickerProps) {
             type="time"
             value={startHour}
             onChange={(e) => setStartHour(e.target.value)}
-            className="w-full"
+            className="w-full bg-input border-border text-foreground [&::-webkit-calendar-picker-indicator]:filter-none [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:brightness-0 [&::-webkit-calendar-picker-indicator]:opacity-70 hover:[&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer focus:ring-2 focus:ring-ring/50 focus:border-ring"
           />
           <input 
             type="hidden" 
@@ -97,7 +97,7 @@ export function EventDatePicker({ startTime, endTime }: EventDatePickerProps) {
             type="time"
             value={endHour}
             onChange={(e) => setEndHour(e.target.value)}
-            className="w-full"
+            className="w-full bg-input border-border text-foreground [&::-webkit-calendar-picker-indicator]:filter-none [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:brightness-0 [&::-webkit-calendar-picker-indicator]:opacity-70 hover:[&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer focus:ring-2 focus:ring-ring/50 focus:border-ring"
           />
           <input 
             type="hidden" 
