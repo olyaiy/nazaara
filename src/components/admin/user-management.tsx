@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { authClient } from "@/lib/auth-client"
-import { Users, Plus, Ban, UserX, Eye, RefreshCw, Shield, Search, Filter, ChevronLeft, ChevronRight } from "lucide-react"
+import { Users, Plus, UserX, RefreshCw, Shield, Search, Filter, ChevronLeft, ChevronRight, Key, UserCog } from "lucide-react"
 import { toast } from "sonner"
 
 interface User {
@@ -19,34 +19,22 @@ interface User {
   name: string
   email: string
   role: string
-  banned: boolean
-  banReason?: string
-  banExpires?: string
   createdAt: string
-  emailVerified: boolean
-}
-
-interface UserSession {
-  id: string
-  token: string
-  createdAt: string
-  ipAddress?: string
-  userAgent?: string
-  impersonatedBy?: string
 }
 
 export function UserManagement() {
   const [users, setUsers] = useState<User[]>([])
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
-  const [userSessions, setUserSessions] = useState<UserSession[]>([])
   const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [roleFilter, setRoleFilter] = useState<string>("all")
-  const [statusFilter, setStatusFilter] = useState<string>("all")
   const [currentPage, setCurrentPage] = useState(0)
   const [totalUsers, setTotalUsers] = useState(0)
   const [isCreateUserOpen, setIsCreateUserOpen] = useState(false)
   const [isUserDetailsOpen, setIsUserDetailsOpen] = useState(false)
+  const [isPasswordResetOpen, setIsPasswordResetOpen] = useState(false)
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   
   // Form states
   const [createForm, setCreateForm] = useState({
@@ -117,7 +105,7 @@ export function UserManagement() {
         userId,
         role
       })
-      toast.success("User role updated successfully")
+      toast.success(`User role updated to ${role}`)
       loadUsers()
       if (selectedUser?.id === userId) {
         setSelectedUser({ ...selectedUser, role })
@@ -128,76 +116,35 @@ export function UserManagement() {
     }
   }
 
-  async function banUser(userId: string, reason: string) {
+  async function resetUserPassword() {
+    if (!selectedUser) return
+    
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match")
+      return
+    }
+    
+    if (newPassword.length < 8) {
+      toast.error("Password must be at least 8 characters long")
+      return
+    }
+    
     try {
-      await authClient.admin.banUser({
-        userId,
-        banReason: reason
+      await authClient.admin.setUserPassword({
+        userId: selectedUser.id,
+        newPassword
       })
-      toast.success("User banned successfully")
-      loadUsers()
+      toast.success("Password reset successfully")
+      setIsPasswordResetOpen(false)
+      setNewPassword("")
+      setConfirmPassword("")
     } catch (error) {
-      toast.error("Failed to ban user")
+      toast.error("Failed to reset password")
       console.error(error)
     }
   }
 
-  async function unbanUser(userId: string) {
-    try {
-      await authClient.admin.unbanUser({
-        userId
-      })
-      toast.success("User unbanned successfully")
-      loadUsers()
-    } catch (error) {
-      toast.error("Failed to unban user")
-      console.error(error)
-    }
-  }
 
-  async function impersonateUser(userId: string) {
-    try {
-      await authClient.admin.impersonateUser({
-        userId
-      })
-      toast.success("Now impersonating user")
-      // Refresh the page to update session
-      window.location.reload()
-    } catch (error) {
-      toast.error("Failed to impersonate user")
-      console.error(error)
-    }
-  }
-
-  async function loadUserSessions(userId: string) {
-    try {
-      const response = await authClient.admin.listUserSessions({
-        userId
-      })
-      
-      if (response.data) {
-        setUserSessions(response.data)
-      }
-    } catch (error) {
-      toast.error("Failed to load user sessions")
-      console.error(error)
-    }
-  }
-
-  async function revokeUserSession(sessionToken: string) {
-    try {
-      await authClient.admin.revokeUserSession({
-        sessionToken
-      })
-      toast.success("Session revoked successfully")
-      if (selectedUser) {
-        loadUserSessions(selectedUser.id)
-      }
-    } catch (error) {
-      toast.error("Failed to revoke session")
-      console.error(error)
-    }
-  }
 
   async function deleteUser(userId: string) {
     try {
@@ -217,20 +164,15 @@ export function UserManagement() {
   function openUserDetails(user: User) {
     setSelectedUser(user)
     setIsUserDetailsOpen(true)
-    loadUserSessions(user.id)
   }
 
   useEffect(() => {
     loadUsers()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, searchTerm, roleFilter, statusFilter])
+  }, [currentPage, searchTerm, roleFilter])
 
   const totalPages = Math.ceil(totalUsers / pageSize)
-  const filteredUsers = users.filter(user => {
-    if (statusFilter === "banned" && !user.banned) return false
-    if (statusFilter === "active" && user.banned) return false
-    return true
-  })
+  const filteredUsers = users
 
   return (
     <div className="space-y-6">
@@ -258,17 +200,6 @@ export function UserManagement() {
               <SelectItem value="user">User</SelectItem>
             </SelectContent>
           </Select>
-
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="banned">Banned</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
 
         <Dialog open={isCreateUserOpen} onOpenChange={setIsCreateUserOpen}>
@@ -283,8 +214,8 @@ export function UserManagement() {
               <DialogTitle>Create New User</DialogTitle>
               <DialogDescription>Add a new user to the system</DialogDescription>
             </DialogHeader>
-            <div className="space-y-4">
-              <div>
+            <div className="space-y-4  ">
+              <div className="space-y-4">
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
@@ -293,7 +224,7 @@ export function UserManagement() {
                   placeholder="Enter user's name"
                 />
               </div>
-              <div>
+              <div className="space-y-4">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
@@ -303,7 +234,7 @@ export function UserManagement() {
                   placeholder="Enter user's email"
                 />
               </div>
-              <div>
+              <div className="space-y-4">
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
@@ -313,7 +244,7 @@ export function UserManagement() {
                   placeholder="Enter password"
                 />
               </div>
-              <div>
+              <div className="space-y-4">
                 <Label htmlFor="role">Role</Label>
                 <Select value={createForm.role} onValueChange={(role) => setCreateForm({ ...createForm, role })}>
                   <SelectTrigger>
@@ -345,14 +276,31 @@ export function UserManagement() {
         ) : (
           <>
             {filteredUsers.map((user) => (
-              <Card key={user.id} className="hover:bg-accent/5 transition-colors cursor-pointer" onClick={() => openUserDetails(user)}>
+              <Card 
+                key={user.id} 
+                className={`hover:bg-accent/5 transition-colors cursor-pointer ${
+                  user.role === "admin" ? "border-[--gold]/30" : ""
+                }`} 
+                onClick={() => openUserDetails(user)}
+              >
                 <CardContent className="flex items-center justify-between p-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
-                      <Users className="h-5 w-5" />
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      user.role === "admin" ? "bg-[--gold]/20" : "bg-muted"
+                    }`}>
+                      {user.role === "admin" ? (
+                        <Shield className="h-5 w-5 text-[--gold]" />
+                      ) : (
+                        <Users className="h-5 w-5" />
+                      )}
                     </div>
                     <div>
-                      <div className="font-medium">{user.name}</div>
+                      <div className="font-medium flex items-center gap-2">
+                        {user.name}
+                        {user.role === "admin" && (
+                          <Shield className="h-3 w-3 text-[--gold]" />
+                        )}
+                      </div>
                       <div className="text-sm text-muted-foreground">{user.email}</div>
                     </div>
                   </div>
@@ -361,15 +309,6 @@ export function UserManagement() {
                       {user.role === "admin" && <Shield className="h-3 w-3 mr-1" />}
                       {user.role}
                     </Badge>
-                    {user.banned && (
-                      <Badge variant="destructive">
-                        <Ban className="h-3 w-3 mr-1" />
-                        Banned
-                      </Badge>
-                    )}
-                    {!user.emailVerified && (
-                      <Badge variant="outline">Unverified</Badge>
-                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -413,21 +352,20 @@ export function UserManagement() {
                   <Users className="h-5 w-5" />
                   {selectedUser.name}
                 </DialogTitle>
-                <DialogDescription>Manage user account and sessions</DialogDescription>
+                <DialogDescription>Manage user account</DialogDescription>
               </DialogHeader>
 
               <Tabs defaultValue="details" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="details">Details</TabsTrigger>
                   <TabsTrigger value="actions">Actions</TabsTrigger>
-                  <TabsTrigger value="sessions">Sessions</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="details" className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label>User ID</Label>
-                      <div className="font-mono text-sm text-muted-foreground">{selectedUser.id}</div>
+                      <Label>Name</Label>
+                      <div className="font-medium">{selectedUser.name}</div>
                     </div>
                     <div>
                       <Label>Email</Label>
@@ -436,169 +374,179 @@ export function UserManagement() {
                     <div>
                       <Label>Role</Label>
                       <div className="flex items-center gap-2">
-                        <Select
-                          value={selectedUser.role}
-                          onValueChange={(role) => setUserRole(selectedUser.id, role)}
-                        >
-                          <SelectTrigger className="w-32">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="user">User</SelectItem>
-                            <SelectItem value="admin">Admin</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Badge variant={selectedUser.role === "admin" ? "default" : "secondary"}>
+                          {selectedUser.role === "admin" && <Shield className="h-3 w-3 mr-1" />}
+                          {selectedUser.role}
+                        </Badge>
                       </div>
                     </div>
                     <div>
-                      <Label>Status</Label>
-                      <div>
-                        {selectedUser.banned ? (
-                          <Badge variant="destructive">
-                            <Ban className="h-3 w-3 mr-1" />
-                            Banned
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary">Active</Badge>
-                        )}
-                      </div>
-                    </div>
-                    <div>
-                      <Label>Created</Label>
+                      <Label>Member Since</Label>
                       <div className="text-sm text-muted-foreground">
-                        {new Date(selectedUser.createdAt).toLocaleString()}
-                      </div>
-                    </div>
-                    <div>
-                      <Label>Email Verified</Label>
-                      <div>
-                        {selectedUser.emailVerified ? (
-                          <Badge variant="secondary">Verified</Badge>
-                        ) : (
-                          <Badge variant="outline">Unverified</Badge>
-                        )}
+                        {new Date(selectedUser.createdAt).toLocaleDateString()}
                       </div>
                     </div>
                   </div>
-                  {selectedUser.banReason && (
-                    <div>
-                      <Label>Ban Reason</Label>
-                      <div className="text-sm text-muted-foreground">{selectedUser.banReason}</div>
-                    </div>
-                  )}
                 </TabsContent>
 
                 <TabsContent value="actions" className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    {selectedUser.banned ? (
-                      <Button
-                        onClick={() => unbanUser(selectedUser.id)}
-                        variant="outline"
-                        className="w-full"
-                      >
-                        <UserX className="h-4 w-4 mr-2" />
-                        Unban User
-                      </Button>
-                    ) : (
+                  <div className="space-y-4">
+                    {/* Role Management Section */}
+                    <div className="p-4 border rounded-lg space-y-3">
+                      <h4 className="font-medium flex items-center gap-2">
+                        <UserCog className="h-4 w-4" />
+                        Role Management
+                      </h4>
+                      <div className="flex items-center gap-3">
+                        <Label className="text-sm text-muted-foreground">Current Role:</Label>
+                        <Badge variant={selectedUser.role === "admin" ? "default" : "secondary"}>
+                          {selectedUser.role === "admin" && <Shield className="h-3 w-3 mr-1" />}
+                          {selectedUser.role}
+                        </Badge>
+                      </div>
+                      <div className="flex gap-2">
+                        {selectedUser.role === "admin" ? (
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="outline" className="flex-1">
+                                <UserCog className="h-4 w-4 mr-2" />
+                                Demote to User
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Remove Admin Privileges</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to remove admin privileges from {selectedUser.name}? They will lose access to the admin panel.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => setUserRole(selectedUser.id, "user")}>
+                                  Remove Admin
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        ) : (
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="outline" className="flex-1">
+                                <Shield className="h-4 w-4 mr-2" />
+                                Promote to Admin
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Grant Admin Privileges</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to grant admin privileges to {selectedUser.name}? They will have full access to the admin panel and user management.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => setUserRole(selectedUser.id, "admin")}>
+                                  Grant Admin
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Account Actions Section */}
+                    <div className="p-4 border rounded-lg space-y-3">
+                      <h4 className="font-medium">Account Actions</h4>
+                      {/* Password Reset */}
+                      <Dialog open={isPasswordResetOpen} onOpenChange={setIsPasswordResetOpen}>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" className="w-full">
+                            <Key className="h-4 w-4 mr-2" />
+                            Reset Password
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Reset Password</DialogTitle>
+                            <DialogDescription>
+                              Set a new password for {selectedUser.name}
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div className="space-y-4">
+                              <Label htmlFor="new-password">New Password</Label>
+                              <Input
+                                id="new-password"
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                placeholder="Enter new password"
+                                minLength={8}
+                              />
+                            </div>
+                            <div className="space-y-4"> 
+                              <Label htmlFor="confirm-password">Confirm Password</Label>
+                              <Input
+                                id="confirm-password"
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="Confirm new password"
+                                minLength={8}
+                              />
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              Password must be at least 8 characters long
+                            </p>
+                          </div>
+                          <div className="flex justify-end gap-2 mt-4">
+                            <Button variant="outline" onClick={() => {
+                              setIsPasswordResetOpen(false)
+                              setNewPassword("")
+                              setConfirmPassword("")
+                            }}>
+                              Cancel
+                            </Button>
+                            <Button onClick={resetUserPassword}>
+                              Reset Password
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+
+                    {/* Danger Zone */}
+                    <div className="p-4 border border-destructive/20 rounded-lg space-y-3">
+                      <h4 className="font-medium text-destructive">Danger Zone</h4>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="destructive" className="w-full">
-                            <Ban className="h-4 w-4 mr-2" />
-                            Ban User
+                            <UserX className="h-4 w-4 mr-2" />
+                            Delete User
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Ban User</AlertDialogTitle>
+                            <AlertDialogTitle>Delete User</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Are you sure you want to ban {selectedUser.name}? This will prevent them from signing in.
+                              Are you sure you want to permanently delete {selectedUser.name}? This action cannot be undone.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction
-                              onClick={() => banUser(selectedUser.id, "Banned by administrator")}
+                              onClick={() => deleteUser(selectedUser.id)}
                             >
-                              Ban User
+                              Delete User
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
-                    )}
-
-                    <Button
-                      onClick={() => impersonateUser(selectedUser.id)}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      <Eye className="h-4 w-4 mr-2" />
-                      Impersonate
-                    </Button>
-
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="destructive" className="w-full">
-                          <UserX className="h-4 w-4 mr-2" />
-                          Delete User
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete User</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to permanently delete {selectedUser.name}? This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => deleteUser(selectedUser.id)}
-                          >
-                            Delete User
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    </div>
                   </div>
                 </TabsContent>
 
-                <TabsContent value="sessions" className="space-y-4">
-                  <div className="space-y-2">
-                    {userSessions.map((session) => (
-                      <Card key={session.id}>
-                        <CardContent className="flex items-center justify-between p-4">
-                          <div>
-                            <div className="font-mono text-sm">{session.token.slice(0, 20)}...</div>
-                            <div className="text-sm text-muted-foreground">
-                              Created: {new Date(session.createdAt).toLocaleString()}
-                            </div>
-                            {session.ipAddress && (
-                              <div className="text-sm text-muted-foreground">IP: {session.ipAddress}</div>
-                            )}
-                            {session.impersonatedBy && (
-                              <Badge variant="outline" className="mt-1">
-                                <Eye className="h-3 w-3 mr-1" />
-                                Impersonated
-                              </Badge>
-                            )}
-                          </div>
-                          <Button
-                            onClick={() => revokeUserSession(session.token)}
-                            variant="destructive"
-                            size="sm"
-                          >
-                            Revoke
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
-                    {userSessions.length === 0 && (
-                      <div className="text-center text-muted-foreground py-4">
-                        No active sessions
-                      </div>
-                    )}
-                  </div>
-                </TabsContent>
               </Tabs>
             </>
           )}
