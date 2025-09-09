@@ -4,14 +4,14 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, Users, MapPin, Settings, Plus, ExternalLink, UserCheck, Shield } from "lucide-react"
+import { Calendar, Users, MapPin, Settings, Plus, UserCheck, Shield } from "lucide-react"
 import { getAdminEvents, getAdminArtists, getAdminVenues } from "@/lib/admin-actions"
 import Link from "next/link"
 import { SuccessToast } from "@/components/admin/success-toast"
-import { ArtistImage } from "@/components/admin/artist-image"
-import { VenueImage } from "@/components/admin/venue-image"
 import { UserManagement } from "@/components/admin/user-management"
 import { ArtistsGrid } from "@/components/admin/artists-grid"
+import { VenuesGrid } from "@/components/admin/venues-grid"
+import { EventsGrid } from "@/components/admin/events-grid"
 
 async function signOutAction() {
   "use server"
@@ -86,7 +86,7 @@ export default async function AdminPage() {
                         </TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="events" className="space-y-8">
+                    <TabsContent value="events" className="space-y-6">
                         <div className="flex justify-between items-center pb-6 border-b border-border">
                             <div>
                                 <h2 className="text-3xl font-bold text-foreground">Events</h2>
@@ -100,92 +100,7 @@ export default async function AdminPage() {
                             </Link>
                         </div>
                         
-                        {/* Grid Layout - Similar to upcoming-events */}
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {events.map((event) => {
-                                const startDate = new Date(event.startTime);
-                                const day = startDate.getDate();
-                                const month = startDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
-                                
-                                return (
-                                    <Link key={event.id} href={`/admin/events/${event.slug}`}>
-                                        <div className="group cursor-pointer relative">
-                                            <div className="relative">
-                                                {/* Event Poster */}
-                                                <div className="relative aspect-[3/4] bg-muted overflow-hidden rounded-lg">
-                                                    {event.image && event.image.startsWith('http') ? (
-                                                        <img
-                                                            src={event.image}
-                                                            alt={event.title}
-                                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                                        />
-                                                    ) : (
-                                                        <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground bg-muted">
-                                                            <Calendar className="h-12 w-12 mb-2" />
-                                                            <span className="text-sm">No Image</span>
-                                                        </div>
-                                                    )}
-                                                    
-                                                    {/* Gradient overlay */}
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                                                    
-                                                    {/* Date Badge */}
-                                                    <div className="absolute -top-2 -right-2 w-14 h-14 bg-[--gold] flex flex-col items-center justify-center rounded">
-                                                        <p className="text-lg font-bold text-[--maroon-red]">
-                                                            {day}
-                                                        </p>
-                                                        <p className="text-[8px] uppercase tracking-wider text-[--maroon-red]">
-                                                            {month}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    {/* Status Badge */}
-                                                    {!event.isPublished && (
-                                                        <div className="absolute top-3 left-3 px-2 py-1 bg-yellow-500/90 text-black text-xs font-medium rounded">
-                                                            DRAFT
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                
-                                                {/* Event Info */}
-                                                <div className="pt-4">
-                                                    <h3 className="font-semibold text-lg text-foreground group-hover:text-[--gold] transition-colors duration-300">
-                                                        {event.title}
-                                                    </h3>
-                                                    {event.tagline && (
-                                                        <p className="text-sm text-muted-foreground mt-1">
-                                                            {event.tagline}
-                                                        </p>
-                                                    )}
-                                                    
-                                                    <div className="mt-3 space-y-1">
-                                                        <p className="text-sm text-foreground">
-                                                            {event.venueName}
-                                                        </p>
-                                                        <p className="text-xs text-muted-foreground">
-                                                            {event.artists.join(", ") || "No artists assigned"}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div className="mt-4 flex items-center justify-between">
-                                                        <span className="text-xs text-muted-foreground">
-                                                            {new Date(event.startTime).toLocaleDateString('en-US', { 
-                                                                weekday: 'short',
-                                                                month: 'short', 
-                                                                day: 'numeric',
-                                                                hour: 'numeric',
-                                                                minute: '2-digit'
-                                                            })}
-                                                        </span>
-                                                        <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-[--gold]" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                )
-                            })}
-                        </div>
+                        <EventsGrid events={events} />
                     </TabsContent>
 
                     <TabsContent value="artists" className="space-y-6">
@@ -206,10 +121,10 @@ export default async function AdminPage() {
                     </TabsContent>
 
                     <TabsContent value="venues" className="space-y-6">
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center pb-6 border-b border-border">
                             <div>
-                                <h2 className="text-2xl font-semibold text-foreground">Venues</h2>
-                                <p className="text-muted-foreground">Manage venue information and locations</p>
+                                <h2 className="text-3xl font-bold text-foreground">Venues</h2>
+                                <p className="text-muted-foreground mt-1">Manage venue information and locations</p>
                             </div>
                             <Link href="/admin/venues/new">
                                 <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
@@ -219,39 +134,7 @@ export default async function AdminPage() {
                             </Link>
                         </div>
                         
-                        <div className="divide-y divide-border/50">
-                            {venues.map((venue) => (
-                                <Link key={venue.id} href={`/admin/venues/${venue.slug}`}>
-                                    <div className="group py-4 px-2 hover:bg-[--gold]/5 rounded-lg transition-colors cursor-pointer">
-                                        <div className="flex items-start gap-4">
-                                            {/* Venue Image */}
-                                            <div className="w-20 h-20 bg-muted flex-shrink-0 rounded-lg overflow-hidden">
-                                                <VenueImage 
-                                                    src={venue.images?.[0]} 
-                                                    alt={venue.name} 
-                                                />
-                                            </div>
-                                            {/* Venue Info */}
-                                            <div className="flex-1">
-                                                <h3 className="font-medium text-foreground group-hover:text-[--gold] transition-colors">
-                                                    {venue.name}
-                                                </h3>
-                                                <p className="text-sm text-muted-foreground mt-1">
-                                                    {venue.city}, {venue.country}
-                                                    {venue.address && <span className="ml-2">• {venue.address}</span>}
-                                                </p>
-                                                {venue.description && (
-                                                    <p className="text-sm text-muted-foreground mt-2 line-clamp-1">
-                                                        {venue.description}
-                                                    </p>
-                                                )}
-                                            </div>
-                                            <MapPin className="h-4 w-4 text-muted-foreground ml-4 mt-1 opacity-50 group-hover:opacity-100 transition-opacity" />
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
+                        <VenuesGrid venues={venues} />
                     </TabsContent>
 
                     <TabsContent value="settings" className="space-y-6">
