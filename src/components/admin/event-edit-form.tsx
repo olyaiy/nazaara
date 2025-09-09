@@ -304,7 +304,10 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
               Cancel
             </Button>
           </Link>
-          <Button type="submit" className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
+          <Button 
+            type="submit" 
+            className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90 font-semibold px-6 py-2.5 shadow-lg hover:shadow-xl border border-[--gold] hover:border-[--dark-gold] transition-all duration-200"
+          >
             <Save className="h-4 w-4 mr-2" />
             Save Changes
           </Button>

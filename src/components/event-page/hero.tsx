@@ -13,6 +13,27 @@ export default function EventHero({ event }: EventHeroProps) {
       (a) => a.name.toLowerCase() !== event.artist.toLowerCase()
     ) ?? [];
 
+  // Format time display
+  const formatEventTime = () => {
+    const startDate = new Date(event.startTime);
+    const endDate = new Date(event.endTime);
+    
+    // Format time as HH:MM AM/PM
+    const formatTime = (date: Date) => {
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const displayHours = hours % 12 || 12;
+      const displayMinutes = minutes.toString().padStart(2, '0');
+      return `${displayHours}:${displayMinutes} ${ampm}`;
+    };
+    
+    const startTimeStr = formatTime(startDate);
+    const endTimeStr = formatTime(endDate);
+    
+    return `${event.date}, ${startTimeStr} - ${endTimeStr}`;
+  };
+
   return (
     <section className="relative overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
       {/* Gradient darkening towards bottom right */}
@@ -173,19 +194,35 @@ export default function EventHero({ event }: EventHeroProps) {
               
               {/* CTA Section */}
               <div className="flex justify-center">
-                <button className="relative w-full overflow-hidden group">
-                  {/* Creative button design */}
-                  <div className="absolute inset-0" style={{ backgroundColor: 'var(--gold)' }} />
-                  <div className="absolute inset-0 flex items-center justify-between px-6">
-                    <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
-                    <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
-                  </div>
-                  <div className="relative py-5 flex items-center justify-center">
-                    <span className="font-neue-haas text-[11px] uppercase tracking-[0.5em] font-medium" style={{ color: 'var(--maroon-red)' }}>
-                      Reserve Your Spot
-                    </span>
-                  </div>
-                </button>
+                {event.ticketUrl ? (
+                  <a href={event.ticketUrl} target="_blank" rel="noopener noreferrer" className="relative w-full overflow-hidden group block">
+                    {/* Creative button design */}
+                    <div className="absolute inset-0" style={{ backgroundColor: 'var(--gold)' }} />
+                    <div className="absolute inset-0 flex items-center justify-between px-6">
+                      <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
+                      <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
+                    </div>
+                    <div className="relative py-5 flex items-center justify-center">
+                      <span className="font-neue-haas text-[11px] uppercase tracking-[0.5em] font-medium" style={{ color: 'var(--maroon-red)' }}>
+                        Reserve Your Spot
+                      </span>
+                    </div>
+                  </a>
+                ) : (
+                  <button className="relative w-full overflow-hidden group" disabled>
+                    {/* Creative button design */}
+                    <div className="absolute inset-0" style={{ backgroundColor: 'var(--gold)' }} />
+                    <div className="absolute inset-0 flex items-center justify-between px-6">
+                      <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
+                      <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
+                    </div>
+                    <div className="relative py-5 flex items-center justify-center">
+                      <span className="font-neue-haas text-[11px] uppercase tracking-[0.5em] font-medium" style={{ color: 'var(--maroon-red)' }}>
+                        Coming Soon
+                      </span>
+                    </div>
+                  </button>
+                )}
               </div>
               
               {/* Minimal info bar */}
@@ -310,15 +347,27 @@ export default function EventHero({ event }: EventHeroProps) {
                 
                 {/* CTA Section */}
                 <div>
-                  <button className="w-full relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-[var(--gold)]" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 group-hover:opacity-100" />
-                    <div className="relative px-8 py-4">
-                      <p className="text-[11px] font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium">
-                        RSVP
-                      </p>
-                    </div>
-                  </button>
+                  {event.ticketUrl ? (
+                    <a href={event.ticketUrl} target="_blank" rel="noopener noreferrer" className="w-full relative overflow-hidden group block">
+                      <div className="absolute inset-0 bg-[var(--gold)]" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 group-hover:opacity-100" />
+                      <div className="relative px-8 py-4">
+                        <p className="text-[11px] font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium">
+                          RSVP
+                        </p>
+                      </div>
+                    </a>
+                  ) : (
+                    <button className="w-full relative overflow-hidden group" disabled>
+                      <div className="absolute inset-0 bg-[var(--gold)]" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 group-hover:opacity-100" />
+                      <div className="relative px-8 py-4">
+                        <p className="text-[11px] font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium">
+                          COMING SOON
+                        </p>
+                      </div>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
