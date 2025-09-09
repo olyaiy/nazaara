@@ -1,14 +1,21 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 
 export function SuccessToast() {
   const searchParams = useSearchParams()
+  const hasShownToast = useRef(new Set<string>())
   
   useEffect(() => {
     const success = searchParams.get("success")
+    
+    if (!success || hasShownToast.current.has(success)) {
+      return
+    }
+    
+    hasShownToast.current.add(success)
     
     if (success === "event-updated") {
       toast.success("Event saved successfully", {
