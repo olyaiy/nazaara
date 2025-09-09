@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { TimePicker } from "@/components/ui/time-picker"
 
 interface EventDatePickerProps {
   startTime?: Date
@@ -56,11 +57,9 @@ export function EventDatePicker({ startTime, endTime }: EventDatePickerProps) {
               />
             </PopoverContent>
           </Popover>
-          <Input
-            type="time"
+          <TimePicker
             value={startHour}
-            onChange={(e) => setStartHour(e.target.value)}
-            className="w-full bg-input border-border text-foreground [&::-webkit-calendar-picker-indicator]:filter-none [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:brightness-0 [&::-webkit-calendar-picker-indicator]:opacity-70 hover:[&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer focus:ring-2 focus:ring-ring/50 focus:border-ring"
+            onChange={setStartHour}
           />
           <input 
             type="hidden" 
@@ -93,11 +92,9 @@ export function EventDatePicker({ startTime, endTime }: EventDatePickerProps) {
               />
             </PopoverContent>
           </Popover>
-          <Input
-            type="time"
+          <TimePicker
             value={endHour}
-            onChange={(e) => setEndHour(e.target.value)}
-            className="w-full bg-input border-border text-foreground [&::-webkit-calendar-picker-indicator]:filter-none [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:brightness-0 [&::-webkit-calendar-picker-indicator]:opacity-70 hover:[&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer focus:ring-2 focus:ring-ring/50 focus:border-ring"
+            onChange={setEndHour}
           />
           <input 
             type="hidden" 

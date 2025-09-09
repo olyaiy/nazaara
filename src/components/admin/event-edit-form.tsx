@@ -139,7 +139,7 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
                     className={`bg-background ${!isSlugManuallyEdited && !event.slug && title ? "text-muted-foreground" : ""}`}
                   />
                   <p className="text-xs text-muted-foreground">
-                    /events/{slug || "your-event-slug"}
+                    nazaara.live/events/{slug || "your-event-slug"}
                   </p>
                 </div>
               </div>
