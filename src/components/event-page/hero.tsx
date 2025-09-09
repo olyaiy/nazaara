@@ -240,8 +240,8 @@ export default function EventHero({ event }: EventHeroProps) {
           {/* Desktop Layout - Content Left, Image Right */}
           <div className="hidden lg:grid lg:grid-cols-2 md:gap-8 xl:gap-0 items-center w-full">
             {/* Desktop Event Information - Now on Left */}
-            <div className="flex flex-col justify-center">
-              <div className="space-y-8 max-w-xl">
+            <div className="flex flex-col justify-center ">
+              <div className="space-y-8 max-w-xl  mx-auto">
                 {/* Title Block */}
                 <div>
                   {/* Nazaara Live Presents Label */}
@@ -351,8 +351,8 @@ export default function EventHero({ event }: EventHeroProps) {
                     <a href={event.ticketUrl} target="_blank" rel="noopener noreferrer" className="w-full relative overflow-hidden group block">
                       <div className="absolute inset-0 bg-[var(--gold)]" />
                       <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 group-hover:opacity-100" />
-                      <div className="relative px-8 py-4">
-                        <p className="text-[11px] font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium">
+                      <div className="relative px-8 py-4 mx-auto  items-center justify-center flex">
+                        <p className="text-[11px]  font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium">
                           RSVP
                         </p>
                       </div>
