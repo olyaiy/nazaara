@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { cookies } from "next/headers";
 import { getPublicEventForCity, getPublicFeaturedEvent } from "@/lib/public-actions";
 import HeroMobileButton from "./hero-mobile-button";
@@ -60,9 +61,8 @@ export default async function HeroMobile() {
             <div className="absolute inset-0 rotate-1 scale-102" style={{ backgroundColor: 'var(--gold)', opacity: 0.02 }} />
             
             {/* Main poster container */}
-            {/* TEMPORARY: Pass ticketUrl for redirect */}
-            <HeroMobileButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl || ""} asChild>
-              <div className="relative aspect-[3/4] overflow-hidden shadow-2xl">
+            <Link href={`/event/${featuredEvent.slug}`}>
+              <div className="relative aspect-[3/4] overflow-hidden shadow-2xl cursor-pointer">
                 <Image 
                   src={featuredEvent.image || ""}
                   alt={featuredEvent.title}
@@ -99,7 +99,7 @@ export default async function HeroMobile() {
                   </div>
                 </div>
               </div>
-            </HeroMobileButton>
+            </Link>
           </div>
         </div>
         
