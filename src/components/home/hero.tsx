@@ -176,7 +176,7 @@ export default async function Hero() {
                 {/* CTA Section */}
                 <HeroCtaWrapper className="flex items-center gap-6 pt-1">
                   {/* TEMPORARY: Pass ticketUrl for redirect */}
-                  <HeroButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl} />
+                  <HeroButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl || ""} />
                 </HeroCtaWrapper>
               </div>
               
@@ -185,8 +185,8 @@ export default async function Hero() {
                 {/* TEMPORARY: Pass ticketUrl for redirect */}
                 <HeroImage 
                   eventSlug={featuredEvent.slug}
-                  ticketUrl={featuredEvent.ticketUrl}
-                  src={featuredEvent.image}
+                  ticketUrl={featuredEvent.ticketUrl || ""}
+                  src={featuredEvent.image || ""}
                   alt={featuredEvent.title}
                   day={day}
                   month={month}
