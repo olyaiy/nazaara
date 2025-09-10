@@ -1,6 +1,16 @@
 import { createAuthClient } from "better-auth/react"
 import { adminClient } from "better-auth/client/plugins"
 
+interface AuthContext {
+    action: string;
+    data?: unknown;
+    error?: unknown;
+    url?: string;
+    method?: string;
+    headers?: Headers;
+    response?: Response;
+}
+
 console.log("[auth-client] === INITIALIZING AUTH CLIENT ===");
 console.log("[auth-client] Environment:", process.env.NODE_ENV);
 console.log("[auth-client] Window location:", typeof window !== 'undefined' ? window.location.href : 'server-side');
@@ -9,24 +19,24 @@ console.log("[auth-client] Document cookie:", typeof document !== 'undefined' ? 
 export const authClient = createAuthClient({
     plugins: [adminClient()],
     baseURL: typeof window !== 'undefined' ? window.location.origin : process.env.BETTER_AUTH_URL,
-    onSuccess: (ctx) => {
+    onSuccess: (ctx: AuthContext) => {
         console.log("[auth-client] ✅ Auth success:", ctx.action, ctx.data);
     },
-    onError: (ctx) => {
+    onError: (ctx: AuthContext) => {
         console.log("[auth-client] ❌ Auth error:", ctx.action, ctx.error);
     },
-    onRequest: (ctx) => {
+    onRequest: (ctx: AuthContext) => {
         console.log("[auth-client] 🔄 Auth request:", ctx.action, {
             url: ctx.url,
             method: ctx.method,
-            headers: Object.fromEntries(ctx.headers.entries()),
+            headers: ctx.headers ? Object.fromEntries(ctx.headers.entries()) : undefined,
         });
     },
-    onResponse: (ctx) => {
+    onResponse: (ctx: AuthContext) => {
         console.log("[auth-client] 📥 Auth response:", ctx.action, {
-            status: ctx.response.status,
-            statusText: ctx.response.statusText,
-            url: ctx.response.url,
+            status: ctx.response?.status,
+            statusText: ctx.response?.statusText,
+            url: ctx.response?.url,
         });
     }
 })
@@ -36,8 +46,19 @@ const originalSignIn = authClient.signIn;
 const originalSignUp = authClient.signUp;
 const originalSignOut = authClient.signOut;
 
+interface SignInData {
+    email: string;
+    password: string;
+}
+
+interface SignUpData {
+    email: string;
+    password: string;
+    name: string;
+}
+
 export const signIn = {
-    email: async (data: any, options?: any) => {
+    email: async (data: SignInData, options?: Record<string, unknown>) => {
         console.log("[auth-client] === SIGN IN EMAIL ===");
         console.log("[auth-client] Email:", data.email);
         console.log("[auth-client] Options:", options);
@@ -53,7 +74,7 @@ export const signIn = {
 };
 
 export const signUp = {
-    email: async (data: any, options?: any) => {
+    email: async (data: SignUpData, options?: Record<string, unknown>) => {
         console.log("[auth-client] === SIGN UP EMAIL ===");
         console.log("[auth-client] Email:", data.email);
         console.log("[auth-client] Options:", options);
@@ -68,7 +89,7 @@ export const signUp = {
     }
 };
 
-export const signOut = async (options?: any) => {
+export const signOut = async (options?: Record<string, unknown>) => {
     console.log("[auth-client] === SIGN OUT ===");
     console.log("[auth-client] Options:", options);
     try {
