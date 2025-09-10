@@ -19,7 +19,7 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true,  
-    },
+    }, 
     baseURL: process.env.BETTER_AUTH_URL, // This will be dynamically overridden by the request
     trustedOrigins: [
         "http://localhost:3000",     // Development

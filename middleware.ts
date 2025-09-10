@@ -37,14 +37,18 @@ export function middleware(req: RequestWithGeo) {
     console.log(`[middleware] === ADMIN ROUTE PROTECTION ===`);
     console.log(`[middleware] Checking admin route: ${pathname}`);
     
-    const sessionToken = req.cookies.get("better-auth.session_token")?.value;
-    const sessionCookie = req.cookies.get("better-auth.session")?.value;
+    // Check for both secure and non-secure cookie names
+    const sessionToken = req.cookies.get("better-auth.session_token")?.value || 
+                         req.cookies.get("__Secure-better-auth.session_token")?.value;
+    const sessionCookie = req.cookies.get("better-auth.session")?.value ||
+                         req.cookies.get("__Secure-better-auth.session")?.value;
     
     console.log(`[middleware] Session token exists: ${!!sessionToken}`);
     console.log(`[middleware] Session token length: ${sessionToken?.length || 0}`);
     console.log(`[middleware] Session token preview: ${sessionToken?.substring(0, 20)}...`);
     console.log(`[middleware] Session cookie exists: ${!!sessionCookie}`);
     console.log(`[middleware] Session cookie length: ${sessionCookie?.length || 0}`);
+    console.log(`[middleware] Checked cookie names: better-auth.session_token, __Secure-better-auth.session_token`);
     
     if (!sessionToken) {
       console.log("[middleware] ❌ No session token found, redirecting to admin auth");
