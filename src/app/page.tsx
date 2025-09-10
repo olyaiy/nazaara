@@ -1,8 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import SectionHeader from "@/components/ui/section-header";
 import UpcomingEvents from "@/components/home/upcoming-events";
 import { EventMarquee } from "@/components/home/event-marquee";
 import Hero from "@/components/home/hero";
