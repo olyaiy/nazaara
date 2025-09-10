@@ -57,7 +57,7 @@ export default async function EventEditPage({ params }: PageProps) {
                   Edit Event
                 </h1>
                 <p className="text-sm text-muted-foreground mt-0.5">
-                  {event.title} • {event.venueName}
+                  {event.title} • {event.venueName || "No venue selected"}
                 </p>
               </div>
             </div>

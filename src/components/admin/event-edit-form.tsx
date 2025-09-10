@@ -29,7 +29,7 @@ interface Artist {
 
 interface EventEditFormProps {
   event: {
-    id: string
+    id: number
     title: string
     slug: string
     tagline: string | null
@@ -37,7 +37,7 @@ interface EventEditFormProps {
     startTime: string | Date
     endTime: string | Date
     venueId: number | null
-    venueName: string
+    venueName: string | null
     image: string | null
     imageKey: string | null
     ticketUrl: string | null
