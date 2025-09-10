@@ -23,7 +23,7 @@ export const auth = betterAuth({
         "https://nazaara-git-feature-add-auth-and-db-hightide-digital.vercel.app", // Specific Vercel deployment
         "https://*.vercel.app"       // All Vercel app domains
     ],
-    plugins: [
+    plugins: [ 
         nextCookies(),
         admin({
             defaultRole: "user",
