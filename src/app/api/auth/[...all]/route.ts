@@ -9,12 +9,15 @@ const handlers = toNextJsHandler(auth.handler);
 export async function GET(request: NextRequest) {
     console.log("[auth-api] === GET REQUEST ===");
     console.log("[auth-api] URL:", request.url);
+    console.log("[auth-api] Current Origin:", request.headers.get("origin") || new URL(request.url).origin);
+    console.log("[auth-api] Host:", request.headers.get("host"));
     console.log("[auth-api] Headers:", Object.fromEntries(request.headers.entries()));
     console.log("[auth-api] Cookies:", request.cookies.getAll().map(c => `${c.name}=${c.value?.substring(0, 20)}...`));
     
     try {
         const response = await handlers.GET(request);
         console.log("[auth-api] ✅ GET response status:", response.status);
+        console.log("[auth-api] Response Set-Cookie headers:", response.headers.getSetCookie());
         return response;
     } catch (error) {
         console.log("[auth-api] ❌ GET error:", error);
@@ -25,6 +28,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
     console.log("[auth-api] === POST REQUEST ===");
     console.log("[auth-api] URL:", request.url);
+    console.log("[auth-api] Current Origin:", request.headers.get("origin") || new URL(request.url).origin);
+    console.log("[auth-api] Host:", request.headers.get("host"));
     console.log("[auth-api] Headers:", Object.fromEntries(request.headers.entries()));
     console.log("[auth-api] Cookies:", request.cookies.getAll().map(c => `${c.name}=${c.value?.substring(0, 20)}...`));
     
@@ -40,6 +45,7 @@ export async function POST(request: NextRequest) {
     try {
         const response = await handlers.POST(request);
         console.log("[auth-api] ✅ POST response status:", response.status);
+        console.log("[auth-api] Response Set-Cookie headers:", response.headers.getSetCookie());
         console.log("[auth-api] Response headers:", Object.fromEntries(response.headers.entries()));
         return response;
     } catch (error) {
