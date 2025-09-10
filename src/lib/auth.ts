@@ -12,7 +12,17 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true, 
-    }, 
+    },
+    trustedOrigins: [
+        "http://localhost:3000",     // Development
+        "http://localhost:3001", 
+        "https://localhost:3000",    // HTTPS development
+        "https://your-domain.com",   // Production domain
+        "https://www.your-domain.com", // WWW version
+        "*.your-domain.com",         // All subdomains
+        "https://nazaara-git-feature-add-auth-and-db-hightide-digital.vercel.app", // Specific Vercel deployment
+        "https://*.vercel.app"       // All Vercel app domains
+    ],
     plugins: [
         nextCookies(),
         admin({
