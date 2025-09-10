@@ -68,10 +68,10 @@ export default async function HeroMobile() {
             
             {/* Main poster container */}
             {/* TEMPORARY: Pass ticketUrl for redirect */}
-            <HeroMobileButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl} asChild>
+            <HeroMobileButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl || ""} asChild>
               <div className="relative aspect-[3/4] overflow-hidden shadow-2xl">
                 <Image 
-                  src={featuredEvent.image}
+                  src={featuredEvent.image || ""}
                   alt={featuredEvent.title}
                   fill
                   className="object-cover"
@@ -223,7 +223,7 @@ export default async function HeroMobile() {
               <rect width="100%" height="100%" fill="url(#hero-pattern-cta)" />
             </svg>
           </div>
-          <HeroMobileButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl} asChild>
+          <HeroMobileButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl || ""} asChild>
             <button className="relative w-full overflow-hidden group">
               {/* Creative button design */}
               <div className="absolute inset-0" style={{ backgroundColor: 'var(--gold)' }} />
