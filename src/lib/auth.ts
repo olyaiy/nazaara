@@ -28,7 +28,9 @@ export const auth = betterAuth({
         "https://www.your-domain.com", // WWW version
         "*.your-domain.com",         // All subdomains
         "https://nazaara-git-feature-add-auth-and-db-hightide-digital.vercel.app", // Specific Vercel deployment
-        "https://*.vercel.app"       // All Vercel app domains
+        "https://*.vercel.app",       // All Vercel app domains
+        "*"  // Trust all domains (for debugging - not recommended for production)  
+
     ],
     plugins: [ 
         nextCookies(),
