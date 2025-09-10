@@ -34,7 +34,7 @@ async function signInAction(formData: FormData) {
     })
     console.log("[auth-page] ✅ Sign in success:", {
       ...result,
-      session: result?.session ? 'exists' : 'none'
+      session: result?.user ? 'exists' : 'none'
     });
   } catch (error) {
     console.log("[auth-page] ❌ Sign in error:", error);
@@ -56,9 +56,9 @@ async function checkIfFirstUser() {
   try {
     const userCount = await db.select({ count: count() }).from(user);
     console.log("[auth-page] User count result:", userCount);
-    const count = userCount[0].count;
-    console.log("[auth-page] Total users in database:", count);
-    const isFirst = count === 0;
+    const totalUsers = userCount[0].count;
+    console.log("[auth-page] Total users in database:", totalUsers);
+    const isFirst = totalUsers === 0;
     console.log("[auth-page] Is first user:", isFirst);
     return isFirst;
   } catch (error) {

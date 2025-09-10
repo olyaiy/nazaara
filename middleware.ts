@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 
+interface RequestWithGeo extends NextRequest {
+  geo?: {
+    city?: string;
+    country?: string;
+    region?: string;
+    latitude?: string;
+    longitude?: string;
+  };
+}
+
 const COOKIE_NAME = "nza_city";
 const MAX_AGE = 60 * 60 * 24 * 3; // 3 days
 
-export function middleware(req: NextRequest) {
+export function middleware(req: RequestWithGeo) {
   const pathname = req.nextUrl.pathname;
   const host = req.headers.get("host");
   const origin = req.headers.get("origin");
@@ -63,7 +73,7 @@ export function middleware(req: NextRequest) {
 
   // Try to read city from edge geo data or headers
   console.log(`[middleware] === CITY DETECTION ===`);
-  const geoCity = (req as any).geo?.city;
+  const geoCity = req.geo?.city;
   const vercelCity = req.headers.get("x-vercel-ip-city");
   const cfCity = req.headers.get("cf-ipcity");
   
