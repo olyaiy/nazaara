@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   getUpcomingEvents,
@@ -11,7 +10,6 @@ import {
 import SectionHeader from "@/components/ui/section-header";
 
 export default function UpcomingEvents() {
-  const router = useRouter();
   const upcomingEvents = getUpcomingEvents();
 
   // Track which event is featured in the hero so we can exclude it here
@@ -45,28 +43,37 @@ export default function UpcomingEvents() {
     filteredEvents = filteredEvents.filter(event => event.slug !== "francis-mercier-vancouver-2025");
   }
 
-  // Build a chronologically sorted list of ALL events for the Complete Schedule
-  let allEventsChrono = [...allEvents].sort((a, b) => {
-    const monthMap: { [key: string]: number } = {
-      Jan: 0,
-      Feb: 1,
-      Mar: 2,
-      Apr: 3,
-      May: 4,
-      Jun: 5,
-      Jul: 6,
-      Aug: 7,
-      Sep: 8,
-      Oct: 9,
-      Nov: 10,
-      Dec: 11,
-    };
-    const [dayA, monthA] = a.date.split(" ");
-    const [dayB, monthB] = b.date.split(" ");
-    const dateA = new Date(parseInt(a.year), monthMap[monthA], parseInt(dayA));
-    const dateB = new Date(parseInt(b.year), monthMap[monthB], parseInt(dayB));
-    return dateA.getTime() - dateB.getTime();
-  });
+  // Build a chronologically sorted list of UPCOMING events for the Complete Schedule
+  const monthMap: { [key: string]: number } = {
+    Jan: 0,
+    Feb: 1,
+    Mar: 2,
+    Apr: 3,
+    May: 4,
+    Jun: 5,
+    Jul: 6,
+    Aug: 7,
+    Sep: 8,
+    Oct: 9,
+    Nov: 10,
+    Dec: 11,
+  };
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  let allEventsChrono = [...allEvents]
+    .filter((event) => {
+      const [day, month] = event.date.split(" ");
+      const eventDate = new Date(parseInt(event.year), monthMap[month], parseInt(day));
+      return eventDate >= today;
+    })
+    .sort((a, b) => {
+      const [dayA, monthA] = a.date.split(" ");
+      const [dayB, monthB] = b.date.split(" ");
+      const dateA = new Date(parseInt(a.year), monthMap[monthA], parseInt(dayA));
+      const dateB = new Date(parseInt(b.year), monthMap[monthB], parseInt(dayB));
+      return dateA.getTime() - dateB.getTime();
+    });
 
   // Apply same Tamasha preference to the chronological list
   const allTamashaEvent = allEventsChrono.find(event => event.slug === "back-2-school-vancouver-2025");
