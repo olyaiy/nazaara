@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { getPublicEventForCity, getPublicFeaturedEvent } from "@/lib/public-actions";
 import HeroMobile from "./hero-mobile";
+import HeroWrapper from "./hero-wrapper";
+import HeroCtaWrapper from "./hero-cta-wrapper";
 
 import HeroImage from "./hero-image";
 import HeroButton from "./hero-button";
@@ -35,7 +37,12 @@ export default async function Hero() {
       </div>
       
       {/* Desktop Hero */}
-      <section className="hidden md:block relative min-h-[80dvh] overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
+      <HeroWrapper 
+        eventSlug={featuredEvent.slug} 
+        className="hidden md:block relative min-h-[80dvh] overflow-hidden group cursor-pointer" 
+        style={{ backgroundColor: 'var(--maroon-red)' }}
+      >
+        <section className="absolute inset-0">
       {/* Shadow Overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/50" />
       <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-transparent" />
@@ -167,10 +174,10 @@ export default async function Hero() {
                 </div>
 
                 {/* CTA Section */}
-                <div className="flex items-center gap-6 pt-1">
+                <HeroCtaWrapper className="flex items-center gap-6 pt-1">
                   {/* TEMPORARY: Pass ticketUrl for redirect */}
                   <HeroButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl} />
-                </div>
+                </HeroCtaWrapper>
               </div>
               
               {/* Right - Creative Poster Layout */}
@@ -189,7 +196,8 @@ export default async function Hero() {
           </div>
         </div>
       </div>
-    </section>
+        </section>
+      </HeroWrapper>
     </>
   )
 }

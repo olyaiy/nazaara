@@ -2,6 +2,8 @@ import Image from "next/image";
 import { cookies } from "next/headers";
 import { getPublicEventForCity, getPublicFeaturedEvent } from "@/lib/public-actions";
 import HeroMobileButton from "./hero-mobile-button";
+import HeroWrapper from "./hero-wrapper";
+import HeroCtaWrapper from "./hero-cta-wrapper";
 
 export default async function HeroMobile() {
   const cookieStore = await cookies();
@@ -22,7 +24,12 @@ export default async function HeroMobile() {
   const [day, month] = featuredEvent.date.split(' ');
 
   return (
-    <section className="relative min-h-[100dvh] overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
+    <HeroWrapper 
+      eventSlug={featuredEvent.slug} 
+      className="block relative min-h-[100dvh] overflow-hidden group cursor-pointer" 
+      style={{ backgroundColor: 'var(--maroon-red)' }}
+    >
+      <section className="absolute inset-0">
       {/* Shadow Overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/50" />
       <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-transparent" />
@@ -203,7 +210,7 @@ export default async function HeroMobile() {
         </div>
         
         {/* Elevated CTA section */}
-        <div className="sticky bottom-0 px-6 pb-8 pt-6 relative">
+        <HeroCtaWrapper className="sticky bottom-0 px-6 pb-8 pt-6 relative">
           {/* Subtle pattern overlay for CTA section */}
           <div className="absolute inset-0 opacity-5">
             <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
@@ -241,8 +248,9 @@ export default async function HeroMobile() {
               Limited Capacity
             </span>
           </div>
-        </div>
+        </HeroCtaWrapper>
       </div>
-    </section>
+      </section>
+    </HeroWrapper>
   )
 }

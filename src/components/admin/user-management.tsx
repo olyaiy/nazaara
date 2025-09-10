@@ -64,9 +64,18 @@ export function UserManagement() {
       
       if (response.data) {
         // Ensure all users have a role field (default to "user" if undefined)
-        const usersWithRole = response.data.users.map((user: any) => ({
-          ...user,
-          role: user.role || "user"
+        const usersWithRole = response.data.users.map((user: {
+          id: string;
+          name: string;
+          email: string;
+          role?: string;
+          createdAt: string | Date;
+        }) => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role || "user",
+          createdAt: typeof user.createdAt === 'string' ? user.createdAt : user.createdAt.toISOString()
         }))
         setUsers(usersWithRole)
         setTotalUsers(response.data.total)
