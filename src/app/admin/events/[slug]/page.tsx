@@ -13,6 +13,23 @@ interface PageProps {
   }>
 }
 
+interface EventForForm {
+  id: number
+  title: string
+  slug: string
+  tagline: string | null
+  description: string | null
+  startTime: string | Date
+  endTime: string | Date
+  venueId: number | null
+  venueName: string | null
+  image: string | null
+  imageKey: string | null
+  ticketUrl: string | null
+  isPublished: boolean
+  artists: { id: number; name: string; orderIndex?: number }[]
+}
+
 export default async function EventEditPage({ params }: PageProps) {
   const session = await auth.api.getSession({
     headers: await headers()
@@ -36,6 +53,17 @@ export default async function EventEditPage({ params }: PageProps) {
 
   if (!event) {
     redirect("/admin")
+  }
+
+  const eventForForm: EventForForm = {
+    ...event,
+    artists: (event.artists || [])
+      .filter((a) => a && a.id !== null && a.name !== null)
+      .map((a) => ({
+        id: a.id as number,
+        name: a.name as string,
+        orderIndex: a.orderIndex ?? undefined,
+      })),
   }
 
 
@@ -80,7 +108,7 @@ export default async function EventEditPage({ params }: PageProps) {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-8 py-8">
-        <EventEditForm event={event} venues={venues} artists={artists} />
+        <EventEditForm event={eventForForm} venues={venues} artists={artists} />
       </div>
     </div>
   )
