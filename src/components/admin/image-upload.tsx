@@ -5,7 +5,7 @@ import { X, Image as ImageIcon, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { UploadDropzone } from "@/lib/uploadthing"
-import type { UploadFileResponse } from "uploadthing/client"
+import type { ClientUploadedFileData } from "uploadthing/types"
 
 interface ImageUploadProps {
   defaultImage?: string | null
@@ -26,7 +26,7 @@ export function ImageUpload({
   const [imageKey, setImageKey] = useState<string | null>(defaultImageKey || null)
   const [isUploading, setIsUploading] = useState(false)
 
-  const handleUploadComplete = useCallback((res: UploadFileResponse<{
+  const handleUploadComplete = useCallback((res: ClientUploadedFileData<{
     uploadedBy: string;
     url: string;
     key: string;
