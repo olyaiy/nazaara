@@ -13,41 +13,94 @@ import { Shield } from "lucide-react"
 async function signInAction(formData: FormData) {
   "use server"
   
+  console.log("[auth-page] === SIGN IN ACTION START ===");
+  
   const email = formData.get("email") as string
   const password = formData.get("password") as string
   
+  console.log("[auth-page] Email:", email);
+  console.log("[auth-page] Password length:", password?.length || 0);
+  console.log("[auth-page] Environment:", process.env.NODE_ENV);
+  console.log("[auth-page] BETTER_AUTH_URL:", process.env.BETTER_AUTH_URL);
+  console.log("[auth-page] BETTER_AUTH_SECRET exists:", !!process.env.BETTER_AUTH_SECRET);
+  
   try {
-    await auth.api.signInEmail({
+    console.log("[auth-page] Attempting auth.api.signInEmail...");
+    const result = await auth.api.signInEmail({
       body: {
         email,
         password,
       }
     })
+    console.log("[auth-page] ✅ Sign in success:", {
+      ...result,
+      session: result?.session ? 'exists' : 'none'
+    });
   } catch (error) {
+    console.log("[auth-page] ❌ Sign in error:", error);
+    console.log("[auth-page] Error details:", {
+      message: (error as Error)?.message,
+      stack: (error as Error)?.stack,
+      name: (error as Error)?.name
+    });
     throw new Error("Invalid credentials")
   }
   
+  console.log("[auth-page] Redirecting to /admin");
   redirect("/admin")
 }
 
 
 async function checkIfFirstUser() {
-  const userCount = await db.select({ count: count() }).from(user)
-  return userCount[0].count === 0
+  console.log("[auth-page] === CHECKING FIRST USER ===");
+  try {
+    const userCount = await db.select({ count: count() }).from(user);
+    console.log("[auth-page] User count result:", userCount);
+    const count = userCount[0].count;
+    console.log("[auth-page] Total users in database:", count);
+    const isFirst = count === 0;
+    console.log("[auth-page] Is first user:", isFirst);
+    return isFirst;
+  } catch (error) {
+    console.log("[auth-page] ❌ Error checking first user:", error);
+    throw error;
+  }
 }
 
 export default async function AuthPage() {
-  // Check if user is already authenticated
-  const session = await auth.api.getSession({
-    headers: await headers()
-  })
+  console.log("[auth-page] === AUTH PAGE START ===");
+  console.log("[auth-page] Environment:", process.env.NODE_ENV);
+  console.log("[auth-page] BETTER_AUTH_URL:", process.env.BETTER_AUTH_URL);
   
-  if (session) {
-    redirect("/admin")
+  // Check if user is already authenticated
+  console.log("[auth-page] === CHECKING EXISTING SESSION ===");
+  try {
+    const headersList = await headers();
+    console.log("[auth-page] Headers:", Object.fromEntries(headersList.entries()));
+    
+    const session = await auth.api.getSession({
+      headers: headersList
+    });
+    
+    console.log("[auth-page] Session check result:", {
+      exists: !!session,
+      userId: session?.user?.id,
+      email: session?.user?.email,
+      role: session?.user?.role
+    });
+    
+    if (session) {
+      console.log("[auth-page] ✅ User already authenticated, redirecting to /admin");
+      redirect("/admin")
+    }
+    console.log("[auth-page] No existing session found");
+  } catch (error) {
+    console.log("[auth-page] ❌ Error checking session:", error);
   }
 
   // Check if this is the first user (no users exist)
   const isFirstUser = await checkIfFirstUser()
+  console.log("[auth-page] Is first user setup:", isFirstUser);
 
   return (
     <div className="min-h-[80dvh] flex items-center justify-center bg-background p-4">

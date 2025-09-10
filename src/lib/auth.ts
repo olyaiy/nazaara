@@ -5,6 +5,13 @@ import { admin } from "better-auth/plugins";
 import { db } from "@/db/drizzle";
 import * as schema from "@/db/auth-schema";
 
+console.log("[auth-server] === INITIALIZING BETTER AUTH ===");
+console.log("[auth-server] Environment:", process.env.NODE_ENV);
+console.log("[auth-server] BETTER_AUTH_URL:", process.env.BETTER_AUTH_URL);
+console.log("[auth-server] BETTER_AUTH_SECRET exists:", !!process.env.BETTER_AUTH_SECRET);
+console.log("[auth-server] DATABASE_URL exists:", !!process.env.DATABASE_URL);
+console.log("[auth-server] ADMIN_USER_IDS:", process.env.ADMIN_USER_IDS);
+
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
         provider: "pg",
