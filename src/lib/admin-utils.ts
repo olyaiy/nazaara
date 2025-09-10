@@ -22,7 +22,7 @@ export async function requireAdmin(): Promise<SessionUser> {
     throw new Error("Access denied: Admin role required")
   }
 
-  return session.user
+  return session.user as SessionUser
 }
 
 export async function getAdminSession(): Promise<{ user: SessionUser; isAdmin: boolean } | null> {
@@ -36,7 +36,7 @@ export async function getAdminSession(): Promise<{ user: SessionUser; isAdmin: b
     }
 
     return {
-      user: session.user,
+      user: session.user as SessionUser,
       isAdmin: session.user.role === "admin"
     }
   } catch {
