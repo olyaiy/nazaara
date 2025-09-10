@@ -1,11 +1,11 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { X, Image as ImageIcon, Loader2, Plus } from "lucide-react"
+import { X, Loader2, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { UploadDropzone } from "@/lib/uploadthing"
-import type { UploadFileResponse } from "uploadthing/client"
+import type { ClientUploadedFileData } from "uploadthing/types"
 
 interface ImageData {
   url: string | null
@@ -30,7 +30,7 @@ export function MultiImageUpload({
   ])
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null)
 
-  const handleUploadComplete = useCallback((index: number) => (res: UploadFileResponse<{
+  const handleUploadComplete = useCallback((index: number) => (res: ClientUploadedFileData<{
     uploadedBy: string;
     url: string;
     key: string;
