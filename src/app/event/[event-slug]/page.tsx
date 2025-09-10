@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
       description: event.tagline || `Experience ${event.artist} live at ${event.venue}`,
       images: [
         {
-          url: event.image,
+          url: event.image || "",
           width: 800,
           height: 1000,
           alt: `${event.artist} - ${event.title} poster`,
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
       card: "summary_large_image",
       title: `${event.artist} - ${event.title}`,
       description: event.tagline || `Experience ${event.artist} live at ${event.venue}`,
-      images: [event.image],
+      images: [event.image || ""],
     },
   };
 }
@@ -67,7 +67,7 @@ export default async function EventPage({ params }: EventPageProps) {
   return (
     <div className="min-h-dvh bg-[var(--maroon-red)]">
       <EventHero event={event} />
-      <EventBio bio={event.description} />
+      <EventBio bio={event.description || ""} />
       <ArtistShowcase artists={event.artists} />
       <VenueFeatures event={event} />
     </div>
