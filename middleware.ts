@@ -61,11 +61,7 @@ export function middleware(req: RequestWithGeo) {
     // This is just a basic check for session existence
   }
   
-  // Temporary redirects for About and Bookings pages
-  if (pathname === "/about" || pathname === "/bookings") {
-    console.log(`[middleware] Redirecting from ${pathname} to home (temporary)`);
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+
 
   // If cookie already present, proceed without changes
   const existingCityCookie = req.cookies.get(COOKIE_NAME)?.value;
