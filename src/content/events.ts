@@ -279,6 +279,38 @@ Note: Tables are reserved exclusively for those who have made a reservation.`,
     isFeatured: false,
     ticketUrl: "https://www.showpass.com/retroaffair/",
   },
+  {
+    id: 8,
+    number: "08",
+    slug: "tamasha-in-toronto-2025",
+    artist: "AARMASH, REMY & R.O.Y.",
+    artists: [
+      { name: "AARMASH" },
+      { name: "REMY" },
+      { name: "R.O.Y." },
+    ],
+    title: "TAMASHA IN TORONTO",
+    tagline: "TAMASHA is finally in the 6ix this September",
+    description: `TORONTO 📣 We’re bringing the TAMASHA experience back on Friday, September 26 and it’s going to be epic. Get ready to party with resident DJ REMY along with debut performances by AARMASH and ROY 🎧🔥
+
+Expect Bollywood bangers, epic mashups, timeless anthems and nonstop vibes that will keep you on your toes 🪩💥 If you were at our last event you already know the vibes, and if you missed it this is your chance to be part of the madness!
+
+📅 Friday, September 26
+📍 @pearltoronto
+⏰ 10 PM to 2:30 AM
+🔞 19+ Event`,
+    date: "26 Sep",
+    year: "2025",
+    venue: "Pearl Toronto",
+    venueAddress: "184 Pearl Street, Toronto, ON M5H 1Y2, Canada",
+    city: "Toronto",
+    country: "Canada",
+    price: "23.17",
+    image: "/events/tamasha toronto.jpg",
+    status: "On Sale",
+    isFeatured: false,
+    ticketUrl: "https://www.eventbrite.ca/e/tamasha-in-toronto-tickets-1689639660709?aff=oddtdtcreator",
+  },
 ];
 
 // Helper functions for backward compatibility and convenience
