@@ -334,6 +334,32 @@ Expect Bollywood bangers, epic mashups, timeless anthems and nonstop vibes that 
     isFeatured: false,
     ticketUrl: "https://www.flite.city/e/diwali-in-miami?t=website",
   },
+  {
+    id: 10,
+    number: "10",
+    slug: "tamasha-vancouver-sep-29-2025",
+    artist: "SABZI, RAYTRIX & RAE DIAMENDZ",
+    artists: [
+      { name: "Sabzi", instagram: "sabzi", soundcloud: "sabzi" },
+      { name: "Raytrix", instagram: "raytrix", soundcloud: "raytrix" },
+      { name: "Raediamendz", instagram: "raediamendz", soundcloud: "raediamendz" },
+    ],
+    title: "Tamasha",
+    tagline: "Back to Basics",
+    description: `VANCOUVER 🌍✨ We’re back at our favorite home base, the iconic Fortune Sound Club ⛩️🐉 on Monday, September 29 for one final TAMASHA at Fortune this year 🙂‍↕️\n\nThis is Back to Basics. A return to everything that made our nights unforgettable. One dance floor. Pure energy. Bollywood that takes you home and keeps you moving all night long.\n\nBehind the decks, DJ SABZI, RAYTRIX and RAE DIAMENDZ will be serving the sound that defines TAMASHA.\n\n📍Fortune Sound Club\n\n📅 Monday, September 29\n\n⏰ 10PM till late | 19+`,
+    date: "29 Sep",
+    dates: "Monday, September 29 · 10:00 pm - Late",
+    year: "2025",
+    venue: "Fortune Sound Club",
+    venueAddress: "147 E Pender Street, Vancouver, BC V6A 1T5",
+    city: "Vancouver",
+    country: "Canada",
+    price: "TBA",
+    image: "/events/TAMASHA Vancouver - Sep 29.png",
+    status: "On Sale",
+    isFeatured: false,
+    ticketUrl: "https://www.ticketweb.ca/event/tamasha-fortune-sound-club-tickets/14563363?pl=blueprint~",
+  },
 ];
 
 // Helper functions for backward compatibility and convenience
