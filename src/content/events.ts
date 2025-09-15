@@ -311,6 +311,29 @@ Expect Bollywood bangers, epic mashups, timeless anthems and nonstop vibes that 
     isFeatured: false,
     ticketUrl: "https://www.eventbrite.ca/e/tamasha-in-toronto-tickets-1689639660709?aff=oddtdtcreator",
   },
+  {
+    id: 9,
+    number: "09",
+    slug: "diwali-in-miami-2025",
+    artist: "NAZAARA",
+    artists: [
+      { name: "Miss Bhalla" },
+    ],
+    title: "DIWALI IN MIAMI",
+    tagline: "by NAZAARA",
+    description: `🌟 MIAMI 🌟 This Diwali, we’re lighting up the city like never before ✨\n\nJoin us on Saturday, October 18th at Bargean Miami for a festive night of music, dance, and celebration 🪔💃\n\nWe’re flying in the best to bring you a proper experience: Chicago’s own Miss Bhalla.\n\nGET TICKETS · GET TICKETS · GET TICKETS\n\nTickets:\n- GA: Early Bird — $29.00 (incl. $4.00 fee)\n- Table Reservation Deposit — $57.00 (incl. $7.00 fee)\n\nFor table reservations, please DM @nazaara.live to go over minimums.`,
+    date: "18 Oct",
+    year: "2025",
+    venue: "Bargean Miami",
+    venueAddress: "1010 Southwest 8th Street, Miami, FL, USA",
+    city: "Miami",
+    country: "USA",
+    price: "29.00",
+    image: "/events/diawli.webp",
+    status: "On Sale",
+    isFeatured: false,
+    ticketUrl: "https://www.flite.city/e/diwali-in-miami?t=website",
+  },
 ];
 
 // Helper functions for backward compatibility and convenience
