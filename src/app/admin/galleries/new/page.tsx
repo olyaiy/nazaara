@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { GalleryForm } from "@/components/admin/gallery-form"
+import { GalleryFormV2 } from "@/components/admin/gallery-form-v2"
 
 export default async function NewGalleryPage() {
   const session = await auth.api.getSession({
@@ -32,7 +32,7 @@ export default async function NewGalleryPage() {
                 Create Gallery
               </h1>
               <p className="text-sm text-muted-foreground mt-0.5">
-                Add a new photo gallery
+                Add a new photo gallery to showcase your events
               </p>
             </div>
           </div>
@@ -41,7 +41,7 @@ export default async function NewGalleryPage() {
 
       {/* Form */}
       <div className="max-w-7xl mx-auto px-8 py-8">
-        <GalleryForm mode="create" />
+        <GalleryFormV2 mode="create" />
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback, useEffect, useRef } from "react"
-import { X, Upload, GripVertical, Loader2 } from "lucide-react"
+import { X, Upload, GripVertical, Loader2, ImagePlus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -30,10 +30,16 @@ export function GalleryUploadThingUpload({
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [uploadProgress, setUploadProgress] = useState<number>(0)
+  const [uploadingCount, setUploadingCount] = useState<number>(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
   
-  // Initialize UploadThing
+  // Initialize UploadThing with batch upload handling
   const { startUpload, isUploading } = useUploadThing("galleryImage", {
+    onUploadBegin: (files) => {
+      setUploadingCount(files.length)
+      setUploadProgress(0)
+    },
     onClientUploadComplete: (res) => {
       if (res && res.length > 0) {
         const newImages = res.map((file, index) => ({
@@ -46,12 +52,19 @@ export function GalleryUploadThingUpload({
         
         setImages(prev => [...prev, ...newImages])
         setError(null)
+        setUploadingCount(0)
+        setUploadProgress(0)
       }
     },
     onUploadError: (error: Error) => {
       console.error("Upload error:", error)
       setError(error.message || "Upload failed. Please try again.")
       setTimeout(() => setError(null), 5000)
+      setUploadingCount(0)
+      setUploadProgress(0)
+    },
+    onUploadProgress: (progress) => {
+      setUploadProgress(progress)
     },
   })
 
@@ -72,7 +85,7 @@ export function GalleryUploadThingUpload({
     setImages([])
   }, [])
 
-  // File handling
+  // Efficient file handling for batch uploads
   const validateFile = (file: File): string | null => {
     const acceptedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"]
     const maxFileSize = 4 // MB
@@ -87,25 +100,38 @@ export function GalleryUploadThingUpload({
   }
 
   const processFiles = async (fileList: FileList) => {
+    // Process files in batches for efficiency
+    const files = Array.from(fileList)
     const validFiles: File[] = []
     const errors: string[] = []
+    let errorCount = 0
+    const maxErrors = 5 // Only show first 5 errors to avoid overwhelming the user
 
-    Array.from(fileList).forEach((file) => {
+    for (const file of files) {
       const validationError = validateFile(file)
       if (validationError) {
-        errors.push(validationError)
-        return
+        errorCount++
+        if (errors.length < maxErrors) {
+          errors.push(validationError)
+        }
+      } else {
+        validFiles.push(file)
       }
-      validFiles.push(file)
-    })
+    }
 
-    if (errors.length > 0) {
-      setError(errors[0])
+    if (errorCount > 0) {
+      const errorMessage = errors.join('; ')
+      const additionalErrors = errorCount - errors.length
+      setError(
+        additionalErrors > 0 
+          ? `${errorMessage}; and ${additionalErrors} more errors`
+          : errorMessage
+      )
       setTimeout(() => setError(null), 5000)
-      return
     }
 
     if (validFiles.length > 0) {
+      // Upload valid files even if some had errors
       await startUpload(validFiles)
     }
   }
@@ -236,20 +262,28 @@ export function GalleryUploadThingUpload({
           <div className="space-y-2">
             <h3 className="text-lg font-medium text-foreground">
               {isUploading 
-                ? "Uploading images..." 
+                ? `Uploading ${uploadingCount} image${uploadingCount !== 1 ? 's' : ''}...`
                 : images.length === 0 
                   ? "Upload gallery images" 
                   : "Add more images"}
             </h3>
             <p className="text-sm text-muted-foreground text-balance">
               {isUploading 
-                ? "Please wait while we upload your images"
+                ? `Processing your images • ${uploadProgress}% complete`
                 : "Drag and drop your images here, or click to browse"}
             </p>
             {!isUploading && (
               <p className="text-xs text-muted-foreground">
-                Supports JPEG, PNG, WebP, GIF up to 4MB each • Max 20 files at once
+                Supports JPEG, PNG, WebP, GIF • 4MB per image • Batch upload supported
               </p>
+            )}
+            {isUploading && uploadingCount > 10 && (
+              <div className="w-full max-w-xs mx-auto bg-muted rounded-full h-2 overflow-hidden">
+                <div 
+                  className="bg-[--gold] h-full transition-all duration-300"
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
             )}
           </div>
         </div>

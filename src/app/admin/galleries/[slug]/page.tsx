@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import { getGalleryBySlug } from "@/lib/admin-actions"
 import Link from "next/link"
-import { GalleryForm } from "@/components/admin/gallery-form"
+import { GalleryFormV2 } from "@/components/admin/gallery-form-v2"
 
 interface PageProps {
   params: Promise<{
@@ -69,7 +69,7 @@ export default async function GalleryEditPage({ params }: PageProps) {
 
       {/* Form */}
       <div className="max-w-7xl mx-auto px-8 py-8">
-        <GalleryForm 
+        <GalleryFormV2 
           mode="edit" 
           gallery={gallery}
         />
