@@ -10,7 +10,8 @@
       "Bash(mv:*)",
       "Bash(npx tsx:*)",
       "Bash(npx drizzle-kit:*)",
-      "Bash(pnpm add:*)"
+      "Bash(pnpm add:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

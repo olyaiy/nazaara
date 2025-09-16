@@ -1,8 +1,8 @@
 "use server"
 
 import { db } from "@/db/drizzle"
-import { events, artists, venues, eventsArtists } from "@/db/schema"
-import { eq, and, gte, asc, desc } from "drizzle-orm"
+import { events, artists, venues, eventsArtists, galleries, galleryImages } from "@/db/schema"
+import { eq, and, gte, asc, desc, sql } from "drizzle-orm"
 
 export interface PublicArtist {
   name: string;
@@ -306,5 +306,97 @@ export async function getPublicEventBySlug(slug: string): Promise<PublicEvent | 
     ticketUrl: event.ticketUrl,
     startTime: event.startTime,
     endTime: event.endTime,
+  };
+}
+
+// Gallery Types
+export interface PublicGalleryImage {
+  id: number;
+  url: string;
+  caption?: string | null;
+  orderIndex: number | null;
+}
+
+export interface PublicGallery {
+  id: number;
+  slug: string;
+  title: string;
+  description?: string | null;
+  date: Date;
+  coverImage?: string | null;
+  imageCount: number;
+  firstImage?: string | null;
+  images?: PublicGalleryImage[];
+}
+
+// Get all public galleries
+export async function getPublicGalleries(): Promise<PublicGallery[]> {
+  const galleriesWithImageCount = await db
+    .select({
+      id: galleries.id,
+      slug: galleries.slug,
+      title: galleries.title,
+      description: galleries.description,
+      date: galleries.date,
+      coverImage: galleries.coverImage,
+      imageCount: sql<number>`COALESCE(COUNT(${galleryImages.id}), 0)`.as('imageCount'),
+      firstImage: sql<string | null>`MIN(${galleryImages.url})`.as('firstImage'),
+    })
+    .from(galleries)
+    .leftJoin(galleryImages, eq(galleries.id, galleryImages.galleryId))
+    .groupBy(galleries.id, galleries.slug, galleries.title, galleries.description, galleries.date, galleries.coverImage)
+    .orderBy(desc(galleries.date))
+
+  return galleriesWithImageCount.map(gallery => ({
+    id: gallery.id,
+    slug: gallery.slug,
+    title: gallery.title,
+    description: gallery.description,
+    date: gallery.date,
+    coverImage: gallery.coverImage,
+    imageCount: Number(gallery.imageCount),
+    firstImage: gallery.firstImage,
+  }));
+}
+
+// Get single gallery by slug with all images
+export async function getPublicGalleryBySlug(slug: string): Promise<PublicGallery | null> {
+  const gallery = await db
+    .select()
+    .from(galleries)
+    .where(eq(galleries.slug, slug))
+    .limit(1)
+
+  if (!gallery[0]) {
+    return null
+  }
+
+  // Get all images for this gallery, ordered by orderIndex
+  const images = await db
+    .select({
+      id: galleryImages.id,
+      url: galleryImages.url,
+      caption: galleryImages.caption,
+      orderIndex: galleryImages.orderIndex,
+    })
+    .from(galleryImages)
+    .where(eq(galleryImages.galleryId, gallery[0].id))
+    .orderBy(galleryImages.orderIndex)
+
+  return {
+    id: gallery[0].id,
+    slug: gallery[0].slug,
+    title: gallery[0].title,
+    description: gallery[0].description,
+    date: gallery[0].date,
+    coverImage: gallery[0].coverImage,
+    imageCount: images.length,
+    firstImage: images[0]?.url || gallery[0].coverImage,
+    images: images.map(img => ({
+      id: img.id,
+      url: img.url,
+      caption: img.caption,
+      orderIndex: img.orderIndex,
+    })),
   };
 }

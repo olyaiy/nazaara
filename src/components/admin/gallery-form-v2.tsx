@@ -21,7 +21,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { isRedirectError } from "next/dist/client/components/redirect"
 
 interface ImageData {
   id?: number
@@ -113,6 +112,13 @@ export function GalleryFormV2({ gallery, mode }: GalleryFormProps) {
         await updateGallery(formData)
       }
     } catch (error) {
+      // Check if this is a redirect error (expected behavior)
+      if (error && typeof error === 'object' && 'digest' in error && 
+          typeof error.digest === 'string' && error.digest.includes('NEXT_REDIRECT')) {
+        // This is a successful redirect, don't show error
+        return
+      }
+      
       console.error("Error submitting form:", error)
       alert("Failed to save gallery. Please try again.")
       setIsSubmitting(false)
@@ -129,6 +135,13 @@ export function GalleryFormV2({ gallery, mode }: GalleryFormProps) {
     try {
       await deleteGallery(formData)
     } catch (error) {
+      // Check if this is a redirect error (expected behavior)
+      if (error && typeof error === 'object' && 'digest' in error && 
+          typeof error.digest === 'string' && error.digest.includes('NEXT_REDIRECT')) {
+        // This is a successful redirect, don't show error
+        return
+      }
+      
       console.error("Error deleting gallery:", error)
       alert("Failed to delete gallery. Please try again.")
       setIsDeleting(false)
