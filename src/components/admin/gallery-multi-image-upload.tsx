@@ -12,7 +12,7 @@ interface ImageData {
   url: string
   key: string
   caption?: string | null
-  orderIndex: number
+  orderIndex: number | null
 }
 
 interface GalleryMultiImageUploadProps {

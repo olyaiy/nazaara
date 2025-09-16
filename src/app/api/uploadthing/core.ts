@@ -29,13 +29,13 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
       console.log("Upload complete for userId:", metadata.userId);
-      console.log("File URL:", file.url);
+      console.log("File URL:", file.appUrl);
       console.log("File Key:", file.key);
 
       // Return data that will be available on the client
       return { 
         uploadedBy: metadata.userId,
-        url: file.url,
+        url: file.appUrl,
         key: file.key,
         name: file.name,
         size: file.size
@@ -60,12 +60,12 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       console.log("Venue image upload complete for userId:", metadata.userId);
-      console.log("File URL:", file.url);
+      console.log("File URL:", file.appUrl);
       console.log("File Key:", file.key);
 
       return { 
         uploadedBy: metadata.userId,
-        url: file.url,
+        url: file.appUrl,
         key: file.key,
         name: file.name,
         size: file.size
@@ -90,12 +90,12 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       console.log("Artist image upload complete for userId:", metadata.userId);
-      console.log("File URL:", file.url);
+      console.log("File URL:", file.appUrl);
       console.log("File Key:", file.key);
 
       return { 
         uploadedBy: metadata.userId,
-        url: file.url,
+        url: file.appUrl,
         key: file.key,
         name: file.name,
         size: file.size
@@ -120,12 +120,12 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       console.log("Gallery image upload complete for userId:", metadata.userId);
-      console.log("File URL:", file.url);
+      console.log("File URL:", file.appUrl);
       console.log("File Key:", file.key);
 
       return { 
         uploadedBy: metadata.userId,
-        url: file.url,
+        url: file.appUrl,
         key: file.key,
         name: file.name,
         size: file.size

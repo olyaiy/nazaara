@@ -1,13 +1,14 @@
 "use client"
 
 import { useState } from "react"
+import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2, Save, Trash2, Eye, EyeOff } from "lucide-react"
-import { GalleryMultiImageUpload } from "@/components/admin/gallery-multi-image-upload"
+import { GalleryUploadThingUpload } from "@/components/admin/gallery-uploadthing-upload"
 import { createGallery, updateGallery, deleteGallery } from "@/lib/admin-actions"
 import {
   AlertDialog,
@@ -26,7 +27,7 @@ interface ImageData {
   url: string
   key: string
   caption?: string | null
-  orderIndex: number
+  orderIndex: number | null
 }
 
 interface GalleryFormProps {
@@ -45,9 +46,31 @@ interface GalleryFormProps {
 export function GalleryForm({ gallery, mode }: GalleryFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [images, setImages] = useState<ImageData[]>(gallery?.images || [])
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleImagesChange = (newImages: ImageData[]) => {
+    setImages(newImages)
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     setIsSubmitting(true)
+    
+    const formData = new FormData(e.currentTarget)
+    
+    // Clear existing image inputs and add updated ones
+    let index = 0
+    while (formData.has(`images[${index}][url]`)) {
+      formData.delete(`images[${index}][url]`)
+      formData.delete(`images[${index}][key]`)
+      index++
+    }
+    
+    // Add current images to formData
+    images.forEach((image, idx) => {
+      formData.append(`images[${idx}][url]`, image.url)
+      formData.append(`images[${idx}][key]`, image.key)
+    })
     
     try {
       if (mode === "create") {
@@ -90,7 +113,7 @@ export function GalleryForm({ gallery, mode }: GalleryFormProps) {
   }
 
   return (
-    <form action={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <div className="grid gap-6 max-w-5xl">
         {/* Basic Information */}
         <Card>
@@ -150,8 +173,9 @@ export function GalleryForm({ gallery, mode }: GalleryFormProps) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <GalleryMultiImageUpload 
+            <GalleryUploadThingUpload 
               defaultImages={gallery?.images || []}
+              onImagesChange={handleImagesChange}
             />
           </CardContent>
         </Card>
