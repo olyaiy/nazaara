@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/db/drizzle"
-import { events, artists, venues, eventsArtists, galleries, galleryImages } from "@/db/schema"
+import { events, artists, venues, eventsArtists, galleries, galleryImages, djs } from "@/db/schema"
 import { eq, count, sql, desc } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
@@ -771,4 +771,225 @@ export async function deleteGallery(formData: FormData) {
   
   revalidatePath("/admin")
   redirect("/admin?tab=galleries&success=gallery-deleted")
+}
+
+// DJ CRUD operations
+export async function getAdminDJs() {
+  const djsWithEventCount = await db
+    .select({
+      id: djs.id,
+      slug: djs.slug,
+      name: djs.name,
+      title: djs.title,
+      specialty: djs.specialty,
+      experience: djs.experience,
+      performances: djs.performances,
+      instagram: djs.instagram,
+      soundcloud: djs.soundcloud,
+      image: djs.image,
+      isActive: djs.isActive,
+      createdAt: djs.createdAt,
+      updatedAt: djs.updatedAt,
+    })
+    .from(djs)
+    .orderBy(djs.name)
+
+  return djsWithEventCount
+}
+
+export async function getDJBySlug(slug: string) {
+  const dj = await db
+    .select()
+    .from(djs)
+    .where(eq(djs.slug, slug))
+    .limit(1)
+
+  if (!dj[0]) {
+    return null
+  }
+
+  return dj[0]
+}
+
+export async function createDJ(formData: FormData) {
+  const name = formData.get("name") as string
+  const title = formData.get("title") as string
+  const specialty = formData.get("specialty") as string
+  const experience = formData.get("experience") as string
+  const performances = formData.get("performances") as string
+  const bio = formData.get("bio") as string
+  const instagram = formData.get("instagram") as string
+  const soundcloud = formData.get("soundcloud") as string
+  const image = formData.get("image") as string
+  const imageKey = formData.get("imageKey") as string
+  const isActive = formData.get("isActive") === "on"
+
+  // Parse highlights array from form
+  const highlights: string[] = []
+  let index = 0
+  while (formData.has(`highlights[${index}]`)) {
+    const highlight = formData.get(`highlights[${index}]`) as string
+    if (highlight.trim()) {
+      highlights.push(highlight.trim())
+    }
+    index++
+  }
+
+  if (!name) {
+    throw new Error("DJ name is required")
+  }
+
+  const slug = generateSlug(name)
+
+  const result = await db
+    .insert(djs)
+    .values({
+      slug,
+      name,
+      title: title || null,
+      specialty: specialty || null,
+      experience: experience || null,
+      performances: performances || null,
+      bio: bio || null,
+      highlights: highlights.length > 0 ? highlights : null,
+      instagram: instagram || null,
+      soundcloud: soundcloud || null,
+      image: image || null,
+      imageKey: imageKey || null,
+      isActive,
+    })
+    .returning({ slug: djs.slug })
+
+  revalidatePath("/admin")
+  redirect(`/admin?success=dj-created`)
+}
+
+export async function updateDJ(formData: FormData) {
+  const djId = parseInt(formData.get("djId") as string)
+  const name = formData.get("name") as string
+  const title = formData.get("title") as string
+  const specialty = formData.get("specialty") as string
+  const experience = formData.get("experience") as string
+  const performances = formData.get("performances") as string
+  const bio = formData.get("bio") as string
+  const instagram = formData.get("instagram") as string
+  const soundcloud = formData.get("soundcloud") as string
+  const image = formData.get("image") as string
+  const imageKey = formData.get("imageKey") as string
+  const isActive = formData.get("isActive") === "on"
+
+  // Parse highlights array from form
+  const highlights: string[] = []
+  let index = 0
+  while (formData.has(`highlights[${index}]`)) {
+    const highlight = formData.get(`highlights[${index}]`) as string
+    if (highlight.trim()) {
+      highlights.push(highlight.trim())
+    }
+    index++
+  }
+
+  if (!djId || !name) {
+    throw new Error("Required fields missing")
+  }
+
+  // Get the current DJ to check if image is being replaced
+  const currentDJ = await db
+    .select({ 
+      imageKey: djs.imageKey,
+      image: djs.image 
+    })
+    .from(djs)
+    .where(eq(djs.id, djId))
+    .limit(1)
+
+  // If there's an old imageKey and it's different from the new one, delete the old image
+  if (currentDJ[0]?.imageKey && currentDJ[0].imageKey !== imageKey) {
+    try {
+      const utapi = getUTApi()
+      await utapi.deleteFiles(currentDJ[0].imageKey)
+      console.log(`Deleted old image ${currentDJ[0].imageKey} from UploadThing`)
+    } catch (error) {
+      console.error("Failed to delete old image from UploadThing:", error)
+    }
+  }
+
+  const slug = generateSlug(name)
+
+  await db
+    .update(djs)
+    .set({
+      slug,
+      name,
+      title: title || null,
+      specialty: specialty || null,
+      experience: experience || null,
+      performances: performances || null,
+      bio: bio || null,
+      highlights: highlights.length > 0 ? highlights : null,
+      instagram: instagram || null,
+      soundcloud: soundcloud || null,
+      image: image || null,
+      imageKey: imageKey || null,
+      isActive,
+      updatedAt: new Date(),
+    })
+    .where(eq(djs.id, djId))
+
+  revalidatePath("/admin")
+  revalidatePath(`/admin/djs/${slug}`)
+  redirect("/admin?success=dj-updated")
+}
+
+export async function deleteDJ(formData: FormData) {
+  const djId = parseInt(formData.get("djId") as string)
+  
+  if (!djId) {
+    throw new Error("DJ ID is required")
+  }
+
+  // Get DJ image key for cleanup
+  const djData = await db
+    .select({ imageKey: djs.imageKey })
+    .from(djs)
+    .where(eq(djs.id, djId))
+    .limit(1)
+
+  if (djData[0]?.imageKey) {
+    try {
+      const utapi = getUTApi()
+      await utapi.deleteFiles(djData[0].imageKey)
+      console.log(`Deleted image ${djData[0].imageKey} from UploadThing`)
+    } catch (error) {
+      console.error("Failed to delete image from UploadThing:", error)
+    }
+  }
+
+  await db.delete(djs).where(eq(djs.id, djId))
+  
+  revalidatePath("/admin")
+  redirect("/admin")
+}
+
+// Get DJs for bookings page - only active DJs ordered by orderIndex
+export async function getBookingsDJs() {
+  const activeDJs = await db
+    .select({
+      id: djs.id,
+      name: djs.name,
+      title: djs.title,
+      specialty: djs.specialty,
+      experience: djs.experience,
+      performances: djs.performances,
+      bio: djs.bio,
+      highlights: djs.highlights,
+      instagram: djs.instagram,
+      soundcloud: djs.soundcloud,
+      image: djs.image,
+    })
+    .from(djs)
+    .where(eq(djs.isActive, true))
+    .orderBy(djs.name)
+
+  return activeDJs
 }

@@ -297,3 +297,59 @@ export const galleryImagesRelations = relations(galleryImages, ({ one }) => ({
     references: [galleries.id],
   }),
 }));
+
+/**
+ * DJS TABLE
+ * 
+ * Stores internal DJ profiles for the bookings page. These are Nazaara's
+ * own roster of DJs that are featured on the bookings page for private events.
+ * Separate from the general artists table to allow for different fields and
+ * management workflows specific to internal roster management.
+ */
+export const djs = pgTable("djs", {
+  // Primary identifier
+  id: serial("id").primaryKey(),
+  
+  // URL-friendly identifier
+  slug: varchar("slug", { length: 255 }).notNull().unique(), // e.g., "dj-rishi", "dj-priya"
+  
+  // Basic DJ identity - unique constraint prevents duplicates
+  name: varchar("name", { length: 255 }).notNull().unique(), // e.g., "DJ RISHI", "DJ PRIYA"
+  
+  // DJ-specific branding
+  title: varchar("title", { length: 255 }), // e.g., "The Maestro", "The Innovator"
+  specialty: varchar("specialty", { length: 255 }), // e.g., "Bollywood & House Fusion"
+  experience: varchar("experience", { length: 100 }), // e.g., "15+ Years"
+  performances: varchar("performances", { length: 100 }), // e.g., "500+ Events"
+  
+  // Detailed information
+  bio: text("bio"), // Long-form biography for expanded view
+  highlights: text("highlights").array(), // Array of career highlights
+  
+  // Social media presence
+  instagram: varchar("instagram", { length: 100 }), // Instagram handle (without @)
+  soundcloud: varchar("soundcloud", { length: 100 }), // SoundCloud username
+  
+  // Media assets
+  image: text("image"), // DJ profile image URL from UploadThing
+  imageKey: text("image_key"), // UploadThing file key for deletion management
+  
+  // Management fields
+  isActive: boolean("is_active").default(true).notNull(), // Whether DJ is shown on bookings page
+  
+  // Audit timestamps
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => {
+  return {
+    // Indexes for common query patterns
+    slugIdx: index("dj_slug_idx").on(table.slug), // Route lookup by slug
+    nameIdx: index("dj_name_idx").on(table.name), // Search by DJ name
+    activeIdx: index("dj_active_idx").on(table.isActive), // Filter active DJs
+  };
+});
+
+// DJs table relations (standalone table, no relations needed initially)
+export const djsRelations = relations(djs, ({ }) => ({
+  // No relations initially - standalone table for internal roster
+}));

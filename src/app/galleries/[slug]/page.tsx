@@ -119,10 +119,7 @@ export default async function GalleryPage({ params }: PageProps) {
                   <Calendar className="h-4 w-4" />
                   <span className="text-sm md:text-base">{formatDate(gallery.date)}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Camera className="h-4 w-4" />
-                  <span className="text-sm md:text-base">{gallery.imageCount} {gallery.imageCount === 1 ? 'photo' : 'photos'}</span>
-                </div>
+               
               </div>
             </div>
           </div>

@@ -2,98 +2,35 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Users, Star, Crown } from "lucide-react";
-import { useState } from "react";
+import { getBookingsDJs } from "@/lib/admin-actions";
+import { useState, useEffect } from "react";
 
+interface DJ {
+  id: number;
+  name: string;
+  title: string | null;
+  specialty: string | null;
+  experience: string | null;
+  performances: string | null;
+  bio: string | null;
+  highlights: string[] | null;
+  instagram: string | null;
+  soundcloud: string | null;
+  image: string | null;
+}
 
 export default function BookingsPage() {
+  const [djRoster, setDjRoster] = useState<DJ[]>([]);
   const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
   const [expandedDj, setExpandedDj] = useState<number | null>(null);
-  const djRoster = [
-    {
-      id: 1,
-      name: "DJ RISHI",
-      title: "The Maestro",
-      specialty: "Bollywood & House Fusion",
-      experience: "15+ Years",
-      performances: "500+ Events",
-      image: "https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=800&q=80",
-      availability: "Select Dates",
-      instagram: "https://instagram.com/djrishi",
-      soundcloud: "https://soundcloud.com/djrishi",
-      bio: "With over 15 years of experience, DJ Rishi has become synonymous with the evolution of Bollywood fusion. His signature blend of traditional Indian melodies with contemporary house beats has graced stages from Mumbai to Manhattan, creating unforgettable moments at over 500 exclusive events worldwide.",
-      highlights: ["Resident DJ at Mumbai's premier clubs", "Official tour DJ for major Bollywood artists", "Curated performances at Cannes Film Festival"]
-    },
-    {
-      id: 2,
-      name: "DJ PRIYA",
-      title: "The Innovator",
-      specialty: "Electronic & Classical Blend",
-      experience: "10+ Years",
-      performances: "300+ Events",
-      image: "https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?w=800&q=80",
-      availability: "Booking Now",
-      instagram: "https://instagram.com/djpriya",
-      soundcloud: "https://soundcloud.com/djpriya",
-      bio: "DJ Priya pioneered the electronic-classical fusion movement, seamlessly weaving traditional ragas with cutting-edge electronic production. Her innovative approach has redefined South Asian music for a new generation, earning residencies at the world's most exclusive venues.",
-      highlights: ["First female DJ to headline major South Asian festivals", "Collaborations with Grammy-winning producers", "Pioneer of the 'Neo-Classical' movement"]
-    },
-    {
-      id: 3,
-      name: "DJ ARJUN",
-      title: "The Crowd Pleaser",
-      specialty: "Multi-Genre Specialist",
-      experience: "12+ Years",
-      performances: "400+ Events",
-      image: "https://images.unsplash.com/photo-1516873240891-4bf014598ab4?w=800&q=80",
-      availability: "Limited Availability",
-      instagram: "https://instagram.com/djarjun",
-      soundcloud: "https://soundcloud.com/djarjun",
-      bio: "Known as 'The Crowd Pleaser,' DJ Arjun's versatility spans from intimate gatherings to stadium-sized celebrations. His ability to read any room and deliver the perfect sonic journey has made him the go-to artist for discerning clients across the globe.",
-      highlights: ["400+ luxury weddings across 6 continents", "Preferred DJ for Fortune 500 corporate events", "Master of multi-genre mixing"]
-    },
-    {
-      id: 4,
-      name: "DJ MAYA",
-      title: "The Trendsetter",
-      specialty: "Hip-Hop & Bhangra",
-      experience: "8+ Years",
-      performances: "250+ Events",
-      image: "https://images.unsplash.com/photo-1485872299829-c673f5194813?w=800&q=80",
-      availability: "Booking Now",
-      instagram: "https://instagram.com/djmaya",
-      soundcloud: "https://soundcloud.com/djmaya",
-      bio: "DJ Maya brings the energy of underground hip-hop to traditional Bhangra, creating an explosive fusion that ignites dance floors worldwide. Her sets are a celebration of rhythm, culture, and pure musical innovation.",
-      highlights: ["Breakthrough artist at Coachella 2023", "Creator of viral Bhangra remixes", "Youth icon with 2M+ social media following"]
-    },
-    {
-      id: 5,
-      name: "DJ KABIR",
-      title: "The Virtuoso",
-      specialty: "Traditional & Modern Mix",
-      experience: "20+ Years",
-      performances: "1000+ Events",
-      image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80",
-      availability: "Exclusive Events Only",
-      instagram: "https://instagram.com/djkabir",
-      soundcloud: "https://soundcloud.com/djkabir",
-      bio: "A living legend with two decades of mastery, DJ Kabir has performed at over 1000 events, each one a testament to his unparalleled ability to blend tradition with modernity. His sets are not just performances—they're cultural experiences.",
-      highlights: ["20+ years of international acclaim", "Performed for royal families and heads of state", "Mentor to emerging South Asian DJs"]
-    },
-    {
-      id: 6,
-      name: "DJ SARA",
-      title: "The Visionary",
-      specialty: "Progressive & Sufi",
-      experience: "7+ Years",
-      performances: "200+ Events",
-      image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&q=80",
-      availability: "Open for Bookings",
-      instagram: "https://instagram.com/djsara",
-      soundcloud: "https://soundcloud.com/djsara",
-      bio: "DJ Sara's visionary approach to Progressive and Sufi fusion creates transcendent experiences that touch the soul. Her sets are spiritual journeys, blending ancient Sufi poetry with modern progressive house to create something truly magical.",
-      highlights: ["Rising star in the global fusion scene", "Featured in Rolling Stone India", "Creator of the 'Sufi House' movement"]
-    }
-  ];
+
+  useEffect(() => {
+    const fetchDJs = async () => {
+      const djs = await getBookingsDJs();
+      setDjRoster(djs);
+    };
+    fetchDJs();
+  }, []);
 
 
   return (
@@ -347,7 +284,7 @@ export default function BookingsPage() {
                       {/* Social Media Icons - More elegant placement */}
                       <div className="flex items-center gap-3 pt-4 border-t border-[var(--gold)]/5">
                         <a 
-                          href={dj.instagram} 
+                          href={dj.instagram ? `https://instagram.com/${dj.instagram}` : '#'} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="group flex items-center justify-center w-9 h-9 border border-[var(--gold)]/10 hover:border-[var(--gold)]/30 hover:bg-[var(--gold)]/5 transition-all duration-300"
@@ -363,7 +300,7 @@ export default function BookingsPage() {
                           </svg>
                         </a>
                         <a 
-                          href={dj.soundcloud} 
+                          href={dj.soundcloud ? `https://soundcloud.com/${dj.soundcloud}` : '#'} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="group flex items-center justify-center w-9 h-9 border border-[var(--gold)]/10 hover:border-[var(--gold)]/30 hover:bg-[var(--gold)]/5 transition-all duration-300"
@@ -445,7 +382,7 @@ export default function BookingsPage() {
                                         Booking Status
                                       </h4>
                                       <p className="text-lg font-prettywise text-[var(--off-white)]">
-                                        {dj.availability}
+                                        Available for Booking
                                       </p>
                                     </div>
                                     

@@ -4,12 +4,13 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, Users, MapPin, Settings, Plus, UserCheck, Shield, Image } from "lucide-react"
-import { getAdminEvents, getAdminArtists, getAdminVenues, getAdminGalleries } from "@/lib/admin-actions"
+import { Calendar, Users, MapPin, Settings, Plus, UserCheck, Shield, Image, Headphones } from "lucide-react"
+import { getAdminEvents, getAdminArtists, getAdminVenues, getAdminGalleries, getAdminDJs } from "@/lib/admin-actions"
 import Link from "next/link"
 import { SuccessToast } from "@/components/admin/success-toast"
 import { UserManagement } from "@/components/admin/user-management"
 import { ArtistsGrid } from "@/components/admin/artists-grid"
+import { DJsGrid } from "@/components/admin/djs-grid"
 import { VenuesGrid } from "@/components/admin/venues-grid"
 import { GalleriesGrid } from "@/components/admin/galleries-grid"
 import { EventsGrid } from "@/components/admin/events-grid"
@@ -37,9 +38,10 @@ export default async function AdminPage() {
     const isAdmin = session.user.role === "admin"
 
     // Fetch all admin data in parallel for optimal performance
-    const [events, artists, venues, galleries] = await Promise.all([
+    const [events, artists, djs, venues, galleries] = await Promise.all([
         getAdminEvents(),
         getAdminArtists(),
+        getAdminDJs(),
         getAdminVenues(),
         getAdminGalleries()
     ])
@@ -69,7 +71,7 @@ export default async function AdminPage() {
                 </div>
                 
                 <Tabs defaultValue="events" className="w-full">
-                    <TabsList className="grid grid-cols-5 w-full max-w-lg mb-8">
+                    <TabsList className="grid grid-cols-6 w-full max-w-2xl mb-8">
                         <TabsTrigger value="events" className="flex items-center gap-2">
                             <Calendar className="h-4 w-4" />
                             Events
@@ -77,6 +79,10 @@ export default async function AdminPage() {
                         <TabsTrigger value="artists" className="flex items-center gap-2">
                             <Users className="h-4 w-4" />
                             Artists
+                        </TabsTrigger>
+                        <TabsTrigger value="djs" className="flex items-center gap-2">
+                            <Headphones className="h-4 w-4" />
+                            DJs
                         </TabsTrigger>
                         <TabsTrigger value="venues" className="flex items-center gap-2">
                             <MapPin className="h-4 w-4" />
@@ -124,6 +130,23 @@ export default async function AdminPage() {
                         </div>
                         
                         <ArtistsGrid artists={artists} />
+                    </TabsContent>
+
+                    <TabsContent value="djs" className="space-y-6">
+                        <div className="flex justify-between items-center pb-6 border-b border-border">
+                            <div>
+                                <h2 className="text-3xl font-bold text-foreground">DJs</h2>
+                                <p className="text-muted-foreground mt-1">Manage internal DJ roster for bookings page</p>
+                            </div>
+                            <Link href="/admin/djs/new">
+                                <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    Add DJ
+                                </Button>
+                            </Link>
+                        </div>
+                        
+                        <DJsGrid djs={djs} />
                     </TabsContent>
 
                     <TabsContent value="venues" className="space-y-6">
