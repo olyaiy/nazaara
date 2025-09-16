@@ -47,6 +47,21 @@ export function SuccessToast() {
         description: "Your new artist has been created.",
         duration: 3000,
       })
+    } else if (success === "gallery-updated") {
+      toast.success("Gallery saved successfully", {
+        description: "Your changes have been saved.",
+        duration: 3000,
+      })
+    } else if (success === "gallery-created") {
+      toast.success("Gallery created successfully", {
+        description: "Your new gallery has been created.",
+        duration: 3000,
+      })
+    } else if (success === "gallery-deleted") {
+      toast.success("Gallery deleted successfully", {
+        description: "The gallery has been deleted.",
+        duration: 3000,
+      })
     }
   }, [searchParams])
   

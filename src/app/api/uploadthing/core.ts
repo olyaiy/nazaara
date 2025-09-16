@@ -101,6 +101,36 @@ export const ourFileRouter = {
         size: file.size
       };
     }),
+
+  // Gallery image upload route
+  galleryImage: f({
+    image: {
+      maxFileSize: "4MB",
+      maxFileCount: 20, // Allow batch uploading up to 20 images at once
+    },
+  })
+    .middleware(async ({ req }) => {
+      const session = await auth.api.getSession({
+        headers: await headers()
+      });
+
+      if (!session) throw new UploadThingError("Unauthorized");
+
+      return { userId: session.user.id, userEmail: session.user.email };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Gallery image upload complete for userId:", metadata.userId);
+      console.log("File URL:", file.url);
+      console.log("File Key:", file.key);
+
+      return { 
+        uploadedBy: metadata.userId,
+        url: file.url,
+        key: file.key,
+        name: file.name,
+        size: file.size
+      };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

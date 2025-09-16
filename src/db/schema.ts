@@ -176,6 +176,73 @@ export const eventsArtists = pgTable("events_artists", {
 }));
 
 /**
+ * GALLERIES TABLE
+ * 
+ * Stores gallery information for photo collections. Each gallery can contain
+ * multiple images stored in the galleryImages table. This normalized structure
+ * allows for flexible image management and future metadata additions.
+ */
+export const galleries = pgTable("galleries", {
+  // Primary identifier
+  id: serial("id").primaryKey(),
+  
+  // URL-friendly identifier
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  
+  // Gallery information
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"), // Optional gallery description
+  date: timestamp("date").notNull(), // Gallery date (when photos were taken)
+  
+  // Optional designated cover image (URL) - if not set, use first image
+  coverImage: text("cover_image"),
+  
+  // Audit timestamps
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => {
+  return {
+    // Indexes for common query patterns
+    slugIdx: index("gallery_slug_idx").on(table.slug),
+    dateIdx: index("gallery_date_idx").on(table.date), // For chronological sorting
+  };
+});
+
+/**
+ * GALLERY_IMAGES TABLE
+ * 
+ * Stores individual images within galleries. This one-to-many relationship
+ * allows unlimited images per gallery with individual management capabilities.
+ * Images are ordered by orderIndex for display sequencing.
+ */
+export const galleryImages = pgTable("gallery_images", {
+  // Primary identifier
+  id: serial("id").primaryKey(),
+  
+  // Foreign key to galleries table - cascade delete removes images when gallery deleted
+  galleryId: integer("gallery_id").references(() => galleries.id, { onDelete: "cascade" }).notNull(),
+  
+  // Image data
+  url: text("url").notNull(), // UploadThing URL for the image
+  key: text("key").notNull(), // UploadThing key for deletion management
+  
+  // Optional metadata
+  caption: text("caption"), // Optional image caption for future use
+  
+  // Display order within the gallery (0 = first)
+  orderIndex: integer("order_index").default(0),
+  
+  // Audit timestamp
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => {
+  return {
+    // Indexes for efficient queries
+    galleryIdx: index("gallery_images_gallery_idx").on(table.galleryId),
+    orderIdx: index("gallery_images_order_idx").on(table.orderIndex),
+  };
+});
+
+/**
  * DRIZZLE ORM RELATIONS
  * 
  * These relations define how Drizzle ORM should handle joins and queries
@@ -215,5 +282,18 @@ export const eventsArtistsRelations = relations(eventsArtists, ({ one }) => ({
   artist: one(artists, {
     fields: [eventsArtists.artistId],
     references: [artists.id],
+  }),
+}));
+
+// Galleries can have many images
+export const galleriesRelations = relations(galleries, ({ many }) => ({
+  images: many(galleryImages),
+}));
+
+// Gallery images belong to one gallery
+export const galleryImagesRelations = relations(galleryImages, ({ one }) => ({
+  gallery: one(galleries, {
+    fields: [galleryImages.galleryId],
+    references: [galleries.id],
   }),
 }));

@@ -4,13 +4,14 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, Users, MapPin, Settings, Plus, UserCheck, Shield } from "lucide-react"
-import { getAdminEvents, getAdminArtists, getAdminVenues } from "@/lib/admin-actions"
+import { Calendar, Users, MapPin, Settings, Plus, UserCheck, Shield, Image } from "lucide-react"
+import { getAdminEvents, getAdminArtists, getAdminVenues, getAdminGalleries } from "@/lib/admin-actions"
 import Link from "next/link"
 import { SuccessToast } from "@/components/admin/success-toast"
 import { UserManagement } from "@/components/admin/user-management"
 import { ArtistsGrid } from "@/components/admin/artists-grid"
 import { VenuesGrid } from "@/components/admin/venues-grid"
+import { GalleriesGrid } from "@/components/admin/galleries-grid"
 import { EventsGrid } from "@/components/admin/events-grid"
 
 async function signOutAction() {
@@ -36,10 +37,11 @@ export default async function AdminPage() {
     const isAdmin = session.user.role === "admin"
 
     // Fetch all admin data in parallel for optimal performance
-    const [events, artists, venues] = await Promise.all([
+    const [events, artists, venues, galleries] = await Promise.all([
         getAdminEvents(),
         getAdminArtists(),
-        getAdminVenues()
+        getAdminVenues(),
+        getAdminGalleries()
     ])
 
     return (
@@ -67,7 +69,7 @@ export default async function AdminPage() {
                 </div>
                 
                 <Tabs defaultValue="events" className="w-full">
-                    <TabsList className="grid grid-cols-4 w-full max-w-md mb-8">
+                    <TabsList className="grid grid-cols-5 w-full max-w-lg mb-8">
                         <TabsTrigger value="events" className="flex items-center gap-2">
                             <Calendar className="h-4 w-4" />
                             Events
@@ -79,6 +81,10 @@ export default async function AdminPage() {
                         <TabsTrigger value="venues" className="flex items-center gap-2">
                             <MapPin className="h-4 w-4" />
                             Venues
+                        </TabsTrigger>
+                        <TabsTrigger value="galleries" className="flex items-center gap-2">
+                            <Image className="h-4 w-4" />
+                            Galleries
                         </TabsTrigger>
                         <TabsTrigger value="settings" className="flex items-center gap-2">
                             <Settings className="h-4 w-4" />
@@ -135,6 +141,23 @@ export default async function AdminPage() {
                         </div>
                         
                         <VenuesGrid venues={venues} />
+                    </TabsContent>
+
+                    <TabsContent value="galleries" className="space-y-6">
+                        <div className="flex justify-between items-center pb-6 border-b border-border">
+                            <div>
+                                <h2 className="text-3xl font-bold text-foreground">Galleries</h2>
+                                <p className="text-muted-foreground mt-1">Manage photo galleries and collections</p>
+                            </div>
+                            <Link href="/admin/galleries/new">
+                                <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    New Gallery
+                                </Button>
+                            </Link>
+                        </div>
+                        
+                        <GalleriesGrid galleries={galleries} />
                     </TabsContent>
 
                     <TabsContent value="settings" className="space-y-6">

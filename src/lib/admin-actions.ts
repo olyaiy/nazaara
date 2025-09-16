@@ -1,8 +1,8 @@
 "use server"
 
 import { db } from "@/db/drizzle"
-import { events, artists, venues, eventsArtists } from "@/db/schema"
-import { eq, count, sql } from "drizzle-orm"
+import { events, artists, venues, eventsArtists, galleries, galleryImages } from "@/db/schema"
+import { eq, count, sql, desc } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { generateSlug } from "@/lib/utils/slug"
@@ -562,4 +562,213 @@ export async function deleteArtist(formData: FormData) {
   
   revalidatePath("/admin")
   redirect("/admin")
+}
+
+// Gallery CRUD operations
+export async function getAdminGalleries() {
+  const galleriesWithImageCount = await db
+    .select({
+      id: galleries.id,
+      slug: galleries.slug,
+      title: galleries.title,
+      description: galleries.description,
+      date: galleries.date,
+      coverImage: galleries.coverImage,
+      imageCount: sql<number>`COALESCE(COUNT(${galleryImages.id}), 0)`.as('imageCount'),
+      firstImage: sql<string | null>`MIN(${galleryImages.url})`.as('firstImage'),
+    })
+    .from(galleries)
+    .leftJoin(galleryImages, eq(galleries.id, galleryImages.galleryId))
+    .groupBy(galleries.id, galleries.slug, galleries.title, galleries.description, galleries.date, galleries.coverImage)
+    .orderBy(desc(galleries.date))
+
+  return galleriesWithImageCount
+}
+
+export async function getGalleryBySlug(slug: string) {
+  const gallery = await db
+    .select()
+    .from(galleries)
+    .where(eq(galleries.slug, slug))
+    .limit(1)
+
+  if (!gallery[0]) {
+    return null
+  }
+
+  // Get all images for this gallery, ordered by orderIndex
+  const images = await db
+    .select({
+      id: galleryImages.id,
+      url: galleryImages.url,
+      key: galleryImages.key,
+      caption: galleryImages.caption,
+      orderIndex: galleryImages.orderIndex,
+    })
+    .from(galleryImages)
+    .where(eq(galleryImages.galleryId, gallery[0].id))
+    .orderBy(galleryImages.orderIndex)
+
+  return {
+    ...gallery[0],
+    images,
+  }
+}
+
+export async function createGallery(formData: FormData) {
+  const title = formData.get("title") as string
+  const description = formData.get("description") as string
+  const dateStr = formData.get("date") as string
+  
+  if (!title || !dateStr) {
+    throw new Error("Required fields missing")
+  }
+
+  const slug = generateSlug(title)
+  const date = new Date(dateStr)
+
+  // Parse image data from form
+  const imageData: { url: string; key: string; orderIndex: number }[] = []
+  let index = 0
+  while (formData.has(`images[${index}][url]`)) {
+    const url = formData.get(`images[${index}][url]`) as string
+    const key = formData.get(`images[${index}][key]`) as string
+    if (url && key) {
+      imageData.push({ url, key, orderIndex: index })
+    }
+    index++
+  }
+
+  // Create the gallery
+  const [newGallery] = await db
+    .insert(galleries)
+    .values({
+      slug,
+      title,
+      description: description || null,
+      date,
+      coverImage: imageData[0]?.url || null, // Use first image as cover by default
+    })
+    .returning({ id: galleries.id })
+
+  // Insert gallery images if any
+  if (imageData.length > 0 && newGallery) {
+    await db
+      .insert(galleryImages)
+      .values(
+        imageData.map(image => ({
+          galleryId: newGallery.id,
+          url: image.url,
+          key: image.key,
+          orderIndex: image.orderIndex,
+        }))
+      )
+  }
+
+  revalidatePath("/admin")
+  redirect("/admin?tab=galleries&success=gallery-created")
+}
+
+export async function updateGallery(formData: FormData) {
+  const galleryId = parseInt(formData.get("galleryId") as string)
+  const title = formData.get("title") as string
+  const description = formData.get("description") as string
+  const dateStr = formData.get("date") as string
+  
+  if (!galleryId || !title || !dateStr) {
+    throw new Error("Required fields missing")
+  }
+
+  const slug = generateSlug(title)
+  const date = new Date(dateStr)
+
+  // Parse new image data from form
+  const imageData: { url: string; key: string; orderIndex: number }[] = []
+  let index = 0
+  while (formData.has(`images[${index}][url]`)) {
+    const url = formData.get(`images[${index}][url]`) as string
+    const key = formData.get(`images[${index}][key]`) as string
+    if (url && key) {
+      imageData.push({ url, key, orderIndex: index })
+    }
+    index++
+  }
+
+  // Get existing images to clean up any removed ones
+  const existingImages = await db
+    .select({ key: galleryImages.key })
+    .from(galleryImages)
+    .where(eq(galleryImages.galleryId, galleryId))
+
+  const existingKeys = new Set(existingImages.map(img => img.key))
+  const newKeys = new Set(imageData.map(img => img.key))
+  
+  // Find keys to delete from UploadThing
+  const keysToDelete = Array.from(existingKeys).filter(key => !newKeys.has(key))
+  
+  if (keysToDelete.length > 0) {
+    const utapi = getUTApi()
+    await utapi.deleteFiles(keysToDelete)
+  }
+
+  // Update gallery
+  await db
+    .update(galleries)
+    .set({
+      slug,
+      title,
+      description: description || null,
+      date,
+      coverImage: imageData[0]?.url || null,
+      updatedAt: new Date(),
+    })
+    .where(eq(galleries.id, galleryId))
+
+  // Delete existing image records
+  await db
+    .delete(galleryImages)
+    .where(eq(galleryImages.galleryId, galleryId))
+
+  // Insert new image records
+  if (imageData.length > 0) {
+    await db
+      .insert(galleryImages)
+      .values(
+        imageData.map(image => ({
+          galleryId,
+          url: image.url,
+          key: image.key,
+          orderIndex: image.orderIndex,
+        }))
+      )
+  }
+
+  revalidatePath("/admin")
+  revalidatePath(`/admin/galleries/${slug}`)
+  redirect("/admin?tab=galleries&success=gallery-updated")
+}
+
+export async function deleteGallery(formData: FormData) {
+  const galleryId = parseInt(formData.get("galleryId") as string)
+  
+  if (!galleryId) {
+    throw new Error("Gallery ID is required")
+  }
+
+  // Get all image keys for cleanup
+  const images = await db
+    .select({ key: galleryImages.key })
+    .from(galleryImages)
+    .where(eq(galleryImages.galleryId, galleryId))
+
+  if (images.length > 0) {
+    const utapi = getUTApi()
+    await utapi.deleteFiles(images.map(img => img.key))
+  }
+
+  // Delete gallery - images will be cascade deleted
+  await db.delete(galleries).where(eq(galleries.id, galleryId))
+  
+  revalidatePath("/admin")
+  redirect("/admin?tab=galleries&success=gallery-deleted")
 }
