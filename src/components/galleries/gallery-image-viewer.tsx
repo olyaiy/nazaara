@@ -78,12 +78,12 @@ export function GalleryImageViewer({ images, title }: GalleryImageViewerProps) {
   return (
     <>
       {/* Image Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {images.map((image, index) => (
           <button
             key={image.id}
             onClick={() => setSelectedImageIndex(index)}
-            className="group relative aspect-[4/3] overflow-hidden rounded-lg bg-muted hover:shadow-xl transition-all duration-300"
+            className="group relative aspect-[4/3] overflow-hidden rounded-lg bg-muted hover:shadow-2xl transition-all duration-300"
             aria-label={`View image ${index + 1}`}
           >
             <Image
@@ -91,7 +91,7 @@ export function GalleryImageViewer({ images, title }: GalleryImageViewerProps) {
               alt={image.caption || `${title} - Image ${index + 1}`}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-110"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               onLoadingComplete={() => handleImageLoad(index)}
               onLoadStart={() => handleImageLoadStart(index)}
             />
