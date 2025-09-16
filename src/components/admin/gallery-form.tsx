@@ -207,7 +207,7 @@ export function GalleryForm({ gallery, mode }: GalleryFormProps) {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Delete Gallery</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure you want to delete "{gallery.title}"? This will permanently delete the gallery and all its images. This action cannot be undone.
+                    Are you sure you want to delete &quot;{gallery.title}&quot;? This will permanently delete the gallery and all its images. This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
