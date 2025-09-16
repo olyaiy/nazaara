@@ -65,7 +65,7 @@ export default async function GalleryPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Header with Background Image */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
+      <section className="relative py-24 md:py-40 overflow-hidden">
         {/* Background Image */}
         {heroImage && (
           <>
@@ -80,7 +80,7 @@ export default async function GalleryPage({ params }: PageProps) {
               />
             </div>
             {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/50 to-background/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/30 to-background/10" />
           </>
         )}
         
