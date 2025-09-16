@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 import Link from "next/link"
-import { Search, ExternalLink, Instagram, Music, Headphones, Eye, EyeOff } from "lucide-react"
+import { Search, ExternalLink, Instagram, Music, Eye, EyeOff } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   Pagination,
@@ -151,9 +151,13 @@ export function DJsGrid({ djs }: DJsGridProps) {
               {/* Active/Inactive indicator on hover */}
               <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 {dj.isActive ? (
-                  <Eye className="h-4 w-4 text-green-400" title="Visible on bookings page" />
+                  <span title="Visible on bookings page" className="inline-flex">
+                    <Eye className="h-4 w-4 text-green-400" aria-hidden="true" />
+                  </span>
                 ) : (
-                  <EyeOff className="h-4 w-4 text-red-400" title="Hidden from bookings page" />
+                  <span title="Hidden from bookings page" className="inline-flex">
+                    <EyeOff className="h-4 w-4 text-red-400" aria-hidden="true" />
+                  </span>
                 )}
               </div>
             </div>
@@ -207,12 +211,6 @@ export function DJsGrid({ djs }: DJsGridProps) {
                 )}
               </div>
 
-              {/* Availability */}
-              {dj.availability && (
-                <div className="text-xs text-muted-foreground">
-                  <span className="text-[--gold]/60">•</span> {dj.availability}
-                </div>
-              )}
             </div>
           </Link>
         ))}
