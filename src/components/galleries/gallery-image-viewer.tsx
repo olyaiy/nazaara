@@ -101,9 +101,7 @@ export function GalleryImageViewer({ images, title }: GalleryImageViewerProps) {
               </div>
             )}
             {/* Hover overlay */}
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span className="text-white text-sm font-medium">View</span>
-            </div>
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
           </button>
         ))}
       </div>
@@ -152,10 +150,6 @@ export function GalleryImageViewer({ images, title }: GalleryImageViewerProps) {
             </>
           )}
 
-          {/* Image counter */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm">
-            {selectedImageIndex + 1} / {images.length}
-          </div>
 
           {/* Main image */}
           <div 

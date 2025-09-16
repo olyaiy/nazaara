@@ -55,8 +55,8 @@ export function Navigation() {
             />
           </Link>
 
-          {/* Center Navigation (Desktop) */}
-          <div className="hidden lg:flex items-center gap-12 absolute left-1/2 -translate-x-1/2">
+          {/* Right Side Navigation (Desktop) */}
+          <div className="hidden lg:flex items-center gap-8">
             <Link
               href="/about"
               aria-current={isCurrent("/about") ? "page" : undefined}
@@ -97,23 +97,26 @@ export function Navigation() {
                 )}
               />
             </Link>
-           
-          </div>
-
-          {/* Right Side CTA (Desktop) */}
-          <div className="hidden md:flex items-center gap-6">
-            <a
-              href="https://tamasha.myportfolio.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative group"
+            <Link
+              href="/galleries"
+              aria-current={isCurrent("/galleries") ? "page" : undefined}
+              className={cn(
+                "relative group text-sm uppercase tracking-[0.2em] font-light transition-colors",
+                isCurrent("/galleries")
+                  ? "text-primary"
+                  : "text-foreground/80 hover:text-primary"
+              )}
             >
-              <span className="text-sm uppercase tracking-[0.2em] text-primary font-light transition-colors group-hover:opacity-90 flex items-center gap-2">
-                Gallery
-                <ArrowUpRight className="w-3 h-3 opacity-70 group-hover:opacity-100 transition-opacity" />
-              </span>
-              <span className="absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 w-0 group-hover:w-full" />
-            </a>
+              <span>Gallery</span>
+              <span
+                className={cn(
+                  "pointer-events-none absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
+                  isCurrent("/galleries")
+                    ? "w-full opacity-90"
+                    : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                )}
+              />
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -171,19 +174,19 @@ export function Navigation() {
             >
               Bookings
             </Link>
-            
-            <a
-              href="https://tamasha.myportfolio.com/"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/galleries"
               onClick={() => setOpen(false)}
-              className="block rounded-md px-3 py-3 text-base uppercase tracking-[0.18em] text-foreground/90 hover:bg-muted/30 hover:text-primary transition-colors"
+              className={cn(
+                "block rounded-md px-3 py-3 text-base uppercase tracking-[0.18em] transition-colors",
+                isCurrent("/galleries")
+                  ? "text-primary bg-primary/10"
+                  : "text-foreground/90 hover:bg-muted/30 hover:text-primary"
+              )}
+              aria-current={isCurrent("/galleries") ? "page" : undefined}
             >
-              <span className="inline-flex items-center gap-2">
-                Gallery
-                <ArrowUpRight className="w-4 h-4 opacity-70" />
-              </span>
-            </a>
+              Galleries
+            </Link>
           </div>
         </div>
       </div>
