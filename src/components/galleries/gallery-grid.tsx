@@ -19,7 +19,7 @@ export function GalleryGrid({ galleries }: GalleryGridProps) {
   }
 
   const getThumbnail = (gallery: PublicGallery) => {
-    return gallery.coverImage || gallery.firstImage || null
+    return  gallery.firstImage || null
   }
 
   if (galleries.length === 0) {
@@ -74,10 +74,7 @@ export function GalleryGrid({ galleries }: GalleryGridProps) {
                   <Calendar className="h-3.5 w-3.5" />
                   <span>{formatDate(gallery.date)}</span>
                 </div>
-                <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm px-2 py-1 rounded">
-                  <Camera className="h-3.5 w-3.5" />
-                  <span>{gallery.imageCount}</span>
-                </div>
+                
               </div>
             </div>
 
