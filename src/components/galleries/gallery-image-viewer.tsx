@@ -14,6 +14,7 @@ interface GalleryImageViewerProps {
 export function GalleryImageViewer({ images, title }: GalleryImageViewerProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
   const [isLoading, setIsLoading] = useState<Set<number>>(new Set())
+  const [lightboxImageLoading, setLightboxImageLoading] = useState(false)
 
   // Handle keyboard navigation
   useEffect(() => {
@@ -39,6 +40,7 @@ export function GalleryImageViewer({ images, title }: GalleryImageViewerProps) {
 
   const navigatePrevious = useCallback(() => {
     if (selectedImageIndex === null) return
+    setLightboxImageLoading(true)
     setSelectedImageIndex(
       selectedImageIndex === 0 ? images.length - 1 : selectedImageIndex - 1
     )
@@ -46,6 +48,7 @@ export function GalleryImageViewer({ images, title }: GalleryImageViewerProps) {
 
   const navigateNext = useCallback(() => {
     if (selectedImageIndex === null) return
+    setLightboxImageLoading(true)
     setSelectedImageIndex(
       selectedImageIndex === images.length - 1 ? 0 : selectedImageIndex + 1
     )
@@ -57,18 +60,29 @@ export function GalleryImageViewer({ images, title }: GalleryImageViewerProps) {
       newSet.delete(index)
       return newSet
     })
+    // Clear lightbox loading state when the currently selected image finishes loading
+    if (index === selectedImageIndex) {
+      setLightboxImageLoading(false)
+    }
   }
 
   const handleImageLoadStart = (index: number) => {
     setIsLoading(prev => new Set(prev).add(index))
+    // Set lightbox loading state when starting to load the currently selected image
+    if (index === selectedImageIndex) {
+      setLightboxImageLoading(true)
+    }
   }
 
-  // Prevent body scroll when modal is open
+  // Prevent body scroll when modal is open and handle initial loading state
   useEffect(() => {
     if (selectedImageIndex !== null) {
       document.body.style.overflow = 'hidden'
+      // Reset lightbox loading state when opening a new image
+      setLightboxImageLoading(true)
     } else {
       document.body.style.overflow = ''
+      setLightboxImageLoading(false)
     }
     return () => {
       document.body.style.overflow = ''
@@ -82,26 +96,48 @@ export function GalleryImageViewer({ images, title }: GalleryImageViewerProps) {
         {images.map((image, index) => (
           <button
             key={image.id}
-            onClick={() => setSelectedImageIndex(index)}
+            onClick={() => {
+              setLightboxImageLoading(true)
+              setSelectedImageIndex(index)
+            }}
             className="group relative aspect-[4/3] overflow-hidden rounded-lg bg-muted hover:shadow-2xl transition-all duration-300"
             aria-label={`View image ${index + 1}`}
           >
+            {/* Skeleton loading background */}
+            <div className={cn(
+              "absolute inset-0 bg-gradient-to-r from-muted via-muted/50 to-muted",
+              "animate-pulse transition-opacity duration-300",
+              isLoading.has(index) ? "opacity-100" : "opacity-0"
+            )} />
+            
             <Image
               src={image.url}
               alt={image.caption || `${title} - Image ${index + 1}`}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-110"
+              className={cn(
+                "object-cover transition-all duration-300 group-hover:scale-110",
+                isLoading.has(index) ? "opacity-0" : "opacity-100"
+              )}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               onLoadingComplete={() => handleImageLoad(index)}
               onLoadStart={() => handleImageLoadStart(index)}
             />
+            
+            {/* Loading spinner overlay */}
             {isLoading.has(index) && (
-              <div className="absolute inset-0 flex items-center justify-center bg-muted">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="flex flex-col items-center gap-2">
+                  <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground font-medium">Loading...</span>
+                </div>
               </div>
             )}
+            
             {/* Hover overlay */}
-            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className={cn(
+              "absolute inset-0 bg-black/20 transition-opacity",
+              isLoading.has(index) ? "opacity-0" : "opacity-0 group-hover:opacity-100"
+            )} />
           </button>
         ))}
       </div>
@@ -157,21 +193,29 @@ export function GalleryImageViewer({ images, title }: GalleryImageViewerProps) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
+              {/* Loading backdrop */}
+              {(lightboxImageLoading || isLoading.has(selectedImageIndex)) && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm rounded-lg">
+                  <div className="flex flex-col items-center gap-4 text-white">
+                    <Loader2 className="h-12 w-12 animate-spin" />
+                    <span className="text-lg font-medium tracking-wide">Loading image...</span>
+                  </div>
+                </div>
+              )}
+              
               <Image
                 src={images[selectedImageIndex].url}
                 alt={images[selectedImageIndex].caption || `${title} - Image ${selectedImageIndex + 1}`}
                 width={1920}
                 height={1080}
-                className="object-contain w-full h-full"
+                className={cn(
+                  "object-contain w-full h-full transition-opacity duration-300",
+                  (lightboxImageLoading || isLoading.has(selectedImageIndex)) ? "opacity-0" : "opacity-100"
+                )}
                 priority
                 onLoadingComplete={() => handleImageLoad(selectedImageIndex)}
                 onLoadStart={() => handleImageLoadStart(selectedImageIndex)}
               />
-              {isLoading.has(selectedImageIndex) && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Loader2 className="h-12 w-12 animate-spin text-white" />
-                </div>
-              )}
             </div>
           </div>
 
