@@ -672,14 +672,13 @@ export async function createGallery(formData: FormData) {
 export async function updateGallery(formData: FormData) {
   const galleryId = parseInt(formData.get("galleryId") as string)
   const title = formData.get("title") as string
+  const slug = formData.get("slug") as string
   const description = formData.get("description") as string
   const dateStr = formData.get("date") as string
   
-  if (!galleryId || !title || !dateStr) {
+  if (!galleryId || !title || !slug || !dateStr) {
     throw new Error("Required fields missing")
   }
-
-  const slug = generateSlug(title)
   const date = new Date(dateStr)
 
   // Parse new image data from form
