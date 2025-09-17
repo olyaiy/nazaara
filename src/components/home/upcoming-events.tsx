@@ -27,9 +27,11 @@ export default async function UpcomingEvents() {
     ? upcomingEvents.filter((event) => event.slug !== heroSlug)
     : upcomingEvents;
 
-  // Build a chronologically sorted list of ALL events for the Complete Schedule
+  // Build a chronologically sorted list of upcoming events only for the Complete Schedule
   const allEvents = await getPublicEvents();
-  const allEventsChrono = allEvents.sort((a, b) => {
+  const now = new Date();
+  const upcomingEventsOnly = allEvents.filter(event => new Date(event.startTime) >= now);
+  const allEventsChrono = upcomingEventsOnly.sort((a, b) => {
     const dateA = new Date(a.startTime);
     const dateB = new Date(b.startTime);
     return dateA.getTime() - dateB.getTime();
