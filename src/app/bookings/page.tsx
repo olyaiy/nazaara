@@ -4,6 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Users, Star, Crown } from "lucide-react";
 import { getBookingsDJs } from "@/lib/admin-actions";
 import { useState, useEffect } from "react";
+import {
+  heroContent,
+  privateEventsContent,
+  djRosterContent,
+  contactFormContent
+} from "@/content/bookings";
 
 interface DJ {
   id: number;
@@ -17,6 +23,16 @@ interface DJ {
   instagram: string | null;
   soundcloud: string | null;
   image: string | null;
+}
+
+// Helper function to map icon names to components
+function getIcon(iconName: string) {
+  const icons = {
+    Star,
+    Crown,
+    Users
+  };
+  return icons[iconName as keyof typeof icons];
 }
 
 export default function BookingsPage() {
@@ -40,7 +56,7 @@ export default function BookingsPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/bookings-bg.webp"
+            src={heroContent.backgroundImage}
             alt="DJ performing with dramatic lighting"
             fill
             className="object-cover"
@@ -55,13 +71,12 @@ export default function BookingsPage() {
             
             {/* Main Title */}
             <h1 className="text-[clamp(4rem,10vw,10rem)] font-prettywise leading-[0.8] text-[var(--off-white)] mb-8">
-              Curated
-              <span className="block text-[var(--gold)]">Excellence</span>
+              {heroContent.title}
+              <span className="block text-[var(--gold)]">{heroContent.subtitle}</span>
             </h1>
             
             <p className="text-lg font-neue-haas text-[var(--off-white)]/70 leading-relaxed max-w-2xl mb-12">
-              From intimate gatherings to grand celebrations, we orchestrate extraordinary entertainment 
-              experiences with exclusive access to the world&apos;s most celebrated South Asian artists.
+              {heroContent.description}
             </p>
             
           </div>
@@ -89,52 +104,37 @@ export default function BookingsPage() {
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-8 h-px bg-[var(--gold)]/40" />
                   <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/60">
-                    Private Services
+                    {privateEventsContent.sectionTitle}
                   </span>
                 </div>
                 
                 <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-8">
-                  Beyond
-                  <span className="block text-[var(--gold)]">Extraordinary</span>
+                  {privateEventsContent.heading}
+                  <span className="block text-[var(--gold)]">{privateEventsContent.subHeading}</span>
                 </h2>
                 
                 <div className="space-y-6 text-[var(--off-white)]/70 font-neue-haas leading-relaxed mb-12">
                   <p>
-                    From intimate celebrations to grand spectacles, we orchestrate private experiences 
-                    that transcend the ordinary. Our reputation isn&apos;t built on portfolios—it&apos;s earned 
-                    through whispers in elite circles.
+                    {privateEventsContent.description}
                   </p>
                 </div>
                 
                 {/* Service Details */}
                 <div className="space-y-6 mb-12">
-                  <div className="flex items-start gap-4">
-                    <Star className="w-5 h-5 text-[var(--gold)] mt-1" />
-                    <div>
-                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">Bollywood A-Listers</h3>
-                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                        Direct access to India&apos;s biggest stars for your most prestigious private events
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <Crown className="w-5 h-5 text-[var(--gold)] mt-1" />
-                    <div>
-                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">International Artists</h3>
-                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                        Global South Asian sensations and cultural icons for exclusive performances
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <Users className="w-5 h-5 text-[var(--gold)] mt-1" />
-                    <div>
-                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">Private Concerts</h3>
-                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                        Intimate performances and private concerts by legendary artists
-                      </p>
-                    </div>
-                  </div>
+                  {privateEventsContent.services.map((service, index) => {
+                    const IconComponent = getIcon(service.icon);
+                    return (
+                      <div key={index} className="flex items-start gap-4">
+                        <IconComponent className="w-5 h-5 text-[var(--gold)] mt-1" />
+                        <div>
+                          <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">{service.title}</h3>
+                          <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
+                            {service.description}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                   
                   {/* CTA Button */}
                   <div className="pt-8">
@@ -152,7 +152,7 @@ export default function BookingsPage() {
                         formSection?.scrollIntoView({ behavior: 'smooth' });
                       }}
                     >
-                      Book a Consultation
+                      {privateEventsContent.ctaButtonText}
                     </Button>
                   </div>
                 </div>
@@ -163,7 +163,7 @@ export default function BookingsPage() {
                 {/* Main image - luxury event */}
                 <div className="absolute top-0 right-0 w-4/5 h-4/5 overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80"
+                    src={privateEventsContent.images.primary}
                     alt="Luxury private event"
                     fill
                     className="object-cover"
@@ -174,7 +174,7 @@ export default function BookingsPage() {
                 {/* Secondary image - celebrity performance */}
                 <div className="absolute bottom-0 left-0 w-3/5 h-3/5 overflow-hidden border-8 border-[var(--maroon-red)]">
                   <Image
-                    src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&q=80"
+                    src={privateEventsContent.images.secondary}
                     alt="Celebrity performance"
                     fill
                     className="object-cover"
@@ -197,15 +197,15 @@ export default function BookingsPage() {
               <div className="flex items-center justify-center gap-4 mb-8">
                 <div className="w-16 h-px bg-[var(--gold)]/20" />
                 <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40">
-                  Available Artists
+                  {djRosterContent.sectionTitle}
                 </span>
                 <div className="w-16 h-px bg-[var(--gold)]/20" />
               </div>
               <h2 className="text-[clamp(3rem,6vw,6rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-6">
-                <span className="text-[var(--gold)]">DJ Roster</span>
+                <span className="text-[var(--gold)]">{djRosterContent.heading}</span>
               </h2>
               <p className="text-lg font-neue-haas text-[var(--off-white)]/60 max-w-2xl mx-auto">
-                Professional DJs available for private bookings
+                {djRosterContent.description}
               </p>
             </div>
 
@@ -443,44 +443,39 @@ export default function BookingsPage() {
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-16 h-px bg-[var(--gold)]/20" />
                   <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40">
-                    Begin Your Journey
+                    {contactFormContent.sectionTitle}
                   </span>
                 </div>
                 
                 <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-8">
-                  Let&apos;s Create
-                  <span className="block text-[var(--gold)]">Magic Together</span>
+                  {contactFormContent.heading}
+                  <span className="block text-[var(--gold)]">{contactFormContent.subHeading}</span>
                 </h2>
                 
                 <p className="text-lg font-neue-haas text-[var(--off-white)]/60 leading-relaxed mb-12">
-                  Every extraordinary event begins with a conversation. Share your vision, 
-                  and we&apos;ll orchestrate an experience beyond imagination.
+                  {contactFormContent.description}
                 </p>
                 
                 <div className="space-y-8 mb-12">
-                  <div>
-                    <h3 className="text-xl font-prettywise text-[var(--off-white)] mb-2">What We Need</h3>
-                    <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                      Event type, date, location, and guest count to get started
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-prettywise text-[var(--off-white)] mb-2">Response Time</h3>
-                    <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                      We typically respond within 24 hours with initial availability
-                    </p>
-                  </div>
+                  {contactFormContent.contactInfo.map((info, index) => (
+                    <div key={index}>
+                      <h3 className="text-xl font-prettywise text-[var(--off-white)] mb-2">{info.title}</h3>
+                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
+                        {info.description}
+                      </p>
+                    </div>
+                  ))}
                 </div>
                 
                 <div className="pt-8 border-t border-[var(--gold)]/10">
                   <p className="text-sm font-neue-haas text-[var(--off-white)]/40 mb-4">
-                    Preferred contact for urgent bookings
+                    {contactFormContent.contactEmail.label}
                   </p>
                   <a 
-                    href="mailto:bookings@nazaaralive.com" 
+                    href={`mailto:${contactFormContent.contactEmail.email}`} 
                     className="text-xl font-prettywise text-[var(--gold)] hover:text-[var(--gold)]/80 transition-colors"
                   >
-                    bookings@nazaaralive.com
+                    {contactFormContent.contactEmail.email}
                   </a>
                 </div>
               </div>
@@ -493,85 +488,61 @@ export default function BookingsPage() {
                   <form className="space-y-8">
                     {/* Personal Information Row */}
                     <div className="grid md:grid-cols-2 gap-8">
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Full Name
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="John Doe"
-                        />
-                      </div>
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Email Address
-                        </label>
-                        <input
-                          type="email"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="john@example.com"
-                        />
-                      </div>
+                      {contactFormContent.formFields.personalInfo.map((field, index) => (
+                        <div key={index} className="relative">
+                          <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                            {field.label}
+                          </label>
+                          <input
+                            type={field.type}
+                            className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                            placeholder={field.placeholder}
+                          />
+                        </div>
+                      ))}
                     </div>
                     
                     {/* Event Details Row */}
                     <div className="grid md:grid-cols-2 gap-8">
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Event Type
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="Wedding, Corporate Event, etc."
-                        />
-                      </div>
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Event Date
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="MM/DD/YYYY"
-                        />
-                      </div>
+                      {contactFormContent.formFields.eventDetails.map((field, index) => (
+                        <div key={index} className="relative">
+                          <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                            {field.label}
+                          </label>
+                          <input
+                            type={field.type}
+                            className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                            placeholder={field.placeholder}
+                          />
+                        </div>
+                      ))}
                     </div>
                     
                     {/* Location and Scale Row */}
                     <div className="grid md:grid-cols-2 gap-8">
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Event Location
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="City, Country"
-                        />
-                      </div>
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Expected Guests
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="500"
-                        />
-                      </div>
+                      {contactFormContent.formFields.locationAndScale.map((field, index) => (
+                        <div key={index} className="relative">
+                          <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                            {field.label}
+                          </label>
+                          <input
+                            type={field.type}
+                            className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                            placeholder={field.placeholder}
+                          />
+                        </div>
+                      ))}
                     </div>
                     
                     {/* Vision Section */}
                     <div className="relative">
                       <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                        Your Vision
+                        {contactFormContent.formFields.vision.label}
                       </label>
                       <textarea
-                        rows={4}
+                        rows={contactFormContent.formFields.vision.rows}
                         className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg resize-none"
-                        placeholder="Share your dream event details, special requirements, and artistic preferences..."
+                        placeholder={contactFormContent.formFields.vision.placeholder}
                       />
                     </div>
                     
@@ -579,7 +550,7 @@ export default function BookingsPage() {
                     <div className="pt-8 space-y-6">
                       {/* Privacy Note */}
                       <p className="text-[10px] font-neue-haas text-[var(--off-white)]/30 tracking-wider">
-                        Your information is kept strictly confidential and used solely for event planning purposes.
+                        {contactFormContent.privacyNote}
                       </p>
                       
                       {/* Submit Button */}
@@ -594,7 +565,7 @@ export default function BookingsPage() {
                         onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
                         onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                       >
-                        Send Inquiry
+                        {contactFormContent.submitButtonText}
                       </Button>
                     </div>
                   </form>
