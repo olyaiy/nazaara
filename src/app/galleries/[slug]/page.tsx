@@ -79,47 +79,56 @@ export default async function GalleryPage({ params }: PageProps) {
                 sizes="100vw"
               />
             </div>
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/30 to-background/10" />
+            {/* Sophisticated gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[color:var(--maroon-red)]/80 via-[color:var(--maroon-red)]/60 to-[color:var(--dark-green)]/80" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           </>
         )}
         
         {/* Fallback background for galleries without images */}
         {!heroImage && (
-          <div className="absolute inset-0 bg-gradient-to-b from-[--maroon-red]/20 to-background" />
+          <div className="absolute inset-0">
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/galleries-bg.jpg)' }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-[color:var(--maroon-red)]/80 via-[color:var(--maroon-red)]/60 to-[color:var(--dark-green)]/80" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          </div>
         )}
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-6 md:px-8 relative z-10">
           <div className="max-w-7xl mx-auto">
             {/* Back button */}
             <div className="mb-12">
               <Link 
                 href="/galleries"
-                className="inline-flex items-center gap-2 text-foreground/80 hover:text-foreground transition-colors group"
+                className="inline-flex items-center gap-2 text-[color:var(--off-white)]/80 hover:text-[color:var(--gold)] transition-colors group"
               >
                 <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-                <span>Back to Galleries</span>
+                <span className="font-light">Back to Galleries</span>
               </Link>
             </div>
 
             {/* Gallery info */}
             <div className="space-y-6 max-w-4xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-serif text-foreground">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-light text-[color:var(--off-white)] tracking-tight leading-tight">
                 {gallery.title}
               </h1>
               
               {gallery.description && (
-                <p className="text-lg md:text-xl text-muted-foreground max-w-3xl">
+                <div className="w-24 h-px bg-[color:var(--gold)] mb-6" />
+              )}
+              
+              {gallery.description && (
+                <p className="text-xl md:text-2xl text-[color:var(--off-white)]/80 font-light max-w-3xl leading-relaxed">
                   {gallery.description}
                 </p>
               )}
 
-              <div className="flex items-center gap-6 text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4" />
-                  <span className="text-sm md:text-base">{formatDate(gallery.date)}</span>
-                </div>
-               
+              <div className="flex items-center gap-2 pt-4">
+                <Calendar className="h-4 w-4 text-[color:var(--gold)]/60" />
+                <span className="text-lg text-[color:var(--off-white)]/80 font-light tracking-wide">{formatDate(gallery.date)}</span>
               </div>
             </div>
           </div>

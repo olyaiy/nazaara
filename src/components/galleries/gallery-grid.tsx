@@ -24,16 +24,19 @@ export function GalleryGrid({ galleries }: GalleryGridProps) {
 
   if (galleries.length === 0) {
     return (
-      <div className="text-center py-20">
-        <Camera className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-        <h3 className="text-xl font-medium text-foreground mb-2">No galleries yet</h3>
-        <p className="text-muted-foreground">Check back soon for event photos</p>
+      <div className="text-center py-32">
+        <div className="relative inline-block mb-8">
+          <div className="absolute inset-0 bg-[color:var(--gold)]/20 blur-xl rounded-full" />
+          <Camera className="h-20 w-20 mx-auto text-[color:var(--gold)] relative z-10" />
+        </div>
+        <h3 className="text-2xl font-serif font-light text-foreground mb-3">No galleries yet</h3>
+        <p className="text-lg text-muted-foreground font-light">Check back soon for event photos</p>
       </div>
     )
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
       {galleries.map((gallery) => {
         const thumbnail = getThumbnail(gallery)
         
@@ -41,45 +44,50 @@ export function GalleryGrid({ galleries }: GalleryGridProps) {
           <Link
             key={gallery.id}
             href={`/galleries/${gallery.slug}`}
-            className="group relative block overflow-hidden rounded-lg bg-muted aspect-[4/3] hover:shadow-2xl transition-all duration-300"
+            className="group relative block overflow-hidden bg-card/50 backdrop-blur-sm hover:shadow-2xl hover:shadow-[color:var(--gold)]/20 transition-all duration-700 ease-out hover:-translate-y-2"
           >
-            {/* Image */}
-            {thumbnail ? (
-              <div className="absolute inset-0">
-                <Image
-                  src={thumbnail}
-                  alt={gallery.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                />
-              </div>
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center bg-muted">
-                <Camera className="h-12 w-12 text-muted-foreground" />
-              </div>
-            )}
+            {/* Image Container */}
+            <div className="relative aspect-[5/4] overflow-hidden">
+              {thumbnail ? (
+                <div className="absolute inset-0">
+                  <Image
+                    src={thumbnail}
+                    alt={gallery.title}
+                    fill
+                    className="object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                </div>
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[color:var(--muted)] to-[color:var(--muted)]/80">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-[color:var(--gold)]/20 blur-lg rounded-full" />
+                    <Camera className="h-16 w-16 text-[color:var(--gold)]/60 relative z-10" />
+                  </div>
+                </div>
+              )}
 
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity" />
+              {/* Sophisticated overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10 opacity-60 group-hover:opacity-80 transition-opacity duration-700" />
+              
+              {/* Premium frame effect */}
+              <div className="absolute inset-0 border border-[color:var(--gold)]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            </div>
 
             {/* Content */}
-            <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-              <h3 className="text-xl font-bold mb-2 group-hover:text-[--gold] transition-colors">
+            <div className="p-6 space-y-4">
+              <h3 className="text-xl lg:text-2xl font-serif font-light text-foreground group-hover:text-[color:var(--gold)] transition-colors duration-500 leading-tight">
                 {gallery.title}
               </h3>
               
-              <div className="flex items-center justify-between text-sm text-white/80">
-                <div className="flex items-center gap-1.5">
-                  <Calendar className="h-3.5 w-3.5" />
-                  <span>{formatDate(gallery.date)}</span>
-                </div>
-                
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Calendar className="h-4 w-4 text-[color:var(--gold)]/60" />
+                <span className="font-light tracking-wide">{formatDate(gallery.date)}</span>
               </div>
+              
+              {/* Subtle accent line */}
+              <div className="w-8 h-px bg-[color:var(--gold)]/40 group-hover:w-16 group-hover:bg-[color:var(--gold)] transition-all duration-700" />
             </div>
-
-            {/* Hover border */}
-            <div className="absolute inset-0 border-2 border-[--gold] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-lg" />
           </Link>
         )
       })}
