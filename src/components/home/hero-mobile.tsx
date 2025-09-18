@@ -23,7 +23,7 @@ export default async function HeroMobile() {
   const [day, month] = featuredEvent.date.split(' ');
 
   return (
-    <section className="relative min-h-[100dvh] overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
+    <section className="relative min-h-[100dvh] overflow-hidden" style={{ backgroundColor: 'var(--background)' }}>
       {/* Shadow Overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/50" />
       <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-transparent" />

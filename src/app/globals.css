@@ -56,9 +56,10 @@
   --dark-green: oklch(0.15 0.05 190);
   --off-white: oklch(0.96 0.01 85);
   --charcoal: oklch(0.15 0 0);
+  --black-grey: oklch(0.12 0 0);
   
   /* System Colors */
-  --background: var(--maroon-red);
+  --background: var(--charcoal);
   --foreground: var(--off-white);
   --card: oklch(0.35 0.14 20);
   --card-foreground: var(--off-white);
@@ -92,8 +93,8 @@
 }
 
 .dark {
-  /* Dark mode using charcoal background */
-  --background: var(--charcoal);
+  /* Dark mode using black-grey background */
+  --background: var(--black-grey);
   --foreground: var(--off-white);
   --card: oklch(0.2 0 0);
   --card-foreground: var(--off-white);

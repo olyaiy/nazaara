@@ -40,7 +40,7 @@ export default async function Hero() {
       <HeroWrapper 
         eventSlug={featuredEvent.slug} 
         className="hidden md:block relative min-h-[80dvh] overflow-hidden group cursor-pointer" 
-        style={{ backgroundColor: 'var(--maroon-red)' }}
+        style={{ backgroundColor: 'var(--background)' }}
       >
         <section className="absolute inset-0">
       {/* Shadow Overlay for depth */}
