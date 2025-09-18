@@ -360,6 +360,32 @@ Expect Bollywood bangers, epic mashups, timeless anthems and nonstop vibes that 
     isFeatured: false,
     ticketUrl: "https://www.ticketweb.ca/event/tamasha-fortune-sound-club-tickets/14563363?pl=blueprint~",
   },
+  {
+    id: 11,
+    number: "11",
+    slug: "nazaara-diwali-vancouver-2025",
+    artist: "SABZI, SURBEE & RAYTRIX",
+    artists: [
+      { name: "SABZI" },
+      { name: "SURBEE" },
+      { name: "RAYTRIX" },
+    ],
+    title: "NAZAARA DIWALI",
+    tagline: "NAZAARA LIVE Presents",
+    description: `Vancouver! This October join us for a spectacular evening of culture to celebrate the festive spirit of Diwali at the iconic Pearl on Friday, October 17th! Get ready to sing, dance & turn up to the best of Bollywood with Vancouver's finest DJs on the decks.\n\nDress Code: Traditional – We can’t wait to see you in your stunning ethnic attire! (Dress code will be enforced)\n\nWith DJs: SABZI | SURBEE | RAYTRIX\n\nDoors open 10:00 PM PDT\n\n19+ Event | Strictly Bollywood`,
+    date: "17 Oct",
+    dates: "Friday, October 17 · 10:00 pm - Late",
+    year: "2025",
+    venue: "The Pearl",
+    venueAddress: "881 Granville Street, Vancouver, BC V6Z 1K7",
+    city: "Vancouver",
+    country: "Canada",
+    price: "20",
+    image: "/events/diwali.png",
+    status: "On Sale",
+    isFeatured: false,
+    ticketUrl: "https://www.ticketweb.ca/event/nazaara-diwali-the-pearl-tickets/14551753",
+  },
 ];
 
 // Helper functions for backward compatibility and convenience
