@@ -274,34 +274,22 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
           {/* Publishing */}
           <div>
             <h2 className="text-lg font-semibold mb-4">Publishing</h2>
-            <div className="flex items-center space-x-3 p-4 bg-muted/50 rounded-lg mb-4">
+            <div className="flex items-center space-x-2 mb-3">
               <Checkbox 
                 id="isTour" 
                 name="isTour" 
                 checked={isTour}
                 onCheckedChange={(v) => setIsTour(v === true)}
-                className="data-[state=checked]:bg-[--gold] data-[state=checked]:border-[--gold] border-border"
               />
-              <div>
-                <Label htmlFor="isTour" className="text-base cursor-pointer">This is a tour</Label>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  Add multiple cities and dates for this event
-                </p>
-              </div>
+              <Label htmlFor="isTour">This is a tour (multiple cities)</Label>
             </div>
-            <div className="flex items-center space-x-3 p-4 bg-muted/50 rounded-lg">
+            <div className="flex items-center space-x-2">
               <Checkbox 
                 id="isPublished" 
                 name="isPublished" 
                 defaultChecked={event.isPublished}
-                className="data-[state=checked]:bg-[--gold] data-[state=checked]:border-[--gold] border-border"
               />
-              <div>
-                <Label htmlFor="isPublished" className="text-base cursor-pointer">Publish Event</Label>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  Make this event visible to the public
-                </p>
-              </div>
+              <Label htmlFor="isPublished">Published (visible to public)</Label>
             </div>
           </div>
 
