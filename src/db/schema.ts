@@ -130,6 +130,9 @@ export const events = pgTable("events", {
   imageKey: text("image_key"), // UploadThing file key for deletion management
   ticketUrl: text("ticket_url"), // External ticket purchasing link
   
+  // Tour support
+  isTour: boolean("is_tour").default(false).notNull(), // Whether this event represents a tour with multiple stops
+  
   // Publishing status
   isPublished: boolean("is_published").default(false).notNull(), // Whether event is visible to public
   
@@ -173,6 +176,44 @@ export const eventsArtists = pgTable("events_artists", {
   // Indexes for efficient relationship queries
   eventIdx: index("events_artists_event_idx").on(table.eventId), // Find artists for an event
   artistIdx: index("events_artists_artist_idx").on(table.artistId), // Find events for an artist
+}));
+
+/**
+ * EVENT_STOPS TABLE
+ * 
+ * Stores per-stop data for tour events. Each stop can optionally reference a venue
+ * or just provide city/country for TBA locations. Ordering is controlled via
+ * orderIndex to allow explicit sequencing across stops.
+ */
+export const eventStops = pgTable("event_stops", {
+  // Primary identifier
+  id: serial("id").primaryKey(),
+  
+  // Foreign key to events - cascade delete removes stops when event deleted
+  eventId: integer("event_id").references(() => events.id, { onDelete: "cascade" }).notNull(),
+  
+  // Location details (optional venue, but city/country required for display)
+  city: varchar("city", { length: 100 }).notNull(),
+  country: varchar("country", { length: 100 }).notNull(),
+  venueId: integer("venue_id").references(() => venues.id, { onDelete: "set null" }),
+  
+  // Date and time for the specific stop
+  startTime: timestamp("start_time").notNull(),
+  endTime: timestamp("end_time").notNull(),
+  
+  // Optional per-stop ticket URL
+  ticketUrl: text("ticket_url"),
+  
+  // Display ordering across stops (0 = first)
+  orderIndex: integer("order_index").default(0),
+  
+  // Audit timestamp
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => ({
+  // Indexes for efficient queries and ordering
+  eventIdx: index("event_stops_event_idx").on(table.eventId),
+  startTimeIdx: index("event_stops_start_time_idx").on(table.startTime),
+  cityIdx: index("event_stops_city_idx").on(table.city),
 }));
 
 /**
@@ -269,6 +310,8 @@ export const eventsRelations = relations(events, ({ one, many }) => ({
   }),
   // One-to-many relationship with junction table
   eventsArtists: many(eventsArtists),
+  // One-to-many relationship with tour stops
+  eventStops: many(eventStops),
 }));
 
 // Junction table relations to both events and artists
@@ -282,6 +325,18 @@ export const eventsArtistsRelations = relations(eventsArtists, ({ one }) => ({
   artist: one(artists, {
     fields: [eventsArtists.artistId],
     references: [artists.id],
+  }),
+}));
+
+// Event stops belong to one event and optionally to one venue
+export const eventStopsRelations = relations(eventStops, ({ one }) => ({
+  event: one(events, {
+    fields: [eventStops.eventId],
+    references: [events.id],
+  }),
+  venue: one(venues, {
+    fields: [eventStops.venueId],
+    references: [venues.id],
   }),
 }));
 

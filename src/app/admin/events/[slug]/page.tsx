@@ -26,8 +26,20 @@ interface EventForForm {
   image: string | null
   imageKey: string | null
   ticketUrl: string | null
+  isTour: boolean
   isPublished: boolean
   artists: { id: number; name: string; orderIndex?: number }[]
+  stops?: {
+    id: number
+    city: string
+    country: string
+    venueId: number | null
+    venueName: string | null
+    startTime: string | Date
+    endTime: string | Date
+    ticketUrl: string | null
+    orderIndex: number
+  }[]
 }
 
 export default async function EventEditPage({ params }: PageProps) {
@@ -57,6 +69,7 @@ export default async function EventEditPage({ params }: PageProps) {
 
   const eventForForm: EventForForm = {
     ...event,
+    isTour: event.isTour ?? false,
     artists: (event.artists || [])
       .filter((a) => a && a.id !== null && a.name !== null)
       .map((a) => ({
@@ -64,6 +77,17 @@ export default async function EventEditPage({ params }: PageProps) {
         name: a.name as string,
         orderIndex: a.orderIndex ?? undefined,
       })),
+    stops: (event.stops || []).map((s) => ({
+      id: s.id,
+      city: s.city,
+      country: s.country,
+      venueId: s.venueId,
+      venueName: s.venueName,
+      startTime: s.startTime,
+      endTime: s.endTime,
+      ticketUrl: s.ticketUrl,
+      orderIndex: s.orderIndex ?? 0,
+    })),
   }
 
 

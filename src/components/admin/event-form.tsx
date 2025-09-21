@@ -13,6 +13,7 @@ import { ArtistSelector } from "@/components/admin/artist-selector"
 import { createEvent } from "@/lib/admin-actions"
 import Link from "next/link"
 import { Calendar, MapPin, Save, Ticket } from "lucide-react"
+import { EventStopsEditor } from "@/components/admin/event-stops-editor"
 
 interface Venue {
   id: number
@@ -44,6 +45,7 @@ export function EventForm({ venues, artists }: EventFormProps) {
   const [title, setTitle] = useState("")
   const [slug, setSlug] = useState("")
   const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false)
+  const [isTour, setIsTour] = useState<boolean>(false)
 
   // Auto-generate slug from title only if not manually edited
   useEffect(() => {
@@ -148,21 +150,23 @@ export function EventForm({ venues, artists }: EventFormProps) {
             <div className="space-y-4">
               <EventDatePicker />
 
-              <div className="space-y-2">
-                <Label htmlFor="venueId">Venue *</Label>
-                <Select name="venueId" required>
-                  <SelectTrigger className="bg-background border-border">
-                    <SelectValue placeholder="Select a venue" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {venues.map((venue) => (
-                      <SelectItem key={venue.id} value={venue.id.toString()}>
-                        {venue.name} - {venue.city}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {!isTour && (
+                <div className="space-y-2">
+                  <Label htmlFor="venueId">Venue *</Label>
+                  <Select name="venueId" required>
+                    <SelectTrigger className="bg-background border-border">
+                      <SelectValue placeholder="Select a venue" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {venues.map((venue) => (
+                        <SelectItem key={venue.id} value={venue.id.toString()}>
+                          {venue.name} - {venue.city}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
 
               <ArtistSelector artists={artists} />
 
@@ -175,12 +179,27 @@ export function EventForm({ venues, artists }: EventFormProps) {
                   className="bg-background border-border"
                 />
               </div>
+
+              {isTour && (
+                <div className="space-y-2">
+                  <EventStopsEditor venues={venues} />
+                </div>
+              )}
             </div>
           </div>
 
           {/* Publishing */}
           <div>
             <h2 className="text-lg font-semibold mb-4">Publishing</h2>
+            <div className="flex items-center space-x-2 mb-3">
+              <Checkbox 
+                id="isTour" 
+                name="isTour"
+                checked={isTour}
+                onCheckedChange={(v) => setIsTour(v === true)}
+              />
+              <Label htmlFor="isTour">This is a tour (multiple cities)</Label>
+            </div>
             <div className="flex items-center space-x-2">
               <Checkbox 
                 id="isPublished" 

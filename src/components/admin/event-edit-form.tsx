@@ -14,6 +14,7 @@ import { updateEvent } from "@/lib/admin-actions"
 import { DeleteEventForm } from "@/components/admin/delete-event-form"
 import { Save, Calendar, Clock } from "lucide-react"
 import Link from "next/link"
+import { EventStopsEditor } from "@/components/admin/event-stops-editor"
 
 interface Venue {
   id: number
@@ -41,8 +42,20 @@ interface EventEditFormProps {
     image: string | null
     imageKey: string | null
     ticketUrl: string | null
+    isTour: boolean
     isPublished: boolean
     artists: { id: number; name: string; orderIndex?: number }[]
+    stops?: {
+      id: number
+      city: string
+      country: string
+      venueId: number | null
+      venueName: string | null
+      startTime: string | Date
+      endTime: string | Date
+      ticketUrl: string | null
+      orderIndex: number
+    }[]
   }
   venues: Venue[]
   artists: Artist[]
@@ -61,6 +74,7 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
   const [title, setTitle] = useState(event.title)
   const [slug, setSlug] = useState(event.slug)
   const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(true) // Default to true for existing events
+  const [isTour, setIsTour] = useState<boolean>(event.isTour)
 
   // Only auto-generate if slug is empty and not manually edited
   useEffect(() => {
@@ -205,6 +219,24 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
               selectedArtists={event.artists}
             />
           </div>
+
+          {isTour && (
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Tour Stops</h2>
+              <EventStopsEditor 
+                venues={venues}
+                initialStops={(event.stops || []).map((s) => ({
+                  city: s.city,
+                  country: s.country,
+                  venueId: s.venueId,
+                  startTime: s.startTime,
+                  endTime: s.endTime,
+                  ticketUrl: s.ticketUrl,
+                  orderIndex: s.orderIndex,
+                }))}
+              />
+            </div>
+          )}
         </div>
 
         {/* Right Column - Media and Publishing (1/3 width) */}
@@ -238,6 +270,21 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
           {/* Publishing */}
           <div>
             <h2 className="text-lg font-semibold mb-4">Publishing</h2>
+            <div className="flex items-center space-x-3 p-4 bg-muted/50 rounded-lg mb-4">
+              <Checkbox 
+                id="isTour" 
+                name="isTour" 
+                checked={isTour}
+                onCheckedChange={(v) => setIsTour(v === true)}
+                className="data-[state=checked]:bg-[--gold] data-[state=checked]:border-[--gold] border-border"
+              />
+              <div>
+                <Label htmlFor="isTour" className="text-base cursor-pointer">This is a tour</Label>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  Add multiple cities and dates for this event
+                </p>
+              </div>
+            </div>
             <div className="flex items-center space-x-3 p-4 bg-muted/50 rounded-lg">
               <Checkbox 
                 id="isPublished" 

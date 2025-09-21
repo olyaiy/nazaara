@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/db/drizzle"
-import { events, artists, venues, eventsArtists, galleries, galleryImages, djs } from "@/db/schema"
+import { events, artists, venues, eventsArtists, galleries, galleryImages, djs, eventStops } from "@/db/schema"
 import { eq, count, sql, desc } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
@@ -116,6 +116,7 @@ export async function getEventBySlug(slug: string) {
       image: events.image,
       imageKey: events.imageKey,
       ticketUrl: events.ticketUrl,
+      isTour: events.isTour,
       isPublished: events.isPublished,
       venueId: events.venueId,
       venueName: venues.name,
@@ -140,6 +141,24 @@ export async function getEventBySlug(slug: string) {
     .where(eq(eventsArtists.eventId, eventWithDetails[0].id))
     .orderBy(eventsArtists.orderIndex)
 
+  // Get event stops if this event is a tour
+  const stops = await db
+    .select({
+      id: eventStops.id,
+      city: eventStops.city,
+      country: eventStops.country,
+      venueId: eventStops.venueId,
+      venueName: venues.name,
+      startTime: eventStops.startTime,
+      endTime: eventStops.endTime,
+      ticketUrl: eventStops.ticketUrl,
+      orderIndex: eventStops.orderIndex,
+    })
+    .from(eventStops)
+    .leftJoin(venues, eq(eventStops.venueId, venues.id))
+    .where(eq(eventStops.eventId, eventWithDetails[0].id))
+    .orderBy(eventStops.orderIndex, eventStops.startTime)
+
   return {
     ...eventWithDetails[0],
     artists: eventArtists.map(a => ({
@@ -147,6 +166,7 @@ export async function getEventBySlug(slug: string) {
       name: a.artistName,
       orderIndex: a.orderIndex,
     })),
+    stops,
   }
 }
 
@@ -196,6 +216,7 @@ export async function updateEvent(formData: FormData) {
   const image = formData.get("image") as string
   const imageKey = formData.get("imageKey") as string
   const ticketUrl = formData.get("ticketUrl") as string
+  const isTour = formData.get("isTour") === "on"
   const isPublished = formData.get("isPublished") === "on"
   const venueIdStr = formData.get("venueId") as string
   const venueId = venueIdStr ? parseInt(venueIdStr) : null
@@ -212,6 +233,42 @@ export async function updateEvent(formData: FormData) {
     const orderIndex = parseInt(formData.get(`artists[${index}][orderIndex]`) as string)
     artistData.push({ id: artistId, orderIndex })
     index++
+  }
+
+  // Parse stops data from form (for tours)
+  const stopsData: {
+    city: string;
+    country: string;
+    venueId: number | null;
+    startTime: Date;
+    endTime: Date;
+    ticketUrl: string | null;
+    orderIndex: number;
+  }[] = []
+  let stopIndex = 0
+  while (formData.has(`stops[${stopIndex}][city]`)) {
+    const city = (formData.get(`stops[${stopIndex}][city]`) as string) || ""
+    const country = (formData.get(`stops[${stopIndex}][country]`) as string) || ""
+    const stopVenueIdStr = formData.get(`stops[${stopIndex}][venueId]`) as string
+    const stopVenueId = stopVenueIdStr ? parseInt(stopVenueIdStr) : null
+    const stopStartTimeStr = formData.get(`stops[${stopIndex}][startTime]`) as string
+    const stopEndTimeStr = formData.get(`stops[${stopIndex}][endTime]`) as string
+    const stopTicketUrl = (formData.get(`stops[${stopIndex}][ticketUrl]`) as string) || null
+    const stopOrderIndexStr = formData.get(`stops[${stopIndex}][orderIndex]`) as string
+    const stopOrderIndex = stopOrderIndexStr ? parseInt(stopOrderIndexStr) : stopIndex
+
+    if (city && country && stopStartTimeStr && stopEndTimeStr) {
+      stopsData.push({
+        city,
+        country,
+        venueId: stopVenueId,
+        startTime: new Date(stopStartTimeStr),
+        endTime: new Date(stopEndTimeStr),
+        ticketUrl: stopTicketUrl,
+        orderIndex: stopOrderIndex,
+      })
+    }
+    stopIndex++
   }
 
   // Get the current event to check if image is being replaced
@@ -248,6 +305,7 @@ export async function updateEvent(formData: FormData) {
       image: image || null,
       imageKey: imageKey || null,
       ticketUrl: ticketUrl || null,
+      isTour,
       isPublished,
       venueId,
     })
@@ -271,6 +329,28 @@ export async function updateEvent(formData: FormData) {
       )
   }
 
+  // Replace event stops
+  await db
+    .delete(eventStops)
+    .where(eq(eventStops.eventId, eventId))
+
+  if (isTour && stopsData.length > 0) {
+    await db
+      .insert(eventStops)
+      .values(
+        stopsData.map((stop) => ({
+          eventId: eventId,
+          city: stop.city,
+          country: stop.country,
+          venueId: stop.venueId,
+          startTime: stop.startTime,
+          endTime: stop.endTime,
+          ticketUrl: stop.ticketUrl,
+          orderIndex: stop.orderIndex,
+        }))
+      )
+  }
+
   revalidatePath("/admin")
   revalidatePath(`/admin/events/${slug}`)
   redirect("/admin?success=event-updated")
@@ -286,6 +366,7 @@ export async function createEvent(formData: FormData) {
   const image = formData.get("image") as string
   const imageKey = formData.get("imageKey") as string
   const ticketUrl = formData.get("ticketUrl") as string
+  const isTour = formData.get("isTour") === "on"
   const isPublished = formData.get("isPublished") === "on"
   const venueIdStr = formData.get("venueId") as string
   const venueId = venueIdStr ? parseInt(venueIdStr) : null
@@ -304,6 +385,42 @@ export async function createEvent(formData: FormData) {
     index++
   }
 
+  // Parse stops data from form (for tours)
+  const stopsData: {
+    city: string;
+    country: string;
+    venueId: number | null;
+    startTime: Date;
+    endTime: Date;
+    ticketUrl: string | null;
+    orderIndex: number;
+  }[] = []
+  let stopIndex = 0
+  while (formData.has(`stops[${stopIndex}][city]`)) {
+    const city = (formData.get(`stops[${stopIndex}][city]`) as string) || ""
+    const country = (formData.get(`stops[${stopIndex}][country]`) as string) || ""
+    const stopVenueIdStr = formData.get(`stops[${stopIndex}][venueId]`) as string
+    const stopVenueId = stopVenueIdStr ? parseInt(stopVenueIdStr) : null
+    const stopStartTimeStr = formData.get(`stops[${stopIndex}][startTime]`) as string
+    const stopEndTimeStr = formData.get(`stops[${stopIndex}][endTime]`) as string
+    const stopTicketUrl = (formData.get(`stops[${stopIndex}][ticketUrl]`) as string) || null
+    const stopOrderIndexStr = formData.get(`stops[${stopIndex}][orderIndex]`) as string
+    const stopOrderIndex = stopOrderIndexStr ? parseInt(stopOrderIndexStr) : stopIndex
+
+    if (city && country && stopStartTimeStr && stopEndTimeStr) {
+      stopsData.push({
+        city,
+        country,
+        venueId: stopVenueId,
+        startTime: new Date(stopStartTimeStr),
+        endTime: new Date(stopEndTimeStr),
+        ticketUrl: stopTicketUrl,
+        orderIndex: stopOrderIndex,
+      })
+    }
+    stopIndex++
+  }
+
   // Insert event and get the ID
   const [newEvent] = await db
     .insert(events)
@@ -317,6 +434,7 @@ export async function createEvent(formData: FormData) {
       image: image || null,
       imageKey: imageKey || null,
       ticketUrl: ticketUrl || null,
+      isTour,
       isPublished,
       venueId,
     })
@@ -331,6 +449,24 @@ export async function createEvent(formData: FormData) {
           eventId: newEvent.id,
           artistId: artist.id,
           orderIndex: artist.orderIndex,
+        }))
+      )
+  }
+
+  // Insert stops if provided and marked as tour
+  if (isTour && stopsData.length > 0 && newEvent) {
+    await db
+      .insert(eventStops)
+      .values(
+        stopsData.map((stop) => ({
+          eventId: newEvent.id,
+          city: stop.city,
+          country: stop.country,
+          venueId: stop.venueId,
+          startTime: stop.startTime,
+          endTime: stop.endTime,
+          ticketUrl: stop.ticketUrl,
+          orderIndex: stop.orderIndex,
         }))
       )
   }
