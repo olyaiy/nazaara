@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Galleries - Nazaara Live",
     description: "Explore our collection of event photos from Nazaara Live shows across the world.",
-    url: "https://nazaaralive.com/galleries",
+    url: "https://nazaara.live/galleries",
     siteName: "Nazaara Live",
     locale: "en_US",
     type: "website",

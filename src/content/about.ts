@@ -8,7 +8,7 @@ export const aboutMetadata: Metadata = {
   openGraph: {
     title: "About Us - Nazaara Live | Experience, Culture, and Sound Without Borders",
     description: "Founded in 2022, Nazaara Live has touched 500K+ hearts across 150+ cities worldwide. Discover our story of bringing South Asian entertainment to global stages through innovative experiences.",
-    url: "https://nazaaralive.com/about",
+    url: "https://nazaara.live/about",
     siteName: "Nazaara Live",
     images: [
       {

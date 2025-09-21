@@ -539,10 +539,10 @@ export default function BookingsClient() {
                     Preferred contact for urgent bookings
                   </p>
                   <a 
-                    href="mailto:bookings@nazaaralive.com" 
+                    href="mailto:bookings@nazaara.live" 
                     className="text-xl font-prettywise text-[var(--gold)] hover:text-[var(--gold)]/80 transition-colors"
                   >
-                    bookings@nazaaralive.com
+                    bookings@nazaara.live
                   </a>
                 </div>
               </div>

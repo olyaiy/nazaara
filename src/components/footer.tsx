@@ -106,28 +106,28 @@ export function Footer() {
                     <div>
                       <p className="text-xs font-neue-haas uppercase tracking-[0.2em] text-white/40 mb-1">General Inquiries</p>
                       <a 
-                        href="mailto:info@nazaaralive.com" 
+                        href="mailto:info@nazaara.live" 
                         className="text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
                       >
-                        info@nazaaralive.com
+                        info@nazaara.live
                       </a>
                     </div>
                     <div>
                       <p className="text-xs font-neue-haas uppercase tracking-[0.2em] text-white/40 mb-1">Bookings</p>
                       <a 
-                        href="mailto:bookings@nazaaralive.com" 
+                        href="mailto:bookings@nazaara.live" 
                         className="text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
                       >
-                        bookings@nazaaralive.com
+                        bookings@nazaara.live
                       </a>
                     </div>
                     <div>
                       <p className="text-xs font-neue-haas uppercase tracking-[0.2em] text-white/40 mb-1">Press</p>
                       <a 
-                        href="mailto:press@nazaaralive.com" 
+                        href="mailto:press@nazaara.live" 
                         className="text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
                       >
-                        press@nazaaralive.com
+                        press@nazaara.live
                       </a>
                     </div>
                   </div>

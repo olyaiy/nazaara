@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Nazaara Live - Premium South Asian Entertainment Worldwide",
     description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities.",
-    url: "https://nazaaralive.com",
+    url: "https://nazaara.live",
     siteName: "Nazaara Live",
     images: [
       {

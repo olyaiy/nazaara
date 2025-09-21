@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { getPublicEventBySlug, getPublicEvents } from "@/lib/public-actions";
+import { getPublicEventBySlug, getPublicEvents, getPublicEventStops } from "@/lib/public-actions";
 import EventHero from "@/components/event-page/hero";
 import VenueFeatures from "@/components/event-page/venue-features";
 import ArtistShowcase from "@/components/event-page/artist-showcase";
@@ -63,13 +63,14 @@ export default async function EventPage({ params }: EventPageProps) {
   if (!event) {
     notFound();
   }
+  const stops = await getPublicEventStops(event.id)
 
   return (
     <div className="min-h-dvh bg-[var(--maroon-red)]">
       <EventHero event={event} />
       <EventBio bio={event.description || ""} />
       <ArtistShowcase artists={event.artists} />
-      <VenueFeatures event={event} />
+      {stops.length === 0 && <VenueFeatures event={event} />}
     </div>
   );
 }

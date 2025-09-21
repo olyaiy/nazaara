@@ -36,6 +36,15 @@ export interface PublicEvent {
   endTime: Date;
 }
 
+export interface PublicEventStop {
+  city: string;
+  country: string;
+  venue?: string | null;
+  startTime: Date;
+  endTime: Date;
+  ticketUrl?: string | null;
+}
+
 function formatDateToDisplay(date: Date): { date: string; year: string } {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const day = date.getDate();
@@ -185,6 +194,32 @@ export async function getPublicFeaturedEvent(): Promise<PublicEvent | undefined>
   });
   
   return upcomingEvents[0];
+}
+
+export async function getPublicEventStops(eventId: number): Promise<PublicEventStop[]> {
+  const now = new Date()
+  const rows = await db
+    .select({
+      city: eventStops.city,
+      country: eventStops.country,
+      venue: venues.name,
+      startTime: eventStops.startTime,
+      endTime: eventStops.endTime,
+      ticketUrl: eventStops.ticketUrl,
+    })
+    .from(eventStops)
+    .leftJoin(venues, eq(eventStops.venueId, venues.id))
+    .where(and(eq(eventStops.eventId, eventId), gte(eventStops.startTime, now)))
+    .orderBy(asc(eventStops.startTime))
+
+  return rows.map((r) => ({
+    city: r.city,
+    country: r.country,
+    venue: r.venue,
+    startTime: r.startTime,
+    endTime: r.endTime,
+    ticketUrl: r.ticketUrl,
+  }))
 }
 
 export async function getPublicEventForCity(city?: string): Promise<PublicEvent | undefined> {

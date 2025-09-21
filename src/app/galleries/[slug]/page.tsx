@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: `${gallery.title} - Nazaara Live`,
       description: gallery.description || `View photos from ${gallery.title}`,
-      url: `https://nazaaralive.com/galleries/${slug}`,
+      url: `https://nazaara.live/galleries/${slug}`,
       siteName: "Nazaara Live",
       images: gallery.firstImage ? [
         {

@@ -128,7 +128,7 @@ export const contactFormContent: ContactFormContent = {
   ],
   contactEmail: {
     label: "Preferred contact for urgent bookings",
-    email: "bookings@nazaaralive.com"
+    email: "bookings@nazaara.live"
   },
   formFields: {
     personalInfo: [
