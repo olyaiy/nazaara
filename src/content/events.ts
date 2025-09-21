@@ -386,6 +386,44 @@ Expect Bollywood bangers, epic mashups, timeless anthems and nonstop vibes that 
     isFeatured: false,
     ticketUrl: "https://www.ticketweb.ca/event/nazaara-diwali-the-pearl-tickets/14551753",
   },
+  {
+    id: 12,
+    number: "12",
+    slug: "tamasha-diwali-calgary-2025",
+    artist: "SHALV, RAYTRIX & SESHA",
+    artists: [
+      { name: "Shalv", instagram: "shalv", soundcloud: "shalv" },
+      { name: "Raytrix", instagram: "raytrix", soundcloud: "raytrix" },
+      { name: "Sesha" },
+    ],
+    title: "TAMASHA Diwali in Calgary",
+    tagline: "Strictly Bollywood",
+    description: `CALGARY! ✨ This October, we’re proud to present the very first TAMASHA DIWALI 🪔 at the stunning new Arrowhead (FKA The Back Alley). Join us on Friday, October 24th for a celebration of culture, music, and the festive spirit of Diwali 🪔
+
+Experience the return of the TAMASHA sound you’ve been waiting for, with residents SHALV & RAYTRIX alongside Calgary’s own SESHA.
+
+Tickets go on sale TOMORROW at 12:00pm 🧨 DM us “diwali” or RSVP via the link in bio to be first in line @nazaara.live 🤭
+
+Dress Code: Traditional/Ethnic Indian Attire (Enforced).
+Questions? DM us!
+
+📅 Friday, October 24
+📍 Arrowhead
+🕘 10 PM – 2 AM
+18+ Event | Strictly Bollywood 🪔`,
+    date: "24 Oct",
+    dates: "Friday, October 24 · 10:00 pm - 2:00 am MDT",
+    year: "2025",
+    venue: "The Arrowhead (Back Alley)",
+    venueAddress: "4630 Macleod Trl, Calgary, AB, Canada",
+    city: "Calgary",
+    country: "Canada",
+    price: "18.61",
+    image: "/events/diawli calgary.jpg",
+    status: "On Sale",
+    isFeatured: false,
+    ticketUrl: "https://www.showpass.com/diwaliyyc/",
+  },
 ];
 
 // Helper functions for backward compatibility and convenience
