@@ -183,13 +183,15 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
           </div>
 
           {/* Date & Time */}
-          <div>
-            <h2 className="text-lg font-semibold mb-4">Date & Time</h2>
-            <EventDatePicker 
-              startTime={new Date(event.startTime)} 
-              endTime={new Date(event.endTime)} 
-            />
-          </div>
+          {!isTour && (
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Date & Time</h2>
+              <EventDatePicker 
+                startTime={new Date(event.startTime)} 
+                endTime={new Date(event.endTime)} 
+              />
+            </div>
+          )}
 
           {/* Location */}
           <div>
@@ -254,16 +256,18 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="ticketUrl">Ticket URL</Label>
-                <Input 
-                  id="ticketUrl" 
-                  name="ticketUrl" 
-                  defaultValue={event.ticketUrl || ""} 
-                  placeholder="https://tickets.example.com/event"
-                  className="bg-background"
-                />
-              </div>
+              {!isTour && (
+                <div className="space-y-2">
+                  <Label htmlFor="ticketUrl">Ticket URL</Label>
+                  <Input 
+                    id="ticketUrl" 
+                    name="ticketUrl" 
+                    defaultValue={event.ticketUrl || ""} 
+                    placeholder="https://tickets.example.com/event"
+                    className="bg-background"
+                  />
+                </div>
+              )}
             </div>
           </div>
 

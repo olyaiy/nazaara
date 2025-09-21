@@ -148,7 +148,7 @@ export function EventForm({ venues, artists }: EventFormProps) {
           <div>
             <h2 className="text-lg font-semibold mb-4">Event Details</h2>
             <div className="space-y-4">
-              <EventDatePicker />
+              {!isTour && <EventDatePicker />}
 
               {!isTour && (
                 <div className="space-y-2">
@@ -170,15 +170,17 @@ export function EventForm({ venues, artists }: EventFormProps) {
 
               <ArtistSelector artists={artists} />
 
-              <div className="space-y-2">
-                <Label htmlFor="ticketUrl">Ticket URL</Label>
-                <Input 
-                  id="ticketUrl" 
-                  name="ticketUrl" 
-                  placeholder="https://tickets.example.com/event"
-                  className="bg-background border-border"
-                />
-              </div>
+              {!isTour && (
+                <div className="space-y-2">
+                  <Label htmlFor="ticketUrl">Ticket URL</Label>
+                  <Input 
+                    id="ticketUrl" 
+                    name="ticketUrl" 
+                    placeholder="https://tickets.example.com/event"
+                    className="bg-background border-border"
+                  />
+                </div>
+              )}
 
               {isTour && (
                 <div className="space-y-2">

@@ -221,21 +221,7 @@ export async function updateEvent(formData: FormData) {
   const venueIdStr = formData.get("venueId") as string
   const venueId = venueIdStr ? parseInt(venueIdStr) : null
 
-  if (!eventId || !slug || !title || !startTime || !endTime) {
-    throw new Error("Required fields missing")
-  }
-
-  // Parse artist data from form
-  const artistData: { id: number; orderIndex: number }[] = []
-  let index = 0
-  while (formData.has(`artists[${index}][id]`)) {
-    const artistId = parseInt(formData.get(`artists[${index}][id]`) as string)
-    const orderIndex = parseInt(formData.get(`artists[${index}][orderIndex]`) as string)
-    artistData.push({ id: artistId, orderIndex })
-    index++
-  }
-
-  // Parse stops data from form (for tours)
+  // Parse stops data from form (for tours) before validation so we can derive times
   const stopsData: {
     city: string;
     country: string;
@@ -271,6 +257,25 @@ export async function updateEvent(formData: FormData) {
     stopIndex++
   }
 
+  // Validate required fields: allow tours without top-level start/end if stops provided
+  if (!eventId || !slug || !title) {
+    throw new Error("Required fields missing")
+  }
+  const hasTopLevelTimes = Boolean(startTime && endTime)
+  if (!hasTopLevelTimes && !(isTour && stopsData.length > 0)) {
+    throw new Error("Required fields missing")
+  }
+
+  // Parse artist data from form
+  const artistData: { id: number; orderIndex: number }[] = []
+  let index = 0
+  while (formData.has(`artists[${index}][id]`)) {
+    const artistId = parseInt(formData.get(`artists[${index}][id]`) as string)
+    const orderIndex = parseInt(formData.get(`artists[${index}][orderIndex]`) as string)
+    artistData.push({ id: artistId, orderIndex })
+    index++
+  }
+
   // Get the current event to check if image is being replaced
   const currentEvent = await db
     .select({ 
@@ -293,6 +298,18 @@ export async function updateEvent(formData: FormData) {
   }
 
   // Update the event
+  // Derive event-level times if missing and tour stops exist
+  const eventStartTime = startTime
+    ? new Date(startTime)
+    : (isTour && stopsData.length > 0
+        ? new Date(Math.min(...stopsData.map(s => s.startTime.getTime())))
+        : undefined)
+  const eventEndTime = endTime
+    ? new Date(endTime)
+    : (isTour && stopsData.length > 0
+        ? new Date(Math.max(...stopsData.map(s => s.endTime.getTime())))
+        : undefined)
+
   await db
     .update(events)
     .set({
@@ -300,8 +317,8 @@ export async function updateEvent(formData: FormData) {
       title,
       tagline: tagline || null,
       description: description || null,
-      startTime: new Date(startTime),
-      endTime: new Date(endTime),
+      startTime: eventStartTime as Date,
+      endTime: eventEndTime as Date,
       image: image || null,
       imageKey: imageKey || null,
       ticketUrl: ticketUrl || null,
@@ -371,21 +388,7 @@ export async function createEvent(formData: FormData) {
   const venueIdStr = formData.get("venueId") as string
   const venueId = venueIdStr ? parseInt(venueIdStr) : null
 
-  if (!slug || !title || !startTime || !endTime) {
-    throw new Error("Required fields missing")
-  }
-
-  // Parse artist data from form
-  const artistData: { id: number; orderIndex: number }[] = []
-  let index = 0
-  while (formData.has(`artists[${index}][id]`)) {
-    const artistId = parseInt(formData.get(`artists[${index}][id]`) as string)
-    const orderIndex = parseInt(formData.get(`artists[${index}][orderIndex]`) as string)
-    artistData.push({ id: artistId, orderIndex })
-    index++
-  }
-
-  // Parse stops data from form (for tours)
+  // Parse stops before validation so we can derive times for tours
   const stopsData: {
     city: string;
     country: string;
@@ -421,6 +424,36 @@ export async function createEvent(formData: FormData) {
     stopIndex++
   }
 
+  if (!slug || !title) {
+    throw new Error("Required fields missing")
+  }
+  const hasTopLevelTimes = Boolean(startTime && endTime)
+  if (!hasTopLevelTimes && !(isTour && stopsData.length > 0)) {
+    throw new Error("Required fields missing")
+  }
+
+  // Parse artist data from form
+  const artistData: { id: number; orderIndex: number }[] = []
+  let index = 0
+  while (formData.has(`artists[${index}][id]`)) {
+    const artistId = parseInt(formData.get(`artists[${index}][id]`) as string)
+    const orderIndex = parseInt(formData.get(`artists[${index}][orderIndex]`) as string)
+    artistData.push({ id: artistId, orderIndex })
+    index++
+  }
+
+  // Derive event-level times if missing and tour stops exist
+  const eventStartTime = startTime
+    ? new Date(startTime)
+    : (isTour && stopsData.length > 0
+        ? new Date(Math.min(...stopsData.map(s => s.startTime.getTime())))
+        : undefined)
+  const eventEndTime = endTime
+    ? new Date(endTime)
+    : (isTour && stopsData.length > 0
+        ? new Date(Math.max(...stopsData.map(s => s.endTime.getTime())))
+        : undefined)
+
   // Insert event and get the ID
   const [newEvent] = await db
     .insert(events)
@@ -429,8 +462,8 @@ export async function createEvent(formData: FormData) {
       title,
       tagline: tagline || null,
       description: description || null,
-      startTime: new Date(startTime),
-      endTime: new Date(endTime),
+      startTime: eventStartTime as Date,
+      endTime: eventEndTime as Date,
       image: image || null,
       imageKey: imageKey || null,
       ticketUrl: ticketUrl || null,
