@@ -194,24 +194,26 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
           )}
 
           {/* Location */}
-          <div>
-            <h2 className="text-lg font-semibold mb-4">Location</h2>
-            <div className="space-y-2">
-              <Label htmlFor="venueId">Venue *</Label>
-              <Select name="venueId" defaultValue={event.venueId?.toString() || ""}>
-                <SelectTrigger className="bg-background">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {venues.map((venue) => (
-                    <SelectItem key={venue.id} value={venue.id.toString()}>
-                      {venue.name} - {venue.city}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          {!isTour && (
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Location</h2>
+              <div className="space-y-2">
+                <Label htmlFor="venueId">Venue *</Label>
+                <Select name="venueId" defaultValue={event.venueId?.toString() || ""}>
+                  <SelectTrigger className="bg-background">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {venues.map((venue) => (
+                      <SelectItem key={venue.id} value={venue.id.toString()}>
+                        {venue.name} - {venue.city}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Artists */}
           <div>
