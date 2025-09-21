@@ -14,9 +14,11 @@ import { TimePicker } from "@/components/ui/time-picker"
 interface EventDatePickerProps {
   startTime?: Date
   endTime?: Date
+  startName?: string
+  endName?: string
 }
 
-export function EventDatePicker({ startTime, endTime }: EventDatePickerProps) {
+export function EventDatePicker({ startTime, endTime, startName = "startTime", endName = "endTime" }: EventDatePickerProps) {
   const [startDate, setStartDate] = useState<Date | undefined>(startTime)
   const [endDate, setEndDate] = useState<Date | undefined>(endTime)
   const [startHour, setStartHour] = useState(startTime ? format(startTime, "HH:mm") : "20:00")
@@ -63,7 +65,7 @@ export function EventDatePicker({ startTime, endTime }: EventDatePickerProps) {
           />
           <input 
             type="hidden" 
-            name="startTime" 
+            name={startName}
             value={combineDateTime(startDate, startHour)} 
           />
         </div>
@@ -98,7 +100,7 @@ export function EventDatePicker({ startTime, endTime }: EventDatePickerProps) {
           />
           <input 
             type="hidden" 
-            name="endTime" 
+            name={endName}
             value={combineDateTime(endDate, endHour)} 
           />
         </div>

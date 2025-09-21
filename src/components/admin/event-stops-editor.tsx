@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Plus, Trash2 } from "lucide-react"
+import { EventDatePicker } from "@/components/admin/event-date-picker"
 
 interface VenueOption {
   id: number
@@ -154,37 +155,14 @@ export function EventStopsEditor({ venues, initialStops = [] }: EventStopsEditor
               />
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor={`stops-${index}-start`}>Start date & time *</Label>
-                <Input
-                  id={`stops-${index}-start`}
-                  type="datetime-local"
-                  value={stop.startLocal}
-                  onChange={(e) => updateStop(index, "startLocal", e.target.value)}
-                  className="bg-background"
-                />
-                <input
-                  type="hidden"
-                  name={`stops[${index}][startTime]`}
-                  value={stop.startLocal ? new Date(stop.startLocal).toISOString() : ""}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor={`stops-${index}-end`}>End date & time *</Label>
-                <Input
-                  id={`stops-${index}-end`}
-                  type="datetime-local"
-                  value={stop.endLocal}
-                  onChange={(e) => updateStop(index, "endLocal", e.target.value)}
-                  className="bg-background"
-                />
-                <input
-                  type="hidden"
-                  name={`stops[${index}][endTime]`}
-                  value={stop.endLocal ? new Date(stop.endLocal).toISOString() : ""}
-                />
-              </div>
+            <div className="space-y-2">
+              <Label>Stop date & time *</Label>
+              <EventDatePicker
+                startName={`stops[${index}][startTime]`}
+                endName={`stops[${index}][endTime]`}
+                startTime={stop.startLocal ? new Date(stop.startLocal) : undefined}
+                endTime={stop.endLocal ? new Date(stop.endLocal) : undefined}
+              />
             </div>
 
             <div className="space-y-2">

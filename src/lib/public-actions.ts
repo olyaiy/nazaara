@@ -120,7 +120,7 @@ export async function getPublicEvents(): Promise<PublicEvent[]> {
     const { date, year } = formatDateToDisplay(event.startTime);
     const eventArtistsList = (artistsByEvent[event.id] || [])
       .sort((a, b) => a.orderIndex - b.orderIndex)
-      .map(({ orderIndex, ...artist }) => artist);
+      .map(({ name, instagram, soundcloud, image }) => ({ name, instagram, soundcloud, image }));
     
     // Use the first artist as the primary artist for backward compatibility
     const primaryArtist = eventArtistsList[0]?.name || event.title;
@@ -229,7 +229,7 @@ export async function getPublicEventForCity(city?: string): Promise<PublicEvent 
   if (city) {
     const stopRows = await db
       .select({
-        eventId: events.id,
+        eventId: eventStops.eventId,
         eventSlug: events.slug,
         eventTitle: events.title,
         eventTagline: events.tagline,
@@ -248,7 +248,7 @@ export async function getPublicEventForCity(city?: string): Promise<PublicEvent 
         venueImages: venues.images,
       })
       .from(eventStops)
-      .leftJoin(events, eq(eventStops.eventId, events.id))
+      .innerJoin(events, eq(eventStops.eventId, events.id))
       .leftJoin(venues, eq(eventStops.venueId, venues.id))
       .where(
         and(
