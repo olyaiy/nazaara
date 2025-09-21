@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/db/drizzle"
-import { events, artists, venues, eventsArtists, galleries, galleryImages } from "@/db/schema"
+import { events, artists, venues, eventsArtists, galleries, galleryImages, eventStops } from "@/db/schema"
 import { eq, and, gte, asc, desc, sql } from "drizzle-orm"
 
 export interface PublicArtist {
@@ -188,24 +188,116 @@ export async function getPublicFeaturedEvent(): Promise<PublicEvent | undefined>
 }
 
 export async function getPublicEventForCity(city?: string): Promise<PublicEvent | undefined> {
+  const now = new Date();
+
+  // 1) Try to find the soonest upcoming tour stop in this city
+  if (city) {
+    const stopRows = await db
+      .select({
+        eventId: events.id,
+        eventSlug: events.slug,
+        eventTitle: events.title,
+        eventTagline: events.tagline,
+        eventDescription: events.description,
+        eventImage: events.image,
+        eventTicketUrl: events.ticketUrl,
+        stopStartTime: eventStops.startTime,
+        stopEndTime: eventStops.endTime,
+        stopTicketUrl: eventStops.ticketUrl,
+        stopCity: eventStops.city,
+        stopCountry: eventStops.country,
+        venueName: venues.name,
+        venueDescription: venues.description,
+        venueAddress: venues.address,
+        venueAddressUrl: venues.addressUrl,
+        venueImages: venues.images,
+      })
+      .from(eventStops)
+      .leftJoin(events, eq(eventStops.eventId, events.id))
+      .leftJoin(venues, eq(eventStops.venueId, venues.id))
+      .where(
+        and(
+          eq(events.isPublished, true),
+          gte(eventStops.startTime, now),
+          sql`LOWER(${eventStops.city}) = LOWER(${city})`
+        )
+      )
+      .orderBy(asc(eventStops.startTime))
+      .limit(1)
+
+    const stopRow = stopRows[0]
+    if (stopRow) {
+      // Load artists for the event
+      const eventArtists = await db
+        .select({
+          artistName: artists.name,
+          artistInstagram: artists.instagram,
+          artistSoundcloud: artists.soundcloud,
+          artistImage: artists.image,
+          orderIndex: eventsArtists.orderIndex,
+        })
+        .from(eventsArtists)
+        .leftJoin(artists, eq(eventsArtists.artistId, artists.id))
+        .where(eq(eventsArtists.eventId, stopRow.eventId))
+        .orderBy(eventsArtists.orderIndex)
+
+      const artistList: PublicArtist[] = eventArtists
+        .filter(a => a.artistName)
+        .map(a => ({
+          name: a.artistName!,
+          instagram: a.artistInstagram,
+          soundcloud: a.artistSoundcloud,
+          image: a.artistImage,
+        }))
+
+      const primaryArtist = artistList[0]?.name || stopRow.eventTitle
+      const { date, year } = formatDateToDisplay(stopRow.stopStartTime)
+      const ticketUrl = stopRow.stopTicketUrl || stopRow.eventTicketUrl
+
+      const status = ticketUrl
+        ? (stopRow.stopStartTime < now ? "Past Event" : "On Sale")
+        : "Coming Soon"
+
+      return {
+        id: stopRow.eventId,
+        slug: stopRow.eventSlug,
+        artist: primaryArtist,
+        artists: artistList,
+        title: stopRow.eventTitle,
+        tagline: stopRow.eventTagline,
+        description: stopRow.eventDescription,
+        date,
+        year,
+        venue: stopRow.venueName || "TBA",
+        venueDescription: stopRow.venueDescription,
+        venueAddress: stopRow.venueAddress,
+        venueAddressUrl: stopRow.venueAddressUrl,
+        venueImages: stopRow.venueImages,
+        city: stopRow.stopCity,
+        country: stopRow.stopCountry,
+        image: stopRow.eventImage,
+        status,
+        isFeatured: false,
+        ticketUrl,
+        startTime: stopRow.stopStartTime,
+        endTime: stopRow.stopEndTime,
+      }
+    }
+  }
+
+  // 2) Fallback to previous behavior (non-tour events or no matching stop)
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  
   const allEvents = await getPublicEvents();
-  
-  // Filter out past events
   const upcomingEvents = allEvents.filter(event => {
     const eventDate = new Date(event.startTime);
     eventDate.setHours(0, 0, 0, 0);
     return eventDate >= today;
   });
-  
   if (city) {
     const match = upcomingEvents.find((e) => e.city.toLowerCase() === city.toLowerCase());
     if (match) return match;
   }
-  
-  // Fallback – return the first upcoming event
   return upcomingEvents[0];
 }
 
