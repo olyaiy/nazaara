@@ -424,6 +424,41 @@ Questions? DM us!
     isFeatured: false,
     ticketUrl: "https://www.showpass.com/diwaliyyc/",
   },
+  {
+    id: 13,
+    number: "13",
+    slug: "tamasha-diwali-toronto-2025",
+    artist: "REMY, ZAEN & ROY",
+    artists: [
+      { name: "REMY" },
+      { name: "ZAEN" },
+      { name: "ROY" },
+    ],
+    title: "TAMASHA Diwali",
+    tagline: "This October, celebrate Diwali with us ft. Remy, Zaen and ROY",
+    description: `TORONTO ✨ This Diwali, we’re bringing the celebration to Mister Wolf on Friday, October 17 🪔
+
+Behind the decks, Remy, Zaen & Roy will take you on a journey through Bollywood bangers, mashups, and throwback anthems!
+
+Dress Code: Traditional/Ethnic Indian Attire
+
+📅 Friday, October 17
+📍 Mister Wolf Toronto
+⏰ 10:00PM – 3:00AM
+🔞 19+ Event`,
+    date: "17 Oct",
+    dates: "Friday, October 17 · 10:00 pm - 3:00 am",
+    year: "2025",
+    venue: "Mister Wolf",
+    venueAddress: "567 Queen Street West, Main Floor, Toronto, ON M5V 2B6, Canada",
+    city: "Toronto",
+    country: "Canada",
+    price: "23.17",
+    image: "/events/nazaara-diwali-toronto.jpeg",
+    status: "On Sale",
+    isFeatured: false,
+    ticketUrl: "https://www.eventbrite.ca/e/tamasha-diwali-tickets-1732654268559?aff=Website",
+  },
 ];
 
 // Helper functions for backward compatibility and convenience
