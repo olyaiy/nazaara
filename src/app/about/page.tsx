@@ -1,14 +1,11 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowRight, Users, Globe2, Trophy, Sparkles } from "lucide-react";
+import { Users, Globe2, Trophy, Sparkles } from "lucide-react";
+import { PartnershipForm } from "@/components/forms/partnership-form";
 import {
   aboutMetadata,
   heroContent,
   storyContent,
-  brandsContent,
-  achievementsContent,
-  partnershipContent
+  brandsContent
 } from "@/content/about";
 
 export const metadata = aboutMetadata;
@@ -370,68 +367,7 @@ export default function AboutPage() {
               </div>
             </div>
             
-            <form className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    className="w-full px-0 py-3 bg-transparent border-0 border-b border-border/50 text-foreground placeholder:text-muted-foreground/50 focus:border-[var(--gold)] focus:outline-none transition-colors font-light"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Organization"
-                    className="w-full px-0 py-3 bg-transparent border-0 border-b border-border/50 text-foreground placeholder:text-muted-foreground/50 focus:border-[var(--gold)] focus:outline-none transition-colors font-light"
-                  />
-                </div>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                    className="w-full px-0 py-3 bg-transparent border-0 border-b border-border/50 text-foreground placeholder:text-muted-foreground/50 focus:border-[var(--gold)] focus:outline-none transition-colors font-light"
-                  />
-                </div>
-                <div>
-                  <Select>
-                    <SelectTrigger className="w-full px-0 py-3 bg-transparent border-0 border-b border-border/50 text-foreground focus:border-[var(--gold)] focus:outline-none transition-colors font-light rounded-none shadow-none h-auto data-[placeholder]:text-muted-foreground/50">
-                      <SelectValue placeholder="Partnership Type" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border-border">
-                      <SelectItem value="venue" className="text-foreground hover:text-foreground focus:text-foreground hover:bg-muted/10 focus:bg-muted/10">Venue Partnership</SelectItem>
-                      <SelectItem value="corporate" className="text-foreground hover:text-foreground focus:text-foreground hover:bg-muted/10 focus:bg-muted/10">Corporate Collaboration</SelectItem>
-                      <SelectItem value="media" className="text-foreground hover:text-foreground focus:text-foreground hover:bg-muted/10 focus:bg-muted/10">Media Partnership</SelectItem>
-                      <SelectItem value="other" className="text-foreground hover:text-foreground focus:text-foreground hover:bg-muted/10 focus:bg-muted/10">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              
-              <div>
-                <textarea
-                  placeholder="Tell us about your vision..."
-                  rows={4}
-                  className="w-full px-0 py-3 bg-transparent border-0 border-b border-border/50 text-foreground placeholder:text-muted-foreground/50 focus:border-[var(--gold)] focus:outline-none transition-colors font-light resize-none"
-                />
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-between pt-4 sm:pt-6">
-                <p className="text-xs text-muted-foreground font-light order-2 sm:order-1">
-                  We typically respond within 48 hours
-                </p>
-                <Button 
-                  type="submit"
-                  className="bg-[var(--gold)] text-[var(--maroon-red)] hover:bg-[var(--gold)]/90 px-8 sm:px-12 py-5 sm:py-6 text-xs sm:text-sm uppercase tracking-wider font-light w-full sm:w-auto order-1 sm:order-2"
-                >
-                  Begin Conversation
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </div>
-            </form>
+            <PartnershipForm />
           </div>
         </div>
       </section>

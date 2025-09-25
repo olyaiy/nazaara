@@ -39,6 +39,9 @@ export default function BookingsPage() {
   const [djRoster, setDjRoster] = useState<DJ[]>([]);
   const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
   const [expandedDj, setExpandedDj] = useState<number | null>(null);
+  interface SubmitState { isSubmitting: boolean; isSuccess: boolean; errorMessage: string | null; }
+  const [contactSubmit, setContactSubmit] = useState<SubmitState>({ isSubmitting: false, isSuccess: false, errorMessage: null });
+  const web3FormsKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
   useEffect(() => {
     const fetchDJs = async () => {
@@ -485,7 +488,48 @@ export default function BookingsPage() {
                 {/* Premium form container with subtle gradient background */}
                 <div className="relative bg-gradient-to-br from-[var(--maroon-red)]/10 via-transparent to-[var(--dark-green)]/5 sm:p-12 backdrop-blur-sm">
                   
-                  <form className="space-y-8">
+                  <form 
+                    className="space-y-8" 
+                    noValidate
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      if (!web3FormsKey) {
+                        setContactSubmit({ isSubmitting: false, isSuccess: false, errorMessage: "Missing Web3Forms access key." });
+                        return;
+                      }
+                      const form = e.currentTarget as HTMLFormElement;
+                      const data = new FormData(form);
+                      const payload = {
+                        access_key: web3FormsKey,
+                        name: data.get("name"),
+                        email: data.get("email"),
+                        event_type: data.get("event_type"),
+                        event_date: data.get("event_date"),
+                        event_location: data.get("event_location"),
+                        expected_guests: data.get("expected_guests"),
+                        message: data.get("message"),
+                        subject: "New Booking Inquiry via Nazaara",
+                      } as Record<string, unknown>;
+
+                      setContactSubmit({ isSubmitting: true, isSuccess: false, errorMessage: null });
+                      try {
+                        const res = await fetch("https://api.web3forms.com/submit", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json", Accept: "application/json" },
+                          body: JSON.stringify(payload),
+                        });
+                        const json = await res.json();
+                        if (json?.success) {
+                          setContactSubmit({ isSubmitting: false, isSuccess: true, errorMessage: null });
+                          form.reset();
+                        } else {
+                          setContactSubmit({ isSubmitting: false, isSuccess: false, errorMessage: json?.message || "Submission failed." });
+                        }
+                      } catch (err) {
+                        setContactSubmit({ isSubmitting: false, isSuccess: false, errorMessage: (err as Error).message });
+                      }
+                    }}
+                  >
                     {/* Personal Information Row */}
                     <div className="grid md:grid-cols-2 gap-8">
                       {contactFormContent.formFields.personalInfo.map((field, index) => (
@@ -494,7 +538,9 @@ export default function BookingsPage() {
                             {field.label}
                           </label>
                           <input
+                            name={index === 0 ? "name" : "email"}
                             type={field.type}
+                            required={index === 0 || index === 1}
                             className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
                             placeholder={field.placeholder}
                           />
@@ -510,6 +556,7 @@ export default function BookingsPage() {
                             {field.label}
                           </label>
                           <input
+                            name={index === 0 ? "event_type" : "event_date"}
                             type={field.type}
                             className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
                             placeholder={field.placeholder}
@@ -526,6 +573,7 @@ export default function BookingsPage() {
                             {field.label}
                           </label>
                           <input
+                            name={index === 0 ? "event_location" : "expected_guests"}
                             type={field.type}
                             className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
                             placeholder={field.placeholder}
@@ -540,7 +588,9 @@ export default function BookingsPage() {
                         {contactFormContent.formFields.vision.label}
                       </label>
                       <textarea
+                        name="message"
                         rows={contactFormContent.formFields.vision.rows}
+                        required
                         className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg resize-none"
                         placeholder={contactFormContent.formFields.vision.placeholder}
                       />
@@ -550,13 +600,14 @@ export default function BookingsPage() {
                     <div className="pt-8 space-y-6">
                       {/* Privacy Note */}
                       <p className="text-[10px] font-neue-haas text-[var(--off-white)]/30 tracking-wider">
-                        {contactFormContent.privacyNote}
+                        {contactSubmit.isSuccess ? "Thanks! We'll be in touch shortly." : contactFormContent.privacyNote}
                       </p>
                       
                       {/* Submit Button */}
                       <Button 
                         type="submit"
                         size="lg"
+                        disabled={contactSubmit.isSubmitting}
                         className="w-full px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0"
                         style={{ 
                           backgroundColor: 'var(--gold)', 
@@ -565,8 +616,11 @@ export default function BookingsPage() {
                         onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
                         onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                       >
-                        {contactFormContent.submitButtonText}
+                        {contactSubmit.isSubmitting ? 'Submitting…' : contactFormContent.submitButtonText}
                       </Button>
+                      {contactSubmit.errorMessage && (
+                        <p className="text-sm text-red-500/80 font-neue-haas">{contactSubmit.errorMessage}</p>
+                      )}
                     </div>
                   </form>
                 </div>

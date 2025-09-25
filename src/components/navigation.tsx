@@ -42,12 +42,12 @@ export function Navigation() {
           {/* Logo */}
           <Link href="/" className="flex items-center group" aria-label="Nazaara Live home">
             <Image
-              src="/Logos/Nazaara Logo - White.svg"
+              src="/Logos/Logo - Gold.png"
               alt="Nazaara Live"
               width={180}
               height={72}
               priority
-              className="h-16 -ml-4 w-auto lg:h-24 transition-all duration-300 group-hover:scale-105 group-hover:brightness-0 group-hover:saturate-100 group-hover:sepia group-hover:hue-rotate-15 group-hover:contrast-150"
+              className="h-42 -ml-4 w-auto lg:h-60 transition-all duration-300 group-hover:scale-105 group-hover:brightness-0 group-hover:saturate-100 group-hover:sepia group-hover:hue-rotate-15 group-hover:contrast-150"
               style={{
                 filter:
                   "brightness(1) saturate(1) sepia(0) hue-rotate(0deg) contrast(1)",
