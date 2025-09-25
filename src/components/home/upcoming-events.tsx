@@ -29,8 +29,13 @@ export default async function UpcomingEvents() {
 
   // Build a chronologically sorted list of upcoming events only for the Complete Schedule
   const allEvents = await getPublicEvents();
-  const now = new Date();
-  const upcomingEventsOnly = allEvents.filter(event => new Date(event.startTime) >= now);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcomingEventsOnly = allEvents.filter(event => {
+    const eventDate = new Date(event.startTime);
+    eventDate.setHours(0, 0, 0, 0);
+    return eventDate >= today;
+  });
   const allEventsChrono = upcomingEventsOnly.sort((a, b) => {
     const dateA = new Date(a.startTime);
     const dateB = new Date(b.startTime);

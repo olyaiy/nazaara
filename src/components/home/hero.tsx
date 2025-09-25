@@ -18,6 +18,18 @@ export default async function Hero() {
     return null;
   }
 
+  // Guard against past events (yesterday or earlier)
+  {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const eventDate = new Date(featuredEvent.startTime);
+    eventDate.setHours(0, 0, 0, 0);
+    if (eventDate < today) {
+      console.log("[Hero] event is in the past – returning null");
+      return null;
+    }
+  }
+
   console.log("[Hero] chosen event:", featuredEvent.slug);
 
   // Derive featuring artists (exclude the headliner)

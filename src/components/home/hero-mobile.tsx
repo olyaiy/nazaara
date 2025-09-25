@@ -15,6 +15,18 @@ export default async function HeroMobile() {
     return null;
   }
 
+  // Guard against past events (yesterday or earlier)
+  {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const eventDate = new Date(featuredEvent.startTime);
+    eventDate.setHours(0, 0, 0, 0);
+    if (eventDate < today) {
+      console.log("[HeroMobile] event is in the past – returning null");
+      return null;
+    }
+  }
+
   console.log("[HeroMobile] chosen event:", featuredEvent.slug);
   const featuringArtists =
     featuredEvent.artists?.filter(
