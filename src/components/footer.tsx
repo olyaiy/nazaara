@@ -70,15 +70,8 @@ export function Footer() {
                     >
                       Home
                     </Link>
-                    {/* TEMPORARILY HIDDEN - Will be brought back later
-                    <Link 
-                      href="/events" 
-                      className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
-                    >
-                      Events
-                    </Link>
-                    */}
-                    {/* TEMPORARILY HIDDEN - Will be brought back later
+                   
+                    
                     <Link 
                       href="/about" 
                       className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
@@ -91,7 +84,7 @@ export function Footer() {
                     >
                       Private Bookings
                     </Link>
-                    */}
+                   
                     <Link 
                       href="/gallery" 
                       className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
@@ -113,28 +106,28 @@ export function Footer() {
                     <div>
                       <p className="text-xs font-neue-haas uppercase tracking-[0.2em] text-white/40 mb-1">General Inquiries</p>
                       <a 
-                        href="mailto:info@nazaaralive.com" 
+                        href="mailto:info@nazaara.live" 
                         className="text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
                       >
-                        info@nazaaralive.com
+                        info@nazaara.live
                       </a>
                     </div>
                     <div>
                       <p className="text-xs font-neue-haas uppercase tracking-[0.2em] text-white/40 mb-1">Bookings</p>
                       <a 
-                        href="mailto:bookings@nazaaralive.com" 
+                        href="mailto:bookings@nazaara.live" 
                         className="text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
                       >
-                        bookings@nazaaralive.com
+                        bookings@nazaara.live
                       </a>
                     </div>
                     <div>
                       <p className="text-xs font-neue-haas uppercase tracking-[0.2em] text-white/40 mb-1">Press</p>
                       <a 
-                        href="mailto:press@nazaaralive.com" 
+                        href="mailto:press@nazaara.live" 
                         className="text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
                       >
-                        press@nazaaralive.com
+                        press@nazaara.live
                       </a>
                     </div>
                   </div>
@@ -173,31 +166,6 @@ export function Footer() {
                     <div className="flex-1 h-px" style={{ backgroundColor: 'var(--gold)', opacity: 0.2 }} />
                   </div>
                   
-                  {/* Newsletter Signup */}
-                  <div className="mb-8">
-                    <p className="text-sm font-neue-haas text-white/60 mb-4 leading-relaxed">
-                      Receive exclusive presale access and curated event announcements
-                    </p>
-                    <form className="space-y-4">
-                      <input
-                        type="email"
-                        placeholder="Enter your email"
-                        className="w-full px-0 py-3 bg-transparent border-0 border-b border-white/20 text-white placeholder:text-white/40 focus:border-[var(--gold)] focus:outline-none transition-colors font-neue-haas font-light text-sm"
-                      />
-                      <button 
-                        type="submit"
-                        className="w-full relative overflow-hidden group"
-                      >
-                        <div className="absolute inset-0 bg-[var(--gold)] transition-all duration-300 ease-out" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100" />
-                        <div className="relative px-8 py-4">
-                          <p className="text-[11px] font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium transition-all duration-300">
-                            Subscribe
-                          </p>
-                        </div>
-                      </button>
-                    </form>
-                  </div>
 
                   {/* Social Links */}
                   <div>
