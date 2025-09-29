@@ -8,6 +8,7 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { Toaster } from "@/components/ui/sonner";
+import { getSiteSettings } from "@/lib/site-settings";
 
 const prettywise = localFont({
   src: [
@@ -169,11 +170,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
   return (
     <html lang="en">
       <body className={`${prettywise.variable} ${neueHaas.variable}`}>
@@ -186,11 +188,11 @@ export default function RootLayout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <Navigation />
+        <Navigation hideAbout={settings.hideAbout} hideBookings={settings.hideBookings} />
         <main className="pt-16 md:pt-24">
           {children}
         </main>
-        <Footer />
+        <Footer hideAbout={settings.hideAbout} hideBookings={settings.hideBookings} />
         <Analytics />
         <Toaster />
       </body>

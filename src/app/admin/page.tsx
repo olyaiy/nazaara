@@ -4,10 +4,12 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, Users, MapPin, Settings, Plus, UserCheck, Shield, Image, Headphones } from "lucide-react"
+import { Calendar, Users, MapPin, Settings, Plus, UserCheck, Shield, Image as ImageIcon, Headphones } from "lucide-react"
 import { getAdminEvents, getAdminArtists, getAdminVenues, getAdminGalleries, getAdminDJs } from "@/lib/admin-actions"
 import Link from "next/link"
 import { SuccessToast } from "@/components/admin/success-toast"
+import { getSiteSettings, updateSiteSettings } from "@/lib/site-settings"
+import { revalidatePath } from "next/cache"
 import { UserManagement } from "@/components/admin/user-management"
 import { ArtistsGrid } from "@/components/admin/artists-grid"
 import { DJsGrid } from "@/components/admin/djs-grid"
@@ -25,6 +27,22 @@ async function signOutAction() {
   redirect("/admin/auth")
 }
 
+async function updateVisibilityAction(formData: FormData) {
+  "use server"
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session || session.user.role !== "admin") {
+    redirect("/admin/auth")
+  }
+  const hideAbout = formData.get("hideAbout") === "on" || formData.get("hideAbout") === "true";
+  const hideBookings = formData.get("hideBookings") === "on" || formData.get("hideBookings") === "true";
+  await updateSiteSettings({ hideAbout, hideBookings })
+  revalidatePath("/", "layout")
+  revalidatePath("/about")
+  revalidatePath("/bookings")
+  revalidatePath("/admin")
+  redirect("/admin?tab=settings&success=visibility-updated")
+}
+
 export default async function AdminPage() {
     const session = await auth.api.getSession({
         headers: await headers()
@@ -38,12 +56,13 @@ export default async function AdminPage() {
     const isAdmin = session.user.role === "admin"
 
     // Fetch all admin data in parallel for optimal performance
-    const [events, artists, djs, venues, galleries] = await Promise.all([
+    const [events, artists, djs, venues, galleries, siteSettings] = await Promise.all([
         getAdminEvents(),
         getAdminArtists(),
         getAdminDJs(),
         getAdminVenues(),
-        getAdminGalleries()
+        getAdminGalleries(),
+        getSiteSettings()
     ])
 
     return (
@@ -89,7 +108,7 @@ export default async function AdminPage() {
                             Venues
                         </TabsTrigger>
                         <TabsTrigger value="galleries" className="flex items-center gap-2">
-                            <Image className="h-4 w-4" />
+                            <ImageIcon className="h-4 w-4" />
                             Galleries
                         </TabsTrigger>
                         <TabsTrigger value="settings" className="flex items-center gap-2">
@@ -190,6 +209,38 @@ export default async function AdminPage() {
                         </div>
                         
                         <div className="grid gap-6 max-w-4xl">
+                            {isAdmin && (
+                              <Card>
+                                <CardHeader>
+                                  <CardTitle className="text-lg flex items-center gap-2">
+                                    <Settings className="h-5 w-5" />
+                                    Site Visibility
+                                  </CardTitle>
+                                  <CardDescription>Toggle visibility of public pages</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                  <form action={updateVisibilityAction} className="space-y-6">
+                                    <div className="flex items-center justify-between">
+                                      <div>
+                                        <div className="text-sm font-medium text-foreground">Hide About Page</div>
+                                        <div className="text-sm text-muted-foreground">Removes About from navigation and redirects /about</div>
+                                      </div>
+                                      <input name="hideAbout" type="checkbox" defaultChecked={siteSettings.hideAbout} className="h-5 w-5" />
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                      <div>
+                                        <div className="text-sm font-medium text-foreground">Hide Bookings Page</div>
+                                        <div className="text-sm text-muted-foreground">Removes Bookings from navigation and redirects /bookings</div>
+                                      </div>
+                                      <input name="hideBookings" type="checkbox" defaultChecked={siteSettings.hideBookings} className="h-5 w-5" />
+                                    </div>
+                                    <div className="pt-2">
+                                      <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">Save</Button>
+                                    </div>
+                                  </form>
+                                </CardContent>
+                              </Card>
+                            )}
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="text-lg flex items-center gap-2">

@@ -1,6 +1,11 @@
 import Link from "next/link";
 
-export function Footer() {
+interface FooterProps {
+  hideAbout?: boolean;
+  hideBookings?: boolean;
+}
+
+export function Footer({ hideAbout = false, hideBookings = false }: FooterProps) {
   return (
     <footer className="relative overflow-hidden" style={{ backgroundColor: 'var(--black-grey)' }}>
       {/* Geometric Pattern Overlay */}
@@ -70,20 +75,22 @@ export function Footer() {
                     >
                       Home
                     </Link>
-                   
-                    
-                    <Link 
-                      href="/about" 
-                      className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
-                    >
-                      About Us
-                    </Link>
-                    <Link 
-                      href="/bookings" 
-                      className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
-                    >
-                      Private Bookings
-                    </Link>
+                    {!hideAbout && (
+                      <Link 
+                        href="/about" 
+                        className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
+                      >
+                        About Us
+                      </Link>
+                    )}
+                    {!hideBookings && (
+                      <Link 
+                        href="/bookings" 
+                        className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
+                      >
+                        Private Bookings
+                      </Link>
+                    )}
                    
                     <Link 
                       href="/gallery" 

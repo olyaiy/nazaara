@@ -7,7 +7,12 @@ import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function Navigation() {
+interface NavigationProps {
+  hideAbout?: boolean;
+  hideBookings?: boolean;
+}
+
+export function Navigation({ hideAbout = false, hideBookings = false }: NavigationProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -57,46 +62,50 @@ export function Navigation() {
 
           {/* Right Side Navigation (Desktop) */}
           <div className="hidden lg:flex items-center gap-8">
-            <Link
-              href="/about"
-              aria-current={isCurrent("/about") ? "page" : undefined}
-              className={cn(
-                "relative group text-sm uppercase tracking-[0.2em] font-light transition-colors",
-                isCurrent("/about")
-                  ? "text-primary"
-                  : "text-foreground/80 hover:text-primary"
-              )}
-            >
-              <span>About</span>
-              <span
+            {!hideAbout && (
+              <Link
+                href="/about"
+                aria-current={isCurrent("/about") ? "page" : undefined}
                 className={cn(
-                  "pointer-events-none absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
+                  "relative group text-sm uppercase tracking-[0.2em] font-light transition-colors",
                   isCurrent("/about")
-                    ? "w-full opacity-90"
-                    : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                    ? "text-primary"
+                    : "text-foreground/80 hover:text-primary"
                 )}
-              />
-            </Link>
-            <Link
-              href="/bookings"
-              aria-current={isCurrent("/bookings") ? "page" : undefined}
-              className={cn(
-                "relative group text-sm uppercase tracking-[0.2em] font-light transition-colors",
-                isCurrent("/bookings")
-                  ? "text-primary"
-                  : "text-foreground/80 hover:text-primary"
-              )}
-            >
-              <span>Bookings</span>
-              <span
+              >
+                <span>About</span>
+                <span
+                  className={cn(
+                    "pointer-events-none absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
+                    isCurrent("/about")
+                      ? "w-full opacity-90"
+                      : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                  )}
+                />
+              </Link>
+            )}
+            {!hideBookings && (
+              <Link
+                href="/bookings"
+                aria-current={isCurrent("/bookings") ? "page" : undefined}
                 className={cn(
-                  "pointer-events-none absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
+                  "relative group text-sm uppercase tracking-[0.2em] font-light transition-colors",
                   isCurrent("/bookings")
-                    ? "w-full opacity-90"
-                    : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                    ? "text-primary"
+                    : "text-foreground/80 hover:text-primary"
                 )}
-              />
-            </Link>
+              >
+                <span>Bookings</span>
+                <span
+                  className={cn(
+                    "pointer-events-none absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
+                    isCurrent("/bookings")
+                      ? "w-full opacity-90"
+                      : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                  )}
+                />
+              </Link>
+            )}
             <Link
               href="/galleries"
               aria-current={isCurrent("/galleries") ? "page" : undefined}
@@ -148,32 +157,36 @@ export function Navigation() {
       >
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col gap-2 py-2">
-            <Link
-              href="/about"
-              onClick={() => setOpen(false)}
-              className={cn(
-                "block rounded-md px-3 py-3 text-base uppercase tracking-[0.18em] transition-colors",
-                isCurrent("/about")
-                  ? "text-primary bg-primary/10"
-                  : "text-foreground/90 hover:bg-muted/30 hover:text-primary"
-              )}
-              aria-current={isCurrent("/about") ? "page" : undefined}
-            >
-              About
-            </Link>
-            <Link
-              href="/bookings"
-              onClick={() => setOpen(false)}
-              className={cn(
-                "block rounded-md px-3 py-3 text-base uppercase tracking-[0.18em] transition-colors",
-                isCurrent("/bookings")
-                  ? "text-primary bg-primary/10"
-                  : "text-foreground/90 hover:bg-muted/30 hover:text-primary"
-              )}
-              aria-current={isCurrent("/bookings") ? "page" : undefined}
-            >
-              Bookings
-            </Link>
+            {!hideAbout && (
+              <Link
+                href="/about"
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "block rounded-md px-3 py-3 text-base uppercase tracking-[0.18em] transition-colors",
+                  isCurrent("/about")
+                    ? "text-primary bg-primary/10"
+                    : "text-foreground/90 hover:bg-muted/30 hover:text-primary"
+                )}
+                aria-current={isCurrent("/about") ? "page" : undefined}
+              >
+                About
+              </Link>
+            )}
+            {!hideBookings && (
+              <Link
+                href="/bookings"
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "block rounded-md px-3 py-3 text-base uppercase tracking-[0.18em] transition-colors",
+                  isCurrent("/bookings")
+                    ? "text-primary bg-primary/10"
+                    : "text-foreground/90 hover:bg-muted/30 hover:text-primary"
+                )}
+                aria-current={isCurrent("/bookings") ? "page" : undefined}
+              >
+                Bookings
+              </Link>
+            )}
             <Link
               href="/galleries"
               onClick={() => setOpen(false)}
