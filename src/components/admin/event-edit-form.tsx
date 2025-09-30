@@ -16,6 +16,7 @@ import { DeleteEventForm } from "@/components/admin/delete-event-form"
 import { Save, Calendar, Clock, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { EventStopsEditor } from "@/components/admin/event-stops-editor"
+import { formatInTimeZone } from "date-fns-tz"
 
 interface Venue {
   id: number
@@ -228,8 +229,26 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
             <div>
               <h2 className="text-lg font-semibold mb-4">Date & Time</h2>
               <EventDatePicker 
-                startTime={new Date(event.startTime)} 
-                endTime={new Date(event.endTime)} 
+                startTime={(() => {
+                  const startDate = new Date(event.startTime)
+                  console.log('🔍 [EVENT EDIT FORM] Creating start Date:', {
+                    rawValue: event.startTime,
+                    createdDate: startDate,
+                    isValidDate: !isNaN(startDate.getTime()),
+                    toISOString: startDate.toISOString(),
+                  })
+                  return startDate
+                })()} 
+                endTime={(() => {
+                  const endDate = new Date(event.endTime)
+                  console.log('🔍 [EVENT EDIT FORM] Creating end Date:', {
+                    rawValue: event.endTime,
+                    createdDate: endDate,
+                    isValidDate: !isNaN(endDate.getTime()),
+                    toISOString: endDate.toISOString(),
+                  })
+                  return endDate
+                })()} 
               />
             </div>
           )}
@@ -338,21 +357,18 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
 
           {/* Event Schedule Info */}
           <div>
-            <h3 className="text-sm font-medium text-muted-foreground mb-3">Event Schedule</h3>
+            <h3 className="text-sm font-medium text-muted-foreground mb-3">Event Schedule </h3>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-2">
                 <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />
                 <div>
                   <p className="text-muted-foreground text-xs">Start Time</p>
                   <p className="text-foreground">
-                    {new Date(event.startTime).toLocaleDateString('en-US', { 
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: '2-digit'
-                    })}
+                    {formatInTimeZone(
+                      new Date(event.startTime),
+                      'UTC',
+                      'EEEE, MMMM d, yyyy h:mm a'
+                    )} 
                   </p>
                 </div>
               </div>
@@ -361,14 +377,11 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
                 <div>
                   <p className="text-muted-foreground text-xs">End Time</p>
                   <p className="text-foreground">
-                    {new Date(event.endTime).toLocaleDateString('en-US', { 
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: '2-digit'
-                    })}
+                    {formatInTimeZone(
+                      new Date(event.endTime),
+                      'UTC',
+                      'EEEE, MMMM d, yyyy h:mm a'
+                    )} 
                   </p>
                 </div>
               </div>

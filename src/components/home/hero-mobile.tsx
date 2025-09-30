@@ -39,18 +39,18 @@ export default async function HeroMobile() {
   }
   const ageLabel = isUnitedStates(featuredEvent.country) ? "21+" : "19+";
   
-  // Format time without timezone conversion - extract time components directly from string
+  // Format time in UTC without timezone conversion - extract time components directly from ISO string
   const formatTime = (dateString: string | Date) => {
     const dateStr = typeof dateString === 'string' ? dateString : dateString.toISOString();
-    // Extract HH:mm from the string (works for both "YYYY-MM-DD HH:mm:ss" and ISO format)
-    const match = dateStr.match(/(\d{2}):(\d{2})/);
+    // Extract HH:mm from the ISO string (e.g., "2025-10-16T15:00:00Z" -> 15:00)
+    const match = dateStr.match(/T(\d{2}):(\d{2})/);
     if (!match) return '';
     const hours = parseInt(match[1]);
     const minutes = parseInt(match[2]);
     const ampm = hours >= 12 ? 'PM' : 'AM';
     const displayHours = hours % 12 || 12;
     const displayMinutes = minutes === 0 ? '' : `:${minutes.toString().padStart(2, '0')}`;
-    return `${displayHours}${displayMinutes}${ampm}`;
+    return `${displayHours}${displayMinutes}${ampm} UTC`;
   };
   
   const startTimeStr = formatTime(featuredEvent.startTime);

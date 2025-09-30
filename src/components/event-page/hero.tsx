@@ -19,18 +19,18 @@ export default async function EventHero({ event }: EventHeroProps) {
   }
   const ageLabel = isUnitedStates(event.country) ? "21+" : "19+";
 
-  // Format time without timezone conversion - extract time components directly from string
+  // Format time in UTC without timezone conversion - extract time components directly from ISO string
   const formatTime = (dateString: string | Date) => {
     const dateStr = typeof dateString === 'string' ? dateString : dateString.toISOString();
-    // Extract HH:mm from the string (works for both "YYYY-MM-DD HH:mm:ss" and ISO format)
-    const match = dateStr.match(/(\d{2}):(\d{2})/);
+    // Extract HH:mm from the ISO string (e.g., "2025-10-16T15:00:00Z" -> 15:00)
+    const match = dateStr.match(/T(\d{2}):(\d{2})/);
     if (!match) return '';
     const hours = parseInt(match[1]);
     const minutes = parseInt(match[2]);
     const ampm = hours >= 12 ? 'PM' : 'AM';
     const displayHours = hours % 12 || 12;
     const displayMinutes = minutes === 0 ? '' : `:${minutes.toString().padStart(2, '0')}`;
-    return `${displayHours}${displayMinutes}${ampm}`;
+    return `${displayHours}${displayMinutes}${ampm} UTC`;
   };
   
   const startTimeStr = formatTime(event.startTime);
@@ -201,26 +201,33 @@ export default async function EventHero({ event }: EventHeroProps) {
                   </div>
 
                 {stops.length > 0 && (
-                  <div className="mt-4">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
-                      <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40">Tour Stops</p>
-                      <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
-                    </div>
-                    <ul className="space-y-3">
-                      {stops.map((s, i) => {
-                        const d = new Date(s.startTime)
-                        const dateStr = `${d.getDate().toString().padStart(2, '0')} ${d.toLocaleString('en-US', { month: 'short' })}`
-                        return (
-                          <li key={i} className="flex items-center justify-between gap-3 text-[var(--white)]">
-                            <div>
-                              <p className="font-prettywise text-base">{s.city}, {s.country}</p>
-                              {s.venue && (
-                                <p className="text-xs text-[var(--white)]/70">{s.venue}</p>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <span className="text-sm font-neue-haas">{dateStr}</span>
+                    <div className="mt-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
+                        <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40">Tour Stops</p>
+                        <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
+                      </div>
+                      <ul className="space-y-3">
+                        {stops.map((s, i) => {
+                          // Format date in UTC to avoid timezone conversion
+                          const d = new Date(s.startTime)
+                          const day = d.getUTCDate().toString().padStart(2, '0')
+                          const month = d.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' })
+                          const dateStr = `${day} ${month}`
+                          const timeStr = formatTime(s.startTime)
+                          return (
+                            <li key={i} className="flex items-center justify-between gap-3 text-[var(--white)]">
+                              <div>
+                                <p className="font-prettywise text-base">{s.city}, {s.country}</p>
+                                {s.venue && (
+                                  <p className="text-xs text-[var(--white)]/70">{s.venue}</p>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <div className="text-right">
+                                  <span className="text-sm font-neue-haas block">{dateStr}</span>
+                                  <span className="text-xs font-neue-haas text-[var(--white)]/70">{timeStr}</span>
+                                </div>
                               {s.ticketUrl ? (
                                 <a href={s.ticketUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] bg-[var(--gold)] text-[var(--maroon-red)]">
                                   Tickets
@@ -393,8 +400,12 @@ export default async function EventHero({ event }: EventHeroProps) {
                       </div>
                       <div className="divide-y divide-[var(--gold)]/10 border border-[var(--gold)]/10">
                         {stops.map((s, i) => {
+                          // Format date in UTC to avoid timezone conversion
                           const d = new Date(s.startTime)
-                          const dateStr = `${d.getDate().toString().padStart(2, '0')} ${d.toLocaleString('en-US', { month: 'short' })}`
+                          const day = d.getUTCDate().toString().padStart(2, '0')
+                          const month = d.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' })
+                          const dateStr = `${day} ${month}`
+                          const timeStr = formatTime(s.startTime)
                           return (
                             <div key={i} className="flex items-center justify-between p-3">
                               <div className="min-w-0">
@@ -402,7 +413,10 @@ export default async function EventHero({ event }: EventHeroProps) {
                                 {s.venue && <p className="text-sm text-[var(--white)]/70 truncate">{s.venue}</p>}
                               </div>
                               <div className="flex items-center gap-4">
-                                <span className="text-sm font-neue-haas text-[var(--white)]/90">{dateStr}</span>
+                                <div className="text-right">
+                                  <span className="text-sm font-neue-haas text-[var(--white)]/90 block">{dateStr}</span>
+                                  <span className="text-xs font-neue-haas text-[var(--white)]/60">{timeStr}</span>
+                                </div>
                                 {s.ticketUrl ? (
                                   <a href={s.ticketUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] bg-[var(--gold)] text-[var(--maroon-red)]">
                                     Tickets

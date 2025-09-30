@@ -4,6 +4,7 @@ import { useState, useMemo } from "react"
 import Link from "next/link"
 import { Search, Calendar, ExternalLink } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { formatInTimeZone } from "date-fns-tz"
 import {
   Pagination,
   PaginationContent,
@@ -122,8 +123,8 @@ export function EventsGrid({ events }: EventsGridProps) {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {paginatedEvents.map((event) => {
           const startDate = new Date(event.startTime);
-          const day = startDate.getDate();
-          const month = startDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+          const day = formatInTimeZone(startDate, 'UTC', 'd');
+          const month = formatInTimeZone(startDate, 'UTC', 'MMM').toUpperCase();
           
           return (
             <Link key={event.id} href={`/admin/events/${event.slug}`}>
@@ -187,13 +188,11 @@ export function EventsGrid({ events }: EventsGridProps) {
                     
                     <div className="mt-4 flex items-center justify-between">
                       <span className="text-xs text-muted-foreground">
-                        {new Date(event.startTime).toLocaleDateString('en-US', { 
-                          weekday: 'short',
-                          month: 'short', 
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: '2-digit'
-                        })}
+                        {formatInTimeZone(
+                          new Date(event.startTime),
+                          'UTC',
+                          'EEE, MMM d, h:mm a'
+                        )} UTC
                       </span>
                       <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-[--gold]" />
                     </div>

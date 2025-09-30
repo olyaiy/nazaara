@@ -213,6 +213,13 @@ export async function updateEvent(formData: FormData) {
   const description = formData.get("description") as string
   const startTime = formData.get("startTime") as string
   const endTime = formData.get("endTime") as string
+  
+  console.log('🔍 [UPDATE EVENT] Received from form:', {
+    eventId,
+    title,
+    startTime,
+    endTime,
+  })
   const image = formData.get("image") as string
   const imageKey = formData.get("imageKey") as string
   const ticketUrl = formData.get("ticketUrl") as string
@@ -309,6 +316,23 @@ export async function updateEvent(formData: FormData) {
     : (isTour && stopsData.length > 0
         ? new Date(Math.max(...stopsData.map(s => s.endTime.getTime())))
         : undefined)
+  
+  console.log('🔍 [UPDATE EVENT] Created Date objects:', {
+    startTimeString: startTime,
+    endTimeString: endTime,
+    eventStartTime,
+    eventEndTime,
+    eventStartTimeISO: eventStartTime?.toISOString(),
+    eventEndTimeISO: eventEndTime?.toISOString(),
+  })
+
+  console.log('🔍 [UPDATE EVENT] Saving to database:', {
+    eventId,
+    startTime: eventStartTime,
+    endTime: eventEndTime,
+    startTimeISO: eventStartTime?.toISOString(),
+    endTimeISO: eventEndTime?.toISOString(),
+  })
 
   await db
     .update(events)
@@ -327,6 +351,8 @@ export async function updateEvent(formData: FormData) {
       venueId,
     })
     .where(eq(events.id, eventId))
+  
+  console.log('🔍 [UPDATE EVENT] Successfully saved to database')
 
   // Delete existing artist relationships
   await db

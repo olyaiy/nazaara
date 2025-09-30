@@ -70,6 +70,13 @@ export default async function EventEditPage({ params }: PageProps) {
     redirect("/admin")
   }
 
+  console.log('🔍 [EVENT PAGE] Raw event from DB:', {
+    startTime: event.startTime,
+    endTime: event.endTime,
+    startTimeType: typeof event.startTime,
+    endTimeType: typeof event.endTime,
+  })
+
   const eventForForm: EventForForm = {
     ...event,
     isTour: event.isTour ?? false,
@@ -92,6 +99,11 @@ export default async function EventEditPage({ params }: PageProps) {
       orderIndex: s.orderIndex ?? 0,
     })),
   }
+
+  console.log('🔍 [EVENT PAGE] eventForForm times:', {
+    startTime: eventForForm.startTime,
+    endTime: eventForForm.endTime,
+  })
 
 
   return (
