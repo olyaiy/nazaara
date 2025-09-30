@@ -48,6 +48,7 @@ export function ImageUpload({
   }, [onImageChange])
 
   const aspectClass = aspectRatio === "square" ? "aspect-square" : "aspect-[3/4]"
+  const endpoint = aspectRatio === "square" ? "artistImage" : "eventPoster"
 
   if (imageUrl) {
     return (
@@ -82,7 +83,7 @@ export function ImageUpload({
   return (
     <div className="space-y-2">
       <UploadDropzone
-        endpoint="eventPoster"
+        endpoint={endpoint}
         onClientUploadComplete={handleUploadComplete}
         onUploadError={(error: Error) => {
           console.error("Upload error:", error)
@@ -135,7 +136,7 @@ export function ImageUpload({
                   Drop image here or click to upload
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  PNG, JPG, WEBP up to 4MB
+                  PNG, JPG, WEBP up to {aspectRatio === "square" ? "2MB" : "4MB"}
                 </p>
               </div>
             )

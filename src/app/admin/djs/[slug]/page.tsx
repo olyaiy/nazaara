@@ -241,7 +241,7 @@ export default async function DJEditPage({ params }: PageProps) {
                 <h2 className="text-lg font-semibold mb-4">Media</h2>
                 <div className="space-y-2">
                   <Label>DJ Photo</Label>
-                  <ImageUpload defaultImage={dj.image} name="image" aspectRatio="square" />
+                  <ImageUpload defaultImage={dj.image} defaultImageKey={dj.imageKey} name="image" aspectRatio="square" />
                 </div>
               </div>
 
