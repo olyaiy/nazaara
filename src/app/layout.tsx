@@ -188,11 +188,21 @@ export default async function RootLayout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <Navigation hideAbout={settings.hideAbout} hideBookings={settings.hideBookings} />
+        <Navigation 
+          hideAbout={settings.hideAbout} 
+          hideBookings={settings.hideBookings}
+          useExternalGallery={settings.useExternalGallery}
+          externalGalleryUrl={settings.externalGalleryUrl}
+        />
         <main className="pt-16 md:pt-24">
           {children}
         </main>
-        <Footer hideAbout={settings.hideAbout} hideBookings={settings.hideBookings} />
+        <Footer 
+          hideAbout={settings.hideAbout} 
+          hideBookings={settings.hideBookings}
+          useExternalGallery={settings.useExternalGallery}
+          externalGalleryUrl={settings.externalGalleryUrl}
+        />
         <Analytics />
         <Toaster />
       </body>

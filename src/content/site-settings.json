@@ -1,4 +1,6 @@
 {
   "hideAbout": true,
-  "hideBookings": true
+  "hideBookings": true,
+  "useExternalGallery": true,
+  "externalGalleryUrl": "https://tamasha.myportfolio.com/"
 }

@@ -4,6 +4,8 @@ import path from "path";
 export interface SiteSettings {
   hideAbout: boolean;
   hideBookings: boolean;
+  useExternalGallery: boolean;
+  externalGalleryUrl: string;
 }
 
 const SETTINGS_FILE_PATH = path.join(process.cwd(), "src", "content", "site-settings.json");
@@ -11,6 +13,8 @@ const SETTINGS_FILE_PATH = path.join(process.cwd(), "src", "content", "site-sett
 const DEFAULT_SETTINGS: SiteSettings = {
   hideAbout: false,
   hideBookings: false,
+  useExternalGallery: false,
+  externalGalleryUrl: "https://tamasha.myportfolio.com/",
 };
 
 let inMemorySettings: SiteSettings | null = null;

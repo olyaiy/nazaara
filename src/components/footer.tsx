@@ -3,9 +3,11 @@ import Link from "next/link";
 interface FooterProps {
   hideAbout?: boolean;
   hideBookings?: boolean;
+  useExternalGallery?: boolean;
+  externalGalleryUrl?: string;
 }
 
-export function Footer({ hideAbout = false, hideBookings = false }: FooterProps) {
+export function Footer({ hideAbout = false, hideBookings = false, useExternalGallery = false, externalGalleryUrl }: FooterProps) {
   return (
     <footer className="relative overflow-hidden" style={{ backgroundColor: 'var(--black-grey)' }}>
       {/* Geometric Pattern Overlay */}
@@ -92,12 +94,23 @@ export function Footer({ hideAbout = false, hideBookings = false }: FooterProps)
                       </Link>
                     )}
                    
-                    <Link 
-                      href="/gallery" 
-                      className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
-                    >
-                      Gallery
-                    </Link>
+                    {useExternalGallery ? (
+                      <a 
+                        href={externalGalleryUrl || "https://tamasha.myportfolio.com/"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
+                      >
+                        Gallery
+                      </a>
+                    ) : (
+                      <Link 
+                        href="/gallery" 
+                        className="block text-white font-neue-haas font-light hover:text-[var(--gold)] transition-colors"
+                      >
+                        Gallery
+                      </Link>
+                    )}
                   </nav>
                 </div>
               </div>

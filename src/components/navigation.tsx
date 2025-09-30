@@ -10,9 +10,11 @@ import { cn } from "@/lib/utils";
 interface NavigationProps {
   hideAbout?: boolean;
   hideBookings?: boolean;
+  useExternalGallery?: boolean;
+  externalGalleryUrl?: string;
 }
 
-export function Navigation({ hideAbout = false, hideBookings = false }: NavigationProps) {
+export function Navigation({ hideAbout = false, hideBookings = false, useExternalGallery = false, externalGalleryUrl }: NavigationProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -106,26 +108,39 @@ export function Navigation({ hideAbout = false, hideBookings = false }: Navigati
                 />
               </Link>
             )}
-            <Link
-              href="/galleries"
-              aria-current={isCurrent("/galleries") ? "page" : undefined}
-              className={cn(
-                "relative group text-sm uppercase tracking-[0.2em] font-light transition-colors",
-                isCurrent("/galleries")
-                  ? "text-primary"
-                  : "text-foreground/80 hover:text-primary"
-              )}
-            >
-              <span>Gallery</span>
-              <span
+            {useExternalGallery ? (
+              <a
+                href={externalGalleryUrl || "https://tamasha.myportfolio.com/"}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={cn(
-                  "pointer-events-none absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
-                  isCurrent("/galleries")
-                    ? "w-full opacity-90"
-                    : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                  "relative group text-sm uppercase tracking-[0.2em] font-light transition-colors text-foreground/80 hover:text-primary"
                 )}
-              />
-            </Link>
+              >
+                <span>Gallery</span>
+              </a>
+            ) : (
+              <Link
+                href="/galleries"
+                aria-current={isCurrent("/galleries") ? "page" : undefined}
+                className={cn(
+                  "relative group text-sm uppercase tracking-[0.2em] font-light transition-colors",
+                  isCurrent("/galleries")
+                    ? "text-primary"
+                    : "text-foreground/80 hover:text-primary"
+                )}
+              >
+                <span>Gallery</span>
+                <span
+                  className={cn(
+                    "pointer-events-none absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
+                    isCurrent("/galleries")
+                      ? "w-full opacity-90"
+                      : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                  )}
+                />
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -187,19 +202,33 @@ export function Navigation({ hideAbout = false, hideBookings = false }: Navigati
                 Bookings
               </Link>
             )}
-            <Link
-              href="/galleries"
-              onClick={() => setOpen(false)}
-              className={cn(
-                "block rounded-md px-3 py-3 text-base uppercase tracking-[0.18em] transition-colors",
-                isCurrent("/galleries")
-                  ? "text-primary bg-primary/10"
-                  : "text-foreground/90 hover:bg-muted/30 hover:text-primary"
-              )}
-              aria-current={isCurrent("/galleries") ? "page" : undefined}
-            >
-              Galleries
-            </Link>
+            {useExternalGallery ? (
+              <a
+                href={externalGalleryUrl || "https://tamasha.myportfolio.com/"}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "block rounded-md px-3 py-3 text-base uppercase tracking-[0.18em] transition-colors text-foreground/90 hover:bg-muted/30 hover:text-primary"
+                )}
+              >
+                Galleries
+              </a>
+            ) : (
+              <Link
+                href="/galleries"
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "block rounded-md px-3 py-3 text-base uppercase tracking-[0.18em] transition-colors",
+                  isCurrent("/galleries")
+                    ? "text-primary bg-primary/10"
+                    : "text-foreground/90 hover:bg-muted/30 hover:text-primary"
+                )}
+                aria-current={isCurrent("/galleries") ? "page" : undefined}
+              >
+                Galleries
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -35,10 +35,13 @@ async function updateVisibilityAction(formData: FormData) {
   }
   const hideAbout = formData.get("hideAbout") === "on" || formData.get("hideAbout") === "true";
   const hideBookings = formData.get("hideBookings") === "on" || formData.get("hideBookings") === "true";
-  await updateSiteSettings({ hideAbout, hideBookings })
+  const useExternalGallery = formData.get("useExternalGallery") === "on" || formData.get("useExternalGallery") === "true";
+  const externalGalleryUrl = (formData.get("externalGalleryUrl") as string) || "https://tamasha.myportfolio.com/";
+  await updateSiteSettings({ hideAbout, hideBookings, useExternalGallery, externalGalleryUrl })
   revalidatePath("/", "layout")
   revalidatePath("/about")
   revalidatePath("/bookings")
+  revalidatePath("/galleries")
   revalidatePath("/admin")
   redirect("/admin?tab=settings&success=visibility-updated")
 }
@@ -235,6 +238,23 @@ export default async function AdminPage() {
                                         <div className="text-sm text-muted-foreground">Removes Bookings from navigation and redirects /bookings</div>
                                       </div>
                                       <input name="hideBookings" type="checkbox" defaultChecked={siteSettings.hideBookings} className="h-5 w-5" />
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                      <div>
+                                        <div className="text-sm font-medium text-foreground">Use External Gallery</div>
+                                        <div className="text-sm text-muted-foreground">Replaces Galleries links and hides /galleries</div>
+                                      </div>
+                                      <input name="useExternalGallery" type="checkbox" defaultChecked={siteSettings.useExternalGallery} className="h-5 w-5" />
+                                    </div>
+                                    <div className="grid gap-2">
+                                      <label className="text-sm font-medium text-foreground">External Gallery URL</label>
+                                      <input
+                                        name="externalGalleryUrl"
+                                        type="url"
+                                        defaultValue={siteSettings.externalGalleryUrl}
+                                        placeholder="https://tamasha.myportfolio.com/"
+                                        className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
+                                      />
                                     </div>
                                     <div className="pt-2">
                                       <Button className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90">Save</Button>
