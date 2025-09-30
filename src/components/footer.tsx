@@ -171,7 +171,7 @@ export function Footer({ hideAbout = false, hideBookings = false, useExternalGal
                       <p className="text-xs font-neue-haas text-white/60">Cultural Productions</p>
                     </div>
                     <div>
-                      <h3 className="text-white/40 font-prettywise text-lg mb-1">Coming 2025</h3>
+                      <h3 className="text-white/40 font-prettywise text-lg mb-1">Coming 2026</h3>
                       <p className="text-xs font-neue-haas text-white/30">Next Chapter</p>
                     </div>
                   </div>

@@ -111,12 +111,12 @@ export default async function UpcomingEvents() {
                     <div className="pt-4 md:pt-6 pb-2">
                       {/* Artist name */}
                       <h3 className="font-prettywise text-[var(--white)] text-xl md:text-2xl lg:text-3xl mb-2 leading-tight group-hover:text-[var(--gold)] transition-colors duration-500">
-                        {event.artist}
+                        {event.title}
                       </h3>
                       
                       {/* Event title */}
                       <p className="text-sm md:text-base font-prettywise text-[var(--gold)]/60 mb-3 md:mb-4">
-                        {event.title}
+                      {event.artist}
                       </p>
                       
                       {/* Venue and pricing - Compact */}

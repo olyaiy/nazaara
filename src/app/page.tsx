@@ -36,12 +36,21 @@ export default async function Home() {
   // Fetch events for the marquee
   const events = await getPublicEvents();
   
+  // Filter to only show today's events or future events
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcomingEvents = events.filter(event => {
+    const eventDate = new Date(event.startTime);
+    eventDate.setHours(0, 0, 0, 0);
+    return eventDate >= today;
+  });
+  
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Hero />
 
       {/* Event Marquee - Animated Transition */}
-      <EventMarquee events={events} />
+      <EventMarquee events={upcomingEvents} />
 
       <UpcomingEvents />
 
