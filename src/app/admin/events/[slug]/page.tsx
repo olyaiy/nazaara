@@ -7,6 +7,9 @@ import { getEventBySlug, getAdminVenues, getAdminArtists } from "@/lib/admin-act
 import Link from "next/link"
 import { EventEditForm } from "@/components/admin/event-edit-form"
 
+// Disable caching to always show fresh data after updates
+export const revalidate = 0
+
 interface PageProps {
   params: Promise<{
     slug: string

@@ -17,6 +17,9 @@ import { VenuesGrid } from "@/components/admin/venues-grid"
 import { GalleriesGrid } from "@/components/admin/galleries-grid"
 import { EventsGrid } from "@/components/admin/events-grid"
 
+// Disable caching to always show fresh data after updates
+export const revalidate = 0
+
 async function signOutAction() {
   "use server"
   

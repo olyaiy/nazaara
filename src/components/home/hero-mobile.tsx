@@ -33,6 +33,19 @@ export default async function HeroMobile() {
     return c === "united states" || c === "united states of america" || c === "usa" || c === "us" || c === "u.s." || c === "u.s";
   }
   const ageLabel = isUnitedStates(featuredEvent.country) ? "21+" : "19+";
+  
+  // Format time display
+  const formatTime = (date: Date) => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    const displayMinutes = minutes.toString().padStart(2, '0');
+    return minutes === 0 ? `${displayHours}${ampm}` : `${displayHours}:${displayMinutes}${ampm}`;
+  };
+  
+  const startTimeStr = formatTime(new Date(featuredEvent.startTime));
+  
   const featuringArtists =
     featuredEvent.artists?.filter(
       (a) => a.name.toLowerCase() !== featuredEvent.artist.toLowerCase()
@@ -208,7 +221,7 @@ export default async function HeroMobile() {
                 </div>
                 <div className="text-right">
                   <p className="font-prettywise text-3xl" style={{ color: 'var(--gold)' }}>
-                    10PM
+                    {startTimeStr}
                   </p>
                   <p className="font-neue-haas text-[10px] uppercase tracking-[0.3em]" style={{ color: 'var(--white)', opacity: 0.5 }}>
                     Doors Open

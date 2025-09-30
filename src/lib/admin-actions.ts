@@ -368,8 +368,14 @@ export async function updateEvent(formData: FormData) {
       )
   }
 
+  // Revalidate admin pages
   revalidatePath("/admin")
   revalidatePath(`/admin/events/${slug}`)
+  
+  // Revalidate public pages to show updated event data
+  revalidatePath("/", "page") // Home page
+  revalidatePath(`/event/${slug}`, "page") // Event detail page
+  
   redirect("/admin?success=event-updated")
 }
 
