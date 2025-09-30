@@ -27,19 +27,35 @@ export default async function UpcomingEvents() {
     ? upcomingEvents.filter((event) => event.slug !== heroSlug)
     : upcomingEvents;
 
-  // Build a chronologically sorted list of upcoming events only for the Complete Schedule
+  // Build a chronologically sorted list of upcoming events only for the Complete Schedule - timezone-agnostic
   const allEvents = await getPublicEvents();
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  
   const upcomingEventsOnly = allEvents.filter(event => {
-    const eventDate = new Date(event.startTime);
-    eventDate.setHours(0, 0, 0, 0);
-    return eventDate >= today;
+    let eventStr: string;
+    if (typeof event.startTime === 'string') {
+      eventStr = event.startTime.split(' ')[0];
+    } else {
+      eventStr = new Date(event.startTime).toISOString().split('T')[0];
+    }
+    return eventStr >= todayStr;
   });
+  
   const allEventsChrono = upcomingEventsOnly.sort((a, b) => {
-    const dateA = new Date(a.startTime);
-    const dateB = new Date(b.startTime);
-    return dateA.getTime() - dateB.getTime();
+    let dateA: string;
+    let dateB: string;
+    if (typeof a.startTime === 'string') {
+      dateA = a.startTime;
+    } else {
+      dateA = new Date(a.startTime).toISOString();
+    }
+    if (typeof b.startTime === 'string') {
+      dateB = b.startTime;
+    } else {
+      dateB = new Date(b.startTime).toISOString();
+    }
+    return dateA.localeCompare(dateB);
   });
 
   return (

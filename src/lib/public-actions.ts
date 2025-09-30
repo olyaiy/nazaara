@@ -32,16 +32,16 @@ export interface PublicEvent {
   status: string;
   isFeatured: boolean;
   ticketUrl?: string | null;
-  startTime: Date;
-  endTime: Date;
+  startTime: Date | string; // Can be Date object or string "YYYY-MM-DD HH:mm:ss"
+  endTime: Date | string; // Can be Date object or string "YYYY-MM-DD HH:mm:ss"
 }
 
 export interface PublicEventStop {
   city: string;
   country: string;
   venue?: string | null;
-  startTime: Date;
-  endTime: Date;
+  startTime: Date | string; // Can be Date object or string "YYYY-MM-DD HH:mm:ss"
+  endTime: Date | string; // Can be Date object or string "YYYY-MM-DD HH:mm:ss"
   ticketUrl?: string | null;
 }
 

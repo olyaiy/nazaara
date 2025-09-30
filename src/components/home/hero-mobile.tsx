@@ -15,13 +15,17 @@ export default async function HeroMobile() {
     return null;
   }
 
-  // Guard against past events (yesterday or earlier)
+  // Guard against past events (yesterday or earlier) - timezone-agnostic
   {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const eventDate = new Date(featuredEvent.startTime);
-    eventDate.setHours(0, 0, 0, 0);
-    if (eventDate < today) {
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    let eventStr: string;
+    if (typeof featuredEvent.startTime === 'string') {
+      eventStr = featuredEvent.startTime.split(' ')[0];
+    } else {
+      eventStr = new Date(featuredEvent.startTime).toISOString().split('T')[0];
+    }
+    if (eventStr < todayStr) {
       console.log("[HeroMobile] event is in the past – returning null");
       return null;
     }
