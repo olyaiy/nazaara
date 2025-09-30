@@ -229,6 +229,14 @@ export default async function AdminPage() {
                                       <div>
                                         <div className="text-sm font-medium text-foreground">Hide About Page</div>
                                         <div className="text-sm text-muted-foreground">Removes About from navigation and redirects /about</div>
+                                        <a
+                                          href="https://github.com/olyaiy/nazaara/blob/main/src/content/about.ts"
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-xs text-primary underline underline-offset-4 block mt-1"
+                                        >
+                                          Edit About page content
+                                        </a>
                                       </div>
                                       <input name="hideAbout" type="checkbox" defaultChecked={siteSettings.hideAbout} className="h-5 w-5" />
                                     </div>
@@ -236,6 +244,14 @@ export default async function AdminPage() {
                                       <div>
                                         <div className="text-sm font-medium text-foreground">Hide Bookings Page</div>
                                         <div className="text-sm text-muted-foreground">Removes Bookings from navigation and redirects /bookings</div>
+                                        <a
+                                          href="https://github.com/olyaiy/nazaara/blob/main/src/content/bookings.ts"
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-xs text-primary underline underline-offset-4 block mt-1"
+                                        >
+                                          Edit Bookings page content
+                                        </a>
                                       </div>
                                       <input name="hideBookings" type="checkbox" defaultChecked={siteSettings.hideBookings} className="h-5 w-5" />
                                     </div>
@@ -263,6 +279,7 @@ export default async function AdminPage() {
                                 </CardContent>
                               </Card>
                             )}
+                            {/* Removed separate quick links card per request */}
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="text-lg flex items-center gap-2">
