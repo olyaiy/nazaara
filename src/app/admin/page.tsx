@@ -90,32 +90,34 @@ export default async function AdminPage() {
                 </div>
                 
                 <Tabs defaultValue="events" className="w-full">
-                    <TabsList className="grid grid-cols-6 w-full max-w-2xl mb-8">
-                        <TabsTrigger value="events" className="flex items-center gap-2">
+                    <div className="-mx-2 mb-8 overflow-x-auto px-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                        <TabsList className="min-w-max gap-2">
+                            <TabsTrigger value="events" className="flex items-center gap-2 flex-none sm:flex-1">
                             <Calendar className="h-4 w-4" />
                             Events
-                        </TabsTrigger>
-                        <TabsTrigger value="artists" className="flex items-center gap-2">
+                            </TabsTrigger>
+                            <TabsTrigger value="artists" className="flex items-center gap-2 flex-none sm:flex-1">
                             <Users className="h-4 w-4" />
                             Artists
-                        </TabsTrigger>
-                        <TabsTrigger value="djs" className="flex items-center gap-2">
+                            </TabsTrigger>
+                            <TabsTrigger value="djs" className="flex items-center gap-2 flex-none sm:flex-1">
                             <Headphones className="h-4 w-4" />
                             DJs
-                        </TabsTrigger>
-                        <TabsTrigger value="venues" className="flex items-center gap-2">
+                            </TabsTrigger>
+                            <TabsTrigger value="venues" className="flex items-center gap-2 flex-none sm:flex-1">
                             <MapPin className="h-4 w-4" />
                             Venues
-                        </TabsTrigger>
-                        <TabsTrigger value="galleries" className="flex items-center gap-2">
+                            </TabsTrigger>
+                            <TabsTrigger value="galleries" className="flex items-center gap-2 flex-none sm:flex-1">
                             <ImageIcon className="h-4 w-4" />
                             Galleries
-                        </TabsTrigger>
-                        <TabsTrigger value="settings" className="flex items-center gap-2">
+                            </TabsTrigger>
+                            <TabsTrigger value="settings" className="flex items-center gap-2 flex-none sm:flex-1">
                             <Settings className="h-4 w-4" />
                             Settings
-                        </TabsTrigger>
-                    </TabsList>
+                            </TabsTrigger>
+                        </TabsList>
+                    </div>
 
                     <TabsContent value="events" className="space-y-6">
                         <div className="flex justify-between items-center pb-6 border-b border-border">
