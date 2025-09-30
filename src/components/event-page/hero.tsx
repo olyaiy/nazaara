@@ -13,6 +13,12 @@ export default async function EventHero({ event }: EventHeroProps) {
       (a) => a.name.toLowerCase() !== event.artist.toLowerCase()
     ) ?? [];
 
+  function isUnitedStates(country?: string | null): boolean {
+    const c = (country || "").trim().toLowerCase();
+    return c === "united states" || c === "united states of america" || c === "usa" || c === "us" || c === "u.s." || c === "u.s";
+  }
+  const ageLabel = isUnitedStates(event.country) ? "21+" : "19+";
+
   // Format time display
   const formatTime = (date: Date) => {
     const hours = date.getHours();
@@ -267,7 +273,7 @@ export default async function EventHero({ event }: EventHeroProps) {
               {/* Minimal info bar */}
               <div className="mt-4 flex items-center justify-center gap-6">
                 <span className="font-neue-haas text-[9px] uppercase tracking-[0.3em]" style={{ color: 'var(--gold)', opacity: 0.7 }}>
-                  19+
+                  {ageLabel}
                 </span>
                 <span className="font-neue-haas text-[9px] uppercase tracking-[0.3em]" style={{ color: 'var(--white)', opacity: 0.4 }}>
                   ID Required
@@ -411,7 +417,7 @@ export default async function EventHero({ event }: EventHeroProps) {
                   <div className="flex items-center gap-6 text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40">
                     <span className="flex items-center gap-2">
                       <span className="w-1 h-1 bg-[var(--gold)] rounded-full" />
-                      19+ Event
+                      {ageLabel} Event
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="w-1 h-1 bg-[var(--gold)] rounded-full" />

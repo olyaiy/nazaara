@@ -31,6 +31,11 @@ export default async function Hero() {
   }
 
   console.log("[Hero] chosen event:", featuredEvent.slug);
+  function isUnitedStates(country?: string | null): boolean {
+    const c = (country || "").trim().toLowerCase();
+    return c === "united states" || c === "united states of america" || c === "usa" || c === "us" || c === "u.s." || c === "u.s";
+  }
+  const ageLabel = isUnitedStates(featuredEvent.country) ? "21+" : "19+";
 
   // Derive featuring artists (exclude the headliner)
   const featuringArtists =
@@ -178,7 +183,7 @@ export default async function Hero() {
                     
                     {/* Bottom details strip */}
                     <div className="flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-white/60">
-                      <span style={{ color: 'var(--gold)' }}>19+</span>
+                      <span style={{ color: 'var(--gold)' }}>{ageLabel}</span>
                       <div className="w-px h-3" style={{ backgroundColor: 'var(--gold)', opacity: 0.4 }} />
                       <span>ID Required</span>
                     </div>

@@ -28,6 +28,11 @@ export default async function HeroMobile() {
   }
 
   console.log("[HeroMobile] chosen event:", featuredEvent.slug);
+  function isUnitedStates(country?: string | null): boolean {
+    const c = (country || "").trim().toLowerCase();
+    return c === "united states" || c === "united states of america" || c === "usa" || c === "us" || c === "u.s." || c === "u.s";
+  }
+  const ageLabel = isUnitedStates(featuredEvent.country) ? "21+" : "19+";
   const featuringArtists =
     featuredEvent.artists?.filter(
       (a) => a.name.toLowerCase() !== featuredEvent.artist.toLowerCase()
@@ -247,7 +252,7 @@ export default async function HeroMobile() {
           {/* Minimal info bar */}
           <div className="mt-4 flex items-center justify-center gap-6">
             <span className="font-neue-haas text-[9px] uppercase tracking-[0.3em]" style={{ color: 'var(--gold)', opacity: 0.7 }}>
-              19+
+              {ageLabel}
             </span>
             <span className="font-neue-haas text-[9px] uppercase tracking-[0.3em]" style={{ color: 'var(--white)', opacity: 0.4 }}>
               Limited Capacity
