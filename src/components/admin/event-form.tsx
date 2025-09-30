@@ -59,7 +59,23 @@ export function EventForm({ venues, artists }: EventFormProps) {
   }
 
   const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSlug = e.target.value
+    let newSlug = e.target.value
+    
+    // If it looks like a URL, extract just the path slug
+    if (newSlug.includes('://') || newSlug.includes('http')) {
+      try {
+        const url = new URL(newSlug.startsWith('http') ? newSlug : `https://${newSlug}`)
+        // Extract the last part of the path
+        const pathParts = url.pathname.split('/').filter(Boolean)
+        newSlug = pathParts[pathParts.length - 1] || ''
+        // Remove query parameters if any
+        newSlug = newSlug.split('?')[0]
+      } catch {
+        // If URL parsing fails, just sanitize it
+        newSlug = generateSlug(newSlug)
+      }
+    }
+    
     setSlug(newSlug)
     
     // Mark as manually edited if the user types something different from auto-generated
