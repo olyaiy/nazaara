@@ -10,7 +10,7 @@ export const ourFileRouter = {
   // Event poster upload route
   eventPoster: f({
     image: {
-      maxFileSize: "4MB",
+      maxFileSize: "10MB",
       maxFileCount: 1,
     },
   })
@@ -45,7 +45,7 @@ export const ourFileRouter = {
   // Venue image upload route (for future use)
   venueImage: f({
     image: {
-      maxFileSize: "4MB",
+      maxFileSize: "10MB",
       maxFileCount: 1,
     },
   })
@@ -75,7 +75,7 @@ export const ourFileRouter = {
   // Artist image upload route (for future use)
   artistImage: f({
     image: {
-      maxFileSize: "2MB",
+      maxFileSize: "10MB",
       maxFileCount: 1,
     },
   })
@@ -105,7 +105,7 @@ export const ourFileRouter = {
   // Gallery image upload route
   galleryImage: f({
     image: {
-      maxFileSize: "4MB",
+      maxFileSize: "10MB",
       maxFileCount: 100, // Allow batch uploading up to 100 images at once
     },
   })

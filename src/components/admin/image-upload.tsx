@@ -1,11 +1,20 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { X, Image as ImageIcon, Loader2 } from "lucide-react"
+import { X, Image as ImageIcon, Loader2, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { UploadDropzone } from "@/lib/uploadthing"
 import type { ClientUploadedFileData } from "uploadthing/types"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 interface ImageUploadProps {
   defaultImage?: string | null
@@ -25,6 +34,7 @@ export function ImageUpload({
   const [imageUrl, setImageUrl] = useState<string | null>(defaultImage || null)
   const [imageKey, setImageKey] = useState<string | null>(defaultImageKey || null)
   const [isUploading, setIsUploading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const handleUploadComplete = useCallback((res: ClientUploadedFileData<{
     uploadedBy: string;
@@ -87,7 +97,8 @@ export function ImageUpload({
         onClientUploadComplete={handleUploadComplete}
         onUploadError={(error: Error) => {
           console.error("Upload error:", error)
-          alert(`Upload failed: ${error.message}`)
+          setIsUploading(false)
+          setErrorMessage(error.message)
         }}
         onUploadBegin={() => {
           setIsUploading(true)
@@ -136,7 +147,7 @@ export function ImageUpload({
                   Drop image here or click to upload
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  PNG, JPG, WEBP up to {aspectRatio === "square" ? "2MB" : "4MB"}
+                  PNG, JPG, WEBP up to 10MB
                 </p>
               </div>
             )
@@ -153,6 +164,26 @@ export function ImageUpload({
       {/* Hidden inputs for form submission */}
       <input type="hidden" name={name} value={imageUrl || ""} />
       <input type="hidden" name={`${name}Key`} value={imageKey || ""} />
+
+      {/* Error Dialog */}
+      <AlertDialog open={!!errorMessage} onOpenChange={(open) => !open && setErrorMessage(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div className="flex items-center gap-2 text-destructive">
+              <AlertCircle className="h-5 w-5" />
+              <AlertDialogTitle>Upload Failed</AlertDialogTitle>
+            </div>
+            <AlertDialogDescription>
+              {errorMessage}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setErrorMessage(null)}>
+              OK
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
