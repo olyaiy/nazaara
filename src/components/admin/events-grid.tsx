@@ -192,7 +192,7 @@ export function EventsGrid({ events }: EventsGridProps) {
                           new Date(event.startTime),
                           'UTC',
                           'EEE, MMM d, h:mm a'
-                        )} UTC
+                        )} 
                       </span>
                       <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-[--gold]" />
                     </div>
