@@ -2,98 +2,54 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Users, Star, Crown } from "lucide-react";
-import { useState } from "react";
+import { getBookingsDJs } from "@/lib/admin-actions";
+import { useState, useEffect } from "react";
+import {
+  heroContent,
+  privateEventsContent,
+  djRosterContent,
+  contactFormContent
+} from "@/content/bookings";
 
+interface DJ {
+  id: number;
+  name: string;
+  title: string | null;
+  specialty: string | null;
+  experience: string | null;
+  performances: string | null;
+  bio: string | null;
+  highlights: string[] | null;
+  instagram: string | null;
+  soundcloud: string | null;
+  image: string | null;
+}
+
+// Helper function to map icon names to components
+function getIcon(iconName: string) {
+  const icons = {
+    Star,
+    Crown,
+    Users
+  };
+  return icons[iconName as keyof typeof icons];
+}
 
 export default function BookingsPage() {
+  const [djRoster, setDjRoster] = useState<DJ[]>([]);
   const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
   const [expandedDj, setExpandedDj] = useState<number | null>(null);
-  const djRoster = [
-    {
-      id: 1,
-      name: "DJ RISHI",
-      title: "The Maestro",
-      specialty: "Bollywood & House Fusion",
-      experience: "15+ Years",
-      performances: "500+ Events",
-      image: "https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=800&q=80",
-      availability: "Select Dates",
-      instagram: "https://instagram.com/djrishi",
-      soundcloud: "https://soundcloud.com/djrishi",
-      bio: "With over 15 years of experience, DJ Rishi has become synonymous with the evolution of Bollywood fusion. His signature blend of traditional Indian melodies with contemporary house beats has graced stages from Mumbai to Manhattan, creating unforgettable moments at over 500 exclusive events worldwide.",
-      highlights: ["Resident DJ at Mumbai's premier clubs", "Official tour DJ for major Bollywood artists", "Curated performances at Cannes Film Festival"]
-    },
-    {
-      id: 2,
-      name: "DJ PRIYA",
-      title: "The Innovator",
-      specialty: "Electronic & Classical Blend",
-      experience: "10+ Years",
-      performances: "300+ Events",
-      image: "https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?w=800&q=80",
-      availability: "Booking Now",
-      instagram: "https://instagram.com/djpriya",
-      soundcloud: "https://soundcloud.com/djpriya",
-      bio: "DJ Priya pioneered the electronic-classical fusion movement, seamlessly weaving traditional ragas with cutting-edge electronic production. Her innovative approach has redefined South Asian music for a new generation, earning residencies at the world's most exclusive venues.",
-      highlights: ["First female DJ to headline major South Asian festivals", "Collaborations with Grammy-winning producers", "Pioneer of the 'Neo-Classical' movement"]
-    },
-    {
-      id: 3,
-      name: "DJ ARJUN",
-      title: "The Crowd Pleaser",
-      specialty: "Multi-Genre Specialist",
-      experience: "12+ Years",
-      performances: "400+ Events",
-      image: "https://images.unsplash.com/photo-1516873240891-4bf014598ab4?w=800&q=80",
-      availability: "Limited Availability",
-      instagram: "https://instagram.com/djarjun",
-      soundcloud: "https://soundcloud.com/djarjun",
-      bio: "Known as 'The Crowd Pleaser,' DJ Arjun's versatility spans from intimate gatherings to stadium-sized celebrations. His ability to read any room and deliver the perfect sonic journey has made him the go-to artist for discerning clients across the globe.",
-      highlights: ["400+ luxury weddings across 6 continents", "Preferred DJ for Fortune 500 corporate events", "Master of multi-genre mixing"]
-    },
-    {
-      id: 4,
-      name: "DJ MAYA",
-      title: "The Trendsetter",
-      specialty: "Hip-Hop & Bhangra",
-      experience: "8+ Years",
-      performances: "250+ Events",
-      image: "https://images.unsplash.com/photo-1485872299829-c673f5194813?w=800&q=80",
-      availability: "Booking Now",
-      instagram: "https://instagram.com/djmaya",
-      soundcloud: "https://soundcloud.com/djmaya",
-      bio: "DJ Maya brings the energy of underground hip-hop to traditional Bhangra, creating an explosive fusion that ignites dance floors worldwide. Her sets are a celebration of rhythm, culture, and pure musical innovation.",
-      highlights: ["Breakthrough artist at Coachella 2023", "Creator of viral Bhangra remixes", "Youth icon with 2M+ social media following"]
-    },
-    {
-      id: 5,
-      name: "DJ KABIR",
-      title: "The Virtuoso",
-      specialty: "Traditional & Modern Mix",
-      experience: "20+ Years",
-      performances: "1000+ Events",
-      image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80",
-      availability: "Exclusive Events Only",
-      instagram: "https://instagram.com/djkabir",
-      soundcloud: "https://soundcloud.com/djkabir",
-      bio: "A living legend with two decades of mastery, DJ Kabir has performed at over 1000 events, each one a testament to his unparalleled ability to blend tradition with modernity. His sets are not just performances—they're cultural experiences.",
-      highlights: ["20+ years of international acclaim", "Performed for royal families and heads of state", "Mentor to emerging South Asian DJs"]
-    },
-    {
-      id: 6,
-      name: "DJ SARA",
-      title: "The Visionary",
-      specialty: "Progressive & Sufi",
-      experience: "7+ Years",
-      performances: "200+ Events",
-      image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&q=80",
-      availability: "Open for Bookings",
-      instagram: "https://instagram.com/djsara",
-      soundcloud: "https://soundcloud.com/djsara",
-      bio: "DJ Sara's visionary approach to Progressive and Sufi fusion creates transcendent experiences that touch the soul. Her sets are spiritual journeys, blending ancient Sufi poetry with modern progressive house to create something truly magical.",
-      highlights: ["Rising star in the global fusion scene", "Featured in Rolling Stone India", "Creator of the 'Sufi House' movement"]
-    }
-  ];
+  interface SubmitState { isSubmitting: boolean; isSuccess: boolean; errorMessage: string | null; }
+  const [contactSubmit, setContactSubmit] = useState<SubmitState>({ isSubmitting: false, isSuccess: false, errorMessage: null });
+  const web3FormsKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+
+  useEffect(() => {
+    const fetchDJs = async () => {
+      const djs = await getBookingsDJs();
+      setDjRoster(djs);
+    };
+    fetchDJs();
+  }, []);
 
 
   return (
@@ -103,7 +59,7 @@ export default function BookingsPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/bookings-bg.webp"
+            src={heroContent.backgroundImage}
             alt="DJ performing with dramatic lighting"
             fill
             className="object-cover"
@@ -118,13 +74,12 @@ export default function BookingsPage() {
             
             {/* Main Title */}
             <h1 className="text-[clamp(4rem,10vw,10rem)] font-prettywise leading-[0.8] text-[var(--off-white)] mb-8">
-              Curated
-              <span className="block text-[var(--gold)]">Excellence</span>
+              {heroContent.title}
+              <span className="block text-[var(--gold)]">{heroContent.subtitle}</span>
             </h1>
             
             <p className="text-lg font-neue-haas text-[var(--off-white)]/70 leading-relaxed max-w-2xl mb-12">
-              From intimate gatherings to grand celebrations, we orchestrate extraordinary entertainment 
-              experiences with exclusive access to the world&apos;s most celebrated South Asian artists.
+              {heroContent.description}
             </p>
             
           </div>
@@ -152,52 +107,37 @@ export default function BookingsPage() {
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-8 h-px bg-[var(--gold)]/40" />
                   <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/60">
-                    Private Services
+                    {privateEventsContent.sectionTitle}
                   </span>
                 </div>
                 
                 <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-8">
-                  Beyond
-                  <span className="block text-[var(--gold)]">Extraordinary</span>
+                  {privateEventsContent.heading}
+                  <span className="block text-[var(--gold)]">{privateEventsContent.subHeading}</span>
                 </h2>
                 
                 <div className="space-y-6 text-[var(--off-white)]/70 font-neue-haas leading-relaxed mb-12">
                   <p>
-                    From intimate celebrations to grand spectacles, we orchestrate private experiences 
-                    that transcend the ordinary. Our reputation isn&apos;t built on portfolios—it&apos;s earned 
-                    through whispers in elite circles.
+                    {privateEventsContent.description}
                   </p>
                 </div>
                 
                 {/* Service Details */}
                 <div className="space-y-6 mb-12">
-                  <div className="flex items-start gap-4">
-                    <Star className="w-5 h-5 text-[var(--gold)] mt-1" />
-                    <div>
-                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">Bollywood A-Listers</h3>
-                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                        Direct access to India&apos;s biggest stars for your most prestigious private events
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <Crown className="w-5 h-5 text-[var(--gold)] mt-1" />
-                    <div>
-                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">International Artists</h3>
-                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                        Global South Asian sensations and cultural icons for exclusive performances
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <Users className="w-5 h-5 text-[var(--gold)] mt-1" />
-                    <div>
-                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">Private Concerts</h3>
-                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                        Intimate performances and private concerts by legendary artists
-                      </p>
-                    </div>
-                  </div>
+                  {privateEventsContent.services.map((service, index) => {
+                    const IconComponent = getIcon(service.icon);
+                    return (
+                      <div key={index} className="flex items-start gap-4">
+                        <IconComponent className="w-5 h-5 text-[var(--gold)] mt-1" />
+                        <div>
+                          <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">{service.title}</h3>
+                          <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
+                            {service.description}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                   
                   {/* CTA Button */}
                   <div className="pt-8">
@@ -215,7 +155,7 @@ export default function BookingsPage() {
                         formSection?.scrollIntoView({ behavior: 'smooth' });
                       }}
                     >
-                      Book a Consultation
+                      {privateEventsContent.ctaButtonText}
                     </Button>
                   </div>
                 </div>
@@ -226,7 +166,7 @@ export default function BookingsPage() {
                 {/* Main image - luxury event */}
                 <div className="absolute top-0 right-0 w-4/5 h-4/5 overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80"
+                    src={privateEventsContent.images.primary}
                     alt="Luxury private event"
                     fill
                     className="object-cover"
@@ -237,7 +177,7 @@ export default function BookingsPage() {
                 {/* Secondary image - celebrity performance */}
                 <div className="absolute bottom-0 left-0 w-3/5 h-3/5 overflow-hidden border-8 border-[var(--maroon-red)]">
                   <Image
-                    src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&q=80"
+                    src={privateEventsContent.images.secondary}
                     alt="Celebrity performance"
                     fill
                     className="object-cover"
@@ -260,15 +200,15 @@ export default function BookingsPage() {
               <div className="flex items-center justify-center gap-4 mb-8">
                 <div className="w-16 h-px bg-[var(--gold)]/20" />
                 <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40">
-                  Available Artists
+                  {djRosterContent.sectionTitle}
                 </span>
                 <div className="w-16 h-px bg-[var(--gold)]/20" />
               </div>
               <h2 className="text-[clamp(3rem,6vw,6rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-6">
-                <span className="text-[var(--gold)]">DJ Roster</span>
+                <span className="text-[var(--gold)]">{djRosterContent.heading}</span>
               </h2>
               <p className="text-lg font-neue-haas text-[var(--off-white)]/60 max-w-2xl mx-auto">
-                Professional DJs available for private bookings
+                {djRosterContent.description}
               </p>
             </div>
 
@@ -347,7 +287,7 @@ export default function BookingsPage() {
                       {/* Social Media Icons - More elegant placement */}
                       <div className="flex items-center gap-3 pt-4 border-t border-[var(--gold)]/5">
                         <a 
-                          href={dj.instagram} 
+                          href={dj.instagram ? `https://instagram.com/${dj.instagram}` : '#'} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="group flex items-center justify-center w-9 h-9 border border-[var(--gold)]/10 hover:border-[var(--gold)]/30 hover:bg-[var(--gold)]/5 transition-all duration-300"
@@ -363,7 +303,7 @@ export default function BookingsPage() {
                           </svg>
                         </a>
                         <a 
-                          href={dj.soundcloud} 
+                          href={dj.soundcloud ? `https://soundcloud.com/${dj.soundcloud}` : '#'} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="group flex items-center justify-center w-9 h-9 border border-[var(--gold)]/10 hover:border-[var(--gold)]/30 hover:bg-[var(--gold)]/5 transition-all duration-300"
@@ -445,7 +385,7 @@ export default function BookingsPage() {
                                         Booking Status
                                       </h4>
                                       <p className="text-lg font-prettywise text-[var(--off-white)]">
-                                        {dj.availability}
+                                        Available for Booking
                                       </p>
                                     </div>
                                     
@@ -506,44 +446,39 @@ export default function BookingsPage() {
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-16 h-px bg-[var(--gold)]/20" />
                   <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40">
-                    Begin Your Journey
+                    {contactFormContent.sectionTitle}
                   </span>
                 </div>
                 
                 <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-8">
-                  Let&apos;s Create
-                  <span className="block text-[var(--gold)]">Magic Together</span>
+                  {contactFormContent.heading}
+                  <span className="block text-[var(--gold)]">{contactFormContent.subHeading}</span>
                 </h2>
                 
                 <p className="text-lg font-neue-haas text-[var(--off-white)]/60 leading-relaxed mb-12">
-                  Every extraordinary event begins with a conversation. Share your vision, 
-                  and we&apos;ll orchestrate an experience beyond imagination.
+                  {contactFormContent.description}
                 </p>
                 
                 <div className="space-y-8 mb-12">
-                  <div>
-                    <h3 className="text-xl font-prettywise text-[var(--off-white)] mb-2">What We Need</h3>
-                    <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                      Event type, date, location, and guest count to get started
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-prettywise text-[var(--off-white)] mb-2">Response Time</h3>
-                    <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                      We typically respond within 24 hours with initial availability
-                    </p>
-                  </div>
+                  {contactFormContent.contactInfo.map((info, index) => (
+                    <div key={index}>
+                      <h3 className="text-xl font-prettywise text-[var(--off-white)] mb-2">{info.title}</h3>
+                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
+                        {info.description}
+                      </p>
+                    </div>
+                  ))}
                 </div>
                 
                 <div className="pt-8 border-t border-[var(--gold)]/10">
                   <p className="text-sm font-neue-haas text-[var(--off-white)]/40 mb-4">
-                    Preferred contact for urgent bookings
+                    {contactFormContent.contactEmail.label}
                   </p>
                   <a 
-                    href="mailto:bookings@nazaaralive.com" 
+                    href={`mailto:${contactFormContent.contactEmail.email}`} 
                     className="text-xl font-prettywise text-[var(--gold)] hover:text-[var(--gold)]/80 transition-colors"
                   >
-                    bookings@nazaaralive.com
+                    {contactFormContent.contactEmail.email}
                   </a>
                 </div>
               </div>
@@ -553,88 +488,111 @@ export default function BookingsPage() {
                 {/* Premium form container with subtle gradient background */}
                 <div className="relative bg-gradient-to-br from-[var(--maroon-red)]/10 via-transparent to-[var(--dark-green)]/5 sm:p-12 backdrop-blur-sm">
                   
-                  <form className="space-y-8">
+                  <form 
+                    className="space-y-8" 
+                    noValidate
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      if (!web3FormsKey) {
+                        setContactSubmit({ isSubmitting: false, isSuccess: false, errorMessage: "Missing Web3Forms access key." });
+                        return;
+                      }
+                      const form = e.currentTarget as HTMLFormElement;
+                      const data = new FormData(form);
+                      const payload = {
+                        access_key: web3FormsKey,
+                        name: data.get("name"),
+                        email: data.get("email"),
+                        event_type: data.get("event_type"),
+                        event_date: data.get("event_date"),
+                        event_location: data.get("event_location"),
+                        expected_guests: data.get("expected_guests"),
+                        message: data.get("message"),
+                        subject: "New Booking Inquiry via Nazaara",
+                      } as Record<string, unknown>;
+
+                      setContactSubmit({ isSubmitting: true, isSuccess: false, errorMessage: null });
+                      try {
+                        const res = await fetch("https://api.web3forms.com/submit", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json", Accept: "application/json" },
+                          body: JSON.stringify(payload),
+                        });
+                        const json = await res.json();
+                        if (json?.success) {
+                          setContactSubmit({ isSubmitting: false, isSuccess: true, errorMessage: null });
+                          form.reset();
+                        } else {
+                          setContactSubmit({ isSubmitting: false, isSuccess: false, errorMessage: json?.message || "Submission failed." });
+                        }
+                      } catch (err) {
+                        setContactSubmit({ isSubmitting: false, isSuccess: false, errorMessage: (err as Error).message });
+                      }
+                    }}
+                  >
                     {/* Personal Information Row */}
                     <div className="grid md:grid-cols-2 gap-8">
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Full Name
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="John Doe"
-                        />
-                      </div>
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Email Address
-                        </label>
-                        <input
-                          type="email"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="john@example.com"
-                        />
-                      </div>
+                      {contactFormContent.formFields.personalInfo.map((field, index) => (
+                        <div key={index} className="relative">
+                          <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                            {field.label}
+                          </label>
+                          <input
+                            name={index === 0 ? "name" : "email"}
+                            type={field.type}
+                            required={index === 0 || index === 1}
+                            className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                            placeholder={field.placeholder}
+                          />
+                        </div>
+                      ))}
                     </div>
                     
                     {/* Event Details Row */}
                     <div className="grid md:grid-cols-2 gap-8">
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Event Type
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="Wedding, Corporate Event, etc."
-                        />
-                      </div>
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Event Date
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="MM/DD/YYYY"
-                        />
-                      </div>
+                      {contactFormContent.formFields.eventDetails.map((field, index) => (
+                        <div key={index} className="relative">
+                          <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                            {field.label}
+                          </label>
+                          <input
+                            name={index === 0 ? "event_type" : "event_date"}
+                            type={field.type}
+                            className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                            placeholder={field.placeholder}
+                          />
+                        </div>
+                      ))}
                     </div>
                     
                     {/* Location and Scale Row */}
                     <div className="grid md:grid-cols-2 gap-8">
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Event Location
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="City, Country"
-                        />
-                      </div>
-                      <div className="relative">
-                        <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                          Expected Guests
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
-                          placeholder="500"
-                        />
-                      </div>
+                      {contactFormContent.formFields.locationAndScale.map((field, index) => (
+                        <div key={index} className="relative">
+                          <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                            {field.label}
+                          </label>
+                          <input
+                            name={index === 0 ? "event_location" : "expected_guests"}
+                            type={field.type}
+                            className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg"
+                            placeholder={field.placeholder}
+                          />
+                        </div>
+                      ))}
                     </div>
                     
                     {/* Vision Section */}
                     <div className="relative">
                       <label className="absolute -top-2 left-0 text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--gold)]/40">
-                        Your Vision
+                        {contactFormContent.formFields.vision.label}
                       </label>
                       <textarea
-                        rows={4}
+                        name="message"
+                        rows={contactFormContent.formFields.vision.rows}
+                        required
                         className="w-full px-0 pt-6 pb-3 bg-transparent border-0 border-b border-[var(--gold)]/30 text-[var(--off-white)] placeholder:text-[var(--off-white)]/20 focus:border-[var(--gold)]/60 focus:outline-none transition-all duration-300 font-neue-haas text-lg resize-none"
-                        placeholder="Share your dream event details, special requirements, and artistic preferences..."
+                        placeholder={contactFormContent.formFields.vision.placeholder}
                       />
                     </div>
                     
@@ -642,13 +600,14 @@ export default function BookingsPage() {
                     <div className="pt-8 space-y-6">
                       {/* Privacy Note */}
                       <p className="text-[10px] font-neue-haas text-[var(--off-white)]/30 tracking-wider">
-                        Your information is kept strictly confidential and used solely for event planning purposes.
+                        {contactSubmit.isSuccess ? "Thanks! We'll be in touch shortly." : contactFormContent.privacyNote}
                       </p>
                       
                       {/* Submit Button */}
                       <Button 
                         type="submit"
                         size="lg"
+                        disabled={contactSubmit.isSubmitting}
                         className="w-full px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0"
                         style={{ 
                           backgroundColor: 'var(--gold)', 
@@ -657,8 +616,11 @@ export default function BookingsPage() {
                         onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
                         onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                       >
-                        Send Inquiry
+                        {contactSubmit.isSubmitting ? 'Submitting…' : contactFormContent.submitButtonText}
                       </Button>
+                      {contactSubmit.errorMessage && (
+                        <p className="text-sm text-red-500/80 font-neue-haas">{contactSubmit.errorMessage}</p>
+                      )}
                     </div>
                   </form>
                 </div>

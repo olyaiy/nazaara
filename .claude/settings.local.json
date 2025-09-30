@@ -6,7 +6,12 @@
       "Bash(git add:*)",
       "Bash(pnpm lint:*)",
       "Bash(mkdir:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(mv:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npx drizzle-kit:*)",
+      "Bash(pnpm add:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { Event } from "@/content/events";
+import { PublicEvent } from "@/lib/public-actions";
 
 interface VenueFeaturesProps {
-  event: Event;
+  event: PublicEvent;
 }
 
 export default function VenueFeatures({ event }: VenueFeaturesProps) {

@@ -1,9 +1,9 @@
 'use client'
 import Image from "next/image";
-import { Artist } from "@/content/events";
+import { PublicArtist } from "@/lib/public-actions";
 
 interface ArtistShowcaseProps {
-  artists?: Artist[];
+  artists?: PublicArtist[];
   // Accept but ignore optional headline to maintain callsite compatibility
   headline?: string;
 }
@@ -124,7 +124,7 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleSocialClick('instagram', artist.instagram);
+                          handleSocialClick('instagram', artist.instagram || "");
                         }}
                         className="w-9 h-9 flex items-center justify-center backdrop-blur-sm hover:scale-110 transition-transform duration-200"
                         style={{ backgroundColor: 'var(--gold)' }}
@@ -143,7 +143,7 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleSocialClick('soundcloud', artist.soundcloud);
+                          handleSocialClick('soundcloud', artist.soundcloud || "");
                         }}
                         className="w-9 h-9 flex items-center justify-center backdrop-blur-sm hover:scale-110 transition-transform duration-200"
                         style={{ backgroundColor: 'var(--gold)' }}
@@ -267,7 +267,7 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleSocialClick('instagram', artist.instagram);
+                                  handleSocialClick('instagram', artist.instagram || "");
                                 }}
                                 className="w-6 h-6 flex items-center justify-center hover:scale-110 transition-transform duration-200 rounded-sm"
                                 style={{ backgroundColor: 'var(--gold)', opacity: 0.8 }}
@@ -285,7 +285,7 @@ export default function ArtistShowcase({ artists }: ArtistShowcaseProps) {
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleSocialClick('soundcloud', artist.soundcloud);
+                                  handleSocialClick('soundcloud', artist.soundcloud || "");
                                 }}
                                 className="w-6 h-6 flex items-center justify-center hover:scale-110 transition-transform duration-200 rounded-sm"
                                 style={{ backgroundColor: 'var(--gold)', opacity: 0.8 }}

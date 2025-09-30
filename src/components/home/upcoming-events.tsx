@@ -1,97 +1,47 @@
-"use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import {
-  getUpcomingEvents,
-  events as allEvents,
-  getEventForCity,
-  getFeaturedEvent,
-} from "@/content/events";
+import Link from "next/link";
+import { cookies } from "next/headers";
+import { 
+  getPublicEvents, 
+  getPublicUpcomingEvents, 
+  getPublicEventForCity, 
+  getPublicFeaturedEvent 
+} from "@/lib/public-actions";
 import SectionHeader from "@/components/ui/section-header";
+import TicketButton from "@/components/home/ticket-button";
 
-export default function UpcomingEvents() {
-  const upcomingEvents = getUpcomingEvents();
-
-  // Track which event is featured in the hero so we can exclude it here
-  const [heroSlug, setHeroSlug] = useState<string | undefined>(undefined);
-
-  // Helper to read a cookie value in the browser
-  function getCookie(name: string): string | undefined {
-    if (typeof document === "undefined") return undefined;
-    const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-    return match ? decodeURIComponent(match[1]) : undefined;
-  }
-
-  useEffect(() => {
-    // Determine the event shown in the hero (mirrors logic used by Hero components)
-    const city = getCookie("nza_city");
-    const heroEvent = getEventForCity(city) || getFeaturedEvent();
-    setHeroSlug(heroEvent?.slug);
-  }, []);
-
+export default async function UpcomingEvents() {
+  // Get the city cookie to determine which event is featured in hero
+  const cookieStore = await cookies();
+  const city = cookieStore.get("nza_city")?.value;
+  
+  // Determine the event shown in the hero (mirrors logic used by Hero components)
+  const heroEvent = await getPublicEventForCity(city) || await getPublicFeaturedEvent();
+  const heroSlug = heroEvent?.slug;
+  
+  // Get all upcoming events
+  const upcomingEvents = await getPublicUpcomingEvents();
+  
   // Filter out the hero event (if known)
-  let filteredEvents = heroSlug
+  const filteredEvents = heroSlug
     ? upcomingEvents.filter((event) => event.slug !== heroSlug)
     : upcomingEvents;
 
-  // Hardcode preference for Tamasha event over Francis Mercier when both are on Sep 12
-  const tamashaEvent = filteredEvents.find(event => event.slug === "back-2-school-vancouver-2025");
-  const francisEvent = filteredEvents.find(event => event.slug === "francis-mercier-vancouver-2025");
-  
-  if (tamashaEvent && francisEvent && tamashaEvent.date === "12 Sep" && francisEvent.date === "12 Sep") {
-    // Remove Francis Mercier event to prefer Tamasha
-    filteredEvents = filteredEvents.filter(event => event.slug !== "francis-mercier-vancouver-2025");
-  }
-
-  // Build a chronologically sorted list of UPCOMING events for the Complete Schedule
-  const monthMap: { [key: string]: number } = {
-    Jan: 0,
-    Feb: 1,
-    Mar: 2,
-    Apr: 3,
-    May: 4,
-    Jun: 5,
-    Jul: 6,
-    Aug: 7,
-    Sep: 8,
-    Oct: 9,
-    Nov: 10,
-    Dec: 11,
-  };
+  // Build a chronologically sorted list of upcoming events only for the Complete Schedule
+  const allEvents = await getPublicEvents();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const upcomingEventsOnly = allEvents.filter(event => {
+    const eventDate = new Date(event.startTime);
+    eventDate.setHours(0, 0, 0, 0);
+    return eventDate >= today;
+  });
+  const allEventsChrono = upcomingEventsOnly.sort((a, b) => {
+    const dateA = new Date(a.startTime);
+    const dateB = new Date(b.startTime);
+    return dateA.getTime() - dateB.getTime();
+  });
 
-  let allEventsChrono = [...allEvents]
-    .filter((event) => {
-      const [day, month] = event.date.split(" ");
-      const eventDate = new Date(parseInt(event.year), monthMap[month], parseInt(day));
-      return eventDate >= today;
-    })
-    .sort((a, b) => {
-      const [dayA, monthA] = a.date.split(" ");
-      const [dayB, monthB] = b.date.split(" ");
-      const dateA = new Date(parseInt(a.year), monthMap[monthA], parseInt(dayA));
-      const dateB = new Date(parseInt(b.year), monthMap[monthB], parseInt(dayB));
-      return dateA.getTime() - dateB.getTime();
-    });
-
-  // Apply same Tamasha preference to the chronological list
-  const allTamashaEvent = allEventsChrono.find(event => event.slug === "back-2-school-vancouver-2025");
-  const allFrancisEvent = allEventsChrono.find(event => event.slug === "francis-mercier-vancouver-2025");
-  
-  if (allTamashaEvent && allFrancisEvent && allTamashaEvent.date === "12 Sep" && allFrancisEvent.date === "12 Sep") {
-    // Remove Francis Mercier event to prefer Tamasha
-    allEventsChrono = allEventsChrono.filter(event => event.slug !== "francis-mercier-vancouver-2025");
-  }
-
-  // TEMPORARY: Redirect to ticket URL instead of event page
-  const handleEventClick = (event: typeof allEvents[0]) => {
-    // router.push(`/event/${event.slug}`); // TEMPORARY: Commented out
-    if (event.ticketUrl) {
-      window.open(event.ticketUrl, '_blank');
-    }
-  };
-  
   return (
     <section className="relative bg-[var(--black-grey)] overflow-hidden">
       {/* Art Deco inspired grid pattern */}
@@ -122,23 +72,25 @@ export default function UpcomingEvents() {
             {/* Three Column Premium Layout */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6 lg:gap-8">
               {filteredEvents.slice(0, 3).map((event, index) => (
-                <div 
+                <Link
                   key={event.id} 
-                  className="group cursor-pointer relative" 
-                  onClick={() => handleEventClick(event)}
+                  href={`/event/${event.slug}`}
+                  className="group cursor-pointer relative"
                 >
                   <div className="relative">
                     {/* The Poster - Enhanced presentation */}
                     <div className="relative ">
                       {/* Main poster with refined aspect ratio */}
                       <div className="relative aspect-[3/4]  bg-[var(--maroon-red)]/5">
-                        <Image
-                          src={event.image}
-                          alt={event.artist}
-                          fill
-                          className="object-cover group-hover:scale-102 transition-transform duration-300"
-                          priority={index === 0}
-                        />
+                        {event.image && (
+                          <Image
+                            src={event.image}
+                            alt={event.artist}
+                            fill
+                            className="object-cover group-hover:scale-102 transition-transform duration-300"
+                            priority={index === 0}
+                          />
+                        )}
                         
                         {/* Subtle gradient overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)]/90 via-transparent to-transparent" />
@@ -184,14 +136,19 @@ export default function UpcomingEvents() {
                           </div>
                           
                           {/* Ticket Button */}
-                          <button className="px-4 py-2 bg-[var(--gold)] text-[var(--maroon-red)] font-prettywise text-sm uppercase tracking-wider hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-colors duration-300">
-                            Get Tickets
-                          </button>
+                          {event.ticketUrl && (
+                            <TicketButton
+                              ticketUrl={event.ticketUrl}
+                              className="px-4 py-2 bg-[var(--gold)] text-[var(--maroon-red)] font-prettywise text-sm uppercase tracking-wider hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-colors duration-300"
+                            >
+                              Get Tickets
+                            </TicketButton>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             
@@ -209,12 +166,11 @@ export default function UpcomingEvents() {
 
             {/* Events Table - Theater Program Style */}
             <div className="space-y-0">
-              {allEventsChrono
-                .map((event) => (
-                <div 
+              {allEventsChrono.map((event) => (
+                <Link
                   key={event.id} 
-                  className="group cursor-pointer border-b border-[var(--gold)]/10 hover:bg-[var(--gold)]/5 transition-all duration-500"
-                  onClick={() => handleEventClick(event)}
+                  href={`/event/${event.slug}`}
+                  className="group cursor-pointer border-b border-[var(--gold)]/10 hover:bg-[var(--gold)]/5 transition-all duration-500 block"
                 >
                   {/* Mobile Layout */}
                   <div className="md:hidden py-6 px-4">
@@ -238,7 +194,9 @@ export default function UpcomingEvents() {
                             {event.title}
                           </h4>
                           <p className="text-xs font-prettywise text-[var(--gold)]/60 truncate">
-                            {event.artists ? event.artists.map(artist => artist.name).join(', ') : event.artist}
+                            {event.artists && event.artists.length > 0 
+                              ? event.artists.map(artist => artist.name).join(', ') 
+                              : event.artist}
                           </p>
                         </div>
                         <p className="text-[10px] font-neue-haas text-[var(--white)]/40 uppercase tracking-wider truncate">
@@ -259,18 +217,14 @@ export default function UpcomingEvents() {
                             Learn More
                           </a>
                           */}
-                          <a 
-                            href={event.ticketUrl || "#"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => {
-                              if (!event.ticketUrl) e.preventDefault();
-                              else e.stopPropagation();
-                            }}
-                            className="px-3 py-1.5 bg-[var(--gold)] text-[var(--maroon-red)] font-neue-haas text-xs uppercase tracking-wider hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-all duration-300"
-                          >
-                            Tickets
-                          </a>
+                          {event.ticketUrl && (
+                            <TicketButton
+                              ticketUrl={event.ticketUrl}
+                              className="px-3 py-1.5 bg-[var(--gold)] text-[var(--maroon-red)] font-neue-haas text-xs uppercase tracking-wider hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-all duration-300"
+                            >
+                              Tickets
+                            </TicketButton>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -298,7 +252,9 @@ export default function UpcomingEvents() {
                             {event.title}
                           </h4>
                           <span className="text-sm font-prettywise text-[var(--gold)]/60">
-                            {event.artists ? event.artists.map(artist => artist.name).join(', ') : event.artist}
+                            {event.artists && event.artists.length > 0
+                              ? event.artists.map(artist => artist.name).join(', ')
+                              : event.artist}
                           </span>
                         </div>
                         <p className="text-[11px] font-neue-haas text-[var(--white)]/40 uppercase tracking-wider">
@@ -323,21 +279,17 @@ export default function UpcomingEvents() {
                         Learn More
                       </a>
                       */}
-                      <a 
-                        href={event.ticketUrl || "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => {
-                          if (!event.ticketUrl) e.preventDefault();
-                          else e.stopPropagation();
-                        }}
-                        className="px-4 py-2 bg-[var(--gold)] text-[var(--maroon-red)] font-neue-haas text-[11px] uppercase tracking-[0.2em] hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-all duration-300"
-                      >
-                        Tickets
-                      </a>
+                      {event.ticketUrl && (
+                        <TicketButton
+                          ticketUrl={event.ticketUrl}
+                          className="px-4 py-2 bg-[var(--gold)] text-[var(--maroon-red)] font-neue-haas text-[11px] uppercase tracking-[0.2em] hover:bg-[var(--gold)]/80 hover:text-[var(--white)] transition-all duration-300"
+                        >
+                          Tickets
+                        </TicketButton>
+                      )}
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

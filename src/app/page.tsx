@@ -1,11 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import SectionHeader from "@/components/ui/section-header";
 import UpcomingEvents from "@/components/home/upcoming-events";
 import { EventMarquee } from "@/components/home/event-marquee";
 import Hero from "@/components/home/hero";
+import { getPublicEvents } from "@/lib/public-actions";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Nazaara Live - Premium South Asian Entertainment Worldwide",
     description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities.",
-    url: "https://nazaaralive.com",
+    url: "https://nazaara.live",
     siteName: "Nazaara Live",
     images: [
       {
@@ -36,13 +32,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  // Fetch events for the marquee
+  const events = await getPublicEvents();
+  
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Hero />
 
       {/* Event Marquee - Animated Transition */}
-      <EventMarquee />
+      <EventMarquee events={events} />
 
       <UpcomingEvents />
 

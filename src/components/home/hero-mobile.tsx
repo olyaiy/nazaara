@@ -1,17 +1,30 @@
 import Image from "next/image";
+import Link from "next/link";
 import { cookies } from "next/headers";
-import { getEventForCity, getFeaturedEvent } from "@/content/events";
+import { getPublicEventForCity, getPublicFeaturedEvent } from "@/lib/public-actions";
 import HeroMobileButton from "./hero-mobile-button";
 
 export default async function HeroMobile() {
   const cookieStore = await cookies();
   const city = cookieStore.get("nza_city")?.value;
   console.log("[HeroMobile] city cookie:", city);
-  const featuredEvent = getEventForCity(city) || getFeaturedEvent();
+  const featuredEvent = await getPublicEventForCity(city) || await getPublicFeaturedEvent();
 
   if (!featuredEvent) {
     console.log("[HeroMobile] no event – returning null");
     return null;
+  }
+
+  // Guard against past events (yesterday or earlier)
+  {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const eventDate = new Date(featuredEvent.startTime);
+    eventDate.setHours(0, 0, 0, 0);
+    if (eventDate < today) {
+      console.log("[HeroMobile] event is in the past – returning null");
+      return null;
+    }
   }
 
   console.log("[HeroMobile] chosen event:", featuredEvent.slug);
@@ -60,11 +73,10 @@ export default async function HeroMobile() {
             <div className="absolute inset-0 rotate-1 scale-102" style={{ backgroundColor: 'var(--gold)', opacity: 0.02 }} />
             
             {/* Main poster container */}
-            {/* TEMPORARY: Pass ticketUrl for redirect */}
-            <HeroMobileButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl} asChild>
-              <div className="relative aspect-[3/4] overflow-hidden shadow-2xl">
+            <Link href={`/event/${featuredEvent.slug}`}>
+              <div className="relative aspect-[3/4] overflow-hidden shadow-2xl cursor-pointer">
                 <Image 
-                  src={featuredEvent.image}
+                  src={featuredEvent.image || ""}
                   alt={featuredEvent.title}
                   fill
                   className="object-cover"
@@ -99,7 +111,7 @@ export default async function HeroMobile() {
                   </div>
                 </div>
               </div>
-            </HeroMobileButton>
+            </Link>
           </div>
         </div>
         
@@ -216,7 +228,7 @@ export default async function HeroMobile() {
               <rect width="100%" height="100%" fill="url(#hero-pattern-cta)" />
             </svg>
           </div>
-          <HeroMobileButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl} asChild>
+          <HeroMobileButton eventSlug={featuredEvent.slug} ticketUrl={featuredEvent.ticketUrl || ""} asChild>
             <button className="relative w-full overflow-hidden group">
               {/* Creative button design */}
               <div className="absolute inset-0" style={{ backgroundColor: 'var(--gold)' }} />

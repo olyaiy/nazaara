@@ -1,17 +1,32 @@
 
 import Image from "next/image";
-import { Event } from "@/content/events";
+import { PublicEvent, getPublicEventStops } from "@/lib/public-actions";
 
 interface EventHeroProps {
-  event: Event;
+  event: PublicEvent;
 }
 
-export default function EventHero({ event }: EventHeroProps) {
+export default async function EventHero({ event }: EventHeroProps) {
   // Supporting artists excluding the main headliner
   const supportingArtists =
     event.artists?.filter(
       (a) => a.name.toLowerCase() !== event.artist.toLowerCase()
     ) ?? [];
+
+  // Format time display
+  const formatTime = (date: Date) => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    const displayMinutes = minutes.toString().padStart(2, '0');
+    return minutes === 0 ? `${displayHours}${ampm}` : `${displayHours}:${displayMinutes}${ampm}`;
+  };
+  
+  const startTimeStr = formatTime(new Date(event.startTime));
+  const endTimeStr = formatTime(new Date(event.endTime));
+
+  const stops = await getPublicEventStops(event.id)
 
   return (
     <section className="relative overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
@@ -71,14 +86,16 @@ export default function EventHero({ event }: EventHeroProps) {
                 {/* Main Poster with enhanced presentation */}
                 <div className="relative w-full">
                   <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
-                    <Image 
-                      src={event.image}
-                      alt={event.title}
-                      fill
-                      className="object-cover"
-                      priority
-                      sizes="(max-width: 640px) 320px, 380px"
-                    />
+                    {event.image && (
+                      <Image 
+                        src={event.image}
+                        alt={event.title}
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="(max-width: 640px) 320px, 380px"
+                      />
+                    )}
                     {/* Premium vignette effects */}
                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
                     <div className="absolute inset-0 bg-gradient-to-b from-[var(--dark-green)]/20 via-transparent to-transparent" />
@@ -135,6 +152,7 @@ export default function EventHero({ event }: EventHeroProps) {
               )}
               
               {/* Event Details */}
+              {stops.length === 0 && (
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
@@ -165,28 +183,86 @@ export default function EventHero({ event }: EventHeroProps) {
                   </div>
                   <div className="text-center">
                     <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40 mb-1">Date & Time</p>
-                    <p className="text-base font-prettywise text-[var(--white)]">{event.dates || event.date}</p>
+                    <div className="space-y-0.5">
+                      <p className="text-base font-prettywise text-[var(--white)]">{event.date}</p>
+                      <p className="text-sm font-neue-haas text-[var(--white)]/80">{startTimeStr} - {endTimeStr}</p>
+                    </div>
                   </div>
                   </div>
+
+                {stops.length > 0 && (
+                  <div className="mt-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
+                      <p className="text-[8px] font-neue-haas uppercase tracking-[0.4em] text-[var(--gold)]/40">Tour Stops</p>
+                      <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
+                    </div>
+                    <ul className="space-y-3">
+                      {stops.map((s, i) => {
+                        const d = new Date(s.startTime)
+                        const dateStr = `${d.getDate().toString().padStart(2, '0')} ${d.toLocaleString('en-US', { month: 'short' })}`
+                        return (
+                          <li key={i} className="flex items-center justify-between gap-3 text-[var(--white)]">
+                            <div>
+                              <p className="font-prettywise text-base">{s.city}, {s.country}</p>
+                              {s.venue && (
+                                <p className="text-xs text-[var(--white)]/70">{s.venue}</p>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm font-neue-haas">{dateStr}</span>
+                              {s.ticketUrl ? (
+                                <a href={s.ticketUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] bg-[var(--gold)] text-[var(--maroon-red)]">
+                                  Tickets
+                                </a>
+                              ) : (
+                                <span className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] bg-[var(--gold)]/30 text-[var(--gold)]/90">TBA</span>
+                              )}
+                            </div>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                )}
                 
               </div>
+              )}
               
-              {/* CTA Section */}
-              <div className="flex justify-center">
-                <button className="relative w-full overflow-hidden group">
-                  {/* Creative button design */}
-                  <div className="absolute inset-0" style={{ backgroundColor: 'var(--gold)' }} />
-                  <div className="absolute inset-0 flex items-center justify-between px-6">
-                    <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
-                    <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
-                  </div>
-                  <div className="relative py-5 flex items-center justify-center">
-                    <span className="font-neue-haas text-[11px] uppercase tracking-[0.5em] font-medium" style={{ color: 'var(--maroon-red)' }}>
-                      Reserve Your Spot
-                    </span>
-                  </div>
-                </button>
-              </div>
+              {/* CTA Section (hidden for tours) */}
+              {stops.length === 0 && (
+                <div className="flex justify-center">
+                  {event.ticketUrl ? (
+                    <a href={event.ticketUrl} target="_blank" rel="noopener noreferrer" className="relative w-full overflow-hidden group block">
+                      {/* Creative button design */}
+                      <div className="absolute inset-0" style={{ backgroundColor: 'var(--gold)' }} />
+                      <div className="absolute inset-0 flex items-center justify-between px-6">
+                        <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
+                        <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
+                      </div>
+                      <div className="relative py-5 flex items-center justify-center">
+                        <span className="font-neue-haas text-[11px] uppercase tracking-[0.5em] font-medium" style={{ color: 'var(--maroon-red)' }}>
+                          Reserve Your Spot
+                        </span>
+                      </div>
+                    </a>
+                  ) : (
+                    <button className="relative w-full overflow-hidden group" disabled>
+                      {/* Creative button design */}
+                      <div className="absolute inset-0" style={{ backgroundColor: 'var(--gold)' }} />
+                      <div className="absolute inset-0 flex items-center justify-between px-6">
+                        <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
+                        <div className="w-8 h-[1px]" style={{ backgroundColor: 'var(--maroon-red)', opacity: 0.3 }} />
+                      </div>
+                      <div className="relative py-5 flex items-center justify-center">
+                        <span className="font-neue-haas text-[11px] uppercase tracking-[0.5em] font-medium" style={{ color: 'var(--maroon-red)' }}>
+                          Coming Soon
+                        </span>
+                      </div>
+                    </button>
+                  )}
+                </div>
+              )}
               
               {/* Minimal info bar */}
               <div className="mt-4 flex items-center justify-center gap-6">
@@ -203,47 +279,11 @@ export default function EventHero({ event }: EventHeroProps) {
             </div>
           </div>
 
-          {/* Desktop Layout - Original Side by Side */}
+          {/* Desktop Layout - Content Left, Image Right */}
           <div className="hidden lg:grid lg:grid-cols-2 md:gap-8 xl:gap-0 items-center w-full">
-            {/* Desktop Poster */}
-            <div className="flex justify-center">
-              <div className="relative w-full max-w-[500px]">
-                {/* Enhanced Gold accent frame */}
-                <div className="absolute -inset-[2px] bg-gradient-to-br from-[var(--gold)] via-[var(--gold)]/50 to-transparent opacity-60" />
-                <div className="absolute -inset-[1px] bg-[var(--maroon-red)]" />
-                
-                {/* Main Poster with enhanced presentation */}
-                <div className="relative w-full">
-                  <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
-                    <Image 
-                      src={event.image}
-                      alt={event.title}
-                      fill
-                      className="object-cover"
-                      priority
-                      sizes="500px"
-                    />
-                    {/* Premium vignette effects */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-[var(--dark-green)]/20 via-transparent to-transparent" />
-                  </div>
-                  
-                  {/* Floating gold accent date element - top right */}
-                  <div className="absolute -top-5 -right-5 w-20 h-20 bg-[var(--gold)] flex flex-col items-center justify-center">
-                    <p className="text-2xl font-prettywise text-[var(--maroon-red)]">{event.date.split(' ')[0]}</p>
-                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--maroon-red)]">{event.date.split(' ')[1]}</p>
-                  </div>
-                  
-                  {/* Corner accents */}
-                  <div className="absolute -bottom-2 -left-2 w-16 h-16 border-l-2 border-b-2 border-[var(--gold)]/40" />
-                  <div className="absolute -top-2 -left-2 w-16 h-16 border-l-2 border-t-2 border-[var(--gold)]/40" />
-                </div>
-              </div>
-            </div>
-            
-            {/* Desktop Event Information */}
-            <div className="flex flex-col justify-center">
-              <div className="space-y-8 max-w-xl">
+            {/* Desktop Event Information - Now on Left */}
+            <div className="flex flex-col justify-center ">
+              <div className="space-y-8 max-w-xl  mx-auto">
                 {/* Title Block */}
                 <div>
                   {/* Nazaara Live Presents Label */}
@@ -295,38 +335,78 @@ export default function EventHero({ event }: EventHeroProps) {
                 
                 {/* Event Details */}
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="h-[1px] w-8 bg-[var(--gold)]/20" />
-                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40">Event Details</p>
-                    <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-1.5">Venue</p>
-                      {(() => {
-                        const mapsHref =
-                          event.venueAddressUrl ||
-                          `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                            event.venueAddress || `${event.venue}, ${event.city}, ${event.country}`
-                          )}`;
-                        return (
-                          <a
-                            href={mapsHref}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-lg font-prettywise text-[var(--white)] hover:text-[var(--gold)] transition-colors"
-                          >
-                            {event.venue}
-                          </a>
-                        );
-                      })()}
+                  {stops.length === 0 && (
+                    <>
+                      <div className="flex items-center gap-3">
+                        <div className="h-[1px] w-8 bg-[var(--gold)]/20" />
+                        <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40">Event Details</p>
+                        <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-6">
+                        <div>
+                          <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-1.5">Venue</p>
+                          {(() => {
+                            const mapsHref =
+                              event.venueAddressUrl ||
+                              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                                event.venueAddress || `${event.venue}, ${event.city}, ${event.country}`
+                              )}`;
+                            return (
+                              <a
+                                href={mapsHref}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-lg font-prettywise text-[var(--white)] hover:text-[var(--gold)] transition-colors"
+                              >
+                                {event.venue}
+                              </a>
+                            );
+                          })()}
+                        </div>
+                        <div>
+                          <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-1.5">Date & Time</p>
+                          <div className="space-y-0.5">
+                            <p className="text-lg font-prettywise text-[var(--white)]">{event.date}</p>
+                            <p className="text-sm font-neue-haas text-[var(--white)]/80">{startTimeStr} - {endTimeStr}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {stops.length > 0 && (
+                    <div className="mt-2">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="h-[1px] w-8 bg-[var(--gold)]/20" />
+                        <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40">Tour Stops</p>
+                        <div className="h-[1px] flex-1 bg-[var(--gold)]/20" />
+                      </div>
+                      <div className="divide-y divide-[var(--gold)]/10 border border-[var(--gold)]/10">
+                        {stops.map((s, i) => {
+                          const d = new Date(s.startTime)
+                          const dateStr = `${d.getDate().toString().padStart(2, '0')} ${d.toLocaleString('en-US', { month: 'short' })}`
+                          return (
+                            <div key={i} className="flex items-center justify-between p-3">
+                              <div className="min-w-0">
+                                <p className="font-prettywise text-lg text-[var(--white)] truncate">{s.city}, {s.country}</p>
+                                {s.venue && <p className="text-sm text-[var(--white)]/70 truncate">{s.venue}</p>}
+                              </div>
+                              <div className="flex items-center gap-4">
+                                <span className="text-sm font-neue-haas text-[var(--white)]/90">{dateStr}</span>
+                                {s.ticketUrl ? (
+                                  <a href={s.ticketUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] bg-[var(--gold)] text-[var(--maroon-red)]">
+                                    Tickets
+                                  </a>
+                                ) : (
+                                  <span className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] bg-[var(--gold)]/30 text-[var(--gold)]/90">TBA</span>
+                                )}
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-[9px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/40 mb-1.5">Date & Time</p>
-                      <p className="text-lg font-prettywise text-[var(--white)]">{event.dates || event.date}</p>
-                    </div>
-                  </div>
+                  )}
                   
                   <div className="flex items-center gap-6 text-[10px] font-neue-haas uppercase tracking-[0.3em] text-[var(--white)]/40">
                     <span className="flex items-center gap-2">
@@ -344,17 +424,69 @@ export default function EventHero({ event }: EventHeroProps) {
                   </div>
                 </div>
                 
-                {/* CTA Section */}
-                <div>
-                  <button className="w-full relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-[var(--gold)]" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 group-hover:opacity-100" />
-                    <div className="relative px-8 py-4">
-                      <p className="text-[11px] font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium">
-                        RSVP
-                      </p>
-                    </div>
-                  </button>
+                {/* CTA Section (hidden for tours) */}
+                {stops.length === 0 && (
+                  <div>
+                    {event.ticketUrl ? (
+                      <a href={event.ticketUrl} target="_blank" rel="noopener noreferrer" className="w-full relative overflow-hidden group block">
+                        <div className="absolute inset-0 bg-[var(--gold)]" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 group-hover:opacity-100" />
+                        <div className="relative px-8 py-4 mx-auto  items-center justify-center flex">
+                          <p className="text-[11px]  font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium">
+                            RSVP
+                          </p>
+                        </div>
+                      </a>
+                    ) : (
+                      <button className="w-full relative overflow-hidden group" disabled>
+                        <div className="absolute inset-0 bg-[var(--gold)]" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-[var(--gold)] via-[var(--gold)] to-[var(--dark-gold)] opacity-0 group-hover:opacity-100" />
+                        <div className="relative px-8 py-4">
+                          <p className="text-[11px] font-neue-haas uppercase tracking-[0.5em] text-[var(--maroon-red)] font-medium">
+                            COMING SOON
+                          </p>
+                        </div>
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            {/* Desktop Poster - Now on Right */}
+            <div className="flex justify-center">
+              <div className="relative w-full max-w-[500px]">
+                {/* Enhanced Gold accent frame */}
+                <div className="absolute -inset-[2px] bg-gradient-to-br from-[var(--gold)] via-[var(--gold)]/50 to-transparent opacity-60" />
+                <div className="absolute -inset-[1px] bg-[var(--maroon-red)]" />
+                
+                {/* Main Poster with enhanced presentation */}
+                <div className="relative w-full">
+                  <div className="relative aspect-[4/5] overflow-hidden bg-[var(--dark-green)]/20">
+                    {event.image && (
+                      <Image 
+                        src={event.image}
+                        alt={event.title}
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="500px"
+                      />
+                    )}
+                    {/* Premium vignette effects */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/40 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[var(--dark-green)]/20 via-transparent to-transparent" />
+                  </div>
+                  
+                  {/* Floating gold accent date element - top right */}
+                  <div className="absolute -top-5 -right-5 w-20 h-20 bg-[var(--gold)] flex flex-col items-center justify-center">
+                    <p className="text-2xl font-prettywise text-[var(--maroon-red)]">{event.date.split(' ')[0]}</p>
+                    <p className="text-[9px] font-neue-haas uppercase tracking-[0.3em] text-[var(--maroon-red)]">{event.date.split(' ')[1]}</p>
+                  </div>
+                  
+                  {/* Corner accents */}
+                  <div className="absolute -bottom-2 -left-2 w-16 h-16 border-l-2 border-b-2 border-[var(--gold)]/40" />
+                  <div className="absolute -top-2 -left-2 w-16 h-16 border-l-2 border-t-2 border-[var(--gold)]/40" />
                 </div>
               </div>
             </div>
