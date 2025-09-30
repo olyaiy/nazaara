@@ -4,6 +4,9 @@ import Hero from "@/components/home/hero";
 import { getPublicEvents } from "@/lib/public-actions";
 import type { Metadata } from "next";
 
+// Revalidate every 60 seconds (or set to 0 for no caching)
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Nazaara Live - Premium South Asian Entertainment Worldwide",
   description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities.",

@@ -6,6 +6,9 @@ import VenueFeatures from "@/components/event-page/venue-features";
 import ArtistShowcase from "@/components/event-page/artist-showcase";
 import EventBio from "@/components/event-page/event-bio";
 
+// Revalidate every 60 seconds (or set to 0 for no caching)
+export const revalidate = 0;
+
 interface EventPageProps {
   params: Promise<{
     "event-slug": string;
