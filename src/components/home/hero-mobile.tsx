@@ -34,17 +34,21 @@ export default async function HeroMobile() {
   }
   const ageLabel = isUnitedStates(featuredEvent.country) ? "21+" : "19+";
   
-  // Format time display
-  const formatTime = (date: Date) => {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
+  // Format time without timezone conversion - extract time components directly from string
+  const formatTime = (dateString: string | Date) => {
+    const dateStr = typeof dateString === 'string' ? dateString : dateString.toISOString();
+    // Extract HH:mm from the string (works for both "YYYY-MM-DD HH:mm:ss" and ISO format)
+    const match = dateStr.match(/(\d{2}):(\d{2})/);
+    if (!match) return '';
+    const hours = parseInt(match[1]);
+    const minutes = parseInt(match[2]);
     const ampm = hours >= 12 ? 'PM' : 'AM';
     const displayHours = hours % 12 || 12;
-    const displayMinutes = minutes.toString().padStart(2, '0');
-    return minutes === 0 ? `${displayHours}${ampm}` : `${displayHours}:${displayMinutes}${ampm}`;
+    const displayMinutes = minutes === 0 ? '' : `:${minutes.toString().padStart(2, '0')}`;
+    return `${displayHours}${displayMinutes}${ampm}`;
   };
   
-  const startTimeStr = formatTime(new Date(featuredEvent.startTime));
+  const startTimeStr = formatTime(featuredEvent.startTime);
   
   const featuringArtists =
     featuredEvent.artists?.filter(

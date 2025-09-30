@@ -7,7 +7,6 @@ import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { TimePicker } from "@/components/ui/time-picker"
 
@@ -27,9 +26,11 @@ export function EventDatePicker({ startTime, endTime, startName = "startTime", e
   const combineDateTime = (date: Date | undefined, time: string) => {
     if (!date) return ""
     const [hours, minutes] = time.split(":")
-    const combined = new Date(date)
-    combined.setHours(parseInt(hours), parseInt(minutes), 0, 0)
-    return combined.toISOString()
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    // Return timezone-naive format: YYYY-MM-DD HH:mm:ss
+    return `${year}-${month}-${day} ${hours}:${minutes}:00`
   }
 
   return (
