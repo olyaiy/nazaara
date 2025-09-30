@@ -23,10 +23,11 @@ export default async function Hero() {
     const today = new Date();
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     let eventStr: string;
-    if (typeof featuredEvent.startTime === 'string') {
-      eventStr = featuredEvent.startTime.split(' ')[0];
+    const startTime = featuredEvent.startTime;
+    if (typeof startTime === 'string') {
+      eventStr = (startTime as string).split(' ')[0];
     } else {
-      eventStr = new Date(featuredEvent.startTime).toISOString().split('T')[0];
+      eventStr = new Date(startTime as Date).toISOString().split('T')[0];
     }
     if (eventStr < todayStr) {
       console.log("[Hero] event is in the past – returning null");

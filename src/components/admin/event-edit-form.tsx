@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useFormStatus } from "react-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -12,7 +13,7 @@ import { ImageUpload } from "@/components/admin/image-upload"
 import { ArtistSelector } from "@/components/admin/artist-selector"
 import { updateEvent } from "@/lib/admin-actions"
 import { DeleteEventForm } from "@/components/admin/delete-event-form"
-import { Save, Calendar, Clock } from "lucide-react"
+import { Save, Calendar, Clock, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { EventStopsEditor } from "@/components/admin/event-stops-editor"
 
@@ -68,6 +69,30 @@ function generateSlug(text: string): string {
     .replace(/[^\w\s-]/g, '') // Remove special characters
     .replace(/[\s_]+/g, '-')   // Replace spaces and underscores with hyphens
     .replace(/^-+|-+$/g, '')   // Remove leading/trailing hyphens
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus()
+  
+  return (
+    <Button 
+      type="submit" 
+      disabled={pending}
+      className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90 font-semibold px-6 py-2.5 shadow-lg hover:shadow-xl border border-[--gold] hover:border-[--dark-gold] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      {pending ? (
+        <>
+          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          Saving...
+        </>
+      ) : (
+        <>
+          <Save className="h-4 w-4 mr-2" />
+          Save Changes
+        </>
+      )}
+    </Button>
+  )
 }
 
 export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
@@ -361,13 +386,7 @@ export function EventEditForm({ event, venues, artists }: EventEditFormProps) {
               Cancel
             </Button>
           </Link>
-          <Button 
-            type="submit" 
-            className="bg-[--gold] text-[--maroon-red] hover:bg-[--gold]/90 font-semibold px-6 py-2.5 shadow-lg hover:shadow-xl border border-[--gold] hover:border-[--dark-gold] transition-all duration-200"
-          >
-            <Save className="h-4 w-4 mr-2" />
-            Save Changes
-          </Button>
+          <SubmitButton />
         </div>
       </div>
     </form>
