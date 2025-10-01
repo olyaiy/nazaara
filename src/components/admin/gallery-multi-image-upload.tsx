@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { UploadDropzone } from "@/lib/uploadthing"
 import type { ClientUploadedFileData } from "uploadthing/types"
+import { deleteUploadedFiles } from "@/lib/admin-actions"
 
 interface ImageData {
   id?: number
@@ -13,6 +14,7 @@ interface ImageData {
   key: string
   caption?: string | null
   orderIndex: number | null
+  isNew?: boolean // Track if this is a newly uploaded image
 }
 
 interface GalleryMultiImageUploadProps {
@@ -45,6 +47,7 @@ export function GalleryMultiImageUpload({
         url: file.url,
         key: file.key,
         orderIndex: images.length + index,
+        isNew: true, // Mark as newly uploaded
       }))
       
       setImages(prev => [...prev, ...newImages])
@@ -52,13 +55,20 @@ export function GalleryMultiImageUpload({
     }
   }, [images.length])
 
-  const removeImage = useCallback((index: number) => {
+  const removeImage = useCallback(async (index: number) => {
+    const imageToRemove = images[index]
+    
+    // Delete from UploadThing server if it's a newly uploaded image
+    if (imageToRemove?.key && imageToRemove.isNew) {
+      await deleteUploadedFiles(imageToRemove.key)
+    }
+    
     setImages(prev => {
       const newImages = prev.filter((_, i) => i !== index)
       // Reindex remaining images
       return newImages.map((img, i) => ({ ...img, orderIndex: i }))
     })
-  }, [])
+  }, [images])
 
   const handleDragStart = (e: React.DragEvent, index: number) => {
     setDraggedIndex(index)

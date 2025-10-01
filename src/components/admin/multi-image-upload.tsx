@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { UploadDropzone } from "@/lib/uploadthing"
 import type { ClientUploadedFileData } from "uploadthing/types"
+import { deleteUploadedFiles } from "@/lib/admin-actions"
 
 interface ImageData {
   url: string | null
   key: string | null
+  isNew?: boolean // Track if this is a newly uploaded image
 }
 
 interface MultiImageUploadProps {
@@ -40,13 +42,20 @@ export function MultiImageUpload({
     if (res && res[0]) {
       const file = res[0]
       const newImages = [...images]
-      newImages[index] = { url: file.url, key: file.key }
+      newImages[index] = { url: file.url, key: file.key, isNew: true }
       setImages(newImages)
       setUploadingIndex(null)
     }
   }, [images])
 
-  const removeImage = useCallback((index: number) => {
+  const removeImage = useCallback(async (index: number) => {
+    const imageToRemove = images[index]
+    
+    // Delete from UploadThing server if it's a newly uploaded image
+    if (imageToRemove?.key && imageToRemove.isNew) {
+      await deleteUploadedFiles(imageToRemove.key)
+    }
+    
     const newImages = [...images]
     newImages[index] = { url: null, key: null }
     setImages(newImages)

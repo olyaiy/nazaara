@@ -1193,3 +1193,18 @@ export async function getBookingsDJs() {
 
   return activeDJs
 }
+
+// Delete uploaded file(s) from UploadThing
+// Used when users remove images before saving the form
+export async function deleteUploadedFiles(fileKeys: string | string[]) {
+  try {
+    const utapi = getUTApi()
+    const keys = Array.isArray(fileKeys) ? fileKeys : [fileKeys]
+    await utapi.deleteFiles(keys)
+    console.log(`Deleted ${keys.length} file(s) from UploadThing:`, keys)
+    return { success: true }
+  } catch (error) {
+    console.error("Failed to delete files from UploadThing:", error)
+    return { success: false, error: error instanceof Error ? error.message : "Unknown error" }
+  }
+}

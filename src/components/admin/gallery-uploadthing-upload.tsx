@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { useUploadThing } from "@/lib/uploadthing"
+import { deleteUploadedFiles } from "@/lib/admin-actions"
 
 interface ImageData {
   id?: number
@@ -73,17 +74,30 @@ export function GalleryUploadThingUpload({
     onImagesChange?.(images)
   }, [images, onImagesChange])
 
-  const removeImage = useCallback((index: number) => {
+  const removeImage = useCallback(async (index: number) => {
+    const imageToRemove = images[index]
+    
+    // Delete from UploadThing server if it's a newly uploaded image
+    if (imageToRemove?.key && imageToRemove.isNew) {
+      await deleteUploadedFiles(imageToRemove.key)
+    }
+    
     setImages(prev => {
       const newImages = prev.filter((_, i) => i !== index)
       // Reindex remaining images
       return newImages.map((img, i) => ({ ...img, orderIndex: i }))
     })
-  }, [])
+  }, [images])
 
-  const removeAllImages = useCallback(() => {
+  const removeAllImages = useCallback(async () => {
+    // Delete all newly uploaded images from UploadThing server
+    const newImageKeys = images.filter(img => img.isNew).map(img => img.key)
+    if (newImageKeys.length > 0) {
+      await deleteUploadedFiles(newImageKeys)
+    }
+    
     setImages([])
-  }, [])
+  }, [images])
 
   // Efficient file handling for batch uploads
   const validateFile = (file: File): string | null => {
