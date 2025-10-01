@@ -37,8 +37,9 @@ export function GalleryUploadThingUpload({
   
   // Initialize UploadThing with batch upload handling
   const { startUpload, isUploading } = useUploadThing("galleryImage", {
-    onUploadBegin: (files) => {
-      setUploadingCount(files.length)
+    onUploadBegin: () => {
+      // Note: onUploadBegin only gets called once with fileName, not useful for count
+      // We'll set the count when we process files instead
       setUploadProgress(0)
     },
     onClientUploadComplete: (res) => {
@@ -145,6 +146,8 @@ export function GalleryUploadThingUpload({
     }
 
     if (validFiles.length > 0) {
+      // Set the actual file count before uploading
+      setUploadingCount(validFiles.length)
       // Upload valid files even if some had errors
       await startUpload(validFiles)
     }
