@@ -101,7 +101,8 @@ export function GalleryFormV2({ gallery, mode }: GalleryFormProps) {
       formData.append(`images[${idx}][key]`, image.key)
     })
     
-    // Add slug to formData
+    // Add controlled input values to formData (title and slug use controlled inputs)
+    formData.set("title", title)
     formData.set("slug", slug)
     
     try {

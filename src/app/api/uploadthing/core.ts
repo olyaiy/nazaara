@@ -106,7 +106,7 @@ export const ourFileRouter = {
   galleryImage: f({
     image: {
       maxFileSize: "1GB",
-      maxFileCount: 100, // Allow batch uploading up to 100 images at once
+      maxFileCount: 1000, // Allow batch uploading up to 100 images at once
     },
   })
     .middleware(async ({ req }) => {
