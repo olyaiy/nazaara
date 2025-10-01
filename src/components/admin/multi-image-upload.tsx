@@ -143,7 +143,7 @@ export function MultiImageUpload({
                             Drop image or click to upload
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            PNG, JPG, WEBP up to 4MB
+                            PNG, JPG, WEBP up to 1GB
                           </p>
                         </div>
                       )

@@ -220,7 +220,7 @@ export function GalleryMultiImageUpload({
                       : "Add more images"}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    PNG, JPG, WEBP up to 4MB each • Max 20 files at once
+                    PNG, JPG, WEBP up to 1GB each • Max 100 files at once
                   </p>
                   {images.length > 0 && (
                     <p className="text-xs text-muted-foreground mt-2">

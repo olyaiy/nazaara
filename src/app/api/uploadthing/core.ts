@@ -105,7 +105,7 @@ export const ourFileRouter = {
   // Gallery image upload route
   galleryImage: f({
     image: {
-      maxFileSize: "16MB",
+      maxFileSize: "1GB",
       maxFileCount: 100, // Allow batch uploading up to 100 images at once
     },
   })

@@ -88,13 +88,13 @@ export function GalleryUploadThingUpload({
   // Efficient file handling for batch uploads
   const validateFile = (file: File): string | null => {
     const acceptedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"]
-    const maxFileSize = 4 // MB
+    const maxFileSize = 1024 // MB (1GB)
     
     if (!acceptedTypes.includes(file.type)) {
       return `${file.name} is not a supported file type`
     }
     if (file.size > maxFileSize * 1024 * 1024) {
-      return `${file.name} is too large (max ${maxFileSize}MB)`
+      return `${file.name} is too large (max 1GB)`
     }
     return null
   }
@@ -274,7 +274,7 @@ export function GalleryUploadThingUpload({
             </p>
             {!isUploading && (
               <p className="text-xs text-muted-foreground">
-                Supports JPEG, PNG, WebP, GIF • 4MB per image • Batch upload supported
+                Supports JPEG, PNG, WebP, GIF • Up to 1GB per image • Batch upload supported
               </p>
             )}
             {isUploading && uploadingCount > 10 && (
