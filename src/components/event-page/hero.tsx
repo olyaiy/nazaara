@@ -7,11 +7,8 @@ interface EventHeroProps {
 }
 
 export default async function EventHero({ event }: EventHeroProps) {
-  // Supporting artists excluding the main headliner
-  const supportingArtists =
-    event.artists?.filter(
-      (a) => a.name.toLowerCase() !== event.artist.toLowerCase()
-    ) ?? [];
+  // All artists including the headliner
+  const supportingArtists = event.artists ?? [];
 
   function isUnitedStates(country?: string | null): boolean {
     const c = (country || "").trim().toLowerCase();

@@ -11,6 +11,8 @@ import {
   contactFormContent
 } from "@/content/bookings";
 
+export const revalidate = 0;
+
 interface DJ {
   id: number;
   name: string;

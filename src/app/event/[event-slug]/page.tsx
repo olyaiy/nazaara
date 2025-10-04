@@ -68,6 +68,13 @@ export default async function EventPage({ params }: EventPageProps) {
   }
   const stops = await getPublicEventStops(event.id)
 
+  // Debug: Log all artist names
+  console.log('=== EVENT DEBUG ===');
+  console.log('Event Title:', event.title);
+  console.log('Primary Artist (event.artist):', event.artist);
+  console.log('All Artists:', event.artists?.map(artist => artist.name));
+  console.log('Number of artists:', event.artists?.length);
+
   return (
     <div className="min-h-dvh bg-[var(--maroon-red)]">
       <EventHero event={event} />

@@ -42,11 +42,8 @@ export default async function Hero() {
   }
   const ageLabel = isUnitedStates(featuredEvent.country) ? "21+" : "19+";
 
-  // Derive featuring artists (exclude the headliner)
-  const featuringArtists =
-    featuredEvent.artists?.filter(
-      (a) => a.name.toLowerCase() !== featuredEvent.artist.toLowerCase()
-    ) || [];
+  // All artists including the headliner
+  const featuringArtists = featuredEvent.artists || [];
 
   // Parse date for display
   const [day, month] = featuredEvent.date.split(' ');

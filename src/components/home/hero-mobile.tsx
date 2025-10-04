@@ -55,10 +55,8 @@ export default async function HeroMobile() {
   
   const startTimeStr = formatTime(featuredEvent.startTime);
   
-  const featuringArtists =
-    featuredEvent.artists?.filter(
-      (a) => a.name.toLowerCase() !== featuredEvent.artist.toLowerCase()
-    ) || [];
+  // All artists including the headliner
+  const featuringArtists = featuredEvent.artists || [];
   const [day, month] = featuredEvent.date.split(' ');
 
   return (
