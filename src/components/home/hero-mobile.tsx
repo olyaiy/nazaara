@@ -145,7 +145,7 @@ export default async function HeroMobile() {
           <div className="space-y-8">
             {/* Title composition */}
             <div className="relative">
-              <h1 className="font-prettywise text-[18vw] leading-[0.8]" style={{ color: 'var(--white)' }}>
+              <h1 className="font-prettywise text-[18vw] leading-[1.1]" style={{ color: 'var(--white)' }}>
                 {featuredEvent.title}
               </h1>
               {featuredEvent.tagline && (
