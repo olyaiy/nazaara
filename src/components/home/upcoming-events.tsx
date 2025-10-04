@@ -125,14 +125,16 @@ export default async function UpcomingEvents() {
                     
                     {/* Content - Compact typography and spacing */}
                     <div className="pt-4 md:pt-6 pb-2">
-                      {/* Artist name */}
+                      {/* Event title */}
                       <h3 className="font-prettywise text-[var(--white)] text-xl md:text-2xl lg:text-3xl mb-2 leading-tight group-hover:text-[var(--gold)] transition-colors duration-500">
                         {event.title}
                       </h3>
                       
-                      {/* Event title */}
+                      {/* Artist names */}
                       <p className="text-sm md:text-base font-prettywise text-[var(--gold)]/60 mb-3 md:mb-4">
-                      {event.artist}
+                        {event.artists && event.artists.length > 0
+                          ? event.artists.map(artist => artist.name).join(', ')
+                          : event.artist}
                       </p>
                       
                       {/* Venue and pricing - Compact */}
