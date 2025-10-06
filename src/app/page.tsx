@@ -8,30 +8,74 @@ import type { Metadata } from "next";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Nazaara Live - Premium South Asian Entertainment Worldwide",
-  description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities.",
-  keywords: ["South Asian events", "Bollywood concerts", "Indian music", "celebrity bookings", "private events", "DJ services", "entertainment"],
+  title: "Nazaara Live - Premium South Asian Entertainment & Live Events Worldwide",
+  description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities. Book world-class South Asian artists for your next event.",
+  keywords: [
+    "South Asian events",
+    "Bollywood concerts",
+    "Indian music",
+    "celebrity bookings",
+    "private events",
+    "DJ services",
+    "entertainment",
+    "live music",
+    "concert promoter",
+    "event management",
+    "South Asian artists",
+    "Desi events",
+    "cultural events",
+    "wedding entertainment",
+    "Nazaara Live",
+  ].join(", "),
+  authors: [{ name: "Nazaara Live" }],
+  creator: "Nazaara Live",
+  publisher: "Nazaara Live",
+  
+  alternates: {
+    canonical: "https://nazaara.live",
+  },
+
   openGraph: {
-    title: "Nazaara Live - Premium South Asian Entertainment Worldwide",
-    description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities.",
+    type: "website",
     url: "https://nazaara.live",
     siteName: "Nazaara Live",
+    title: "Nazaara Live - Premium South Asian Entertainment Worldwide",
+    description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities.",
+    locale: "en_US",
     images: [
       {
-        url: "/OG.png",
+        url: "https://nazaara.live/OG.png",
         width: 1200,
         height: 630,
         alt: "Nazaara Live - Premium South Asian Entertainment",
       },
     ],
-    locale: "en_US",
-    type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
+    site: "@nazaaralive",
+    creator: "@nazaaralive",
     title: "Nazaara Live - Premium South Asian Entertainment Worldwide",
     description: "Experience culture, sound and entertainment without borders. From Bollywood concerts to private celebrity bookings, we create extraordinary moments across 150+ global cities.",
-    images: ["/OG.png"],
+    images: ["https://nazaara.live/OG.png"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+
+  verification: {
+    // Add Google Search Console verification if you have it
+    // google: "your-google-verification-code",
   },
 };
 
@@ -47,15 +91,121 @@ export default async function Home() {
     eventDate.setHours(0, 0, 0, 0);
     return eventDate >= today;
   });
+
+  // Generate JSON-LD structured data for Organization
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Nazaara Live",
+    url: "https://nazaara.live",
+    logo: "https://nazaara.live/Logos/Logo - Gold.png",
+    description: "Premium South Asian entertainment company specializing in live events, Bollywood concerts, and celebrity bookings across 150+ global cities.",
+    foundingDate: "2022",
+    sameAs: [
+      "https://www.instagram.com/nazaaralive",
+      "https://twitter.com/nazaaralive",
+    ],
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "Customer Service",
+      url: "https://nazaara.live/bookings",
+    },
+    areaServed: [
+      {
+        "@type": "Country",
+        name: "Canada",
+      },
+      {
+        "@type": "Country",
+        name: "United States",
+      },
+      {
+        "@type": "Country",
+        name: "United Kingdom",
+      },
+    ],
+    knowsAbout: [
+      "Bollywood Music",
+      "South Asian Entertainment",
+      "Live Events",
+      "Concert Production",
+      "Artist Management",
+      "Event Planning",
+    ],
+  };
+
+  // Generate JSON-LD for WebSite with search capability
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Nazaara Live",
+    url: "https://nazaara.live",
+    description: "Experience culture, sound and entertainment without borders.",
+    publisher: {
+      "@type": "Organization",
+      name: "Nazaara Live",
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://nazaara.live/?search={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+  };
+
+  // Generate ItemList schema for upcoming events
+  const eventsListSchema = upcomingEvents.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Upcoming Events",
+    itemListElement: upcomingEvents.slice(0, 10).map((event, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "MusicEvent",
+        name: event.title,
+        url: `https://nazaara.live/event/${event.slug}`,
+        startDate: typeof event.startTime === "string" 
+          ? new Date(event.startTime).toISOString()
+          : event.startTime.toISOString(),
+        location: {
+          "@type": "Place",
+          name: event.venue,
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: event.city,
+            addressCountry: event.country,
+          },
+        },
+        ...(event.image && { image: event.image }),
+      },
+    })),
+  } : null;
   
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Hero />
+    <>
+      {/* JSON-LD Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+      {eventsListSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(eventsListSchema) }}
+        />
+      )}
 
-      {/* Event Marquee - Animated Transition */}
-      <EventMarquee events={upcomingEvents} />
+      <div className="min-h-screen bg-background text-foreground">
+        <Hero />
 
-      <UpcomingEvents />
+        {/* Event Marquee - Animated Transition */}
+        <EventMarquee events={upcomingEvents} />
+
+        <UpcomingEvents />
 
       {/* Premium Stats removed as requested */}
 
@@ -256,17 +406,7 @@ export default async function Home() {
         </div>
       </section>
       */}
-
-      
-
-
-
-
-
-
-    </div>
+      </div>
+    </>
   );
 }
-
-
-  
