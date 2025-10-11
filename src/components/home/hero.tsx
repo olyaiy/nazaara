@@ -18,18 +18,15 @@ export default async function Hero() {
     return null;
   }
 
-  // Guard against past events (yesterday or earlier) - timezone-agnostic
+  // Guard against past events (yesterday or earlier) - compare by local date only
   {
-    const today = new Date();
-    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    let eventStr: string;
-    const startTime = featuredEvent.startTime;
-    if (typeof startTime === 'string') {
-      eventStr = (startTime as string).split(' ')[0];
-    } else {
-      eventStr = new Date(startTime as Date).toISOString().split('T')[0];
-    }
-    if (eventStr < todayStr) {
+    const now = new Date();
+    const todayLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const eventDate = typeof featuredEvent.startTime === 'string'
+      ? new Date(featuredEvent.startTime)
+      : new Date(featuredEvent.startTime as Date);
+    const eventLocal = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+    if (eventLocal < todayLocal) {
       console.log("[Hero] event is in the past – returning null");
       return null;
     }
