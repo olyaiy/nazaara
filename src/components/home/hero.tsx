@@ -27,6 +27,14 @@ export default async function Hero() {
       : new Date(featuredEvent.startTime as Date);
     const eventLocal = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
     if (eventLocal < todayLocal) {
+      const toLocalYmd = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      console.log("[Hero][Filter] Excluded past event", {
+        slug: featuredEvent.slug,
+        title: featuredEvent.title,
+        eventLocalDate: toLocalYmd(eventLocal),
+        todayLocalDate: toLocalYmd(todayLocal),
+        comparison: `${toLocalYmd(eventLocal)} < ${toLocalYmd(todayLocal)}`
+      });
       console.log("[Hero] event is in the past – returning null");
       return null;
     }
