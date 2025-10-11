@@ -5,7 +5,8 @@ import {
   getPublicEvents, 
   getPublicUpcomingEvents, 
   getPublicEventForCity, 
-  getPublicFeaturedEvent 
+  getPublicFeaturedEvent,
+  type PublicEvent
 } from "@/lib/public-actions";
 import SectionHeader from "@/components/ui/section-header";
 import TicketButton from "@/components/home/ticket-button";
@@ -29,7 +30,7 @@ export default async function UpcomingEvents() {
   if (heroSlug) {
     const excludedHero = upcomingEvents.filter((event) => event.slug === heroSlug);
     if (excludedHero.length > 0) {
-      console.log("[UpcomingEvents][Filter] Excluded hero event from Next Up", excludedHero.map(e => ({ slug: e.slug, title: (e as any).title })));
+      console.log("[UpcomingEvents][Filter] Excluded hero event from Next Up", excludedHero.map((e: PublicEvent) => ({ slug: e.slug, title: e.title })));
     }
   }
 
@@ -59,11 +60,11 @@ export default async function UpcomingEvents() {
       return eventStr < todayStr;
     });
     if (excludedByDate.length > 0) {
-      console.log("[UpcomingEvents][Filter] Excluded past events (schedule)", excludedByDate.map(e => {
+      console.log("[UpcomingEvents][Filter] Excluded past events (schedule)", excludedByDate.map((e: PublicEvent) => {
         const eventStr = typeof e.startTime === 'string' ? e.startTime.split(' ')[0] : new Date(e.startTime).toISOString().split('T')[0];
         return {
           slug: e.slug,
-          title: (e as any).title,
+          title: e.title,
           eventDate: eventStr,
           todayDate: todayStr,
           comparison: `${eventStr} < ${todayStr}`
@@ -92,7 +93,7 @@ export default async function UpcomingEvents() {
   const nextUpEvents = filteredEvents.slice(0, 3);
   const excludedByCap = filteredEvents.slice(3);
   if (excludedByCap.length > 0) {
-    console.log("[UpcomingEvents][Filter] Excluded by Next Up cap (limit 3)", excludedByCap.map(e => ({ slug: e.slug, title: (e as any).title })));
+    console.log("[UpcomingEvents][Filter] Excluded by Next Up cap (limit 3)", excludedByCap.map((e: PublicEvent) => ({ slug: e.slug, title: e.title })));
   }
 
   return (
