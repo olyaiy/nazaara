@@ -34,40 +34,34 @@ export default async function UpcomingEvents() {
     }
   }
 
-  // Build a chronologically sorted list of upcoming events only for the Complete Schedule - timezone-agnostic
+  // Build a chronologically sorted list of upcoming events only for the Complete Schedule
+  // Show events with 12-hour grace period after end time (for timezone differences)
   const allEvents = await getPublicEvents();
-  const today = new Date();
-  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const now = new Date();
   
   const upcomingEventsOnly = allEvents.filter(event => {
-    let eventStr: string;
-    if (typeof event.startTime === 'string') {
-      eventStr = event.startTime.split(' ')[0];
-    } else {
-      eventStr = new Date(event.startTime).toISOString().split('T')[0];
-    }
-    return eventStr >= todayStr;
+    const eventEndTime = new Date(event.endTime);
+    const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000); // +12 hours
+    return graceEndTime >= now;
   });
   {
     // Log past events excluded from the complete schedule list
-    const excludedByDate = allEvents.filter(event => {
-      let eventStr: string;
-      if (typeof event.startTime === 'string') {
-        eventStr = event.startTime.split(' ')[0];
-      } else {
-        eventStr = new Date(event.startTime).toISOString().split('T')[0];
-      }
-      return eventStr < todayStr;
+    const excludedByEndTime = allEvents.filter(event => {
+      const eventEndTime = new Date(event.endTime);
+      const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000);
+      return graceEndTime < now;
     });
-    if (excludedByDate.length > 0) {
-      console.log("[UpcomingEvents][Filter] Excluded past events (schedule)", excludedByDate.map((e: PublicEvent) => {
-        const eventStr = typeof e.startTime === 'string' ? e.startTime.split(' ')[0] : new Date(e.startTime).toISOString().split('T')[0];
+    if (excludedByEndTime.length > 0) {
+      console.log("[UpcomingEvents][Filter] Excluded past events (schedule)", excludedByEndTime.map((e: PublicEvent) => {
+        const eventEndTime = new Date(e.endTime);
+        const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000);
         return {
           slug: e.slug,
           title: e.title,
-          eventDate: eventStr,
-          todayDate: todayStr,
-          comparison: `${eventStr} < ${todayStr}`
+          endTime: eventEndTime.toISOString(),
+          graceEndTime: graceEndTime.toISOString(),
+          nowTime: now.toISOString(),
+          comparison: `${graceEndTime.toISOString()} < ${now.toISOString()}`
         };
       }));
     }

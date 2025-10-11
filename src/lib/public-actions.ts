@@ -168,29 +168,28 @@ export async function getPublicEvents(): Promise<PublicEvent[]> {
 }
 
 export async function getPublicUpcomingEvents(): Promise<PublicEvent[]> {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const now = new Date();
   
   const allEvents = await getPublicEvents();
   
+  // Show events until 12 hours after their end time (grace period for timezone differences)
   return allEvents.filter(event => {
-    const eventDate = new Date(event.startTime);
-    eventDate.setHours(0, 0, 0, 0);
-    return eventDate >= today && !event.isFeatured;
+    const eventEndTime = new Date(event.endTime);
+    const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000); // +12 hours
+    return graceEndTime >= now && !event.isFeatured;
   });
 }
 
 export async function getPublicFeaturedEvent(): Promise<PublicEvent | undefined> {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const now = new Date();
   
   const allEvents = await getPublicEvents();
   
-  // Return the first upcoming event as featured
+  // Return the first upcoming event as featured (with 12-hour grace period)
   const upcomingEvents = allEvents.filter(event => {
-    const eventDate = new Date(event.startTime);
-    eventDate.setHours(0, 0, 0, 0);
-    return eventDate >= today;
+    const eventEndTime = new Date(event.endTime);
+    const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000); // +12 hours
+    return graceEndTime >= now;
   });
   
   return upcomingEvents[0];
@@ -321,13 +320,12 @@ export async function getPublicEventForCity(city?: string): Promise<PublicEvent 
   }
 
   // 2) Fallback to previous behavior (non-tour events or no matching stop)
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const nowFallback = new Date();
   const allEvents = await getPublicEvents();
   const upcomingEvents = allEvents.filter(event => {
-    const eventDate = new Date(event.startTime);
-    eventDate.setHours(0, 0, 0, 0);
-    return eventDate >= today;
+    const eventEndTime = new Date(event.endTime);
+    const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000); // +12 hours
+    return graceEndTime >= nowFallback;
   });
   if (city) {
     const match = upcomingEvents.find((e) => e.city.toLowerCase() === city.toLowerCase());
