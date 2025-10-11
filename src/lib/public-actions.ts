@@ -172,11 +172,13 @@ export async function getPublicUpcomingEvents(): Promise<PublicEvent[]> {
   
   const allEvents = await getPublicEvents();
   
-  // Show events until 12 hours after their end time (grace period for timezone differences)
+  // Show events until noon UTC the day after their start date
   return allEvents.filter(event => {
-    const eventEndTime = new Date(event.endTime);
-    const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000); // +12 hours
-    return graceEndTime >= now && !event.isFeatured;
+    const eventStartTime = new Date(event.startTime);
+    const nextDayNoon = new Date(eventStartTime);
+    nextDayNoon.setUTCDate(nextDayNoon.getUTCDate() + 1);
+    nextDayNoon.setUTCHours(12, 0, 0, 0);
+    return nextDayNoon >= now && !event.isFeatured;
   });
 }
 
@@ -185,11 +187,13 @@ export async function getPublicFeaturedEvent(): Promise<PublicEvent | undefined>
   
   const allEvents = await getPublicEvents();
   
-  // Return the first upcoming event as featured (with 12-hour grace period)
+  // Return the first upcoming event as featured (until noon UTC next day)
   const upcomingEvents = allEvents.filter(event => {
-    const eventEndTime = new Date(event.endTime);
-    const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000); // +12 hours
-    return graceEndTime >= now;
+    const eventStartTime = new Date(event.startTime);
+    const nextDayNoon = new Date(eventStartTime);
+    nextDayNoon.setUTCDate(nextDayNoon.getUTCDate() + 1);
+    nextDayNoon.setUTCHours(12, 0, 0, 0);
+    return nextDayNoon >= now;
   });
   
   return upcomingEvents[0];
@@ -323,9 +327,11 @@ export async function getPublicEventForCity(city?: string): Promise<PublicEvent 
   const nowFallback = new Date();
   const allEvents = await getPublicEvents();
   const upcomingEvents = allEvents.filter(event => {
-    const eventEndTime = new Date(event.endTime);
-    const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000); // +12 hours
-    return graceEndTime >= nowFallback;
+    const eventStartTime = new Date(event.startTime);
+    const nextDayNoon = new Date(eventStartTime);
+    nextDayNoon.setUTCDate(nextDayNoon.getUTCDate() + 1);
+    nextDayNoon.setUTCHours(12, 0, 0, 0);
+    return nextDayNoon >= nowFallback;
   });
   if (city) {
     const match = upcomingEvents.find((e) => e.city.toLowerCase() === city.toLowerCase());

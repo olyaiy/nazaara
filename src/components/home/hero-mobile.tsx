@@ -38,28 +38,6 @@ export default async function HeroMobile() {
     return null;
   }
 
-  // Guard against past events (yesterday or earlier) - compare by local date only
-  {
-    const now = new Date();
-    const todayLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const eventDate = typeof featuredEvent.startTime === 'string'
-      ? new Date(featuredEvent.startTime)
-      : new Date(featuredEvent.startTime as Date);
-    const eventLocal = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
-    if (eventLocal < todayLocal) {
-      const toLocalYmd = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-      console.log("[HeroMobile][Filter] Excluded past event", {
-        slug: featuredEvent.slug,
-        title: featuredEvent.title,
-        eventLocalDate: toLocalYmd(eventLocal),
-        todayLocalDate: toLocalYmd(todayLocal),
-        comparison: `${toLocalYmd(eventLocal)} < ${toLocalYmd(todayLocal)}`
-      });
-      console.log("[HeroMobile] event is in the past – returning null");
-      return null;
-    }
-  }
-
   console.log("[HeroMobile] chosen event:", featuredEvent.slug);
   function isUnitedStates(country?: string | null): boolean {
     const c = (country || "").trim().toLowerCase();

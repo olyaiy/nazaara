@@ -35,33 +35,40 @@ export default async function UpcomingEvents() {
   }
 
   // Build a chronologically sorted list of upcoming events only for the Complete Schedule
-  // Show events with 12-hour grace period after end time (for timezone differences)
+  // Show events until noon UTC the day after their start date
   const allEvents = await getPublicEvents();
   const now = new Date();
   
   const upcomingEventsOnly = allEvents.filter(event => {
-    const eventEndTime = new Date(event.endTime);
-    const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000); // +12 hours
-    return graceEndTime >= now;
+    const eventStartTime = new Date(event.startTime);
+    const nextDayNoon = new Date(eventStartTime);
+    nextDayNoon.setUTCDate(nextDayNoon.getUTCDate() + 1);
+    nextDayNoon.setUTCHours(12, 0, 0, 0);
+    return nextDayNoon >= now;
   });
   {
     // Log past events excluded from the complete schedule list
-    const excludedByEndTime = allEvents.filter(event => {
-      const eventEndTime = new Date(event.endTime);
-      const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000);
-      return graceEndTime < now;
+    const excludedByNextDayNoon = allEvents.filter(event => {
+      const eventStartTime = new Date(event.startTime);
+      const nextDayNoon = new Date(eventStartTime);
+      nextDayNoon.setUTCDate(nextDayNoon.getUTCDate() + 1);
+      nextDayNoon.setUTCHours(12, 0, 0, 0);
+      return nextDayNoon < now;
     });
-    if (excludedByEndTime.length > 0) {
-      console.log("[UpcomingEvents][Filter] Excluded past events (schedule)", excludedByEndTime.map((e: PublicEvent) => {
-        const eventEndTime = new Date(e.endTime);
-        const graceEndTime = new Date(eventEndTime.getTime() + 12 * 60 * 60 * 1000);
+    if (excludedByNextDayNoon.length > 0) {
+      console.log("[UpcomingEvents][Filter] Excluded past events (schedule)", excludedByNextDayNoon.map((e: PublicEvent) => {
+        const eventStartTime = new Date(e.startTime);
+        const nextDayNoon = new Date(eventStartTime);
+        nextDayNoon.setUTCDate(nextDayNoon.getUTCDate() + 1);
+        nextDayNoon.setUTCHours(12, 0, 0, 0);
         return {
           slug: e.slug,
           title: e.title,
-          endTime: eventEndTime.toISOString(),
-          graceEndTime: graceEndTime.toISOString(),
+          startTime: eventStartTime.toISOString(),
+          cutoffTime: nextDayNoon.toISOString(),
           nowTime: now.toISOString(),
-          comparison: `${graceEndTime.toISOString()} < ${now.toISOString()}`
+          comparison: `${nextDayNoon.toISOString()} < ${now.toISOString()}`,
+          reason: 'Past noon UTC on day after start date'
         };
       }));
     }
