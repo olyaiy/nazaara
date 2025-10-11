@@ -8,7 +8,30 @@ export default async function HeroMobile() {
   const cookieStore = await cookies();
   const city = cookieStore.get("nza_city")?.value;
   console.log("[HeroMobile] city cookie:", city);
-  const featuredEvent = await getPublicEventForCity(city) || await getPublicFeaturedEvent();
+  
+  const cityEvent = await getPublicEventForCity(city);
+  const fallbackEvent = cityEvent ? null : await getPublicFeaturedEvent();
+  const featuredEvent = cityEvent || fallbackEvent;
+
+  if (cityEvent) {
+    console.log("[HeroMobile][Selection] Chose event from getPublicEventForCity", {
+      city,
+      slug: cityEvent.slug,
+      title: cityEvent.title,
+      eventCity: cityEvent.city,
+      startTime: cityEvent.startTime,
+      reason: "City-specific event match or tour stop"
+    });
+  } else if (fallbackEvent) {
+    console.log("[HeroMobile][Selection] Chose event from getPublicFeaturedEvent (fallback)", {
+      city: city || "none",
+      slug: fallbackEvent.slug,
+      title: fallbackEvent.title,
+      eventCity: fallbackEvent.city,
+      startTime: fallbackEvent.startTime,
+      reason: "No city match - using first upcoming event"
+    });
+  }
 
   if (!featuredEvent) {
     console.log("[HeroMobile] no event – returning null");

@@ -26,6 +26,12 @@ export default async function UpcomingEvents() {
   const filteredEvents = heroSlug
     ? upcomingEvents.filter((event) => event.slug !== heroSlug)
     : upcomingEvents;
+  if (heroSlug) {
+    const excludedHero = upcomingEvents.filter((event) => event.slug === heroSlug);
+    if (excludedHero.length > 0) {
+      console.log("[UpcomingEvents][Filter] Excluded hero event from Next Up", excludedHero.map(e => ({ slug: e.slug, title: (e as any).title })));
+    }
+  }
 
   // Build a chronologically sorted list of upcoming events only for the Complete Schedule - timezone-agnostic
   const allEvents = await getPublicEvents();
@@ -41,6 +47,30 @@ export default async function UpcomingEvents() {
     }
     return eventStr >= todayStr;
   });
+  {
+    // Log past events excluded from the complete schedule list
+    const excludedByDate = allEvents.filter(event => {
+      let eventStr: string;
+      if (typeof event.startTime === 'string') {
+        eventStr = event.startTime.split(' ')[0];
+      } else {
+        eventStr = new Date(event.startTime).toISOString().split('T')[0];
+      }
+      return eventStr < todayStr;
+    });
+    if (excludedByDate.length > 0) {
+      console.log("[UpcomingEvents][Filter] Excluded past events (schedule)", excludedByDate.map(e => {
+        const eventStr = typeof e.startTime === 'string' ? e.startTime.split(' ')[0] : new Date(e.startTime).toISOString().split('T')[0];
+        return {
+          slug: e.slug,
+          title: (e as any).title,
+          eventDate: eventStr,
+          todayDate: todayStr,
+          comparison: `${eventStr} < ${todayStr}`
+        };
+      }));
+    }
+  }
   
   const allEventsChrono = upcomingEventsOnly.sort((a, b) => {
     let dateA: string;
@@ -57,6 +87,13 @@ export default async function UpcomingEvents() {
     }
     return dateA.localeCompare(dateB);
   });
+
+  // Determine Next Up grid items and log any excluded by the cap
+  const nextUpEvents = filteredEvents.slice(0, 3);
+  const excludedByCap = filteredEvents.slice(3);
+  if (excludedByCap.length > 0) {
+    console.log("[UpcomingEvents][Filter] Excluded by Next Up cap (limit 3)", excludedByCap.map(e => ({ slug: e.slug, title: (e as any).title })));
+  }
 
   return (
     <section className="relative bg-[var(--black-grey)] overflow-hidden">
@@ -87,7 +124,7 @@ export default async function UpcomingEvents() {
             
             {/* Three Column Premium Layout */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6 lg:gap-8">
-              {filteredEvents.slice(0, 3).map((event, index) => (
+              {nextUpEvents.map((event, index) => (
                 <Link
                   key={event.id} 
                   href={`/event/${event.slug}`}
