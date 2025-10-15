@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { getPublicEventForCity, getPublicFeaturedEvent } from "@/lib/public-actions";
 import HeroMobileButton from "./hero-mobile-button";
+import HeroMobileTitle from "./hero-mobile-title";
 
 export default async function HeroMobile() {
   const cookieStore = await cookies();
@@ -151,9 +152,7 @@ export default async function HeroMobile() {
           <div className="space-y-8">
             {/* Title composition */}
             <div className="relative">
-              <h1 className="font-prettywise text-[18vw] leading-[1.1]" style={{ color: 'var(--white)' }}>
-                {featuredEvent.title}
-              </h1>
+              <HeroMobileTitle title={featuredEvent.title} />
               {featuredEvent.tagline && (
                 <p className="font-neue-haas text-sm leading-relaxed mt-4 pl-8" style={{ color: 'var(--white)', opacity: 0.7 }}>
                   {featuredEvent.tagline}

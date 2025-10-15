@@ -7,12 +7,6 @@ console.log("[auth-api] === AUTH API ROUTE INITIALIZED ===");
 const handlers = toNextJsHandler(auth.handler);
 
 export async function GET(request: NextRequest) {
-    console.log("[auth-api] === GET REQUEST ===");
-    console.log("[auth-api] URL:", request.url);
-    console.log("[auth-api] Current Origin:", request.headers.get("origin") || new URL(request.url).origin);
-    console.log("[auth-api] Host:", request.headers.get("host"));
-    console.log("[auth-api] Headers:", Object.fromEntries(request.headers.entries()));
-    console.log("[auth-api] Cookies:", request.cookies.getAll().map(c => `${c.name}=${c.value?.substring(0, 20)}...`));
     
     try {
         const response = await handlers.GET(request);

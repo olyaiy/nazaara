@@ -13,16 +13,10 @@ import { Shield } from "lucide-react"
 async function signInAction(formData: FormData) {
   "use server"
   
-  console.log("[auth-page] === SIGN IN ACTION START ===");
   
   const email = formData.get("email") as string
   const password = formData.get("password") as string
   
-  console.log("[auth-page] Email:", email);
-  console.log("[auth-page] Password length:", password?.length || 0);
-  console.log("[auth-page] Environment:", process.env.NODE_ENV);
-  console.log("[auth-page] BETTER_AUTH_URL:", process.env.BETTER_AUTH_URL);
-  console.log("[auth-page] BETTER_AUTH_SECRET exists:", !!process.env.BETTER_AUTH_SECRET);
   
   try {
     console.log("[auth-page] Attempting auth.api.signInEmail...");

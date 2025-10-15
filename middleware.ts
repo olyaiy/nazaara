@@ -19,14 +19,6 @@ export function middleware(req: RequestWithGeo) {
   const origin = req.headers.get("origin");
   const userAgent = req.headers.get("user-agent");
   
-  console.log(`[middleware] === REQUEST START ===`);
-  console.log(`[middleware] URL: ${req.url}`);
-  console.log(`[middleware] Pathname: ${pathname}`);
-  console.log(`[middleware] Host: ${host}`);
-  console.log(`[middleware] Origin: ${origin}`);
-  console.log(`[middleware] User-Agent: ${userAgent?.substring(0, 50)}...`);
-  console.log(`[middleware] Environment: ${process.env.NODE_ENV}`);
-  console.log(`[middleware] BETTER_AUTH_URL: ${process.env.BETTER_AUTH_URL}`);
 
   // Log all cookies for debugging
   const allCookies = req.cookies.getAll();
