@@ -137,13 +137,17 @@ export default async function Hero() {
                 {/* Dynamic Title Composition */}
                 <div className="space-y-0">
                   <div className="overflow-hidden">
-                    <h1 className="text-[14vw] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-serif font-thin leading-[0.85] text-white md:py-2">
+                    <h1 className={`font-serif font-thin leading-[0.85] text-white md:py-2 ${
+                      featuredEvent.tagline 
+                        ? 'text-[12vw] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl' 
+                        : 'text-[14vw] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl'
+                    }`}>
                       {featuredEvent.title}
                     </h1>
                   </div>
                   {featuredEvent.tagline && (
                     <div className="flex items-baseline gap-4 mt-3">
-                      <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-serif italic" style={{ color: 'var(--gold)' }}>
+                      <span className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-serif italic" style={{ color: 'var(--gold)' }}>
                         {featuredEvent.tagline}
                       </span>
                       <div className="h-px flex-1" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
