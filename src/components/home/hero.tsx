@@ -8,40 +8,70 @@ import HeroImage from "./hero-image";
 import HeroButton from "./hero-button";
 
 export default async function Hero() {
+  console.log("\n[Hero] ========== HERO COMPONENT RENDER START ==========");
+  
   const cookieStore = await cookies();
   const city = cookieStore.get("nza_city")?.value;
-  console.log("[Hero] city cookie:", city);
+  
+  console.log("[Hero] Reading city from cookie 'nza_city':", city || "<not set>");
+  console.log("[Hero] About to call getPublicEventForCity with city:", city || "<none>");
   
   const cityEvent = await getPublicEventForCity(city);
+  
+  console.log("[Hero] getPublicEventForCity returned:", cityEvent ? {
+    slug: cityEvent.slug,
+    title: cityEvent.title,
+    city: cityEvent.city,
+    isTourStop: cityEvent.venue !== "TBA"
+  } : null);
+  
   const fallbackEvent = cityEvent ? null : await getPublicFeaturedEvent();
-  const featuredEvent = cityEvent || fallbackEvent;
-
-  if (cityEvent) {
-    console.log("[Hero][Selection] Chose event from getPublicEventForCity", {
-      city,
-      slug: cityEvent.slug,
-      title: cityEvent.title,
-      eventCity: cityEvent.city,
-      startTime: cityEvent.startTime,
-      reason: "City-specific event match or tour stop"
-    });
-  } else if (fallbackEvent) {
-    console.log("[Hero][Selection] Chose event from getPublicFeaturedEvent (fallback)", {
-      city: city || "none",
+  
+  if (!cityEvent && fallbackEvent) {
+    console.log("[Hero] No city event found, getPublicFeaturedEvent returned:", {
       slug: fallbackEvent.slug,
       title: fallbackEvent.title,
-      eventCity: fallbackEvent.city,
-      startTime: fallbackEvent.startTime,
-      reason: "No city match - using first upcoming event"
+      city: fallbackEvent.city
     });
   }
+  
+  const featuredEvent = cityEvent || fallbackEvent;
+
+  console.log("\n[Hero] ========== FINAL DECISION ==========");
+  if (cityEvent) {
+    console.log("[Hero] ✅ SELECTED: Event from getPublicEventForCity");
+    console.log("[Hero] Selection details:", {
+      userCity: city || "<none>",
+      selectedSlug: cityEvent.slug,
+      selectedTitle: cityEvent.title,
+      selectedCity: cityEvent.city,
+      selectedVenue: cityEvent.venue,
+      selectedStartTime: cityEvent.startTime,
+      selectionType: city ? "City-based match" : "Default upcoming event",
+      logic: "getPublicEventForCity found a matching event (tour stop or regular event)"
+    });
+  } else if (fallbackEvent) {
+    console.log("[Hero] ✅ SELECTED: Event from getPublicFeaturedEvent (fallback)");
+    console.log("[Hero] Selection details:", {
+      userCity: city || "<none>",
+      selectedSlug: fallbackEvent.slug,
+      selectedTitle: fallbackEvent.title,
+      selectedCity: fallbackEvent.city,
+      selectedVenue: fallbackEvent.venue,
+      selectedStartTime: fallbackEvent.startTime,
+      selectionType: "Fallback to first upcoming",
+      logic: "getPublicEventForCity returned nothing, using getPublicFeaturedEvent as fallback"
+    });
+  } else {
+    console.log("[Hero] ❌ NO EVENT FOUND");
+    console.log("[Hero] Both getPublicEventForCity and getPublicFeaturedEvent returned nothing");
+    console.log("[Hero] Hero component will not render");
+  }
+  console.log("[Hero] ========== HERO COMPONENT RENDER END ==========\n");
 
   if (!featuredEvent) {
-    console.log("[Hero] no event found – returning null");
     return null;
   }
-
-  console.log("[Hero] chosen event:", featuredEvent.slug);
   function isUnitedStates(country?: string | null): boolean {
     const c = (country || "").trim().toLowerCase();
     return c === "united states" || c === "united states of america" || c === "usa" || c === "us" || c === "u.s." || c === "u.s";

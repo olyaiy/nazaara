@@ -14,15 +14,21 @@ const COOKIE_NAME = "nza_city";
 const MAX_AGE = 60 * 60 * 24 * 3; // 3 days
 
 export function middleware(req: RequestWithGeo) {
+  console.log("\n[middleware] ========== MIDDLEWARE START ==========");
   const pathname = req.nextUrl.pathname;
   const host = req.headers.get("host");
   const origin = req.headers.get("origin");
   const userAgent = req.headers.get("user-agent");
   
+  console.log("[middleware] Request details:", {
+    pathname,
+    host,
+    method: req.method
+  });
 
   // Log all cookies for debugging
   const allCookies = req.cookies.getAll();
-  console.log(`[middleware] All cookies (${allCookies.length}):`, allCookies.map(c => `${c.name}=${c.value?.substring(0, 20)}...`));
+  console.log(`[middleware] All cookies present (${allCookies.length}):`, allCookies.map(c => `${c.name}=${c.value?.substring(0, 20)}...`));
 
   // Admin route protection
   if (pathname.startsWith("/admin") && pathname !== "/admin/auth") {

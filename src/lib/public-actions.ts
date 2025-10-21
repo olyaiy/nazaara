@@ -185,7 +185,12 @@ export async function getPublicUpcomingEvents(): Promise<PublicEvent[]> {
 export async function getPublicFeaturedEvent(): Promise<PublicEvent | undefined> {
   const now = new Date();
   
+  console.log("\n[getPublicFeaturedEvent] ========== FALLBACK EVENT SELECTION START ==========");
+  console.log("[getPublicFeaturedEvent] Called as fallback (no city match found)");
+  console.log("[getPublicFeaturedEvent] Current time:", now.toISOString());
+  
   const allEvents = await getPublicEvents();
+  console.log("[getPublicFeaturedEvent] Total published events:", allEvents.length);
   
   // Return the first upcoming event as featured (until noon UTC next day)
   const upcomingEvents = allEvents.filter(event => {
@@ -195,6 +200,25 @@ export async function getPublicFeaturedEvent(): Promise<PublicEvent | undefined>
     nextDayNoon.setUTCHours(12, 0, 0, 0);
     return nextDayNoon >= now;
   });
+  
+  console.log("[getPublicFeaturedEvent] Upcoming events (until noon next day):", upcomingEvents.length);
+  
+  if (upcomingEvents[0]) {
+    console.log("[getPublicFeaturedEvent] ✅ Returning first upcoming event");
+    console.log("[getPublicFeaturedEvent] Event details:", {
+      slug: upcomingEvents[0].slug,
+      title: upcomingEvents[0].title,
+      city: upcomingEvents[0].city,
+      country: upcomingEvents[0].country,
+      venue: upcomingEvents[0].venue,
+      startTime: upcomingEvents[0].startTime,
+      reason: "First upcoming event (fallback when city-based selection returns nothing)"
+    });
+  } else {
+    console.log("[getPublicFeaturedEvent] ❌ No upcoming events available");
+  }
+  
+  console.log("[getPublicFeaturedEvent] ========== FALLBACK EVENT SELECTION END ==========\n");
   
   return upcomingEvents[0];
 }
@@ -227,9 +251,14 @@ export async function getPublicEventStops(eventId: number): Promise<PublicEventS
 
 export async function getPublicEventForCity(city?: string): Promise<PublicEvent | undefined> {
   const now = new Date();
+  
+  console.log("\n[getPublicEventForCity] ========== EVENT SELECTION START ==========");
+  console.log("[getPublicEventForCity] Input city:", city || "<none>");
+  console.log("[getPublicEventForCity] Current time:", now.toISOString());
 
   // 1) Try to find the soonest upcoming tour stop in this city
   if (city) {
+    console.log("[getPublicEventForCity][Step 1] Searching for tour stops in city:", city);
     const stopRows = await db
       .select({
         eventId: eventStops.eventId,
@@ -263,8 +292,20 @@ export async function getPublicEventForCity(city?: string): Promise<PublicEvent 
       .orderBy(asc(eventStops.startTime))
       .limit(1)
 
+    console.log("[getPublicEventForCity][Step 1] Tour stop query returned:", stopRows.length, "results");
+    
     const stopRow = stopRows[0]
     if (stopRow) {
+      console.log("[getPublicEventForCity][Step 1] ✅ MATCH FOUND - Tour stop in city");
+      console.log("[getPublicEventForCity][Step 1] Event details:", {
+        slug: stopRow.eventSlug,
+        title: stopRow.eventTitle,
+        city: stopRow.stopCity,
+        country: stopRow.stopCountry,
+        venue: stopRow.venueName,
+        startTime: stopRow.stopStartTime,
+        reason: "Tour stop matches requested city (case-insensitive)"
+      });
       // Load artists for the event
       const eventArtists = await db
         .select({
@@ -296,6 +337,9 @@ export async function getPublicEventForCity(city?: string): Promise<PublicEvent 
         ? (stopRow.stopStartTime < now ? "Past Event" : "On Sale")
         : "Coming Soon"
 
+      console.log("[getPublicEventForCity][Step 1] Returning tour stop event");
+      console.log("[getPublicEventForCity] ========== EVENT SELECTION END ==========\n");
+
       return {
         id: stopRow.eventId,
         slug: stopRow.eventSlug,
@@ -320,12 +364,19 @@ export async function getPublicEventForCity(city?: string): Promise<PublicEvent 
         startTime: stopRow.stopStartTime,
         endTime: stopRow.stopEndTime,
       }
+    } else {
+      console.log("[getPublicEventForCity][Step 1] ❌ No tour stops found for city:", city);
     }
+  } else {
+    console.log("[getPublicEventForCity][Step 1] ⊘ Skipped - no city provided");
   }
 
   // 2) Fallback to previous behavior (non-tour events or no matching stop)
+  console.log("[getPublicEventForCity][Step 2] Fallback - searching non-tour events");
   const nowFallback = new Date();
   const allEvents = await getPublicEvents();
+  console.log("[getPublicEventForCity][Step 2] Total published events:", allEvents.length);
+  
   const upcomingEvents = allEvents.filter(event => {
     const eventStartTime = new Date(event.startTime);
     const nextDayNoon = new Date(eventStartTime);
@@ -333,10 +384,59 @@ export async function getPublicEventForCity(city?: string): Promise<PublicEvent 
     nextDayNoon.setUTCHours(12, 0, 0, 0);
     return nextDayNoon >= nowFallback;
   });
-  if (city) {
-    const match = upcomingEvents.find((e) => e.city.toLowerCase() === city.toLowerCase());
-    if (match) return match;
+  
+  console.log("[getPublicEventForCity][Step 2] Upcoming events (until noon next day):", upcomingEvents.length);
+  if (upcomingEvents.length > 0) {
+    console.log("[getPublicEventForCity][Step 2] Upcoming events list:", 
+      upcomingEvents.map(e => ({ 
+        slug: e.slug, 
+        title: e.title, 
+        city: e.city, 
+        startTime: e.startTime 
+      }))
+    );
   }
+  
+  if (city) {
+    console.log("[getPublicEventForCity][Step 2] Searching for city match in non-tour events:", city);
+    const match = upcomingEvents.find((e) => e.city.toLowerCase() === city.toLowerCase());
+    if (match) {
+      console.log("[getPublicEventForCity][Step 2] ✅ MATCH FOUND - Non-tour event in city");
+      console.log("[getPublicEventForCity][Step 2] Event details:", {
+        slug: match.slug,
+        title: match.title,
+        city: match.city,
+        country: match.country,
+        venue: match.venue,
+        startTime: match.startTime,
+        reason: "Non-tour event matches requested city (case-insensitive)"
+      });
+      console.log("[getPublicEventForCity] ========== EVENT SELECTION END ==========\n");
+      return match;
+    } else {
+      console.log("[getPublicEventForCity][Step 2] ❌ No non-tour events found for city:", city);
+    }
+  }
+  
+  console.log("[getPublicEventForCity][Step 3] Final fallback - returning first upcoming event");
+  if (upcomingEvents[0]) {
+    console.log("[getPublicEventForCity][Step 3] ✅ MATCH FOUND - First upcoming event (no city match)");
+    console.log("[getPublicEventForCity][Step 3] Event details:", {
+      slug: upcomingEvents[0].slug,
+      title: upcomingEvents[0].title,
+      city: upcomingEvents[0].city,
+      country: upcomingEvents[0].country,
+      venue: upcomingEvents[0].venue,
+      startTime: upcomingEvents[0].startTime,
+      reason: city 
+        ? `No events found matching city "${city}" - showing first upcoming event` 
+        : "No city specified - showing first upcoming event"
+    });
+  } else {
+    console.log("[getPublicEventForCity][Step 3] ❌ No upcoming events found at all");
+  }
+  console.log("[getPublicEventForCity] ========== EVENT SELECTION END ==========\n");
+  
   return upcomingEvents[0];
 }
 
