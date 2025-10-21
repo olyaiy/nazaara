@@ -42,6 +42,38 @@ function getRegionInfo(city: string) {
   return REGIONS[city as keyof typeof REGIONS];
 }
 
+// Metro area groupings (priority over regions)
+const METRO_AREAS: Record<string, string[]> = {
+  // Canada
+  Vancouver: [
+    "Vancouver", "Surrey", "Burnaby", "Richmond", "North Vancouver", "West Vancouver",
+    "Coquitlam", "Port Coquitlam", "Port Moody", "Delta", "Langley", "White Rock",
+    "New Westminster"
+  ],
+  Calgary: ["Calgary", "Airdrie", "Chestermere", "Okotoks"],
+  Toronto: [
+    "Toronto", "Mississauga", "Brampton", "Vaughan", "Markham", "Richmond Hill",
+    "Oakville", "Burlington", "Milton", "Pickering", "Ajax", "Whitby"
+  ],
+
+  // USA
+  "New York": [
+    "New York", "Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island",
+    "Jersey City", "Hoboken", "Newark"
+  ],
+  Boston: ["Boston", "Cambridge", "Somerville", "Brookline"],
+  Miami: ["Miami", "Miami Beach", "Doral", "Hialeah", "Coral Gables"],
+};
+
+function getMetroAnchor(city?: string): string | undefined {
+  if (!city) return undefined;
+  const entries = Object.entries(METRO_AREAS);
+  for (const [anchor, members] of entries) {
+    if (members.some(m => m.toLowerCase() === city.toLowerCase())) return anchor;
+  }
+  return undefined;
+}
+
 export interface PublicArtist {
   name: string;
   instagram?: string | null;
@@ -467,6 +499,34 @@ export async function getPublicEventForCity(city?: string, userCountry?: string)
   
   // 3) Smart geographical fallback
   console.log("[getPublicEventForCity][Step 3] Smart geographical fallback");
+  
+  // 3a) Same metro fallback (highest priority in Step 3)
+  const userMetro = getMetroAnchor(city);
+  if (userMetro) {
+    console.log("[getPublicEventForCity][Step 3a] Filtering by same metro:", userMetro);
+    const sameMetroEvents = upcomingEvents.filter(e => {
+      const eventMetro = getMetroAnchor(e.city);
+      return eventMetro && eventMetro.toLowerCase() === userMetro.toLowerCase();
+    });
+    console.log("[getPublicEventForCity][Step 3a] Events in same metro:", sameMetroEvents.length);
+    if (sameMetroEvents.length > 0) {
+      console.log("[getPublicEventForCity][Step 3a] ✅ MATCH FOUND - Event in same metro area");
+      console.log("[getPublicEventForCity][Step 3a] Event details:", {
+        slug: sameMetroEvents[0].slug,
+        title: sameMetroEvents[0].title,
+        city: sameMetroEvents[0].city,
+        country: sameMetroEvents[0].country,
+        venue: sameMetroEvents[0].venue,
+        startTime: sameMetroEvents[0].startTime,
+        reason: `Same metro area (${userMetro}) - strongest local match`
+      });
+      console.log("[getPublicEventForCity] ========== EVENT SELECTION END ==========");
+      return sameMetroEvents[0];
+    }
+    console.log("[getPublicEventForCity][Step 3a] ❌ No events in same metro");
+  } else {
+    console.log("[getPublicEventForCity][Step 3a] City not part of any known metro");
+  }
   
   if (upcomingEvents.length === 0) {
     console.log("[getPublicEventForCity][Step 3] ❌ No upcoming events found at all");
