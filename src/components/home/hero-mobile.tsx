@@ -8,9 +8,10 @@ import HeroMobileTitle from "./hero-mobile-title";
 export default async function HeroMobile() {
   const cookieStore = await cookies();
   const city = cookieStore.get("nza_city")?.value;
-  console.log("[HeroMobile] city cookie:", city);
+  const country = cookieStore.get("nza_country")?.value;
+  console.log("[HeroMobile] geo cookies:", { city: city || "<not set>", country: country || "<not set>" });
   
-  const cityEvent = await getPublicEventForCity(city);
+  const cityEvent = await getPublicEventForCity(city, country);
   const fallbackEvent = cityEvent ? null : await getPublicFeaturedEvent();
   const featuredEvent = cityEvent || fallbackEvent;
 

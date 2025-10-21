@@ -4,6 +4,44 @@ import { db } from "@/db/drizzle"
 import { events, artists, venues, eventsArtists, galleries, galleryImages, eventStops } from "@/db/schema"
 import { eq, and, gte, asc, desc, sql } from "drizzle-orm"
 
+// Regional groupings for smart geographical fallback
+const REGIONS = {
+  // Canada
+  'Vancouver': { country: 'Canada', region: 'Western Canada' },
+  'Surrey': { country: 'Canada', region: 'Western Canada' },
+  'Burnaby': { country: 'Canada', region: 'Western Canada' },
+  'Richmond': { country: 'Canada', region: 'Western Canada' },
+  'Calgary': { country: 'Canada', region: 'Western Canada' },
+  'Edmonton': { country: 'Canada', region: 'Western Canada' },
+  'Toronto': { country: 'Canada', region: 'Eastern Canada' },
+  'Ottawa': { country: 'Canada', region: 'Eastern Canada' },
+  'Montreal': { country: 'Canada', region: 'Eastern Canada' },
+  
+  // USA
+  'New York': { country: 'United States', region: 'East Coast' },
+  'Boston': { country: 'United States', region: 'East Coast' },
+  'Philadelphia': { country: 'United States', region: 'East Coast' },
+  'Washington': { country: 'United States', region: 'East Coast' },
+  'San Francisco': { country: 'United States', region: 'West Coast' },
+  'Los Angeles': { country: 'United States', region: 'West Coast' },
+  'Seattle': { country: 'United States', region: 'West Coast' },
+  'Portland': { country: 'United States', region: 'West Coast' },
+  'Chicago': { country: 'United States', region: 'Midwest' },
+  'Detroit': { country: 'United States', region: 'Midwest' },
+  'Dallas': { country: 'United States', region: 'South' },
+  'Houston': { country: 'United States', region: 'South' },
+  'Atlanta': { country: 'United States', region: 'South' },
+  
+  // UK
+  'London': { country: 'United Kingdom', region: 'UK' },
+  'Manchester': { country: 'United Kingdom', region: 'UK' },
+  'Birmingham': { country: 'United Kingdom', region: 'UK' },
+} as const;
+
+function getRegionInfo(city: string) {
+  return REGIONS[city as keyof typeof REGIONS];
+}
+
 export interface PublicArtist {
   name: string;
   instagram?: string | null;
@@ -249,12 +287,20 @@ export async function getPublicEventStops(eventId: number): Promise<PublicEventS
   }))
 }
 
-export async function getPublicEventForCity(city?: string): Promise<PublicEvent | undefined> {
+export async function getPublicEventForCity(city?: string, userCountry?: string): Promise<PublicEvent | undefined> {
   const now = new Date();
   
   console.log("\n[getPublicEventForCity] ========== EVENT SELECTION START ==========");
-  console.log("[getPublicEventForCity] Input city:", city || "<none>");
+  console.log("[getPublicEventForCity] Input location:", { city: city || "<none>", country: userCountry || "<none>" });
   console.log("[getPublicEventForCity] Current time:", now.toISOString());
+  
+  // Get region info for user's city
+  const userRegionInfo = city ? getRegionInfo(city) : undefined;
+  if (userRegionInfo) {
+    console.log("[getPublicEventForCity] User region info from mapping:", userRegionInfo);
+  } else if (city) {
+    console.log("[getPublicEventForCity] City not in region mapping, will use country-based fallback");
+  }
 
   // 1) Try to find the soonest upcoming tour stop in this city
   if (city) {
@@ -391,7 +437,8 @@ export async function getPublicEventForCity(city?: string): Promise<PublicEvent 
       upcomingEvents.map(e => ({ 
         slug: e.slug, 
         title: e.title, 
-        city: e.city, 
+        city: e.city,
+        country: e.country,
         startTime: e.startTime 
       }))
     );
@@ -418,23 +465,95 @@ export async function getPublicEventForCity(city?: string): Promise<PublicEvent 
     }
   }
   
-  console.log("[getPublicEventForCity][Step 3] Final fallback - returning first upcoming event");
-  if (upcomingEvents[0]) {
-    console.log("[getPublicEventForCity][Step 3] ✅ MATCH FOUND - First upcoming event (no city match)");
-    console.log("[getPublicEventForCity][Step 3] Event details:", {
-      slug: upcomingEvents[0].slug,
-      title: upcomingEvents[0].title,
-      city: upcomingEvents[0].city,
-      country: upcomingEvents[0].country,
-      venue: upcomingEvents[0].venue,
-      startTime: upcomingEvents[0].startTime,
-      reason: city 
-        ? `No events found matching city "${city}" - showing first upcoming event` 
-        : "No city specified - showing first upcoming event"
-    });
-  } else {
+  // 3) Smart geographical fallback
+  console.log("[getPublicEventForCity][Step 3] Smart geographical fallback");
+  
+  if (upcomingEvents.length === 0) {
     console.log("[getPublicEventForCity][Step 3] ❌ No upcoming events found at all");
+    console.log("[getPublicEventForCity] ========== EVENT SELECTION END ==========\n");
+    return undefined;
   }
+  
+  // Try to find events in same region first
+  if (userRegionInfo) {
+    console.log("[getPublicEventForCity][Step 3a] Filtering by same region:", userRegionInfo.region);
+    const sameRegionEvents = upcomingEvents.filter(event => {
+      const eventRegionInfo = getRegionInfo(event.city);
+      return eventRegionInfo?.region === userRegionInfo.region;
+    });
+    
+    console.log("[getPublicEventForCity][Step 3a] Events in same region:", sameRegionEvents.length);
+    if (sameRegionEvents.length > 0) {
+      console.log("[getPublicEventForCity][Step 3a] ✅ MATCH FOUND - Event in same region");
+      console.log("[getPublicEventForCity][Step 3a] Event details:", {
+        slug: sameRegionEvents[0].slug,
+        title: sameRegionEvents[0].title,
+        city: sameRegionEvents[0].city,
+        country: sameRegionEvents[0].country,
+        venue: sameRegionEvents[0].venue,
+        startTime: sameRegionEvents[0].startTime,
+        reason: `Same region (${userRegionInfo.region}) - closest geographical match`
+      });
+      console.log("[getPublicEventForCity] ========== EVENT SELECTION END ==========\n");
+      return sameRegionEvents[0];
+    }
+    console.log("[getPublicEventForCity][Step 3a] ❌ No events in same region");
+  }
+  
+  // Try to find events in same country
+  const userCountryFinal = userRegionInfo?.country || userCountry;
+  if (userCountryFinal) {
+    console.log("[getPublicEventForCity][Step 3b] Filtering by same country:", userCountryFinal);
+    
+    // Normalize country names for comparison
+    const normalizeCountry = (c: string) => c.toLowerCase().trim();
+    const normalizedUserCountry = normalizeCountry(userCountryFinal);
+    
+    const sameCountryEvents = upcomingEvents.filter(event => {
+      const normalizedEventCountry = normalizeCountry(event.country);
+      // Handle US variations
+      if (normalizedUserCountry === 'us' || normalizedUserCountry === 'usa' || normalizedUserCountry === 'united states') {
+        return normalizedEventCountry === 'united states' || normalizedEventCountry === 'usa' || normalizedEventCountry === 'us';
+      }
+      // Handle Canada variations
+      if (normalizedUserCountry === 'ca' || normalizedUserCountry === 'canada') {
+        return normalizedEventCountry === 'canada' || normalizedEventCountry === 'ca';
+      }
+      return normalizedEventCountry === normalizedUserCountry;
+    });
+    
+    console.log("[getPublicEventForCity][Step 3b] Events in same country:", sameCountryEvents.length);
+    if (sameCountryEvents.length > 0) {
+      console.log("[getPublicEventForCity][Step 3b] ✅ MATCH FOUND - Event in same country");
+      console.log("[getPublicEventForCity][Step 3b] Event details:", {
+        slug: sameCountryEvents[0].slug,
+        title: sameCountryEvents[0].title,
+        city: sameCountryEvents[0].city,
+        country: sameCountryEvents[0].country,
+        venue: sameCountryEvents[0].venue,
+        startTime: sameCountryEvents[0].startTime,
+        reason: `Same country (${userCountryFinal}) - national proximity`
+      });
+      console.log("[getPublicEventForCity] ========== EVENT SELECTION END ==========\n");
+      return sameCountryEvents[0];
+    }
+    console.log("[getPublicEventForCity][Step 3b] ❌ No events in same country");
+  }
+  
+  // Final fallback - chronologically first event
+  console.log("[getPublicEventForCity][Step 3c] Final fallback - returning chronologically first event");
+  console.log("[getPublicEventForCity][Step 3c] ✅ MATCH FOUND - First upcoming event (no geographical match)");
+  console.log("[getPublicEventForCity][Step 3c] Event details:", {
+    slug: upcomingEvents[0].slug,
+    title: upcomingEvents[0].title,
+    city: upcomingEvents[0].city,
+    country: upcomingEvents[0].country,
+    venue: upcomingEvents[0].venue,
+    startTime: upcomingEvents[0].startTime,
+    reason: city 
+      ? `No geographical match for "${city}" - showing first upcoming event` 
+      : "No location specified - showing first upcoming event"
+  });
   console.log("[getPublicEventForCity] ========== EVENT SELECTION END ==========\n");
   
   return upcomingEvents[0];

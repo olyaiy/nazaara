@@ -12,11 +12,14 @@ export default async function Hero() {
   
   const cookieStore = await cookies();
   const city = cookieStore.get("nza_city")?.value;
+  const country = cookieStore.get("nza_country")?.value;
   
-  console.log("[Hero] Reading city from cookie 'nza_city':", city || "<not set>");
-  console.log("[Hero] About to call getPublicEventForCity with city:", city || "<none>");
+  console.log("[Hero] Reading geo cookies:");
+  console.log("[Hero]   - nza_city:", city || "<not set>");
+  console.log("[Hero]   - nza_country:", country || "<not set>");
+  console.log("[Hero] About to call getPublicEventForCity with:", { city: city || "<none>", country: country || "<none>" });
   
-  const cityEvent = await getPublicEventForCity(city);
+  const cityEvent = await getPublicEventForCity(city, country);
   
   console.log("[Hero] getPublicEventForCity returned:", cityEvent ? {
     slug: cityEvent.slug,
