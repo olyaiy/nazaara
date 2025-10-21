@@ -408,3 +408,26 @@ export const djs = pgTable("djs", {
 export const djsRelations = relations(djs, ({ }) => ({
   // No relations initially - standalone table for internal roster
 }));
+
+/**
+ * SITE_SETTINGS TABLE
+ * 
+ * Stores global site configuration settings. Uses a singleton pattern with
+ * a single row (id=1) that gets updated. This replaces the JSON file approach
+ * which doesn't work in read-only serverless environments like Vercel.
+ */
+export const siteSettings = pgTable("site_settings", {
+  // Fixed ID of 1 - only one settings row exists
+  id: serial("id").primaryKey(),
+  
+  // Page visibility toggles
+  hideAbout: boolean("hide_about").default(false).notNull(),
+  hideBookings: boolean("hide_bookings").default(false).notNull(),
+  
+  // Gallery configuration
+  useExternalGallery: boolean("use_external_gallery").default(false).notNull(),
+  externalGalleryUrl: text("external_gallery_url").default("https://tamasha.myportfolio.com/").notNull(),
+  
+  // Audit timestamps
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});

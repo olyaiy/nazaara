@@ -1,5 +1,6 @@
-import { promises as fs } from "fs";
-import path from "path";
+import { db } from "@/db/drizzle";
+import { siteSettings } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 export interface SiteSettings {
   hideAbout: boolean;
@@ -8,8 +9,6 @@ export interface SiteSettings {
   externalGalleryUrl: string;
 }
 
-const SETTINGS_FILE_PATH = path.join(process.cwd(), "src", "content", "site-settings.json");
-
 const DEFAULT_SETTINGS: SiteSettings = {
   hideAbout: false,
   hideBookings: false,
@@ -17,34 +16,77 @@ const DEFAULT_SETTINGS: SiteSettings = {
   externalGalleryUrl: "https://tamasha.myportfolio.com/",
 };
 
-let inMemorySettings: SiteSettings | null = null;
-
+/**
+ * Get site settings from database
+ * Uses a singleton pattern - always reads/updates row with id=1
+ * Creates the row with defaults if it doesn't exist
+ */
 export async function getSiteSettings(): Promise<SiteSettings> {
-  if (inMemorySettings) return inMemorySettings;
   try {
-    const raw = await fs.readFile(SETTINGS_FILE_PATH, "utf8");
-    const parsed = JSON.parse(raw) as Partial<SiteSettings>;
-    inMemorySettings = {
-      ...DEFAULT_SETTINGS,
-      ...parsed,
+    // Try to get existing settings (id=1)
+    const settings = await db.query.siteSettings.findFirst({
+      where: eq(siteSettings.id, 1),
+    });
+
+    if (settings) {
+      return {
+        hideAbout: settings.hideAbout,
+        hideBookings: settings.hideBookings,
+        useExternalGallery: settings.useExternalGallery,
+        externalGalleryUrl: settings.externalGalleryUrl,
+      };
+    }
+
+    // If no settings exist, create default row
+    const [newSettings] = await db
+      .insert(siteSettings)
+      .values({
+        id: 1,
+        ...DEFAULT_SETTINGS,
+      })
+      .returning();
+
+    return {
+      hideAbout: newSettings.hideAbout,
+      hideBookings: newSettings.hideBookings,
+      useExternalGallery: newSettings.useExternalGallery,
+      externalGalleryUrl: newSettings.externalGalleryUrl,
     };
-  } catch {
-    inMemorySettings = { ...DEFAULT_SETTINGS };
+  } catch (error) {
+    console.error("Error getting site settings:", error);
+    return DEFAULT_SETTINGS;
   }
-  return inMemorySettings;
 }
 
+/**
+ * Update site settings in database
+ * Always updates the singleton row with id=1
+ */
 export async function updateSiteSettings(partial: Partial<SiteSettings>): Promise<SiteSettings> {
-  const current = await getSiteSettings();
-  const next: SiteSettings = { ...current, ...partial };
-  await fs.mkdir(path.dirname(SETTINGS_FILE_PATH), { recursive: true });
-  await fs.writeFile(SETTINGS_FILE_PATH, JSON.stringify(next, null, 2), "utf8");
-  inMemorySettings = next;
-  return next;
-}
+  try {
+    // Ensure settings row exists
+    await getSiteSettings();
 
-export function clearSiteSettingsCache(): void {
-  inMemorySettings = null;
+    // Update the settings
+    const [updated] = await db
+      .update(siteSettings)
+      .set({
+        ...partial,
+        updatedAt: new Date(),
+      })
+      .where(eq(siteSettings.id, 1))
+      .returning();
+
+    return {
+      hideAbout: updated.hideAbout,
+      hideBookings: updated.hideBookings,
+      useExternalGallery: updated.useExternalGallery,
+      externalGalleryUrl: updated.externalGalleryUrl,
+    };
+  } catch (error) {
+    console.error("Error updating site settings:", error);
+    throw error;
+  }
 }
 
 
