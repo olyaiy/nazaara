@@ -12,21 +12,70 @@ import SectionHeader from "@/components/ui/section-header";
 import TicketButton from "@/components/home/ticket-button";
 
 export default async function UpcomingEvents() {
-  // Get the city cookie to determine which event is featured in hero
+  // Get the city and country cookies to determine which event is featured in hero
   const cookieStore = await cookies();
   const city = cookieStore.get("nza_city")?.value;
+  const country = cookieStore.get("nza_country")?.value;
   
-  // Determine the event shown in the hero (mirrors logic used by Hero components)
-  const heroEvent = await getPublicEventForCity(city) || await getPublicFeaturedEvent();
+  console.log("=== UPCOMING EVENTS COMPONENT START ===");
+  console.log("[UpcomingEvents] City from cookie:", city);
+  console.log("[UpcomingEvents] Country from cookie:", country);
+  
+  // Determine the event shown in the hero (mirrors logic used by Hero component exactly)
+  const cityEvent = await getPublicEventForCity(city, country);
+  const fallbackEvent = cityEvent ? null : await getPublicFeaturedEvent();
+  const heroEvent = cityEvent || fallbackEvent;
   const heroSlug = heroEvent?.slug;
+  
+  console.log("[UpcomingEvents] City event result:", cityEvent ? {
+    slug: cityEvent.slug,
+    title: cityEvent.title,
+    city: cityEvent.city,
+    startTime: cityEvent.startTime
+  } : "No city match - will use fallback");
+  
+  if (!cityEvent) {
+    console.log("[UpcomingEvents] Fallback event result:", fallbackEvent ? {
+      slug: fallbackEvent.slug,
+      title: fallbackEvent.title,
+      city: fallbackEvent.city,
+      startTime: fallbackEvent.startTime
+    } : "No fallback event");
+  }
+  
+  console.log("[UpcomingEvents] Final hero event:", heroEvent ? {
+    slug: heroEvent.slug,
+    title: heroEvent.title,
+    city: heroEvent.city,
+    startTime: heroEvent.startTime,
+    source: cityEvent ? "city-specific" : "fallback"
+  } : "No hero event");
   
   // Get all upcoming events
   const upcomingEvents = await getPublicUpcomingEvents();
+  
+  console.log("[UpcomingEvents] All upcoming events from getPublicUpcomingEvents():", upcomingEvents.length, "events");
+  console.log("[UpcomingEvents] Upcoming events details:", upcomingEvents.map(e => ({
+    slug: e.slug,
+    title: e.title,
+    city: e.city,
+    startTime: e.startTime,
+    isFeatured: e.isFeatured
+  })));
   
   // Filter out the hero event (if known)
   const filteredEvents = heroSlug
     ? upcomingEvents.filter((event) => event.slug !== heroSlug)
     : upcomingEvents;
+  
+  console.log("[UpcomingEvents] Filtered events (after removing hero):", filteredEvents.length, "events");
+  console.log("[UpcomingEvents] Filtered events details:", filteredEvents.map(e => ({
+    slug: e.slug,
+    title: e.title,
+    city: e.city,
+    startTime: e.startTime
+  })));
+  
   if (heroSlug) {
     const excludedHero = upcomingEvents.filter((event) => event.slug === heroSlug);
     if (excludedHero.length > 0) {
@@ -39,12 +88,26 @@ export default async function UpcomingEvents() {
   const allEvents = await getPublicEvents();
   const now = new Date();
   
+  console.log("[UpcomingEvents] All events from getPublicEvents():", allEvents.length, "events");
+  console.log("[UpcomingEvents] All events details:", allEvents.map(e => ({
+    slug: e.slug,
+    title: e.title,
+    city: e.city,
+    startTime: e.startTime,
+    isFeatured: e.isFeatured
+  })));
+  console.log("[UpcomingEvents] Current time (now):", now.toISOString());
+  
   const upcomingEventsOnly = allEvents.filter(event => {
     const eventStartTime = new Date(event.startTime);
     const nextDayNoon = new Date(eventStartTime);
     nextDayNoon.setUTCDate(nextDayNoon.getUTCDate() + 1);
     nextDayNoon.setUTCHours(12, 0, 0, 0);
-    return nextDayNoon >= now;
+    const isUpcoming = nextDayNoon >= now;
+    
+    console.log(`[UpcomingEvents][DateFilter] Event: ${event.slug} | Start: ${eventStartTime.toISOString()} | Cutoff: ${nextDayNoon.toISOString()} | Now: ${now.toISOString()} | Include: ${isUpcoming}`);
+    
+    return isUpcoming;
   });
   {
     // Log past events excluded from the complete schedule list
@@ -74,6 +137,14 @@ export default async function UpcomingEvents() {
     }
   }
   
+  console.log("[UpcomingEvents] Upcoming events after date filter:", upcomingEventsOnly.length, "events");
+  console.log("[UpcomingEvents] Upcoming events after date filter details:", upcomingEventsOnly.map(e => ({
+    slug: e.slug,
+    title: e.title,
+    city: e.city,
+    startTime: e.startTime
+  })));
+  
   const allEventsChrono = upcomingEventsOnly.sort((a, b) => {
     let dateA: string;
     let dateB: string;
@@ -90,12 +161,31 @@ export default async function UpcomingEvents() {
     return dateA.localeCompare(dateB);
   });
 
+  console.log("[UpcomingEvents] Chronologically sorted events for schedule:", allEventsChrono.length, "events");
+  console.log("[UpcomingEvents] Chronologically sorted events details:", allEventsChrono.map(e => ({
+    slug: e.slug,
+    title: e.title,
+    city: e.city,
+    startTime: e.startTime
+  })));
+
   // Determine Next Up grid items and log any excluded by the cap
   const nextUpEvents = filteredEvents.slice(0, 3);
+  
+  console.log("[UpcomingEvents] Next Up events (first 3 after filtering):", nextUpEvents.length, "events");
+  console.log("[UpcomingEvents] Next Up events details:", nextUpEvents.map(e => ({
+    slug: e.slug,
+    title: e.title,
+    city: e.city,
+    startTime: e.startTime
+  })));
+  
   const excludedByCap = filteredEvents.slice(3);
   if (excludedByCap.length > 0) {
     console.log("[UpcomingEvents][Filter] Excluded by Next Up cap (limit 3)", excludedByCap.map((e: PublicEvent) => ({ slug: e.slug, title: e.title })));
   }
+  
+  console.log("=== UPCOMING EVENTS COMPONENT END ===");
 
   return (
     <section className="relative bg-[var(--black-grey)] overflow-hidden">
