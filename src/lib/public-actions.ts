@@ -195,10 +195,10 @@ export async function getPublicEvents(): Promise<PublicEvent[]> {
     // Use the first artist as the primary artist for backward compatibility
     const primaryArtist = eventArtistsList[0]?.name || event.title;
     
-    // Determine if featured (you may want to add an isFeatured field to the database)
-    // For now, we'll consider the first upcoming event as featured
+    // Determine current time for status calculation
     const now = new Date();
-    const isFeatured = event.startTime >= now && eventsWithDetails[0]?.id === event.id;
+    // Do not globally mark any event as featured; hero selection is user-specific
+    const isFeatured = false;
     
     // Determine status based on ticket availability and date
     let status = "On Sale";
@@ -206,8 +206,6 @@ export async function getPublicEvents(): Promise<PublicEvent[]> {
       status = "Coming Soon";
     } else if (event.startTime < now) {
       status = "Past Event";
-    } else if (isFeatured) {
-      status = "Featured";
     }
     
     return {
@@ -248,7 +246,8 @@ export async function getPublicUpcomingEvents(): Promise<PublicEvent[]> {
     const nextDayNoon = new Date(eventStartTime);
     nextDayNoon.setUTCDate(nextDayNoon.getUTCDate() + 1);
     nextDayNoon.setUTCHours(12, 0, 0, 0);
-    return nextDayNoon >= now && !event.isFeatured;
+    // Do not exclude based on a global featured flag; the component filters out the hero per user
+    return nextDayNoon >= now;
   });
 }
 
