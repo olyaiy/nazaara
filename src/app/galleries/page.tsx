@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   },
 }
 
+export const revalidate = 0
+
 export default async function GalleriesPage() {
   const galleries = await getPublicGalleries()
 

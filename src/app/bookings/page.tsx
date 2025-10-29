@@ -102,91 +102,63 @@ export default function BookingsPage() {
       {/* Private Events Introduction */}
       <section className="py-24 bg-gradient-to-b from-[var(--black-grey)] to-[var(--maroon-red)]/5">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              {/* Left Content */}
-              <div>
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-8 h-px bg-[var(--gold)]/40" />
-                  <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/60">
-                    {privateEventsContent.sectionTitle}
-                  </span>
-                </div>
-                
-                <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-8">
-                  {privateEventsContent.heading}
-                  <span className="block text-[var(--gold)]">{privateEventsContent.subHeading}</span>
-                </h2>
-                
-                <div className="space-y-6 text-[var(--off-white)]/70 font-neue-haas leading-relaxed mb-12">
-                  <p>
-                    {privateEventsContent.description}
-                  </p>
-                </div>
-                
-                {/* Service Details */}
-                <div className="space-y-6 mb-12">
-                  {privateEventsContent.services.map((service, index) => {
-                    const IconComponent = getIcon(service.icon);
-                    return (
-                      <div key={index} className="flex items-start gap-4">
-                        <IconComponent className="w-5 h-5 text-[var(--gold)] mt-1" />
-                        <div>
-                          <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">{service.title}</h3>
-                          <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                            {service.description}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                  
-                  {/* CTA Button */}
-                  <div className="pt-8">
-                    <Button 
-                      size="lg"
-                      className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0 min-w-60"
-                      style={{ 
-                        backgroundColor: 'var(--gold)', 
-                        color: 'var(--maroon-red)'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-                      onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-                      onClick={() => {
-                        const formSection = document.getElementById('contact-form');
-                        formSection?.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                    >
-                      {privateEventsContent.ctaButtonText}
-                    </Button>
-                  </div>
-                </div>
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-3 mb-8">
+                <div className="w-8 h-px bg-[var(--gold)]/40" />
+                <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/60">
+                  {privateEventsContent.sectionTitle}
+                </span>
+                <div className="w-8 h-px bg-[var(--gold)]/40" />
               </div>
-
-              {/* Right Visual - Image Composition */}
-              <div className="relative h-[600px]">
-                {/* Main image - luxury event */}
-                <div className="absolute top-0 right-0 w-4/5 h-4/5 overflow-hidden">
-                  <Image
-                    src={privateEventsContent.images.primary}
-                    alt="Luxury private event"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)]/40 to-transparent" />
-                </div>
+              
+              <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-8">
+                {privateEventsContent.heading}
+                <span className="block text-[var(--gold)]">{privateEventsContent.subHeading}</span>
+              </h2>
+              
+              <div className="space-y-6 text-[var(--off-white)]/70 font-neue-haas leading-relaxed mb-12 max-w-3xl mx-auto">
+                <p>
+                  {privateEventsContent.description}
+                </p>
+              </div>
+              
+              {/* Service Details */}
+              <div className="space-y-6 mb-12 max-w-2xl mx-auto">
+                {privateEventsContent.services.map((service, index) => {
+                  const IconComponent = getIcon(service.icon);
+                  return (
+                    <div key={index} className="flex items-start gap-4 text-left">
+                      <IconComponent className="w-5 h-5 text-[var(--gold)] mt-1 flex-shrink-0" />
+                      <div>
+                        <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">{service.title}</h3>
+                        <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
+                          {service.description}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
                 
-                {/* Secondary image - celebrity performance */}
-                <div className="absolute bottom-0 left-0 w-3/5 h-3/5 overflow-hidden border-8 border-[var(--maroon-red)]">
-                  <Image
-                    src={privateEventsContent.images.secondary}
-                    alt="Celebrity performance"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/60 to-transparent" />
+                {/* CTA Button */}
+                <div className="pt-8">
+                  <Button 
+                    size="lg"
+                    className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0 min-w-60"
+                    style={{ 
+                      backgroundColor: 'var(--gold)', 
+                      color: 'var(--maroon-red)'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                    onClick={() => {
+                      const formSection = document.getElementById('contact-form');
+                      formSection?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    {privateEventsContent.ctaButtonText}
+                  </Button>
                 </div>
-                
               </div>
             </div>
           </div>
