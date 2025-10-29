@@ -13,6 +13,8 @@ interface PageProps {
   }>
 }
 
+export const revalidate = 0
+
 export default async function GalleryEditPage({ params }: PageProps) {
   const session = await auth.api.getSession({
     headers: await headers()

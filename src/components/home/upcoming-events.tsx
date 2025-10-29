@@ -227,7 +227,7 @@ export default async function UpcomingEvents() {
 
             {/* Subtext */}
             <p className="font-neue-haas text-sm md:text-base text-[var(--white)]/50 max-w-md leading-relaxed">
-              We're curating exceptional experiences across the globe. Check back soon for upcoming events.
+              We&apos;re curating exceptional experiences across the globe. Check back soon for upcoming events.
             </p>
 
             {/* Decorative footer */}
