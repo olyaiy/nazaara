@@ -1,7 +1,6 @@
 'use client';
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Users, Star, Crown } from "lucide-react";
 import { useState } from "react";
 
 export default function BookingsClient() {
@@ -144,107 +143,71 @@ export default function BookingsClient() {
       {/* Private Events Introduction */}
       <section className="py-24 bg-gradient-to-b from-[var(--black-grey)] to-[var(--maroon-red)]/5">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              {/* Left Content */}
-              <div>
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-8 h-px bg-[var(--gold)]/40" />
-                  <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/60">
-                    Private Services
-                  </span>
-                </div>
-                
-                <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-8">
-                  Beyond
-                  <span className="block text-[var(--gold)]">Extraordinary</span>
-                </h2>
-                
-                <div className="space-y-6 text-[var(--off-white)]/70 font-neue-haas leading-relaxed mb-12">
-                  <p>
-                    From intimate celebrations to grand spectacles, we orchestrate private experiences 
-                    that transcend the ordinary. Our reputation isn&apos;t built on portfolios—it&apos;s earned 
-                    through whispers in elite circles.
-                  </p>
-                </div>
-                
-                {/* Service Details */}
-                <div className="space-y-6 mb-12">
-                  <div className="flex items-start gap-4">
-                    <Star className="w-5 h-5 text-[var(--gold)] mt-1" />
-                    <div>
-                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">Bollywood A-Listers</h3>
-                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                        Direct access to India&apos;s biggest stars for your most prestigious private events
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <Crown className="w-5 h-5 text-[var(--gold)] mt-1" />
-                    <div>
-                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">International Artists</h3>
-                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                        Global South Asian sensations and cultural icons for exclusive performances
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <Users className="w-5 h-5 text-[var(--gold)] mt-1" />
-                    <div>
-                      <h3 className="text-lg font-prettywise text-[var(--off-white)] mb-2">Private Concerts</h3>
-                      <p className="text-sm font-neue-haas text-[var(--off-white)]/50">
-                        Intimate performances and private concerts by legendary artists
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* CTA Button */}
-                  <div className="pt-8">
-                    <Button 
-                      size="lg"
-                      className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0 min-w-60"
-                      style={{ 
-                        backgroundColor: 'var(--gold)', 
-                        color: 'var(--maroon-red)'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-                      onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-                      onClick={() => {
-                        const formSection = document.getElementById('contact-form');
-                        formSection?.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                    >
-                      Book a Consultation
-                    </Button>
-                  </div>
-                </div>
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Header */}
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <div className="w-8 h-px bg-[var(--gold)]/40" />
+              <span className="text-[10px] font-neue-haas uppercase tracking-[0.5em] text-[var(--gold)]/60">
+                Private Services
+              </span>
+              <div className="w-8 h-px bg-[var(--gold)]/40" />
+            </div>
+            
+            {/* Title */}
+            <h2 className="text-[clamp(3rem,5vw,5rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-8">
+              Beyond
+              <span className="block text-[var(--gold)]">Extraordinary</span>
+            </h2>
+            
+            {/* Description */}
+            <p className="text-lg text-[var(--off-white)]/70 font-neue-haas leading-relaxed mb-16 max-w-3xl mx-auto">
+              From intimate celebrations to grand spectacles, we orchestrate private experiences 
+              that transcend the ordinary. Our reputation isn&apos;t built on portfolios—it&apos;s earned 
+              through whispers in elite circles.
+            </p>
+            
+            {/* Service Details - Centered */}
+            <div className="space-y-12 mb-16">
+              <div className="space-y-3">
+                <h3 className="text-2xl font-prettywise text-[var(--off-white)]">Bollywood A-Listers</h3>
+                <p className="text-base font-neue-haas text-[var(--off-white)]/60 max-w-2xl mx-auto">
+                  Direct access to India&apos;s biggest stars for your most prestigious private events
+                </p>
               </div>
-
-              {/* Right Visual - Image Composition */}
-              <div className="relative h-[600px]">
-                {/* Main image - luxury event */}
-                <div className="absolute top-0 right-0 w-4/5 h-4/5 overflow-hidden">
-                  <Image
-                    src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80"
-                    alt="Luxury private event"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--black-grey)]/40 to-transparent" />
-                </div>
-                
-                {/* Secondary image - celebrity performance */}
-                <div className="absolute bottom-0 left-0 w-3/5 h-3/5 overflow-hidden border-8 border-[var(--maroon-red)]">
-                  <Image
-                    src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&q=80"
-                    alt="Celebrity performance"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--maroon-red)]/60 to-transparent" />
-                </div>
-                
+              
+              <div className="space-y-3">
+                <h3 className="text-2xl font-prettywise text-[var(--off-white)]">International Artists</h3>
+                <p className="text-base font-neue-haas text-[var(--off-white)]/60 max-w-2xl mx-auto">
+                  Global South Asian sensations and cultural icons for exclusive performances
+                </p>
               </div>
+              
+              <div className="space-y-3">
+                <h3 className="text-2xl font-prettywise text-[var(--off-white)]">Private Concerts</h3>
+                <p className="text-base font-neue-haas text-[var(--off-white)]/60 max-w-2xl mx-auto">
+                  Intimate performances and private concerts by legendary artists
+                </p>
+              </div>
+            </div>
+            
+            {/* CTA Button */}
+            <div className="pt-8">
+              <Button 
+                size="lg"
+                className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0 min-w-60"
+                style={{ 
+                  backgroundColor: 'var(--gold)', 
+                  color: 'var(--maroon-red)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                onClick={() => {
+                  const formSection = document.getElementById('contact-form');
+                  formSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Book a Consultation
+              </Button>
             </div>
           </div>
         </div>

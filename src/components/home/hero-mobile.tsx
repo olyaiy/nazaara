@@ -69,7 +69,7 @@ export default async function HeroMobile() {
           </h2>
           
           <p className="font-neue-haas text-sm text-white/60 max-w-xs mx-auto">
-            We're curating the next unforgettable experience. Stay tuned.
+            We&apos;re curating the next unforgettable experience. Stay tuned.
           </p>
         </div>
       </section>
