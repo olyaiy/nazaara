@@ -19,7 +19,7 @@ export function GalleryGrid({ galleries }: GalleryGridProps) {
   }
 
   const getThumbnail = (gallery: PublicGallery) => {
-    return  gallery.firstImage || null
+    return gallery.coverImage || gallery.firstImage || null
   }
 
   if (galleries.length === 0) {
