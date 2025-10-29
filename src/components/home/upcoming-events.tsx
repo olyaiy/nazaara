@@ -187,6 +187,63 @@ export default async function UpcomingEvents() {
   
   console.log("=== UPCOMING EVENTS COMPONENT END ===");
 
+  // Check if there are no events to display
+  const hasNoEvents = nextUpEvents.length === 0 && allEventsChrono.length === 0;
+
+  if (hasNoEvents) {
+    return (
+      <section className="relative bg-[var(--black-grey)] overflow-hidden">
+        {/* Art Deco inspired grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+            <defs>
+              <pattern id="upcoming-grid-empty" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+                <rect x="0" y="0" width="80" height="80" fill="none" stroke="var(--gold)" strokeWidth="0.5" />
+                <rect x="10" y="10" width="60" height="60" fill="none" stroke="var(--gold)" strokeWidth="0.3" />
+                <line x1="0" y1="40" x2="80" y2="40" stroke="var(--gold)" strokeWidth="0.2" />
+                <line x1="40" y1="0" x2="40" y2="80" stroke="var(--gold)" strokeWidth="0.2" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#upcoming-grid-empty)" />
+          </svg>
+        </div>
+
+        {/* Empty State */}
+        <div className="relative container mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-24 lg:py-32">
+          <div className="flex flex-col items-center justify-center text-center space-y-6 md:space-y-8 max-w-2xl mx-auto">
+            {/* Decorative header */}
+            <div className="flex items-center gap-4 md:gap-6">
+              <div className="h-[1px] w-12 md:w-16 bg-[var(--gold)]/30" />
+              <span className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] font-light text-[var(--gold)]/60">
+                Season 2025/26
+              </span>
+              <div className="h-[1px] w-12 md:w-16 bg-[var(--gold)]/30" />
+            </div>
+
+            {/* Main heading */}
+            <h2 className="font-prettywise text-4xl md:text-5xl lg:text-6xl text-[var(--white)] leading-tight">
+              More Shows<br />Coming Soon
+            </h2>
+
+            {/* Subtext */}
+            <p className="font-neue-haas text-sm md:text-base text-[var(--white)]/50 max-w-md leading-relaxed">
+              We're curating exceptional experiences across the globe. Check back soon for upcoming events.
+            </p>
+
+            {/* Decorative footer */}
+            <div className="pt-4">
+              <div className="flex items-center gap-3">
+                <div className="w-1 h-1 rounded-full bg-[var(--gold)]/40" />
+                <div className="w-2 h-2 rounded-full bg-[var(--gold)]/40" />
+                <div className="w-1 h-1 rounded-full bg-[var(--gold)]/40" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="relative bg-[var(--black-grey)] overflow-hidden">
       {/* Art Deco inspired grid pattern */}

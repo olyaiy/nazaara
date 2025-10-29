@@ -17,7 +17,95 @@ export default async function Hero() {
   const featuredEvent = cityEvent || fallbackEvent;
 
   if (!featuredEvent) {
-    return null;
+    return (
+      <>
+        {/* Mobile Empty State */}
+        <div className="md:hidden">
+          <section className="relative min-h-[60dvh] overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--maroon-red)' }}>
+            {/* Shadow Overlay for depth */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/50" />
+            
+            {/* Geometric Pattern Overlay */}
+            <div className="absolute inset-0 opacity-10">
+              <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                <defs>
+                  <pattern id="hero-pattern-empty" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                    <circle cx="30" cy="30" r="1" fill="var(--gold)" />
+                    <path d="M0 30 L30 0 L60 30 L30 60 Z" stroke="var(--gold)" strokeWidth="0.5" fill="none" opacity="0.35" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#hero-pattern-empty)" />
+              </svg>
+            </div>
+            
+            <div className="relative text-center px-6 space-y-6">
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-12 h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.6 }} />
+                <span className="font-neue-haas text-[10px] uppercase tracking-[0.5em]" style={{ color: 'var(--gold)' }}>
+                  Nazaara Live
+                </span>
+                <div className="w-12 h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.6 }} />
+              </div>
+              
+              <h2 className="font-prettywise text-5xl text-white leading-tight">
+                New Events<br />Coming Soon
+              </h2>
+              
+              <p className="font-neue-haas text-sm text-white/60 max-w-xs mx-auto">
+                We're curating the next unforgettable experience. Stay tuned.
+              </p>
+            </div>
+          </section>
+        </div>
+        
+        {/* Desktop Empty State */}
+        <div className="hidden md:block relative min-h-[60dvh] overflow-hidden" style={{ backgroundColor: 'var(--maroon-red)' }}>
+          <section className="absolute inset-0">
+            {/* Shadow Overlay for depth */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/50" />
+            
+            {/* Geometric Pattern Overlay */}
+            <div className="absolute inset-0 opacity-10">
+              <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                <defs>
+                  <pattern id="hero-pattern-empty-desktop" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                    <circle cx="30" cy="30" r="1" fill="var(--gold)" />
+                    <path d="M0 30 L30 0 L60 30 L30 60 Z" stroke="var(--gold)" strokeWidth="0.5" fill="none" opacity="0.35" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#hero-pattern-empty-desktop)" />
+              </svg>
+            </div>
+            
+            <div className="relative container mx-auto px-4 md:px-6 lg:px-8">
+              <div className="min-h-[60dvh] flex flex-col justify-center items-center text-center py-12">
+                <div className="space-y-8 max-w-2xl">
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="h-px w-16" style={{ backgroundColor: 'var(--gold)' }} />
+                    <span className="text-[10px] uppercase tracking-[0.4em] font-light" style={{ color: 'var(--gold)' }}>
+                      Nazaara Live
+                    </span>
+                    <div className="h-px w-16" style={{ backgroundColor: 'var(--gold)' }} />
+                  </div>
+                  
+                  <h2 className="font-serif font-thin text-6xl lg:text-7xl xl:text-8xl leading-[0.9] text-white">
+                    New Events<br />Coming Soon
+                  </h2>
+                  
+                  <div className="flex items-center justify-center gap-6">
+                    <div className="h-px w-24" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
+                    <p className="font-serif text-lg text-white/60 italic">
+                      Stay tuned for our next experience
+                    </p>
+                    <div className="h-px w-24" style={{ backgroundColor: 'var(--gold)', opacity: 0.3 }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </>
+    );
   }
   function isUnitedStates(country?: string | null): boolean {
     const c = (country || "").trim().toLowerCase();

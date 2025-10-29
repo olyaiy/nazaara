@@ -36,8 +36,44 @@ export default async function HeroMobile() {
   }
 
   if (!featuredEvent) {
-    console.log("[HeroMobile] no event – returning null");
-    return null;
+    console.log("[HeroMobile] no event – showing empty state");
+    return (
+      <section className="relative min-h-[60dvh] overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--maroon-red)' }}>
+        {/* Shadow Overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/50" />
+        
+        {/* Geometric Pattern Overlay */}
+        <div className="absolute inset-0 opacity-10">
+          <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+            <defs>
+              <pattern id="hero-pattern-mobile-empty" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                <circle cx="30" cy="30" r="1" fill="var(--gold)" />
+                <path d="M0 30 L30 0 L60 30 L30 60 Z" stroke="var(--gold)" strokeWidth="0.5" fill="none" opacity="0.35" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#hero-pattern-mobile-empty)" />
+          </svg>
+        </div>
+        
+        <div className="relative text-center px-6 space-y-6">
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-12 h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.6 }} />
+            <span className="font-neue-haas text-[10px] uppercase tracking-[0.5em]" style={{ color: 'var(--gold)' }}>
+              Nazaara Live
+            </span>
+            <div className="w-12 h-[1px]" style={{ backgroundColor: 'var(--gold)', opacity: 0.6 }} />
+          </div>
+          
+          <h2 className="font-prettywise text-5xl text-white leading-tight">
+            New Events<br />Coming Soon
+          </h2>
+          
+          <p className="font-neue-haas text-sm text-white/60 max-w-xs mx-auto">
+            We're curating the next unforgettable experience. Stay tuned.
+          </p>
+        </div>
+      </section>
+    );
   }
 
   console.log("[HeroMobile] chosen event:", featuredEvent.slug);
