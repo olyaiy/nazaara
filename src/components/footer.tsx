@@ -190,15 +190,24 @@ export function Footer({ hideAbout = false, hideBookings = false, useExternalGal
                   {/* Social Links */}
                   <div>
                     <p className="text-xs font-neue-haas uppercase tracking-[0.2em] text-white/40 mb-4">Follow Us</p>
-                    <div>
+                    <div className="space-y-3">
                       <a 
                         href="https://www.instagram.com/nazaara.live/" 
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-white/60 hover:text-[var(--gold)] transition-colors"
+                        className="block text-white/60 hover:text-[var(--gold)] transition-colors"
                         aria-label="Instagram"
                       >
                         <span className="text-xs font-neue-haas uppercase tracking-wider">Instagram</span>
+                      </a>
+                      <a 
+                        href="https://www.tiktok.com/@nazaara.live" 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-white/60 hover:text-[var(--gold)] transition-colors"
+                        aria-label="TikTok"
+                      >
+                        <span className="text-xs font-neue-haas uppercase tracking-wider">TikTok</span>
                       </a>
                     </div>
                   </div>
