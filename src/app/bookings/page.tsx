@@ -139,26 +139,6 @@ export default function BookingsPage() {
                     </div>
                   );
                 })}
-                
-                {/* CTA Button */}
-                <div className="pt-8">
-                  <Button 
-                    size="lg"
-                    className="px-7 py-4 text-xs uppercase tracking-[0.3em] font-light border-0 min-w-60"
-                    style={{ 
-                      backgroundColor: 'var(--gold)', 
-                      color: 'var(--maroon-red)'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-                    onClick={() => {
-                      const formSection = document.getElementById('contact-form');
-                      formSection?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    {privateEventsContent.ctaButtonText}
-                  </Button>
-                </div>
               </div>
             </div>
           </div>

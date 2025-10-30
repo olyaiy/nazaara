@@ -152,7 +152,7 @@ export function Navigation({
             )}
             
             {/* Social Media Icons */}
-            <div className="flex items-center gap-8 ml-2">
+            <div className="flex items-center gap-4 ml-2">
               <a
                 href={instagramUrl}
                 target="_blank"
