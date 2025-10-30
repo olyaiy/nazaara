@@ -58,8 +58,23 @@ export default function DJRosterPage() {
       </section>
 
       {/* DJ Grid with Expandable Rows */}
-      <section className="py-32 bg-gradient-to-b from-[var(--black-grey)] via-[var(--black-grey)] to-[var(--maroon-red)]/10">
-        <div className="container mx-auto px-6 lg:px-12">
+      <section className="relative py-32 bg-gradient-to-b from-[var(--black-grey)] via-[var(--black-grey)] to-[var(--maroon-red)]/10 overflow-hidden">
+        {/* Art Deco inspired grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+            <defs>
+              <pattern id="dj-roster-grid" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+                <rect x="0" y="0" width="80" height="80" fill="none" stroke="var(--gold)" strokeWidth="0.5" />
+                <rect x="10" y="10" width="60" height="60" fill="none" stroke="var(--gold)" strokeWidth="0.3" />
+                <line x1="0" y1="40" x2="80" y2="40" stroke="var(--gold)" strokeWidth="0.2" />
+                <line x1="40" y1="0" x2="40" y2="80" stroke="var(--gold)" strokeWidth="0.2" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#dj-roster-grid)" />
+          </svg>
+        </div>
+
+        <div className="relative container mx-auto px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
             <div className="space-y-8">
               {/* Group DJs into rows of 3 for desktop */}
