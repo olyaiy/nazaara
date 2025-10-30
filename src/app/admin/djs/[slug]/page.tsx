@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ArrowLeft, Save, Headphones, Instagram, Cloud, Eye, EyeOff } from "lucide-react"
+import { ArrowLeft, Save, Headphones, Instagram, Eye, EyeOff } from "lucide-react"
 import { getDJBySlug, updateDJ, deleteDJ } from "@/lib/admin-actions"
 import Link from "next/link"
 import { ImageUpload } from "@/components/admin/image-upload"
@@ -202,19 +202,6 @@ export default async function DJEditPage({ params }: PageProps) {
                     <p className="text-xs text-muted-foreground">Enter username without @ symbol</p>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="soundcloud">SoundCloud Username</Label>
-                    <div className="relative">
-                      <Cloud className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input 
-                        id="soundcloud" 
-                        name="soundcloud" 
-                        defaultValue={dj.soundcloud || ""} 
-                        placeholder="username"
-                        className="bg-background pl-10 border-border"
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -289,22 +276,6 @@ export default async function DJEditPage({ params }: PageProps) {
                     </div>
                   )}
                   
-                  {dj.soundcloud && (
-                    <div className="flex items-start gap-2">
-                      <Cloud className="h-4 w-4 text-muted-foreground mt-0.5" />
-                      <div className="flex-1">
-                        <p className="text-sm text-foreground font-medium">SoundCloud</p>
-                        <a 
-                          href={`https://soundcloud.com/${dj.soundcloud}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-[--gold] hover:underline"
-                        >
-                          {dj.soundcloud}
-                        </a>
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
 

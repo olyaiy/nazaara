@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ArrowLeft, Instagram, Cloud, Save, Headphones } from "lucide-react"
+import { ArrowLeft, Instagram, Save, Headphones } from "lucide-react"
 import Link from "next/link"
 import { createDJ } from "@/lib/admin-actions"
 import { ImageUpload } from "@/components/admin/image-upload"
@@ -148,18 +148,6 @@ export default async function NewDJPage() {
                     <p className="text-xs text-muted-foreground">Enter username without @ symbol</p>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="soundcloud">SoundCloud Username</Label>
-                    <div className="relative">
-                      <Cloud className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input 
-                        id="soundcloud" 
-                        name="soundcloud" 
-                        placeholder="djrishi"
-                        className="bg-background pl-10 border-border"
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
 
