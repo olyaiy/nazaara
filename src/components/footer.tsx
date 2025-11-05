@@ -225,11 +225,11 @@ export function Footer({ hideAbout = false, hideBookings = false, useExternalGal
             <div className="max-w-[1600px] mx-auto">
               <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
                 
-                <div className="flex items-center gap-8">
+                <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-8">
                   <p className="text-xs font-neue-haas text-white/40">
                     © 2025 Nazaara Live. All rights reserved.
                   </p>
-                  <div className="hidden lg:flex items-center gap-6 text-xs font-neue-haas text-white/40">
+                  <div className="flex items-center gap-6 text-xs font-neue-haas text-white/40">
                     <Link href="/privacy" className="hover:text-[var(--gold)] transition-colors">
                       Privacy Policy
                     </Link>
