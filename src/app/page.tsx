@@ -202,8 +202,8 @@ export default async function Home() {
       <div className="min-h-screen bg-background text-foreground">
         <Hero />
 
-        {/* Event Marquee - Animated Transition */}
-        <EventMarquee events={upcomingEvents} />
+        {/* City Marquee - Animated Transition */}
+        <EventMarquee />
 
         <UpcomingEvents />
 
