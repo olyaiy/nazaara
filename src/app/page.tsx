@@ -203,7 +203,7 @@ export default async function Home() {
         <Hero />
 
         {/* Event Marquee - Animated Transition */}
-        <EventMarquee events={upcomingEvents} />
+        <EventMarquee />
 
         <UpcomingEvents />
 
