@@ -62,7 +62,7 @@ export const privateEventsContent: PrivateEventsContent = {
   }
 };
 
-// DJ Roster Section Content
+// Artist Roster Section Content
 export interface DJRosterContent {
   sectionTitle: string;
   heading: string;
@@ -71,7 +71,7 @@ export interface DJRosterContent {
 
 export const djRosterContent: DJRosterContent = {
   sectionTitle: "Available Artists",
-  heading: "DJ Roster",
+  heading: "Artist Roster",
   description: "Professional DJs available for private bookings"
 };
 

@@ -342,7 +342,7 @@ export default function DJRosterPage() {
                         event_location: data.get("event_location"),
                         expected_guests: data.get("expected_guests"),
                         message: data.get("message"),
-                        subject: "New DJ Roster Inquiry via Nazaara",
+                        subject: "New Artist Roster Inquiry via Nazaara",
                       } as Record<string, unknown>;
 
                       setContactSubmit({ isSubmitting: true, isSuccess: false, errorMessage: null });

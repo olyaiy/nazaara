@@ -215,7 +215,7 @@ export default async function UpcomingEvents() {
             <div className="flex items-center gap-4 md:gap-6">
               <div className="h-[1px] w-12 md:w-16 bg-[var(--gold)]/30" />
               <span className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] md:tracking-[0.5em] font-light text-[var(--gold)]/60">
-                Season 2025/26
+                Season 2026/27
               </span>
               <div className="h-[1px] w-12 md:w-16 bg-[var(--gold)]/30" />
             </div>
@@ -265,7 +265,7 @@ export default async function UpcomingEvents() {
       <div className="relative container mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
           
           {/* Header - Editorial Style */}
-          <SectionHeader eyebrow="Season 2025/26" title="Next Up" className="mb-8 md:mb-12" />
+          <SectionHeader eyebrow="Season 2026/27" title="Next Up" className="mb-8 md:mb-12" />
 
           {/* Three Event Layout - Compact Container */}
           <div className="mb-8 md:mb-12">

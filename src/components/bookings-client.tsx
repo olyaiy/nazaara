@@ -207,7 +207,7 @@ export default function BookingsClient() {
         </div>
       </section>
 
-      {/* DJ Roster */}
+      {/* Artist Roster */}
       <section className="py-32 bg-gradient-to-b from-[var(--black-grey)] via-[var(--black-grey)] to-[var(--maroon-red)]/10">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
@@ -221,7 +221,7 @@ export default function BookingsClient() {
                 <div className="w-16 h-px bg-[var(--gold)]/20" />
               </div>
               <h2 className="text-[clamp(3rem,6vw,6rem)] font-prettywise leading-[0.9] text-[var(--off-white)] mb-6">
-                <span className="text-[var(--gold)]">DJ Roster</span>
+                <span className="text-[var(--gold)]">Artist Roster</span>
               </h2>
               <p className="text-lg font-neue-haas text-[var(--off-white)]/60 max-w-2xl mx-auto">
                 Professional DJs available for private bookings

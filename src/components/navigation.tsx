@@ -130,7 +130,7 @@ export function Navigation({
                     : "text-foreground/80 hover:text-primary"
                 )}
               >
-                <span>DJ Roster</span>
+                <span>Artist Roster</span>
                 <span
                   className={cn(
                     "pointer-events-none absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300",
@@ -291,7 +291,7 @@ export function Navigation({
                 )}
                 aria-current={isCurrent("/dj-roster") ? "page" : undefined}
               >
-                DJ Roster
+                Artist Roster
               </Link>
             )}
             {useExternalGallery ? (
