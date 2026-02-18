@@ -72,7 +72,7 @@ export interface DJRosterContent {
 export const djRosterContent: DJRosterContent = {
   sectionTitle: "Available Artists",
   heading: "Artist Roster",
-  description: "Professional DJs available for private bookings"
+  description: "Artists available for private bookings worldwide"
 };
 
 // Contact Form Section Content
